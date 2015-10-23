@@ -1,3 +1,0 @@
-- [ ] Bootstrap config
-- [ ] Authentication
-- [ ] Index Page
