@@ -1,9 +1,6 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Phalcon PHP Framework</title>
-	</head>
-	<body>
-		{{ content() }}
-	</body>
-</html>
+{{ partial('header') }}
+{{ partial('nav') }}
+
+    {{ content() }}
+
+{{ partial('footer') }}

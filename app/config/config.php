@@ -12,9 +12,12 @@ return new \Phalcon\Config(array(
 		'controllersDir' => __DIR__ . '/../../app/controllers/',
 		'modelsDir'      => __DIR__ . '/../../app/models/',
 		'viewsDir'       => __DIR__ . '/../../app/views/',
+		'partialsDir'    => '/partials/',
+		'layoutsDir'     => '/layouts/',
 		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
 		'libraryDir'     => __DIR__ . '/../../app/library/',
 		'cacheDir'       => __DIR__ . '/../../app/cache/',
-		'baseUri'        => '/mvc/simple-volt/',
+		'baseUri'        => '/avaunt/',
+		'siteTitle'		 => 'Avaunt'
 	)
 ));

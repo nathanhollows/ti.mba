@@ -2,6 +2,8 @@
 
 use Phalcon\DI\FactoryDefault,
 	Phalcon\Mvc\View,
+	Phalcon\Mvc\Router,
+	Phalcon\Mvc\Dispatcher as PhDispatcher,
 	Phalcon\Mvc\Url as UrlResolver,
 	Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter,
 	Phalcon\Mvc\View\Engine\Volt as VoltEngine,
@@ -12,6 +14,8 @@ use Phalcon\DI\FactoryDefault,
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
  */
 $di = new FactoryDefault();
+
+define('SITE_TITLE', $config->application->siteTitle);
 
 /**
  * The URL component is used to generate all kind of urls in the application
@@ -30,6 +34,7 @@ $di->set('view', function() use ($config) {
 	$view = new View();
 
 	$view->setViewsDir($config->application->viewsDir);
+	$view->setPartialsDir($config->application->partialsDir);
 
 	$view->registerEngines(array(
 		'.volt' => function($view, $di) use ($config) {
@@ -76,3 +81,34 @@ $di->set('session', function() {
 	$session->start();
 	return $session;
 });
+
+
+$di->set(
+    'dispatcher',
+    function() use ($di) {
+
+        $evManager = $di->getShared('eventsManager');
+
+        $evManager->attach(
+            "dispatch:beforeException",
+            function($event, $dispatcher, $exception)
+            {
+                switch ($exception->getCode()) {
+                    case PhDispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                    case PhDispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                        $dispatcher->forward(
+                            array(
+                                'controller' => 'error',
+                                'action'     => 'show404',
+                            )
+                        );
+                        return false;
+                }
+            }
+        );
+        $dispatcher = new PhDispatcher();
+        $dispatcher->setEventsManager($evManager);
+        return $dispatcher;
+    },
+    true
+);
