@@ -2,12 +2,12 @@
 
 use Phalcon\Tag;
 
-class IndexController extends ControllerBase
+class AboutController extends ControllerBase
 {
 
 	protected function initialize()
 	{
-        $this->tag->setTitle('Home');
+        $this->tag->setTitle('About');
         parent::initialize();
 	}
 
