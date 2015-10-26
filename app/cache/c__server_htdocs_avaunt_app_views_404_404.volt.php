@@ -9,9 +9,9 @@
                 Sorry, an error has occured, Requested page not found!
             </div>
             <div class="error-actions">
-                {{ link_to('', '<span class="glyphicon glyphicon-home"></span> Take Me Home', 'class': 'btn btn-primary btn-lg' )}}
+                <?php echo $this->tag->linkTo(array('', '<span class="glyphicon glyphicon-home"></span> Take Me Home', 'class' => 'btn btn-primary btn-lg')); ?>
 
-                {{ link_to('contact', '<span class="glyphicon glyphicon-envelope"></span> Contact', 'class': 'btn btn-default btn-lg' )}}
+                <?php echo $this->tag->linkTo(array('contact', '<span class="glyphicon glyphicon-envelope"></span> Contact', 'class' => 'btn btn-default btn-lg')); ?>
             </div>
         </div>
     </div>

@@ -7,13 +7,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          {{ link_to('/', 'Avaunt', 'class': 'navbar-brand')}}
+          <?php echo $this->tag->linkTo(array('/', 'Avaunt', 'class' => 'navbar-brand')); ?>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active">{{ link_to('/', 'Home')}}</li>
-            <li>{{ link_to('about', 'About')}}</li>
-            <li>{{ link_to('contact', 'Contact')}}</li>
+            <li class="active"><?php echo $this->tag->linkTo(array('/', 'Home')); ?></li>
+            <li><?php echo $this->tag->linkTo(array('about', 'About')); ?></li>
+            <li><?php echo $this->tag->linkTo(array('contact', 'Contact')); ?></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
