@@ -7,11 +7,11 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          {{ link_to('/', 'Avaunt', 'class': 'navbar-brand')}}
+          {{ link_to('', 'Avaunt', 'class': 'navbar-brand')}}
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active">{{ link_to('/', 'Home')}}</li>
+            <li class="active">{{ link_to('', 'Home')}}</li>
             <li>{{ link_to('about', 'About')}}</li>
             <li>{{ link_to('contact', 'Contact')}}</li>
           </ul>
