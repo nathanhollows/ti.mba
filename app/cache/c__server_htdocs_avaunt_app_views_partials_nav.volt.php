@@ -15,6 +15,7 @@
             <li><?php echo $this->tag->linkTo(array('about', 'About')); ?></li>
             <li><?php echo $this->tag->linkTo(array('contact', 'Contact')); ?></li>
           </ul>
+          <?php echo $this->tag->linkTo(array('login', 'Sign In', 'class' => 'btn btn-default navbar-btn pull-right')); ?>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
