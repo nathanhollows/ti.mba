@@ -35,6 +35,7 @@ $di->set('view', function() use ($config) {
 
 	$view->setViewsDir($config->application->viewsDir);
 	$view->setPartialsDir($config->application->partialsDir);
+	$view->setLayoutsDir($config->application->layoutsDir);
 
 	$view->registerEngines(array(
 		'.volt' => function($view, $di) use ($config) {
