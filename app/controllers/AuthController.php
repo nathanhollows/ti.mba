@@ -1,7 +1,5 @@
 <?php
 
-namespace App;
-
 use Phalcon\Tag;
 
 class AuthController extends ControllerBase
