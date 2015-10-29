@@ -15,7 +15,8 @@
             <li>{{ link_to('about', 'About')}}</li>
             <li>{{ link_to('contact', 'Contact')}}</li>
           </ul>
-          {{ link_to('auth/login','Sign In', 'class': 'btn btn-default navbar-btn pull-right')}}
+          {{ link_to('auth/login','Sign In', 'class': 'btn btn-default navbar-btn pull-right hidden-xs')}}
+          {{ link_to('auth/login','Sign In', 'class': 'btn btn-default navbar-btn pull-right btn-block visible-xs')}}
         </div><!--/.nav-collapse -->
       </div>
     </nav>
