@@ -2,12 +2,12 @@
 
 namespace App\Controllers\Admin;
 
-class IndexController extends ControllerBase
+class ReportsController extends ControllerBase
 {
 
 	protected function initialize()
 	{
-        $this->tag->setTitle('Dashboard');
+        $this->tag->setTitle('Reports');
         parent::initialize();
 	}
 
