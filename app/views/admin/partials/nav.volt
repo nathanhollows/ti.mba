@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                {{ link_to('/', constant('SITE_TITLE'), 'class': 'navbar-brand')}}
+                {{ link_to('', constant('SITE_TITLE'), 'class': 'navbar-brand')}}
             </div>
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav">
