@@ -15,3 +15,7 @@ form.form-signin {
     margin-right: auto;
     max-width: 350px;
 }
+
+#page-wrapper {
+	min-height: calc(100vh - 50px);
+}
