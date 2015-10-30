@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Auth;
 
 use Phalcon\Tag;
 
-class AuthController extends ControllerBase
+class IndexController extends ControllerBase
 {
 
 	protected function initialize()
