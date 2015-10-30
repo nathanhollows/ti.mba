@@ -3,7 +3,7 @@
 use Phalcon\DI\FactoryDefault,
 	Phalcon\Mvc\View,
 	Phalcon\Mvc\Router,
-	Phalcon\Mvc\Dispatcher as PhDispatcher,
+	Phalcon\Mvc\Dispatcher,
 	Phalcon\Mvc\Url as UrlResolver,
 	Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter,
 	Phalcon\Mvc\View\Engine\Volt as VoltEngine,
@@ -16,6 +16,10 @@ use Phalcon\DI\FactoryDefault,
 $di = new FactoryDefault();
 
 define('SITE_TITLE', $config->application->siteTitle);
+
+$di->set('router', function(){
+	return require __DIR__ . '/routes.php';
+}, true);
 
 /**
  * The URL component is used to generate all kind of urls in the application
@@ -84,32 +88,27 @@ $di->set('session', function() {
 });
 
 
-$di->set(
-    'dispatcher',
-    function() use ($di) {
+$di->set('dispatcher', function(){
+        $eventsManager = new \Phalcon\Events\Manager();
 
-        $evManager = $di->getShared('eventsManager');
+        $eventsManager->attach('dispatch:beforeException', function($event, $dispatcher, $exception) {
 
-        $evManager->attach(
-            "dispatch:beforeException",
-            function($event, $dispatcher, $exception)
-            {
-                switch ($exception->getCode()) {
-                    case PhDispatcher::EXCEPTION_HANDLER_NOT_FOUND:
-                    case PhDispatcher::EXCEPTION_ACTION_NOT_FOUND:
-                        $dispatcher->forward(
-                            array(
-                                'controller' => 'error',
-                                'action'     => 'show404',
-                            )
-                        );
-                        return false;
-                }
+            switch ($exception->getCode()) {
+                case \Phalcon\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                case \Phalcon\Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                    $dispatcher->forward(array(
+                        'module'=>'frontend',
+                        'controller'=>'error',
+                        'action'=>'show404'
+                    ));
+                    return false;
             }
-        );
-        $dispatcher = new PhDispatcher();
-        $dispatcher->setEventsManager($evManager);
+
+        });
+
+        $dispatcher = new \Phalcon\Mvc\Dispatcher();
+        $dispatcher->setEventsManager($eventsManager);
+        $dispatcher->setDefaultNamespace('App\Controllers');
+
         return $dispatcher;
-    },
-    true
-);
+});
