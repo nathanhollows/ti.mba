@@ -7,7 +7,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          {{ link_to('', 'Avaunt', 'class': 'navbar-brand')}}
+          {{ link_to('', constant('SITE_TITLE'), 'class': 'navbar-brand')}}
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -15,8 +15,7 @@
             <li>{{ link_to('about', 'About')}}</li>
             <li>{{ link_to('contact', 'Contact')}}</li>
           </ul>
-          {{ link_to('auth/login','Sign In', 'class': 'btn btn-default navbar-btn pull-right hidden-xs')}}
-          {{ link_to('auth/login','Sign In', 'class': 'btn btn-default navbar-btn pull-right btn-block visible-xs')}}
+          {{ link_to('auth/login','Sign In', 'class': 'btn btn-default navbar-btn pull-right')}}
         </div><!--/.nav-collapse -->
       </div>
     </nav>
