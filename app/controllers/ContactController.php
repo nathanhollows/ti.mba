@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Controllers;
+
 use Phalcon\Tag;
 
 class ContactController extends ControllerBase
