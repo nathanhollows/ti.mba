@@ -37,13 +37,6 @@ $router->add('/admin', array(
 	'action'	=>	'index'
 ));
 
-$router->add('/login', array(
-	'namespace' => 'App\Controllers\Auth',
-	'controller' => 'index',
-	'action'	=>	'login'
-));
-
-
 // Remove trailing slahes automatically
 $router->removeExtraSlashes(true);
 

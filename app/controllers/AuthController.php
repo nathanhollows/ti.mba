@@ -15,7 +15,6 @@ class AuthController extends ControllerBase
     public function loginAction()
     {
         $this->tag->setTitle('Login');
-        echo "Login";
 
     }
 

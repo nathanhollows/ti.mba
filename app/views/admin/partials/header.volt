@@ -9,12 +9,10 @@
     <!-- Bootstrap Core CSS -->
     
     <link href="{{ static_url( "css/united.min.css" ) }}" rel="stylesheet">
-    <link href="{{ static_url( "css/timeline.css" ) }}" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="{{ static_url( "css/sb-admin-2.css" ) }}" rel="stylesheet">
+    <link href="{{ static_url( "css/sb-admin.css" ) }}" rel="stylesheet">
     <link href="{{ static_url( "css/app.css" ) }}" rel="stylesheet">
-    <link href="{{ static_url( "css/metisMenu/metisMenu.min.css" ) }}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
     <link href="{{ static_url( "css/plugins/morris.css" ) }}" rel="stylesheet">
