@@ -96,11 +96,11 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> John Smith <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                            {{ link_to('admin/user', '<i class="fa fa-fw fa-gear"></i> Settings</a>')}}
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                            {{ link_to('/logout', '<i class="fa fa-fw fa-power-off"></i> Log Out')}}
                         </li>
                     </ul>
                 </li>
@@ -108,26 +108,29 @@
             <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav side-nav">
+                {{ elements.getMenu() }}
                     <li class="active">
-                        {{ link_to('admin', '<i class="fa fa-fw fa-dashboard"></i> Dashboard</a>')}}
-                        }
+                        {{ link_to('admin', '<i class="fa fa-fw fa-dashboard"></i> Dashboard')}}
                     </li>
                     <li>
-                        <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                        {{ link_to('admin/processing', '<i class="fa fa-fw fa-gears"></i> Processing')}}
                     </li>
                     <li>
-                        {{ link_to('admin/tables', '<i class="fa fa-fw fa-table"></i> Tables') }}
+                        {{ link_to('admin/invoice', '<i class="fa fa-fw fa-usd"></i> Invoicing')}}
                     </li>
                     <li>
-                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                        {{ link_to('admin/stock', '<i class="fa fa-fw fa-cube"></i> Stock')}}
+                    <li>
+                        {{ link_to('admin/orders', '<i class="fa fa-fw fa-file-text-o"></i> Orders')}}
                     </li>
                     <li>
-                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                        {{ link_to('admin/purchases', '<i class="fa fa-fw fa-shopping-cart"></i> Purchases')}}
                     </li>
                     <li>
-                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+                        {{ link_to('admin/dispatch', '<i class="fa fa-fw fa-truck"></i> Dispatches')}}
                     </li>
                     <li>
+                        {{ link_to('admin/customer', '<i class="fa fa-fw fa-user"></i> Customers')}}
                         <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
                         <ul id="demo" class="collapse">
                             <li>
@@ -138,11 +141,12 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
                     </li>
                     <li>
-                        <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+                        {{ link_to('admin/reports', '<i class="fa fa-fw fa-print"></i> Reports')}}
+                    </li>
+                    <li>
+                        {{ link_to('admin/settings', '<i class="fa fa-fw fa-cog"></i> Settings')}}
                     </li>
                 </ul>
             </div>

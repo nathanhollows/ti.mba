@@ -11,6 +11,7 @@ class ControllerBase extends Controller
 	protected function initialize()
 	{
 		Tag::appendTitle(' | ' . SITE_TITLE);
+
 	}
 
 	public function afterExecuteRoute()
