@@ -87,6 +87,10 @@ $di->set('session', function() {
 	return $session;
 });
 
+// Register a user component
+$di->set('elements', function () {
+	return new Elements();
+});
 
 $di->set('dispatcher', function(){
         $eventsManager = new \Phalcon\Events\Manager();
