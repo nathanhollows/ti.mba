@@ -13,9 +13,6 @@ Avaunt uses a number of open source projects to work properly:
 * [Twitter Bootstrap] - great UI boilerplate for modern web apps
 * [jQuery] - duh
 
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
-
    [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
    [Phalcon]: <https://phalconphp.com/en/>
    [jQuery]: <https://jquery.com/>
