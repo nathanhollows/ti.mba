@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Forms\SignUpForm;
+
 use Phalcon\Tag;
 
 class AuthController extends ControllerBase
@@ -21,6 +23,8 @@ class AuthController extends ControllerBase
     public function signupAction()
     {
         $this->tag->setTitle('Signup');
+
+        $form = new SignUpForm();
 
     }
 
