@@ -7,7 +7,10 @@ $loader = new \Phalcon\Loader();
  */
 $loader->registerNamespaces(
 	array(
-		'App\Controllers' => __DIR__ . '/../controllers/'
+		'App\Controllers'	=> $config->application->controllersDir,
+		'App\Models' 		=> $config->application->modelsDir,
+		'App\Forms' 		=> $config->application->formsDir,
+		'App' 				=> $config->application->libraryDir,
 	)
 )->register();
 
@@ -16,16 +19,6 @@ $loader->registerClasses(
     array(
         'Elements'		=> __DIR__ . '/../library/Elements.php'
     )
-)->register();
-
-$loader->registerDirs(
-	array(
-		__DIR__ . $config->application->controllersDir,
-		__DIR__ . $config->application->pluginsDir,
-		__DIR__ . $config->application->libraryDir,
-		__DIR__ . $config->application->modelsDir,
-		__DIR__ . $config->application->formsDir,
-	)
 )->register();
 
 $elements = new Elements();
