@@ -2,6 +2,8 @@
 
 $router = new Phalcon\Mvc\Router(false);
 
+// Define defaukt routes. File gets included in services.php
+
 $router->add('/', array(
 	'namespace' => 'App\Controllers',
 	'controller' => 1
@@ -37,16 +39,21 @@ $router->add('/admin', array(
 	'action'	=>	'index'
 ));
 
+// Auth controllers
+
+$router->add('/login', array(
+	'namespace' => 'App\Controllers',
+	'controller' => 'auth',
+	'action'	=>	'login'
+));
+
+$router->add('/login', array(
+	'namespace' => 'App\Controllers',
+	'controller' => 'auth',
+	'action'	=>	'login'
+));
+
 // Remove trailing slahes automatically
 $router->removeExtraSlashes(true);
-
-// Set 404 paths
-$router->notFound(
-    array(
-    	"namespace"	 => "App\Controllers",
-        "controller" => "error",
-        "action"     => "show404"
-    )
-);
 
 return $router;
