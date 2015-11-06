@@ -4,10 +4,12 @@ error_reporting(E_ALL);
 
 try {
 
+
 	/**
 	 * Read the configuration
 	 */
 	$config = include __DIR__ . "/../app/config/config.php";
+	define('SITE_TITLE', $config->application->siteTitle);
 
 	/**
 	 * Read auto-loader
