@@ -2,20 +2,25 @@
 
 use Phalcon\DI\FactoryDefault,
 	Phalcon\Mvc\View,
+	Phalcon\Crypt,
 	Phalcon\Mvc\Router,
 	Phalcon\Mvc\Dispatcher,
 	Phalcon\Mvc\Url as UrlResolver,
 	Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter,
 	Phalcon\Mvc\View\Engine\Volt as VoltEngine,
 	Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter,
-	Phalcon\Session\Adapter\Files as SessionAdapter;
+	Phalcon\Session\Adapter\Files as SessionAdapter,
+	Phalcon\Flash\Direct;
+
+use App\Auth\Auth,
+	App\Acl\Acl;
+
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
  */
 $di = new FactoryDefault();
 
-define('SITE_TITLE', $config->application->siteTitle);
 
 $di->set('router', function(){
 	return require __DIR__ . '/routes.php';
@@ -29,6 +34,34 @@ $di->set('url', function() use ($config) {
 	$url->setBaseUri($config->application->baseUri);
 	return $url;
 }, true);
+
+/**
+ * Crypt service
+ */
+$di->set('crypt', function () use ($config) {
+    $crypt = new Crypt();
+    $crypt->setKey($config->application->cryptSalt);
+    return $crypt;
+});
+
+/**
+ * Flash service with custom CSS classes
+ */
+$di->set('flash', function () {
+    return new Flash(array(
+        'error' => 'alert alert-danger',
+        'success' => 'alert alert-success',
+        'notice' => 'alert alert-info',
+        'warning' => 'alert alert-warning'
+    ));
+});
+
+/**
+ * Custom authentication component
+ */
+$di->set('auth', function () {
+    return new Auth();
+});
 
 /**
  * Setting up the view component
@@ -94,22 +127,6 @@ $di->set('elements', function () {
 
 $di->set('dispatcher', function(){
         $eventsManager = new \Phalcon\Events\Manager();
-
-        $eventsManager->attach('dispatch:beforeException', function($event, $dispatcher, $exception) {
-
-            switch ($exception->getCode()) {
-                case \Phalcon\Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
-                case \Phalcon\Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
-                    $dispatcher->forward(array(
-                        'module'=>'frontend',
-                        'controller'=>'error',
-                        'action'=>'show404'
-                    ));
-                    return false;
-            }
-
-        });
-
         $dispatcher = new \Phalcon\Mvc\Dispatcher();
         $dispatcher->setEventsManager($eventsManager);
         $dispatcher->setDefaultNamespace('App\Controllers');
