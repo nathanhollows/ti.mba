@@ -14,7 +14,7 @@ return new \Phalcon\Config(array(
 		'viewsDir'       => __DIR__ . '/../../app/views/',
 		'formsDir'       => __DIR__ . '/../../app/forms/',
 		'partialsDir'    => 'partials/',
-		'layoutsDir'     => 'layouts',
+		'layoutsDir'     => 'layouts/',
 		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
 		'libraryDir'     => __DIR__ . '/../../app/library/',
 		'cacheDir'       => __DIR__ . '/../../app/cache/',
