@@ -1,6 +1,8 @@
 <?php
+
 namespace App\Forms;
 
+use Phalcon\Tag;
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Hidden;
@@ -18,7 +20,10 @@ class SignUpForm extends Form
 
     public function initialize($entity = null, $options = null)
     {
-        $name = new Text('name');
+        $name = new Text('name', array(
+            'required'  => 'true',
+            'class'     => 'form-control',
+        ));
 
         $name->setLabel('Name');
 
@@ -31,7 +36,10 @@ class SignUpForm extends Form
         $this->add($name);
 
         // Email
-        $email = new Text('email');
+        $email = new Text('email', array(
+            'required'  => 'true',
+            'class'     => 'form-control',
+        ));
 
         $email->setLabel('E-Mail');
 
@@ -47,7 +55,10 @@ class SignUpForm extends Form
         $this->add($email);
 
         // Password
-        $password = new Password('password');
+        $password = new Password('password', array(
+            'required'  => 'true',
+            'class'     => 'form-control',
+        ));
 
         $password->setLabel('Password');
 
@@ -68,7 +79,10 @@ class SignUpForm extends Form
         $this->add($password);
 
         // Confirm Password
-        $confirmPassword = new Password('confirmPassword');
+        $confirmPassword = new Password('confirmPassword', array(
+            'required'  => 'true',
+            'class'     => 'form-control',
+        ));
 
         $confirmPassword->setLabel('Confirm Password');
 
@@ -82,7 +96,8 @@ class SignUpForm extends Form
 
         // Remember
         $terms = new Check('terms', array(
-            'value' => 'yes'
+            'value'     => 'yes',
+            'required'  => 'true',
         ));
 
         $terms->setLabel('Accept terms and conditions');
@@ -99,14 +114,14 @@ class SignUpForm extends Form
 
         $csrf->addValidator(new Identical(array(
             'value' => $this->security->getSessionToken(),
-            'message' => 'CSRF validation failed'
+            'message' => 'CSRF validation failed. ' . Tag::linkTo("signup", "Click here") . ' to try again'
         )));
 
         $this->add($csrf);
 
         // Sign Up
         $this->add(new Submit('Sign Up', array(
-            'class' => 'btn btn-success'
+            'class' => 'btn btn-primary'
         )));
     }
 

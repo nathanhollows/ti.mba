@@ -43,14 +43,20 @@ $router->add('/admin', array(
 
 $router->add('/login', array(
 	'namespace' => 'App\Controllers',
-	'controller' => 'auth',
+	'controller' => 'session',
 	'action'	=>	'login'
 ));
 
-$router->add('/login', array(
+$router->add('/signup', array(
 	'namespace' => 'App\Controllers',
-	'controller' => 'auth',
-	'action'	=>	'login'
+	'controller' => 'session',
+	'action'	=>	'signup'
+));
+
+$router->add('/forgotpassword', array(
+	'namespace' => 'App\Controllers',
+	'controller' => 'session',
+	'action'	=>	'forgotpassword'
 ));
 
 // Remove trailing slahes automatically

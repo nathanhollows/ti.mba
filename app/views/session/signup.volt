@@ -1,37 +1,53 @@
-{{ form('class': 'form-search') }}
+</div>
 
-    <h2>Sign Up</h2>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Register</h1>
+    </div>
+</div>
 
-    <p>{{ form.label('name') }}</p>
-    <p>
+<div class="container">
+
+{{ content() }}
+
+{{ form() }}
+
+    <div class="form-group">
+        {{ form.label('name') }}    
         {{ form.render('name') }}
         {{ form.messages('name') }}
-    </p>
+    </div>
 
-    <p>{{ form.label('email') }}</p>
-    <p>
+    <div class="form-group">
+        {{ form.label('email') }}
         {{ form.render('email') }}
         {{ form.messages('email') }}
-    </p>
+    </div>
 
-    <p>{{ form.label('password') }}</p>
-    <p>
+    <div class="form-group">
+        {{ form.label('password') }}
         {{ form.render('password') }}
         {{ form.messages('password') }}
-    </p>
+    </div>
+    
 
-    <p>{{ form.label('confirmPassword') }}</p>
-    <p>
+    <div class="form-group">
+        {{ form.label('confirmPassword') }}
         {{ form.render('confirmPassword') }}
         {{ form.messages('confirmPassword') }}
-    </p>
+    </div>
+    
 
-    <p>
+    
+    <div class="form-group">
         {{ form.render('terms') }} {{ form.label('terms') }}
         {{ form.messages('terms') }}
-    </p>
+    </div>
+    
 
-    <p>{{ form.render('Sign Up') }}</p>
+    <div class="form-group">
+        {{ form.render('Sign Up') }}
+    </div>
 
     {{ form.render('csrf', ['value': security.getToken()]) }}
     {{ form.messages('csrf') }}

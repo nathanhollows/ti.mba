@@ -2,7 +2,7 @@
 
 use Phalcon\Mvc\Model;
 
-class Users extends Model
+class Menus extends Model
 {
 	public $id;
 
