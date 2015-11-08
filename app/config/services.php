@@ -10,7 +10,7 @@ use Phalcon\DI\FactoryDefault,
 	Phalcon\Mvc\View\Engine\Volt as VoltEngine,
 	Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter,
 	Phalcon\Session\Adapter\Files as SessionAdapter,
-	Phalcon\Flash\Direct;
+	Phalcon\Flash\Direct as Flash;
 
 use App\Auth\Auth,
 	App\Acl\Acl;
@@ -86,7 +86,7 @@ $di->set('view', function() use ($config) {
 
 			return $volt;
 		},
-		'.phtml' => 'Phalcon\Mvc\View\Engine\Php' // Generate Template files uses PHP itself as the template engine
+		'.phtml' => 'Phalcon\Mvc\View\Engine\Php'
 	));
 
 	return $view;
