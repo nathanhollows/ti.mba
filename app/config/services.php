@@ -125,11 +125,18 @@ $di->set('elements', function () {
 	return new Elements();
 });
 
-$di->set('dispatcher', function(){
-        $eventsManager = new \Phalcon\Events\Manager();
-        $dispatcher = new \Phalcon\Mvc\Dispatcher();
-        $dispatcher->setEventsManager($eventsManager);
-        $dispatcher->setDefaultNamespace('App\Controllers');
+/**
+ * Dispatcher use a default namespace
+ */
+$di->set('dispatcher', function () {
+    $dispatcher = new Dispatcher();
+    $dispatcher->setDefaultNamespace('App\Controllers');
+    return $dispatcher;
+});
 
-        return $dispatcher;
+/**
+ * Access Control List
+ */
+$di->set('acl', function () {
+    return new Acl();
 });
