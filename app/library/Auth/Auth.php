@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 namespace App\Auth;
 
 use Phalcon\Mvc\User\Component;
@@ -8,6 +7,10 @@ use App\Models\RememberTokens;
 use App\Models\SuccessLogins;
 use App\Models\FailedLogins;
 
+/**
+ * App\Auth\Auth
+ * Manages Authentication/Identity Management in App
+ */
 class Auth extends Component
 {
 

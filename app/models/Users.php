@@ -1,88 +1,133 @@
 <?php
 namespace App\Models;
 
-use Phalcon\Mvc\Model,
-	Phalcon\Mvc\Model\Validator\Uniqueness;
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Validator\Uniqueness;
 
+/**
+ * Vokuro\Models\Users
+ * All the users registered in the application
+ */
 class Users extends Model
 {
 
-	public $id;
+    /**
+     *
+     * @var integer
+     */
+    public $id;
 
-	public $name;
+    /**
+     *
+     * @var string
+     */
+    public $name;
 
-	public $email;
+    /**
+     *
+     * @var string
+     */
+    public $email;
 
-	public $password;
+    /**
+     *
+     * @var string
+     */
+    public $password;
 
-	public $mustChangePassword;
+    /**
+     *
+     * @var string
+     */
+    public $mustChangePassword;
 
-	public $profilesId;
+    /**
+     *
+     * @var string
+     */
+    public $profilesId;
 
-	public $banned;
+    /**
+     *
+     * @var string
+     */
+    public $banned;
 
-	public $suspended;
+    /**
+     *
+     * @var string
+     */
+    public $suspended;
 
-	public $active;
+    /**
+     *
+     * @var string
+     */
+    public $active;
 
-	// Before we create a user we must assign a password
+    /**
+     * Before create the user assign a password
+     */
+    public function beforeValidationOnCreate()
+    {
+        if (empty($this->password)) {
 
-	public function beforeValidationOnCreate()
-	{
-		if (empty($this->password)) {
+            // Generate a plain temporary password
+            $tempPassword = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(12)));
 
-			// Generate a plain temporary password
-			$tempPassword = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(12)));
+            // The user must change its password in first login
+            $this->mustChangePassword = 'Y';
 
-			// The user must change their password in first login
-			$this->mustChangePassword = 'Y';
+            // Use this password as default
+            $this->password = $this->getDI()
+                ->getSecurity()
+                ->hash($tempPassword);
+        } else {
+            // The user must not change its password in first login
+            $this->mustChangePassword = 'N';
+        }
 
-			// Use this password as default
-			$this->password = $this->getDI()
-				->getSecurity()
-				->hash($tempPassword);
-		} else {
-			// The user must not change their password on first login
-		}
+        // The account must be confirmed via e-mail
+        $this->active = 'N';
 
-		// The account must ne confirmed via email
-		$this->active = 'N';
+        // The account is not suspended by default
+        $this->suspended = 'N';
 
-		// The account is not suspended by default
-		$this->suspended = 'N';
+        // The account is not banned by default
+        $this->banned = 'N';
+    }
 
-		// The account is not banned by default
-		$this->banned = 'N';
-	}
+    /**
+     * Send a confirmation e-mail to the user if the account is not active
+     */
+    public function afterSave()
+    {
+        if ($this->active == 'N') {
 
-	// Send a confirmation e-mail to the user if the account is not active
-	public function afterSave()
-	{
-		if ($this->active == 'N') {
+            $emailConfirmation = new EmailConfirmations();
 
-			$emailConfirmation = new emailConfirmation();
+            $emailConfirmation->usersId = $this->id;
 
-			$emailConfirmation->userId = $this->id;
+            if ($emailConfirmation->save()) {
+                $this->getDI()
+                    ->getFlash()
+                    ->notice('A confirmation mail has been sent to ' . $this->email);
+            }
+        }
+    }
 
-			if ($emailConfirmation->save()) {
-				$this->getDI()
-					->getFlash()
-					->notice('A confirmation email has been sent to ' . $this->email);
-			}
-		}
-	}
+    /**
+     * Validate that emails are unique across users
+     */
+    public function validation()
+    {
+        $this->validate(new Uniqueness(array(
+            "field" => "email",
+            "message" => "The email is already registered"
+        )));
 
-	// Validate that email are unique across users
-
-	public function validation()
-	{
-		$this->validate(new Uniqueness(array(
-			'field'		=> 'email',
-			'message'	=> 'This email address has already been registered'
-		)));
-
-		return $this->validationHasFailed() != true;
-	}
+        return $this->validationHasFailed() != true;
+    }
 
     public function initialize()
     {

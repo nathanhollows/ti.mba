@@ -3,7 +3,7 @@
 namespace App\Forms;
 
 use Phalcon\Forms\Form;
-use Phalcon\Forms\Element\Email;
+use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Password;
 use Phalcon\Forms\Element\Submit;
 use Phalcon\Forms\Element\Check;
@@ -18,11 +18,13 @@ class LoginForm extends Form
     public function initialize()
     {
         // Email
-        $email = new Email('Email', array(
+        $email = new Text('email', array(
             'placeholder' => 'Email',
             'class'       => 'form-control',
             'required'    => 'true',
         ));
+
+        $email->setLabel('Email');
 
         $email->addValidators(array(
             new PresenceOf(array(

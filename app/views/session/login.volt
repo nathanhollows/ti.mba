@@ -13,8 +13,8 @@
 {{ form() }}
 
 	<div class="form-group">
-		{{ form.label('Email') }}
-		{{ form.render('Email') }}
+		{{ form.label('email') }}
+		{{ form.render('email') }}
 	</div>
 	
 	<div class="form-group">
