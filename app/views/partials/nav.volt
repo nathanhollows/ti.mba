@@ -15,7 +15,11 @@
             <li>{{ link_to('about', 'About')}}</li>
             <li>{{ link_to('contact', 'Contact')}}</li>
           </ul>
-          {{ link_to('login','Sign In', 'class': 'btn btn-default navbar-btn pull-right')}}
+          {% if not(logged_in is empty) %}
+           {{ link_to('logout','Logout', 'class': 'btn btn-default navbar-btn pull-right')}}
+          {% else %}
+           {{ link_to('login','Sign In', 'class': 'btn btn-default navbar-btn pull-right')}}
+          {% endif %}
         </div><!--/.nav-collapse -->
       </div>
     </nav>

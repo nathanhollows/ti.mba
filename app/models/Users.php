@@ -5,7 +5,7 @@ use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Validator\Uniqueness;
 
 /**
- * Vokuro\Models\Users
+ * App\Models\Users
  * All the users registered in the application
  */
 class Users extends Model

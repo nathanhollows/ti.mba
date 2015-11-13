@@ -47,6 +47,12 @@ $router->add('/login', array(
 	'action'	=>	'login'
 ));
 
+$router->add('/logout', array(
+	'namespace' => 'App\Controllers',
+	'controller' => 'session',
+	'action'	=>	'logout'
+));
+
 $router->add('/signup', array(
 	'namespace' => 'App\Controllers',
 	'controller' => 'session',

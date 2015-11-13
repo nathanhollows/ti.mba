@@ -40,16 +40,16 @@ class EmailConfirmations extends Model
 		$this->modifiedAt = time();
 	}
 
-	public function afterCreate()
-	{
-		$this->getDI()
-			->getMail()
-			->send(array(
-				$this->user->email => $this->user->name
-			), "Please confirm your email", 'confirmation', array(
-				'confirmUrl' => '/confirm/' . $this->code . '/' . $this->user->email
-			));
-	}
+	// public function afterCreate()
+	// {
+	// 	$this->getDI()
+	// 		->getMail()
+	// 		->send(array(
+	// 			$this->user->email => $this->user->name
+	// 		), "Please confirm your email", 'confirmation', array(
+	// 			'confirmUrl' => '/confirm/' . $this->code . '/' . $this->user->email
+	// 		));
+	// }
 
 	public function initialize()
 	{

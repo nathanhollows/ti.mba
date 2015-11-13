@@ -53,8 +53,8 @@ class SessionController extends ControllerBase
 
                 if ($user->save()) {
                     return $this->dispatcher->forward(array(
-                        'controller' => 'index',
-                        'action' => 'index'
+                        'controller' => '',
+                        'action' => 'login'
                     ));
                 }
 
@@ -95,7 +95,7 @@ class SessionController extends ControllerBase
                         'remember' => $this->request->getPost('remember')
                     ));
 
-                    return $this->response->redirect('users');
+                    return $this->response->redirect('admin');
                 }
             }
         } catch (AuthException $e) {
