@@ -18,6 +18,7 @@ class CustomersController extends ControllerBase
 	{
 		$this->persistent->conditions = null;
 		$this->view->form = new CustomersForm();
+		$this->tag->prependTitle('Customers');
 	}
 
 	public function searchAction()
