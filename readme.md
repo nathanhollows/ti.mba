@@ -3,7 +3,7 @@
 Avaunt is software designed for stock management and manipulation for specific business types.
 
 ### Version
-0.0.1
+0.1.0
 
 ### Tech
 
