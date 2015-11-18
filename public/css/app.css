@@ -1,4 +1,4 @@
-body > .container {
+body > .container-fluid, body > .container {
 	padding-top: 50px;
 }
 

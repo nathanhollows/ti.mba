@@ -1,5 +1,5 @@
 {{ partial('header') }}
-{{ partial('nav') }}
+{{ partial('privatenav') }}
 
     {{ content() }}
 

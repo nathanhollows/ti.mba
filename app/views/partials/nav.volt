@@ -15,11 +15,14 @@
             <li>{{ link_to('about', 'About')}}</li>
             <li>{{ link_to('contact', 'Contact')}}</li>
           </ul>
-          {% if not(logged_in is empty) %}
-           {{ link_to('logout','Logout', 'class': 'btn btn-default navbar-btn pull-right')}}
-          {% else %}
-           {{ link_to('login','Sign In', 'class': 'btn btn-default navbar-btn pull-right')}}
-          {% endif %}
+          <ul class="nav navbar-nav pull-right">
+            {% if not(logged_in is empty) %}
+               <li><li>{{ link_to('dashboard', 'Dashboard')}}</li>
+               {{ link_to('logout','Logout', 'class': 'btn btn-default navbar-btn PULL-RIGHT')}}
+            {% else %}
+                {{ link_to('login','Sign In', 'class': 'btn btn-default navbar-btn')}}
+            {% endif %}
+          </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
