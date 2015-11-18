@@ -33,15 +33,10 @@ class Acl extends Component
      * @var array
      */
     private $privateResources = array(
-        'users' => array(
-            'index',
-            'search',
-            'edit',
-            'create',
-            'delete',
-            'changePassword'
+        'dashboard' => array(
+            'index'
         ),
-        'invoice' => array(
+        'profiles' => array(
             'index',
             'search',
             'edit',
@@ -75,6 +70,7 @@ class Acl extends Component
      */
     public function isPrivate($controllerName)
     {
+        $controllerName = strtolower($controllerName);
         return isset($this->privateResources[$controllerName]);
     }
 
