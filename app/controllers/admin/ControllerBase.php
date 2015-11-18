@@ -15,8 +15,11 @@ class ControllerBase extends Controller
      * @return boolean
      */
 
-        public function beforeExecuteRoute($di)
+    public function beforeExecuteRoute($di)
     {
+
+        $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
+
         $controllerName = $di->getControllerName();
         // Only check permissions on private controllers
         if ($this->acl->isPrivate($controllerName)) {
@@ -54,11 +57,13 @@ class ControllerBase extends Controller
 	protected function initialize()
 	{
 		Tag::appendTitle(' | ' . SITE_TITLE);
+        $this->view->setVar('logged_in', is_array($this->auth->getidentity()));
+        $this->view->setViewsDir($this->view->getViewsDir() . 'admin/');
 
 	}
 
 	public function afterExecuteRoute()
 	{
-		$this->view->setViewsDir($this->view->getViewsDir() . 'admin/');
+        
 	}
 }

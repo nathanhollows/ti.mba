@@ -95,7 +95,7 @@ class SessionController extends ControllerBase
                         'remember' => $this->request->getPost('remember')
                     ));
 
-                    return $this->response->redirect('admin');
+                    return $this->response->redirect('dashboard');
                 }
             }
         } catch (AuthException $e) {

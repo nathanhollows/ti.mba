@@ -1,28 +1,43 @@
 <?php
-
 namespace App\Models;
 
 use Phalcon\Mvc\Model;
 
-// Stores the permissions by profile
-
+/**
+ * Permissions
+ * Stores the permissions by profile
+ */
 class Permissions extends Model
 {
-	public $id;
 
-	public $profilesId;
+    /**
+     *
+     * @var integer
+     */
+    public $id;
 
-	public $resource;
+    /**
+     *
+     * @var integer
+     */
+    public $profilesId;
 
-	public $action;
+    /**
+     *
+     * @var string
+     */
+    public $resource;
 
-	public function initialize()
-	{
+    /**
+     *
+     * @var string
+     */
+    public $action;
 
-		$this->belongsTo('profilesId', __NAMESPACE__ . '\Profiles', 'id', array(
-			'alias'	=> 'profile'
-		));
-	}
-
-
+    public function initialize()
+    {
+        $this->belongsTo('profilesId', __NAMESPACE__ . '\Profiles', 'id', array(
+            'alias' => 'profile'
+        ));
+    }
 }
