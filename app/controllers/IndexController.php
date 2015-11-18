@@ -7,14 +7,14 @@ use Phalcon\Tag;
 class IndexController extends ControllerBase
 {
 
-	protected function initialize()
+	public function initialize()
 	{
-        $this->tag->setTitle('Home');
+        $this->view->setTemplateBefore('public');
         parent::initialize();
 	}
 
     public function indexAction()
     {
-
+    	$this->tag->prependTitle('Home');
     }
 }

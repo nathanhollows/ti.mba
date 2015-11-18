@@ -7,14 +7,15 @@ use Phalcon\Tag;
 class ContactController extends ControllerBase
 {
 
-	protected function initialize()
+	public function initialize()
 	{
-        $this->tag->setTitle('Contact');
+        $this->view->setTemplateBefore('public');
         parent::initialize();
 	}
 
     public function indexAction()
     {
-
+    	$this->tag->prependTitle('Contact Us');
+		echo '[' . __METHOD__ . ']';
     }
 }

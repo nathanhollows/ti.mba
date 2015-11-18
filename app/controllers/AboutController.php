@@ -7,14 +7,14 @@ use Phalcon\Tag;
 class AboutController extends ControllerBase
 {
 
-	protected function initialize()
+	public function initialize()
 	{
-        $this->tag->setTitle('About');
+        $this->view->setTemplateBefore('public');
         parent::initialize();
 	}
 
     public function indexAction()
     {
-
+    	$this->tag->prependTitle('About');
     }
 }
