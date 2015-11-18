@@ -8,15 +8,22 @@ namespace App\Controllers;
 class ErrorController extends ControllerBase
 {
 
-	protected function initialize()
-	{
-        $this->tag->setTitle('Page Not Found');
+    public function initialize()
+    {
+        $this->view->setTemplateBefore('public');
         parent::initialize();
-	}
+    }
 
     public function show404Action()
     {
+        $this->tag->prependTitle('Woops!');
         $this->response->setStatusCode(404, 'Not Found');
         $this->view->pick('404/404');
+    }
+
+    public function permissionDeniedAction()
+    {
+        $this->tag->prependTitle('Woops!');
+        
     }
 }

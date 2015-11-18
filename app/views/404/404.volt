@@ -8,7 +8,7 @@
             <div class="error-details">
                 Sorry, an error has occured, Requested page not found!
             </div>
-
+                {{ content() }}
             <div class="error-actions">
                 {{ link_to('', '<span class="glyphicon glyphicon-home"></span> Take Me Home', 'class': 'btn btn-primary btn-lg' )}}
 
