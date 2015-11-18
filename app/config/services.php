@@ -10,7 +10,9 @@ use Phalcon\DI\FactoryDefault,
 	Phalcon\Mvc\View\Engine\Volt as VoltEngine,
 	Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter,
 	Phalcon\Session\Adapter\Files as SessionAdapter,
-	Phalcon\Flash\Direct as Flash;
+	Phalcon\Flash\Direct as Flash,
+	Phalcon\Events\Manager as EventsManager;
+
 
 use App\Auth\Auth,
 	App\Acl\Acl;
