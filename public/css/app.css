@@ -19,3 +19,15 @@ form.form-signin {
 #page-wrapper {
 	min-height: calc(100vh - 50px);
 }
+
+.form-signin #email {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin #password {
+    margin-top: -1px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}

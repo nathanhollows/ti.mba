@@ -1,35 +1,27 @@
-</div>
-
-<div class="jumbotron">
-	<div class="container">
-		<h1>Login</h1>
-	</div>
-</div>
-
 <div class="container">
 
-{{ content() }}
+	{{ form('class': 'form-signin') }}
+		{{ content() }}
+		<h2 class="form-signin-heading">Please sign in</h2>
 
-{{ form() }}
-
-	<div class="form-group">
-		{{ form.label('email') }}
+		{{ form.label('email', ['class': 'sr-only']) }}
 		{{ form.render('email') }}
-	</div>
-	
-	<div class="form-group">
-		{{ form.label('password') }}
-		{{ link_to("forgotpassword", "Forgot your password?", 'tabindex': '-1') }}
+		{{ form.label('password', ['class': 'sr-only']) }}
 		{{ form.render('password') }}
-	</div>
 
-	{{ form.render('Login') }}
+		<div class="checkbox">
+			<label>
+				{{ form.render('remember') }} Remember me
+			</label>
+		</div>
 
-	<div align="center" class=" form-group remember">
-		{{ form.render('remember') }}
-		{{ form.label('remember') }}
-	</div>
-	
-	{{ form.render('csrf', ['value': security.getToken()]) }}
+		{{ form.render('csrf', ['value': security.getToken()]) }}
+		{{ form.render('Login') }}
 
-</form>
+		<br>
+
+		{{ link_to("forgotpassword", "Forgot your password?", 'tabindex': '-1') }}
+		
+	</form>
+
+</div>

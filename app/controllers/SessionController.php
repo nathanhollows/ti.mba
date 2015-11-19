@@ -20,8 +20,8 @@ class SessionController extends ControllerBase
      */
     public function initialize()
     {
-        $this->view->setTemplateBefore('public');
         parent::initialize();
+        $this->view->setTemplateBefore('public');
     }
 
     public function indexAction()
@@ -70,6 +70,8 @@ class SessionController extends ControllerBase
      */
     public function loginAction()
     {
+        $this->view->setTemplateBefore('auth');
+
         $this->tag->prependTitle('Login');
 
         $form = new LoginForm();

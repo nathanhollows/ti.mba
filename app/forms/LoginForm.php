@@ -22,6 +22,7 @@ class LoginForm extends Form
             'placeholder' => 'Email',
             'class'       => 'form-control',
             'required'    => 'true',
+            'autofocus'   => ''
         ));
 
         $email->setLabel('Email');
@@ -76,7 +77,7 @@ class LoginForm extends Form
         $this->add($csrf);
 
         $this->add(new Submit('Login', array(
-            'class' => 'btn btn-primary'
+            'class' => 'btn btn-lg btn-primary btn-block'
         )));
     }
 }
