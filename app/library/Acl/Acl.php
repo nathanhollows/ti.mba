@@ -33,19 +33,8 @@ class Acl extends Component
      * @var array
      */
     private $privateResources = array(
-        'dashboard' => array(
-            'index'
-        ),
-        'profiles' => array(
-            'index',
-            'search',
-            'edit',
-            'create',
-            'delete'
-        ),
-        'permissions' => array(
-            'index'
-        )
+        'dashboard' => array('*'),
+        'customers' => array('*'),
     );
 
     /**
