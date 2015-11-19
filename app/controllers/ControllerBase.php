@@ -37,8 +37,8 @@ class ControllerBase extends Controller
                 $this->flash->notice('You don\'t have access to this module: ' . $controllerName);
 
                 $dispatcher->forward(array(
-                    'controller' => 'error',
-                    'action' => 'permissionDenied'
+                    'controller' => 'session',
+                    'action' => 'login'
                 ));
                 
                 return false;
