@@ -2,9 +2,12 @@
 
 namespace App\Controllers;
 
+use Phalcon\Mvc\Model\Criteria,
+	Phalcon\Paginator\Adapter\Model as Paginator;
+
 use App\Forms\CustomersForm,
 	App\Form\EditCustomerForm,
-	App\Models\Customers;
+	App\Models\Customers as Customers;
 
 class CustomersController extends ControllerBase
 {
@@ -26,7 +29,35 @@ class CustomersController extends ControllerBase
 	// Returning a paginator for the results
 	public function searchAction()
 	{
+		$this->tag->prependTitle('Search Customers');
+		$numberPage = 1;
+		if ($this->request->isPost()) {
+			$query = Criteria::fromInput($this->di, 'App\Models\Customers', $this->request->getPost());
+			$this->persistent->searchParams = $query->getParams();
+		} else {
+			$numberPage = $this->request->getQuery("page", "int");
+		}
 
+		$parameters = array();
+		if ($this->persistent->searchParams) {
+			$parameters = $this->persistent->searchParams;
+		}
+
+		$customers = Customers::find($parameters);
+		if (count($customers) == 0) {
+			$this->flash->notice("There are no customers that meet these criteria");
+			return $this->dispatcher->forward(array(
+				"action"	=> "index"
+			));
+		}
+
+		$paginator = new Paginator(array(
+			"data"	=> $customers,
+			"limit"	=> 10,
+			"page"	=> $numberPage
+		));
+
+		$this->view->page = $paginator->getPaginate();
 	}
 
 	// Shows the view the create a new product

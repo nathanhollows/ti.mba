@@ -1,4 +1,6 @@
-{{ form("customers") }}
+{{ content() }}
+
+{{ form("customers\search") }}
 
 	<legend>Search Customers</legend>
 
@@ -9,5 +11,5 @@
 	</div>
 	{% endfor %}
 
-	<button type="submit" class="btn btn-primary">Submit</button>
+	{{ submit_button("Search", "class": "btn btn-primary")}}
 </form>
