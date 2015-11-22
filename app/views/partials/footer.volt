@@ -1,9 +1,9 @@
 </div>
     <!-- jQuery -->
-    <script src="{{ static_url( "js/jquery.js" ) }}"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="{{ static_url( "js/bootstrap.min.js" ) }}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 	<footer class="footer">
 		Made with love by the Avaunt team
