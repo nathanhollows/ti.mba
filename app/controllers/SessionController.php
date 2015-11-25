@@ -70,6 +70,10 @@ class SessionController extends ControllerBase
      */
     public function loginAction()
     {
+        if ($this->session->has('auth-identity')) {
+            return $this->response->redirect('dashboard');
+        }
+        
         $this->view->setTemplateBefore('auth');
 
         $this->tag->prependTitle('Login');
