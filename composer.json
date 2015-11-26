@@ -1,0 +1,5 @@
+{
+    "require": {
+        "m1ome/phalcon-datatables": "1.*"
+    }
+}

@@ -21,4 +21,7 @@ $loader->registerClasses(
     )
 )->register();
 
+
+// Register composer autoloader
+require_once('/../../vendor/autoload.php');
 $elements = new Elements();

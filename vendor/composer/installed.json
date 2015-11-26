@@ -1,0 +1,51 @@
+[
+    {
+        "name": "m1ome/phalcon-datatables",
+        "version": "1.1.6",
+        "version_normalized": "1.1.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/m1ome/phalcon-datatables.git",
+            "reference": "95788256b8369180b5d75b6005654c59e855781f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/m1ome/phalcon-datatables/zipball/95788256b8369180b5d75b6005654c59e855781f",
+            "reference": "95788256b8369180b5d75b6005654c59e855781f",
+            "shasum": ""
+        },
+        "require-dev": {
+            "crysalead/kahlan": "~1.1",
+            "fzaninotto/faker": "1.5.*@dev"
+        },
+        "time": "2015-06-26 09:38:51",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev_master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "DataTables\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Pavel Makarenko",
+                "email": "cryfall@gmail.com"
+            }
+        ],
+        "description": "DataTables adapter for Phalcon Framework",
+        "keywords": [
+            "datatables",
+            "phalcon",
+            "plugin"
+        ]
+    }
+]
