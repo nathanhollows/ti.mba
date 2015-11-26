@@ -5,10 +5,10 @@
 <table width="100%">
     <tr>
         <td align="left">
-            <?php echo $this->tag->linkTo(array("customer_orders/index", "Go Back")); ?>
+            <?php echo $this->tag->linkTo(array("orders/index", "Go Back")); ?>
         </td>
         <td align="right">
-            <?php echo $this->tag->linkTo(array("customer_orders/new", "Create ")); ?>
+            <?php echo $this->tag->linkTo(array("orders/new", "Create ")); ?>
         </td>
     </tr>
 </table>
@@ -45,8 +45,8 @@
             <td><?php echo $customer_order->quote ?></td>
             <td><?php echo $customer_order->cancelled ?></td>
             <td><?php echo $customer_order->freightCarrier ?></td>
-            <td><?php echo $this->tag->linkTo(array("customer_orders/edit/" . $customer_order->orderNumber, "Edit")); ?></td>
-            <td><?php echo $this->tag->linkTo(array("customer_orders/delete/" . $customer_order->orderNumber, "Delete")); ?></td>
+            <td><?php echo $this->tag->linkTo(array("orders/edit/" . $customer_order->orderNumber, "Edit")); ?></td>
+            <td><?php echo $this->tag->linkTo(array("order/delete/" . $customer_order->orderNumber, "Delete")); ?></td>
         </tr>
     <?php } ?>
     </tbody>
@@ -55,10 +55,10 @@
             <td colspan="2" align="right">
                 <table align="center">
                     <tr>
-                        <td><?php echo $this->tag->linkTo("customer_orders/search", "First") ?></td>
-                        <td><?php echo $this->tag->linkTo("customer_orders/search?page=" . $page->before, "Previous") ?></td>
-                        <td><?php echo $this->tag->linkTo("customer_orders/search?page=" . $page->next, "Next") ?></td>
-                        <td><?php echo $this->tag->linkTo("customer_orders/search?page=" . $page->last, "Last") ?></td>
+                        <td><?php echo $this->tag->linkTo("order/search", "First") ?></td>
+                        <td><?php echo $this->tag->linkTo("orders/search?page=" . $page->before, "Previous") ?></td>
+                        <td><?php echo $this->tag->linkTo("orders/search?page=" . $page->next, "Next") ?></td>
+                        <td><?php echo $this->tag->linkTo("orders/search?page=" . $page->last, "Last") ?></td>
                         <td><?php echo $page->current, "/", $page->total_pages ?></td>
                     </tr>
                 </table>
