@@ -1,0 +1,68 @@
+<?php use Phalcon\Tag; ?>
+
+<?php echo $this->getContent(); ?>
+
+<table width="100%">
+    <tr>
+        <td align="left">
+            <?php echo $this->tag->linkTo(array("customer_orders/index", "Go Back")); ?>
+        </td>
+        <td align="right">
+            <?php echo $this->tag->linkTo(array("customer_orders/new", "Create ")); ?>
+        </td>
+    </tr>
+</table>
+
+<table class="browse" align="center">
+    <thead>
+        <tr>
+            <th>OrderNumber</th>
+            <th>CustomerId</th>
+            <th>CustomerAddress</th>
+            <th>SalesAgent</th>
+            <th>CustomerContact</th>
+            <th>CustomerOrderNumber</th>
+            <th>DateOrdered</th>
+            <th>DateRequired</th>
+            <th>Complete</th>
+            <th>Quote</th>
+            <th>Cancelled</th>
+            <th>FreightCarrier</th>
+         </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($page->items as $customer_order) { ?>
+        <tr>
+            <td><?php echo $customer_order->orderNumber ?></td>
+            <td><?php echo $customer_order->customerId ?></td>
+            <td><?php echo $customer_order->customerAddress ?></td>
+            <td><?php echo $customer_order->salesAgent ?></td>
+            <td><?php echo $customer_order->customerContact ?></td>
+            <td><?php echo $customer_order->customerOrderNumber ?></td>
+            <td><?php echo $customer_order->dateOrdered ?></td>
+            <td><?php echo $customer_order->dateRequired ?></td>
+            <td><?php echo $customer_order->complete ?></td>
+            <td><?php echo $customer_order->quote ?></td>
+            <td><?php echo $customer_order->cancelled ?></td>
+            <td><?php echo $customer_order->freightCarrier ?></td>
+            <td><?php echo $this->tag->linkTo(array("customer_orders/edit/" . $customer_order->orderNumber, "Edit")); ?></td>
+            <td><?php echo $this->tag->linkTo(array("customer_orders/delete/" . $customer_order->orderNumber, "Delete")); ?></td>
+        </tr>
+    <?php } ?>
+    </tbody>
+    <tbody>
+        <tr>
+            <td colspan="2" align="right">
+                <table align="center">
+                    <tr>
+                        <td><?php echo $this->tag->linkTo("customer_orders/search", "First") ?></td>
+                        <td><?php echo $this->tag->linkTo("customer_orders/search?page=" . $page->before, "Previous") ?></td>
+                        <td><?php echo $this->tag->linkTo("customer_orders/search?page=" . $page->next, "Next") ?></td>
+                        <td><?php echo $this->tag->linkTo("customer_orders/search?page=" . $page->last, "Last") ?></td>
+                        <td><?php echo $page->current, "/", $page->total_pages ?></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

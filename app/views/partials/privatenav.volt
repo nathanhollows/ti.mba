@@ -17,6 +17,14 @@
 						<li>{{ link_to('customers\Search','View')}}</li>
 					</ul>
 				</li>
+				<li class="dropdown">
+					{{ link_to('orders', 'Orders <span class="caret"></span>', 'class': 'dropdown-toggle', 'data-toggle': 'dropdown', 'role': 'button', 'aria-haspopup': 'true', 'aria-expanded': 'true')}}
+					<ul class="dropdown-menu">
+						<li>{{ link_to('orders','Search')}}</li>
+						<li role="separator" class="divider"></li>
+						<li>{{ link_to('orders\Search','View')}}</li>
+					</ul>
+				</li>
 			</ul>
 
 		</div>
