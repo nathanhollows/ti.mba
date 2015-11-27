@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.3.11
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2015 at 09:52 PM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Generation Time: Nov 27, 2015 at 11:14 AM
+-- Server version: 10.1.8-MariaDB
+-- PHP Version: 5.6.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `avaunt`
@@ -23,29 +23,74 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `addresses`
+--
+
+CREATE TABLE `addresses` (
+  `id` int(11) NOT NULL,
+  `customerCode` varchar(6) NOT NULL,
+  `line1` varchar(255) NOT NULL,
+  `line2` varchar(255) NOT NULL,
+  `line3` varchar(255) NOT NULL,
+  `suburb` varchar(255) NOT NULL,
+  `zipCode` varchar(255) NOT NULL,
+  `city` text NOT NULL,
+  `country` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `addresses`
+--
+
+INSERT INTO `addresses` (`id`, `customerCode`, `line1`, `line2`, `line3`, `suburb`, `zipCode`, `city`, `country`) VALUES
+(1, 'BUNHO', '1', '2', '3', '4', '5', '6', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `address_types`
+--
+
+CREATE TABLE `address_types` (
+  `typeCode` int(11) NOT NULL,
+  `typeDescription` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `address_types`
+--
+
+INSERT INTO `address_types` (`typeCode`, `typeDescription`) VALUES
+(1, 'Billing address'),
+(2, 'Shipping address');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `customers`
 --
 
-CREATE TABLE IF NOT EXISTS `customers` (
-  `customerId` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+CREATE TABLE `customers` (
+  `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `customerName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `freightArea` int(2) NOT NULL,
-  `customerPhone` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
-  `customerFax` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `customerPhone` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `customerFax` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `customerEmail` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `orderNotes` text COLLATE utf8_unicode_ci NOT NULL,
-  `dispatchNotes` text COLLATE utf8_unicode_ci NOT NULL,
-  `groupId` int(11) NOT NULL,
-  `customerGroup` int(11) NOT NULL,
-  `salesArea` int(11) NOT NULL
+  `freightArea` int(11) NOT NULL,
+  `freightCarrier` int(11) NOT NULL,
+  `salesArea` int(11) NOT NULL,
+  `customerStatus` int(11) NOT NULL,
+  `defaultAddress` int(11) NOT NULL,
+  `defaultContact` int(11) NOT NULL,
+  `customerGroup` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `customers`
 --
 
-INSERT INTO `customers` (`customerId`, `customerName`, `freightArea`, `customerPhone`, `customerFax`, `customerEmail`, `orderNotes`, `dispatchNotes`, `groupId`, `customerGroup`, `salesArea`) VALUES
-('BUNHO', 'Bunnings Warehouse Honrby', 1, '', '', '', '', '', 1, 0, 0);
+INSERT INTO `customers` (`customerCode`, `customerName`, `customerPhone`, `customerFax`, `customerEmail`, `freightArea`, `freightCarrier`, `salesArea`, `customerStatus`, `defaultAddress`, `defaultContact`, `customerGroup`) VALUES
+('BUNHO', 'Bunnings Warehouse Honrby', '1', '', '', 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -53,12 +98,19 @@ INSERT INTO `customers` (`customerId`, `customerName`, `freightArea`, `customerP
 -- Table structure for table `customer_addresses`
 --
 
-CREATE TABLE IF NOT EXISTS `customer_addresses` (
-  `addressId` int(15) NOT NULL,
-  `customerId` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `line1` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `line2` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+CREATE TABLE `customer_addresses` (
+  `customerAddressId` int(11) NOT NULL,
+  `addressId` int(11) NOT NULL,
+  `typeCode` int(11) NOT NULL,
+  `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `customer_addresses`
+--
+
+INSERT INTO `customer_addresses` (`customerAddressId`, `addressId`, `typeCode`, `customerCode`) VALUES
+(1, 1, 2, 'BUNHO');
 
 -- --------------------------------------------------------
 
@@ -66,11 +118,11 @@ CREATE TABLE IF NOT EXISTS `customer_addresses` (
 -- Table structure for table `customer_groups`
 --
 
-CREATE TABLE IF NOT EXISTS `customer_groups` (
+CREATE TABLE `customer_groups` (
   `id` int(11) NOT NULL,
   `name` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `customer_groups`
@@ -82,17 +134,40 @@ INSERT INTO `customer_groups` (`id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `customer_status`
+--
+
+CREATE TABLE `customer_status` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `warning` tinyint(1) NOT NULL,
+  `statusNote` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `customer_status`
+--
+
+INSERT INTO `customer_status` (`id`, `name`, `description`, `active`, `warning`, `statusNote`) VALUES
+(1, 'Active', '', 1, 0, ''),
+(2, 'Warning', '', 0, 1, 'Please use customer ** instead');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `email_confirmations`
 --
 
-CREATE TABLE IF NOT EXISTS `email_confirmations` (
-  `id` int(10) unsigned NOT NULL,
-  `usersId` int(10) unsigned NOT NULL,
+CREATE TABLE `email_confirmations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usersId` int(10) UNSIGNED NOT NULL,
   `code` char(32) NOT NULL,
-  `createdAt` int(10) unsigned NOT NULL,
-  `modifiedAt` int(10) unsigned DEFAULT NULL,
+  `createdAt` int(10) UNSIGNED NOT NULL,
+  `modifiedAt` int(10) UNSIGNED DEFAULT NULL,
   `confirmed` char(1) DEFAULT 'N'
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `email_confirmations`
@@ -113,12 +188,12 @@ INSERT INTO `email_confirmations` (`id`, `usersId`, `code`, `createdAt`, `modifi
 -- Table structure for table `failed_logins`
 --
 
-CREATE TABLE IF NOT EXISTS `failed_logins` (
-  `id` int(10) unsigned NOT NULL,
-  `usersId` int(10) unsigned DEFAULT NULL,
+CREATE TABLE `failed_logins` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usersId` int(10) UNSIGNED DEFAULT NULL,
   `ipAddress` char(15) NOT NULL,
-  `attempted` smallint(5) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+  `attempted` smallint(5) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `failed_logins`
@@ -142,15 +217,53 @@ INSERT INTO `failed_logins` (`id`, `usersId`, `ipAddress`, `attempted`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `freight_areas`
+--
+
+CREATE TABLE `freight_areas` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `freight_areas`
+--
+
+INSERT INTO `freight_areas` (`id`, `name`, `description`) VALUES
+(1, 'Default', 'Default freight area');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `freight_carriers`
+--
+
+CREATE TABLE `freight_carriers` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `freight_carriers`
+--
+
+INSERT INTO `freight_carriers` (`id`, `name`, `description`) VALUES
+(1, 'Default', 'Default freight carrier');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `password_changes`
 --
 
-CREATE TABLE IF NOT EXISTS `password_changes` (
-  `id` int(10) unsigned NOT NULL,
-  `usersId` int(10) unsigned NOT NULL,
+CREATE TABLE `password_changes` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usersId` int(10) UNSIGNED NOT NULL,
   `ipAddress` char(15) NOT NULL,
   `userAgent` varchar(48) NOT NULL,
-  `createdAt` int(10) unsigned NOT NULL
+  `createdAt` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -159,12 +272,12 @@ CREATE TABLE IF NOT EXISTS `password_changes` (
 -- Table structure for table `permissions`
 --
 
-CREATE TABLE IF NOT EXISTS `permissions` (
-  `id` int(10) unsigned NOT NULL,
-  `profilesId` int(10) unsigned NOT NULL,
+CREATE TABLE `permissions` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `profilesId` int(10) UNSIGNED NOT NULL,
   `resource` varchar(16) NOT NULL,
   `action` varchar(16) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `permissions`
@@ -202,11 +315,11 @@ INSERT INTO `permissions` (`id`, `profilesId`, `resource`, `action`) VALUES
 -- Table structure for table `profiles`
 --
 
-CREATE TABLE IF NOT EXISTS `profiles` (
-  `id` int(10) unsigned NOT NULL,
+CREATE TABLE `profiles` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(64) NOT NULL,
   `active` char(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `profiles`
@@ -223,13 +336,13 @@ INSERT INTO `profiles` (`id`, `name`, `active`) VALUES
 -- Table structure for table `remember_tokens`
 --
 
-CREATE TABLE IF NOT EXISTS `remember_tokens` (
-  `id` int(10) unsigned NOT NULL,
-  `usersId` int(10) unsigned NOT NULL,
+CREATE TABLE `remember_tokens` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usersId` int(10) UNSIGNED NOT NULL,
   `token` char(32) NOT NULL,
   `userAgent` varchar(120) NOT NULL,
-  `createdAt` int(10) unsigned NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+  `createdAt` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `remember_tokens`
@@ -248,12 +361,12 @@ INSERT INTO `remember_tokens` (`id`, `usersId`, `token`, `userAgent`, `createdAt
 -- Table structure for table `reset_passwords`
 --
 
-CREATE TABLE IF NOT EXISTS `reset_passwords` (
-  `id` int(10) unsigned NOT NULL,
-  `usersId` int(10) unsigned NOT NULL,
+CREATE TABLE `reset_passwords` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usersId` int(10) UNSIGNED NOT NULL,
   `code` varchar(48) NOT NULL,
-  `createdAt` int(10) unsigned NOT NULL,
-  `modifiedAt` int(10) unsigned DEFAULT NULL,
+  `createdAt` int(10) UNSIGNED NOT NULL,
+  `modifiedAt` int(10) UNSIGNED DEFAULT NULL,
   `reset` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -263,10 +376,17 @@ CREATE TABLE IF NOT EXISTS `reset_passwords` (
 -- Table structure for table `sales_areas`
 --
 
-CREATE TABLE IF NOT EXISTS `sales_areas` (
+CREATE TABLE `sales_areas` (
   `id` int(11) NOT NULL,
   `name` varchar(25) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `sales_areas`
+--
+
+INSERT INTO `sales_areas` (`id`, `name`) VALUES
+(1, 'Default');
 
 -- --------------------------------------------------------
 
@@ -274,12 +394,12 @@ CREATE TABLE IF NOT EXISTS `sales_areas` (
 -- Table structure for table `success_logins`
 --
 
-CREATE TABLE IF NOT EXISTS `success_logins` (
-  `id` int(10) unsigned NOT NULL,
-  `usersId` int(10) unsigned NOT NULL,
+CREATE TABLE `success_logins` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `usersId` int(10) UNSIGNED NOT NULL,
   `ipAddress` char(15) NOT NULL,
   `userAgent` varchar(120) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `success_logins`
@@ -332,7 +452,8 @@ INSERT INTO `success_logins` (`id`, `usersId`, `ipAddress`, `userAgent`) VALUES
 (44, 10, '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'),
 (45, 10, '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'),
 (46, 10, '::1', 'Mozilla/5.0 (Linux; Android 4.4.4; Nexus 5 Build/KTU84P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.114 Mob'),
-(47, 10, '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36');
+(47, 10, '::1', 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36'),
+(48, 10, '::1', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36');
 
 -- --------------------------------------------------------
 
@@ -340,17 +461,17 @@ INSERT INTO `success_logins` (`id`, `usersId`, `ipAddress`, `userAgent`) VALUES
 -- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(10) unsigned NOT NULL,
+CREATE TABLE `users` (
+  `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` char(60) NOT NULL,
   `mustChangePassword` char(1) DEFAULT NULL,
-  `profilesId` int(10) unsigned NOT NULL,
+  `profilesId` int(10) UNSIGNED NOT NULL,
   `banned` char(1) NOT NULL,
   `suspended` char(1) NOT NULL,
   `active` char(1) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `users`
@@ -366,21 +487,50 @@ INSERT INTO `users` (`id`, `name`, `email`, `password`, `mustChangePassword`, `p
 --
 
 --
+-- Indexes for table `addresses`
+--
+ALTER TABLE `addresses`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `address_types`
+--
+ALTER TABLE `address_types`
+  ADD PRIMARY KEY (`typeCode`);
+
+--
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
-  ADD PRIMARY KEY (`customerId`);
+  ADD PRIMARY KEY (`customerCode`),
+  ADD UNIQUE KEY `customerCode` (`customerCode`),
+  ADD KEY `customerGroup` (`defaultAddress`),
+  ADD KEY `freightArea` (`freightArea`,`freightCarrier`,`salesArea`,`customerStatus`,`defaultAddress`,`defaultContact`),
+  ADD KEY `customerStatus` (`customerStatus`),
+  ADD KEY `freightCarrier` (`freightCarrier`),
+  ADD KEY `salesArea` (`salesArea`),
+  ADD KEY `customerGroup_2` (`customerGroup`);
 
 --
 -- Indexes for table `customer_addresses`
 --
 ALTER TABLE `customer_addresses`
-  ADD PRIMARY KEY (`addressId`);
+  ADD PRIMARY KEY (`customerAddressId`),
+  ADD UNIQUE KEY `addressId` (`customerAddressId`),
+  ADD KEY `addressId_2` (`addressId`,`typeCode`,`customerCode`),
+  ADD KEY `typeCode` (`typeCode`),
+  ADD KEY `customerCode` (`customerCode`);
 
 --
 -- Indexes for table `customer_groups`
 --
 ALTER TABLE `customer_groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `customer_status`
+--
+ALTER TABLE `customer_status`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -393,37 +543,55 @@ ALTER TABLE `email_confirmations`
 -- Indexes for table `failed_logins`
 --
 ALTER TABLE `failed_logins`
-  ADD PRIMARY KEY (`id`), ADD KEY `usersId` (`usersId`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usersId` (`usersId`);
+
+--
+-- Indexes for table `freight_areas`
+--
+ALTER TABLE `freight_areas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `freight_carriers`
+--
+ALTER TABLE `freight_carriers`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `password_changes`
 --
 ALTER TABLE `password_changes`
-  ADD PRIMARY KEY (`id`), ADD KEY `usersId` (`usersId`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usersId` (`usersId`);
 
 --
 -- Indexes for table `permissions`
 --
 ALTER TABLE `permissions`
-  ADD PRIMARY KEY (`id`), ADD KEY `profilesId` (`profilesId`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `profilesId` (`profilesId`);
 
 --
 -- Indexes for table `profiles`
 --
 ALTER TABLE `profiles`
-  ADD PRIMARY KEY (`id`), ADD KEY `active` (`active`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `active` (`active`);
 
 --
 -- Indexes for table `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
-  ADD PRIMARY KEY (`id`), ADD KEY `token` (`token`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `token` (`token`);
 
 --
 -- Indexes for table `reset_passwords`
 --
 ALTER TABLE `reset_passwords`
-  ADD PRIMARY KEY (`id`), ADD KEY `usersId` (`usersId`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usersId` (`usersId`);
 
 --
 -- Indexes for table `sales_areas`
@@ -435,78 +603,128 @@ ALTER TABLE `sales_areas`
 -- Indexes for table `success_logins`
 --
 ALTER TABLE `success_logins`
-  ADD PRIMARY KEY (`id`), ADD KEY `usersId` (`usersId`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `usersId` (`usersId`);
 
 --
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`), ADD KEY `profilesId` (`profilesId`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `profilesId` (`profilesId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
+-- AUTO_INCREMENT for table `addresses`
+--
+ALTER TABLE `addresses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `address_types`
+--
+ALTER TABLE `address_types`
+  MODIFY `typeCode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `customer_addresses`
 --
 ALTER TABLE `customer_addresses`
-  MODIFY `addressId` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `customerAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `customer_groups`
 --
 ALTER TABLE `customer_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `customer_status`
+--
+ALTER TABLE `customer_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `email_confirmations`
 --
 ALTER TABLE `email_confirmations`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `failed_logins`
 --
 ALTER TABLE `failed_logins`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `freight_areas`
+--
+ALTER TABLE `freight_areas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `freight_carriers`
+--
+ALTER TABLE `freight_carriers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `password_changes`
 --
 ALTER TABLE `password_changes`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=29;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `profiles`
 --
 ALTER TABLE `profiles`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `reset_passwords`
 --
 ALTER TABLE `reset_passwords`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sales_areas`
 --
 ALTER TABLE `sales_areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `success_logins`
 --
 ALTER TABLE `success_logins`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=48;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `customers`
+--
+ALTER TABLE `customers`
+  ADD CONSTRAINT `customers_ibfk_1` FOREIGN KEY (`customerStatus`) REFERENCES `customer_status` (`id`),
+  ADD CONSTRAINT `customers_ibfk_2` FOREIGN KEY (`freightCarrier`) REFERENCES `freight_carriers` (`id`),
+  ADD CONSTRAINT `customers_ibfk_3` FOREIGN KEY (`salesArea`) REFERENCES `sales_areas` (`id`),
+  ADD CONSTRAINT `customers_ibfk_4` FOREIGN KEY (`freightArea`) REFERENCES `freight_areas` (`id`),
+  ADD CONSTRAINT `customers_ibfk_5` FOREIGN KEY (`customerGroup`) REFERENCES `customer_groups` (`id`),
+  ADD CONSTRAINT `customers_ibfk_6` FOREIGN KEY (`defaultAddress`) REFERENCES `customer_addresses` (`customerAddressId`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `customer_addresses`
+--
+ALTER TABLE `customer_addresses`
+  ADD CONSTRAINT `customer_addresses_ibfk_1` FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `customer_addresses_ibfk_2` FOREIGN KEY (`typeCode`) REFERENCES `address_types` (`typeCode`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `customer_addresses_ibfk_3` FOREIGN KEY (`customerCode`) REFERENCES `customers` (`customerCode`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
