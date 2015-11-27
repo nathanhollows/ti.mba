@@ -6,5 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Phalcon\\' => array($vendorDir . '/phalcon/devtools/scripts/Phalcon'),
     'DataTables\\' => array($vendorDir . '/m1ome/phalcon-datatables/src'),
 );

@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ba68ab0c70d2068e301ef7f7a1ee1311",
-    "content-hash": "3490b5ab547c7e83c09444309a4edf37",
+    "hash": "a3f210ec0c78b831d49a394092b6286e",
+    "content-hash": "e44a7e89788266cb1e467c0282aee772",
     "packages": [
         {
             "name": "m1ome/phalcon-datatables",
-            "version": "1.1.6",
+            "version": "1.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/m1ome/phalcon-datatables.git",
-                "reference": "95788256b8369180b5d75b6005654c59e855781f"
+                "reference": "dfa67667557cb8464b4917bfe2856adb3a0380e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/m1ome/phalcon-datatables/zipball/95788256b8369180b5d75b6005654c59e855781f",
-                "reference": "95788256b8369180b5d75b6005654c59e855781f",
+                "url": "https://api.github.com/repos/m1ome/phalcon-datatables/zipball/dfa67667557cb8464b4917bfe2856adb3a0380e4",
+                "reference": "dfa67667557cb8464b4917bfe2856adb3a0380e4",
                 "shasum": ""
             },
             "require-dev": {
@@ -52,13 +52,66 @@
                 "phalcon",
                 "plugin"
             ],
-            "time": "2015-06-26 09:38:51"
+            "time": "2015-11-27 10:13:36"
+        },
+        {
+            "name": "phalcon/devtools",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phalcon/phalcon-devtools.git",
+                "reference": "20f978d4098f3db766888ce7d015f85a5d7436ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phalcon/phalcon-devtools/zipball/20f978d4098f3db766888ce7d015f85a5d7436ee",
+                "reference": "20f978d4098f3db766888ce7d015f85a5d7436ee",
+                "shasum": ""
+            },
+            "require": {
+                "ext-phalcon": "~2.0",
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "kherge/box": ">=2.5.2"
+            },
+            "bin": [
+                "phalcon.php"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Phalcon\\": "scripts/Phalcon/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Phalcon Team",
+                    "email": "team@phalconphp.com"
+                }
+            ],
+            "description": "This tools provide you useful scripts to generate code helping to develop faster and easy applications that use with Phalcon framework.",
+            "homepage": "http://phalconphp.com",
+            "keywords": [
+                "Devtools",
+                "framework",
+                "phalcon",
+                "phar",
+                "webtools"
+            ],
+            "time": "2015-11-25 21:36:49"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "phalcon/devtools": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
