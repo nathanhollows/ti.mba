@@ -2,25 +2,57 @@
 
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
-
-class Profiles extends Model
+class Profiles extends \Phalcon\Mvc\Model
 {
-	public $id;
 
-	public $name;
+    /**
+     *
+     * @var integer
+     */
+    public $id;
 
-	public function initialize()
-	{
-		$this->hasMany('id', __NAMESPACE__ . '\Users', 'profilesId', array(
-			'alias'		=> 'users',
-			'foreignKey'	=> array(
-				'message'	=> 'Profile cannot be deleted becase it\'s used on Users'
-			)
-		));
+    /**
+     *
+     * @var string
+     */
+    public $name;
 
-		$this->hasMany('id', __NAMESPACE__ . '\Permissions', 'profilesId', array(
-			'alias'	=> 'permissions'
-		));
-	}
+    /**
+     *
+     * @var string
+     */
+    public $active;
+
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Profiles[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Profiles
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'profiles';
+    }
+
 }

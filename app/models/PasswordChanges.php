@@ -2,32 +2,69 @@
 
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
-
-// Register when a user changes his/her password
-
-class PasswordChanges extends Model
+class PasswordChanges extends \Phalcon\Mvc\Model
 {
-	public $id;
 
-	public $userId;
+    /**
+     *
+     * @var integer
+     */
+    public $id;
 
-	public $ipAddress;
+    /**
+     *
+     * @var integer
+     */
+    public $usersId;
 
-	public $userAgent;
+    /**
+     *
+     * @var string
+     */
+    public $ipAddress;
 
-	public $createdAt;
+    /**
+     *
+     * @var string
+     */
+    public $userAgent;
 
-	public function beforeValidatioOnCreate()
-	{
-		// Timestamp the confirmation
-		$this->createdAt = time();
-	}
+    /**
+     *
+     * @var integer
+     */
+    public $createdAt;
 
-	public function initiliaze()
-	{
-		$this->belongsTo('usersId', __NAMESPACE__ . '\Users', 'id', array(
-			'alias'	=> 'user'
-		));
-	}
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return PasswordChanges[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return PasswordChanges
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'password_changes';
+    }
+
 }

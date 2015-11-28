@@ -1,32 +1,70 @@
 <?php
+
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
-
-// Stores the remember me tokens
-
-class RememberTokens extends Model
+class RememberTokens extends \Phalcon\Mvc\Model
 {
-	public $id;
 
-	public $usersId;
+    /**
+     *
+     * @var integer
+     */
+    public $id;
 
-	public $token;
+    /**
+     *
+     * @var integer
+     */
+    public $usersId;
 
-	public $userAgent;
+    /**
+     *
+     * @var string
+     */
+    public $token;
 
-	public $createdAt;
+    /**
+     *
+     * @var string
+     */
+    public $userAgent;
 
-	public function beforeValidationOnCreate()
-	{
-		// Timestamp the confirmation
-		$this->createdAt = time();
-	}
+    /**
+     *
+     * @var integer
+     */
+    public $createdAt;
 
-	public function initialize()
-	{
-		$this->belongsTo('usersId', __NAMESPACE__ . '\Users', 'id', array(
-			'alias'	=> 'user'
-		));
-	}
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return RememberTokens[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return RememberTokens
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'remember_tokens';
+    }
+
 }

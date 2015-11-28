@@ -2,13 +2,59 @@
 
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
-
-class SalesAreas extends Model
+class SalesAreas extends \Phalcon\Mvc\Model
 {
 
-	public $id;
+    /**
+     *
+     * @var integer
+     */
+    public $id;
 
-	public $name;
-	
+    /**
+     *
+     * @var string
+     */
+    public $name;
+
+    /**
+     * Initialize method for model.
+     */
+    public function initialize()
+    {
+        $this->hasMany('id', 'App\Models\Customers', 'salesArea', array('alias' => 'Customers'));
+    }
+
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return SalesAreas[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return SalesAreas
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'sales_areas';
+    }
+
 }

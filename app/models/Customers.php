@@ -2,37 +2,120 @@
 
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
+class Customers extends \Phalcon\Mvc\Model
+{
 
-class Customers extends Model {
-	
-	public $customerId;
+    /**
+     *
+     * @var string
+     */
+    public $customerCode;
 
-	public $customerName;
+    /**
+     *
+     * @var string
+     */
+    public $customerName;
 
-	public $freightArea;
+    /**
+     *
+     * @var string
+     */
+    public $customerPhone;
 
-	public $customerPhone;
+    /**
+     *
+     * @var string
+     */
+    public $customerFax;
 
-	public $customerFax;
+    /**
+     *
+     * @var string
+     */
+    public $customerEmail;
 
-	public $customerEmail;
+    /**
+     *
+     * @var integer
+     */
+    public $freightArea;
 
-	public $orderNotes;
+    /**
+     *
+     * @var integer
+     */
+    public $freightCarrier;
 
-	public $dispatchNotes;
+    /**
+     *
+     * @var integer
+     */
+    public $salesArea;
 
-	public $groupId;
+    /**
+     *
+     * @var integer
+     */
+    public $customerStatus;
 
-	public $customerGroup;
+    /**
+     *
+     * @var integer
+     */
+    public $defaultAddress;
 
-	public $salesArea;
+    /**
+     *
+     * @var integer
+     */
+    public $defaultContact;
 
-	public function initialize()
-	{
-		$this->belongsTo('customerGroup', 'CustomerGroups', 'id', array(
-			'reusable'	=> true,
-		));
-	}
+    /**
+     *
+     * @var integer
+     */
+    public $customerGroup;
+
+    /**
+     * Initialize method for model.
+     */
+    public function initialize()
+    {
+        $this->hasMany('freightArea', 'App\Models\FreightAreas', 'id', array('alias' => 'FreightAreas'));
+        $this->hasMany('freightCarrier', 'App\Models\FreightCarriers', 'id', array('alias' => 'FreightCarriers'));
+    }
+
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Customers[]
+     */
+    public static function find($parameters = null)
+    {
+        return parent::find($parameters);
+    }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Customers
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'customers';
+    }
 
 }

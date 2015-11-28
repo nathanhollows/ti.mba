@@ -1,13 +1,8 @@
 <?php
+
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
-
-/**
- * ResetPasswords
- * Stores the reset password codes and their evolution
- */
-class ResetPasswords extends Model
+class ResetPasswords extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -47,47 +42,35 @@ class ResetPasswords extends Model
     public $reset;
 
     /**
-     * Before create the user assign a password
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return ResetPasswords[]
      */
-    public function beforeValidationOnCreate()
+    public static function find($parameters = null)
     {
-        // Timestamp the confirmaton
-        $this->createdAt = time();
-
-        // Generate a random confirmation code
-        $this->code = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(24)));
-
-        // Set status to non-confirmed
-        $this->reset = 'N';
+        return parent::find($parameters);
     }
 
     /**
-     * Sets the timestamp before update the confirmation
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return ResetPasswords
      */
-    public function beforeValidationOnUpdate()
+    public static function findFirst($parameters = null)
     {
-        // Timestamp the confirmaton
-        $this->modifiedAt = time();
+        return parent::findFirst($parameters);
     }
 
     /**
-     * Send an e-mail to users allowing him/her to reset his/her password
+     * Returns table name mapped in the model.
+     *
+     * @return string
      */
-    public function afterCreate()
+    public function getSource()
     {
-        $this->getDI()
-            ->getMail()
-            ->send(array(
-            $this->user->email => $this->user->name
-        ), "Reset your password", 'reset', array(
-            'resetUrl' => '/reset-password/' . $this->code . '/' . $this->user->email
-        ));
+        return 'reset_passwords';
     }
 
-    public function initialize()
-    {
-        $this->belongsTo('usersId', 'App\Models\Users', 'id', array(
-            'alias' => 'user'
-        ));
-    }
 }

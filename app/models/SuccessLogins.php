@@ -1,13 +1,8 @@
 <?php
+
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
-
-/**
- * SuccessLogins
- * This model registers successfull logins registered users have made
- */
-class SuccessLogins extends Model
+class SuccessLogins extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -34,10 +29,36 @@ class SuccessLogins extends Model
      */
     public $userAgent;
 
-    public function initialize()
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return SuccessLogins[]
+     */
+    public static function find($parameters = null)
     {
-        $this->belongsTo('usersId', __NAMESPACE__ . '\Users', 'id', array(
-            'alias' => 'user'
-        ));
+        return parent::find($parameters);
     }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return SuccessLogins
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'success_logins';
+    }
+
 }

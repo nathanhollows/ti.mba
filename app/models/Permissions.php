@@ -1,13 +1,8 @@
 <?php
+
 namespace App\Models;
 
-use Phalcon\Mvc\Model;
-
-/**
- * Permissions
- * Stores the permissions by profile
- */
-class Permissions extends Model
+class Permissions extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -34,10 +29,36 @@ class Permissions extends Model
      */
     public $action;
 
-    public function initialize()
+    /**
+     * Allows to query a set of records that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Permissions[]
+     */
+    public static function find($parameters = null)
     {
-        $this->belongsTo('profilesId', __NAMESPACE__ . '\Profiles', 'id', array(
-            'alias' => 'profile'
-        ));
+        return parent::find($parameters);
     }
+
+    /**
+     * Allows to query the first record that match the specified conditions
+     *
+     * @param mixed $parameters
+     * @return Permissions
+     */
+    public static function findFirst($parameters = null)
+    {
+        return parent::findFirst($parameters);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'permissions';
+    }
+
 }

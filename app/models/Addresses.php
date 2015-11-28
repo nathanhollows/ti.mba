@@ -9,7 +9,13 @@ class Addresses extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $addressId;
+    public $id;
+
+    /**
+     *
+     * @var string
+     */
+    public $customerCode;
 
     /**
      *
@@ -33,19 +39,19 @@ class Addresses extends \Phalcon\Mvc\Model
      *
      * @var string
      */
+    public $suburb;
+
+    /**
+     *
+     * @var string
+     */
+    public $zipCode;
+
+    /**
+     *
+     * @var string
+     */
     public $city;
-
-    /**
-     *
-     * @var string
-     */
-    public $region;
-
-    /**
-     *
-     * @var string
-     */
-    public $postCode;
 
     /**
      *
@@ -54,19 +60,11 @@ class Addresses extends \Phalcon\Mvc\Model
     public $country;
 
     /**
-     *
-     * @var string
+     * Initialize method for model.
      */
-    public $addressDetails;
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
+    public function initialize()
     {
-        return 'addresses';
+        $this->hasMany('id', 'App\Models\CustomerAddresses', 'addressId', array('alias' => 'CustomerAddresses'));
     }
 
     /**
@@ -92,24 +90,13 @@ class Addresses extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Independent Column Mapping.
-     * Keys are the real names in the table and the values their names in the application
+     * Returns table name mapped in the model.
      *
-     * @return array
+     * @return string
      */
-    public function columnMap()
+    public function getSource()
     {
-        return array(
-            'addressId' => 'addressId',
-            'line1' => 'line1',
-            'line2' => 'line2',
-            'line3' => 'line3',
-            'city' => 'city',
-            'region' => 'region',
-            'postCode' => 'postCode',
-            'country' => 'country',
-            'addressDetails' => 'addressDetails'
-        );
+        return 'addresses';
     }
 
 }

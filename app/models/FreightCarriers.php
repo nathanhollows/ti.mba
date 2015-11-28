@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class SalesAgents extends \Phalcon\Mvc\Model
+class FreightCarriers extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -18,20 +18,24 @@ class SalesAgents extends \Phalcon\Mvc\Model
     public $name;
 
     /**
-     * Returns table name mapped in the model.
      *
-     * @return string
+     * @var string
      */
-    public function getSource()
+    public $description;
+
+    /**
+     * Initialize method for model.
+     */
+    public function initialize()
     {
-        return 'sales_agents';
+        $this->hasMany('id', 'App\Models\Customers', 'freightCarrier', array('alias' => 'Customers'));
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return SalesAgents[]
+     * @return FreightCarriers[]
      */
     public static function find($parameters = null)
     {
@@ -42,7 +46,7 @@ class SalesAgents extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return SalesAgents
+     * @return FreightCarriers
      */
     public static function findFirst($parameters = null)
     {
@@ -50,17 +54,13 @@ class SalesAgents extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Independent Column Mapping.
-     * Keys are the real names in the table and the values their names in the application
+     * Returns table name mapped in the model.
      *
-     * @return array
+     * @return string
      */
-    public function columnMap()
+    public function getSource()
     {
-        return array(
-            'id' => 'id',
-            'name' => 'name'
-        );
+        return 'freight_carriers';
     }
 
 }

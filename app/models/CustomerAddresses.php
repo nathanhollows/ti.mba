@@ -13,30 +13,31 @@ class CustomerAddresses extends \Phalcon\Mvc\Model
 
     /**
      *
-     * @var string
+     * @var integer
      */
-    public $customerId;
+    public $addressId;
+
+    /**
+     *
+     * @var integer
+     */
+    public $typeCode;
 
     /**
      *
      * @var string
      */
-    public $dateFrom;
+    public $customerCode;
 
     /**
-     *
-     * @var string
+     * Initialize method for model.
      */
-    public $dateTo;
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
+    public function initialize()
     {
-        return 'customer_addresses';
+        $this->hasMany('customerAddressId', 'App\Models\Customers', 'defaultAddress', array('alias' => 'Customers'));
+        $this->belongsTo('addressId', 'App\Models\Addresses', 'id', array('alias' => 'Addresses'));
+        $this->belongsTo('typeCode', 'App\Models\AddressTypes', 'typeCode', array('alias' => 'AddressTypes'));
+        $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'Customers'));
     }
 
     /**
@@ -62,19 +63,13 @@ class CustomerAddresses extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Independent Column Mapping.
-     * Keys are the real names in the table and the values their names in the application
+     * Returns table name mapped in the model.
      *
-     * @return array
+     * @return string
      */
-    public function columnMap()
+    public function getSource()
     {
-        return array(
-            'customerAddressId' => 'customerAddressId',
-            'customerId' => 'customerId',
-            'dateFrom' => 'dateFrom',
-            'dateTo' => 'dateTo'
-        );
+        return 'customer_addresses';
     }
 
 }

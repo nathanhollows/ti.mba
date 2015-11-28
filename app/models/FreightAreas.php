@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class CustomerStatus extends \Phalcon\Mvc\Model
+class FreightAreas extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -24,36 +24,18 @@ class CustomerStatus extends \Phalcon\Mvc\Model
     public $description;
 
     /**
-     *
-     * @var integer
-     */
-    public $active;
-
-    /**
-     *
-     * @var integer
-     */
-    public $warning;
-
-    /**
-     *
-     * @var string
-     */
-    public $statusNote;
-
-    /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->hasMany('id', 'App\Models\Customers', 'customerStatus', array('alias' => 'Customers'));
+        $this->hasMany('id', 'App\Models\Customers', 'freightArea', array('alias' => 'Customers'));
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return CustomerStatus[]
+     * @return FreightAreas[]
      */
     public static function find($parameters = null)
     {
@@ -64,7 +46,7 @@ class CustomerStatus extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return CustomerStatus
+     * @return FreightAreas
      */
     public static function findFirst($parameters = null)
     {
@@ -78,7 +60,7 @@ class CustomerStatus extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'customer_status';
+        return 'freight_areas';
     }
 
 }
