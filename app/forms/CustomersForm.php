@@ -22,6 +22,7 @@ class CustomersForm extends Form
 		} else {
 			$this->add(new Hidden("id"));
 		}
+		
 		$element->setFilters(array('striptags', 'string'));
 		$element->setAttributes(array(
 			'class'			=> 'form-control',

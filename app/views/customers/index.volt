@@ -1,15 +1,28 @@
 {{ content() }}
 
-{{ form("customers\search") }}
+<div align="right">
+    {{ link_to("customers/new", "Create customers", "class": "btn btn-primary") }}
+</div>
 
-	<legend>Search Customers</legend>
+{{ form("customers/search") }}
 
-	{% for element in form %}
-	<div class="form-group">
-		{{ element.label() }}
-		{{ element }}
-	</div>
-	{% endfor %}
+<h2>Search customers</h2>
 
-	{{ submit_button("Search", "class": "btn btn-primary")}}
+<fieldset>
+
+{% for element in form %}
+<div class="control-group">
+    {{ element.label(['class': 'control-label']) }}
+    <div class="controls">
+        {{ element }}
+    </div>
+</div>
+{% endfor %}
+
+<div class="control-group">
+    {{ submit_button("Search", "class": "btn btn-primary") }}
+</div>
+
+</fieldset>
+
 </form>

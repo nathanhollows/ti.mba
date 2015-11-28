@@ -1,94 +1,255 @@
 <?php
 
 namespace App\Controllers;
-
-use Phalcon\Mvc\Model\Criteria,
-	Phalcon\Paginator\Adapter\Model as Paginator;
-
-use App\Forms\CustomersForm,
-	App\Form\EditCustomerForm,
-	App\Models\Customers as Customers;
+ 
+use Phalcon\Mvc\Model\Criteria;
+use Phalcon\Mvc\Forms;
+use Phalcon\Paginator\Adapter\Model as Paginator;
+use App\Models\Customers;
+use App\Forms\CustomersForm;
 
 class CustomersController extends ControllerBase
 {
-	public function initialize()
-	{
-		$this->view->setTemplateBefore('private');
-		parent::initialize();
-	}
+    public function initialize()
+    {
+        $this->view->setTemplateBefore('private');
+    }
 
-	// The start action, this shows the default 'search' view
-	public function indexAction()
-	{
-		$this->tag->prependTitle('Customers');
-		$this->persistent->searchParams	= null;
-		$this->view->form 				= new CustomersForm;
-	}
+    /**
+     * Index action
+     */
+    public function indexAction()
+    {
+        $this->persistent->parameters = null;
+        $this->view->form = new CustomersForm;
+    }
 
-	// Executes the search based on the criteria sent from the index
-	// Returning a paginator for the results
-	public function searchAction()
-	{
-		$this->tag->prependTitle('Search Customers');
-		$numberPage = 1;
-		if ($this->request->isPost()) {
-			$query = Criteria::fromInput($this->di, 'App\Models\Customers', $this->request->getPost());
-			$this->persistent->searchParams = $query->getParams();
-		} else {
-			$numberPage = $this->request->getQuery("page", "int");
-		}
+    /**
+     * Searches for customers
+     */
+    public function searchAction()
+    {
+        $numberPage = 1;
+        if ($this->request->isPost()) {
+            $query = Criteria::fromInput($this->di, '\App\Models\Customers', $_POST);
+            $this->persistent->parameters = $query->getParams();
+        } else {
+            $numberPage = $this->request->getQuery("page", "int");
+        }
 
-		$parameters = array();
-		if ($this->persistent->searchParams) {
-			$parameters = $this->persistent->searchParams;
-		}
+        $parameters = $this->persistent->parameters;
+        if (!is_array($parameters)) {
+            $parameters = array();
+        }
+        $parameters["order"] = "customerCode";
 
-		$customers = Customers::find($parameters);
-		if (count($customers) == 0) {
-			$this->flash->notice("There are no customers that meet these criteria");
-			return $this->dispatcher->forward(array(
-				"action"	=> "index"
-			));
-		}
+        $customers = Customers::find($parameters);
+        if (count($customers) == 0) {
+            $this->flash->notice("The search did not find any customers");
 
-		$paginator = new Paginator(array(
-			"data"	=> $customers,
-			"limit"	=> 10,
-			"page"	=> $numberPage
-		));
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "index"
+            ));
+        }
 
-		$this->view->page = $paginator->getPaginate();
-	}
+        $paginator = new Paginator(array(
+            "data" => $customers,
+            "limit"=> 10,
+            "page" => $numberPage
+        ));
 
-	// Shows the view the create a new product
-	public function newAction()
-	{
-		$this->tag->prependTitle('New Customer');
+        $this->view->page = $paginator->getPaginate();
+    }
 
-	}
+    /**
+     * Displays the creation form
+     */
+    public function newAction()
+    {
 
-	// Creates a cusomer based on the data entered into the new action
-	public function createAction()
-	{
+    }
 
-	}
+    /**
+     * Edits a customer
+     *
+     * @param string $customerCode
+     */
+    public function editAction($customerCode)
+    {
+        if (!$this->request->isPost()) {
 
-	// Shows the view to edit an existing customer
-	public function editAction()
-	{
+            $customer = Customers::findFirstBycustomerCode($customerCode);
+            if (!$customer) {
+                $this->flash->error("customer was not found");
 
-	}
+                return $this->dispatcher->forward(array(
+                    "controller" => "customers",
+                    "action" => "index"
+                ));
+            }
 
-	// Updates a customer based on the data entered in the edit action
-	public function saveAction()
-	{
+            $this->view->customerCode = $customer->customerCode;
 
-	}
+            $this->tag->setDefault("customerCode", $customer->customerCode);
+            $this->tag->setDefault("customerName", $customer->customerName);
+            $this->tag->setDefault("customerPhone", $customer->customerPhone);
+            $this->tag->setDefault("customerFax", $customer->customerFax);
+            $this->tag->setDefault("customerEmail", $customer->customerEmail);
+            $this->tag->setDefault("freightArea", $customer->freightArea);
+            $this->tag->setDefault("freightCarrier", $customer->freightCarrier);
+            $this->tag->setDefault("salesArea", $customer->salesArea);
+            $this->tag->setDefault("customerStatus", $customer->customerStatus);
+            $this->tag->setDefault("defaultAddress", $customer->defaultAddress);
+            $this->tag->setDefault("defaultContact", $customer->defaultContact);
+            $this->tag->setDefault("customerGroup", $customer->customerGroup);
+            
+        }
+    }
 
-	// Deletes and existing customer
-	public function deleteAction()
-	{
+    /**
+     * Creates a new customer
+     */
+    public function createAction()
+    {
+        if (!$this->request->isPost()) {
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "index"
+            ));
+        }
 
-	}
+        $customer = new Customers();
+
+        $customer->customerCode = $this->request->getPost("customerCode");
+        $customer->customerName = $this->request->getPost("customerName");
+        $customer->customerPhone = $this->request->getPost("customerPhone");
+        $customer->customerFax = $this->request->getPost("customerFax");
+        $customer->customerEmail = $this->request->getPost("customerEmail");
+        $customer->freightArea = $this->request->getPost("freightArea");
+        $customer->freightCarrier = $this->request->getPost("freightCarrier");
+        $customer->salesArea = $this->request->getPost("salesArea");
+        $customer->customerStatus = $this->request->getPost("customerStatus");
+        $customer->defaultAddress = $this->request->getPost("defaultAddress");
+        $customer->defaultContact = $this->request->getPost("defaultContact");
+        $customer->customerGroup = $this->request->getPost("customerGroup");
+        
+
+        if (!$customer->save()) {
+            foreach ($customer->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "new"
+            ));
+        }
+
+        $this->flash->success("customer was created successfully");
+
+        return $this->dispatcher->forward(array(
+            "controller" => "customers",
+            "action" => "index"
+        ));
+    }
+
+    /**
+     * Saves a customer edited
+     *
+     */
+    public function saveAction()
+    {
+
+        if (!$this->request->isPost()) {
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "index"
+            ));
+        }
+
+        $customerCode = $this->request->getPost("customerCode");
+
+        $customer = Customers::findFirstBycustomerCode($customerCode);
+        if (!$customer) {
+            $this->flash->error("customer does not exist " . $customerCode);
+
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "index"
+            ));
+        }
+
+        $customer->customerCode = $this->request->getPost("customerCode");
+        $customer->customerName = $this->request->getPost("customerName");
+        $customer->customerPhone = $this->request->getPost("customerPhone");
+        $customer->customerFax = $this->request->getPost("customerFax");
+        $customer->customerEmail = $this->request->getPost("customerEmail");
+        $customer->freightArea = $this->request->getPost("freightArea");
+        $customer->freightCarrier = $this->request->getPost("freightCarrier");
+        $customer->salesArea = $this->request->getPost("salesArea");
+        $customer->customerStatus = $this->request->getPost("customerStatus");
+        $customer->defaultAddress = $this->request->getPost("defaultAddress");
+        $customer->defaultContact = $this->request->getPost("defaultContact");
+        $customer->customerGroup = $this->request->getPost("customerGroup");
+        
+
+        if (!$customer->save()) {
+
+            foreach ($customer->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "edit",
+                "params" => array($customer->customerCode)
+            ));
+        }
+
+        $this->flash->success("customer was updated successfully");
+
+        return $this->dispatcher->forward(array(
+            "controller" => "customers",
+            "action" => "index"
+        ));
+    }
+
+    /**
+     * Deletes a customer
+     *
+     * @param string $customerCode
+     */
+    public function deleteAction($customerCode)
+    {
+        $customer = Customers::findFirstBycustomerCode($customerCode);
+        if (!$customer) {
+            $this->flash->error("customer was not found");
+
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "index"
+            ));
+        }
+
+        if (!$customer->delete()) {
+
+            foreach ($customer->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "search"
+            ));
+        }
+
+        $this->flash->success("customer was deleted successfully");
+
+        return $this->dispatcher->forward(array(
+            "controller" => "customers",
+            "action" => "index"
+        ));
+    }
 
 }
