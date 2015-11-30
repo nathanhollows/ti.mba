@@ -18,7 +18,7 @@
             <th>Name</th>
             <th>Telephone</th>
             <th>Fax</th>
-            <th>Group</th>
+            <th>Carrier</th>
         </tr>
     </thead>
 {% endif %}
@@ -28,7 +28,7 @@
             <td>{{ customers.customerName }}</td>
             <td>{{ customers.customerPhone }}</td>
             <td>{{ customers.customerFax }}</td>
-            <td>{{ customers.customerGroup }}</td>
+            <td>{% if customers.freightcarrier %}{{ customers.freightcarrier.name }} {% endif %}</td>
             <td width="7%">{{ link_to("customers/edit/" ~ customers.customerCode, '<i class="glyphicon glyphicon-edit"></i> Edit', "class": "btn btn-default") }}</td>
             <td width="7%">{{ link_to("customers/delete/" ~ customers.customerCode, '<i class="glyphicon glyphicon-remove"></i> Delete', "class": "btn btn-default") }}</td>
         </tr>

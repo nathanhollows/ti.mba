@@ -82,9 +82,10 @@ class Customers extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany('freightArea', 'App\Models\FreightAreas', 'id', array('alias' => 'FreightAreas'));
-        $this->hasMany('freightCarrier', 'App\Models\FreightCarriers', 'id', array('alias' => 'FreightCarriers'));
+        $this->hasMany('freightAreas', 'App\Models\FreightAreas', 'id', array('alias' => 'FreightAreas'));
+        $this->hasOne('freightCarrier', 'App\Models\FreightCarriers', 'id', array('alias' => 'freightcarrier'));
     }
+
 
     /**
      * Allows to query a set of records that match the specified conditions
