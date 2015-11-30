@@ -9,6 +9,7 @@ use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\Text;
 
 use App\Models\CustomerGroups,
+	App\Models\CustomerStatus,
 	App\Models\SalesAreas;
 
 class CustomersForm extends Form
@@ -17,10 +18,10 @@ class CustomersForm extends Form
 	public function initialize()
 	{
 		if (!isset($options['edit'])) {
-			$element = new Text("id");
+			$element = new Text("customerCode");
 			$this->add($element->setLabel("Customer Code"));
 		} else {
-			$this->add(new Hidden("id"));
+			$this->add(new Hidden("customerCode"));
 		}
 		
 		$element->setFilters(array('striptags', 'string'));
@@ -30,7 +31,7 @@ class CustomersForm extends Form
 			)
 		);
 
-		$name = new Text("name");
+		$name = new Text("customerName");
 		$name->setLabel("Customer Name");
 		$name->setFilters(array('striptags', 'string'));
 		$name->setFilters(array('striptags', 'string'));
@@ -55,9 +56,9 @@ class CustomersForm extends Form
 		$group->setLabel('Customer Group');
 		$this->add($group);
 
-		$area = new Select(
-			'salesAreas',
-			SalesAreas::find(),
+		$status = new Select(
+			'customerStatus',
+			CustomerStatus::find(),
 			array(
 				'using'		=> array('id', 'name'),
 				'useEmpty'	=> true,
@@ -65,9 +66,8 @@ class CustomersForm extends Form
 				'class'		=> 'form-control'
 			)
 		);
-		$area->setLabel('Sales Area');
-		$this->add($area);
-
+		$status->setLabel('Customer Status');
+		$this->add($status);
 	}
 
 }

@@ -17,8 +17,8 @@
             <th>Id</th>
             <th>Name</th>
             <th>Telephone</th>
-            <th>Address</th>
-            <th>City</th>
+            <th>Fax</th>
+            <th>Group</th>
         </tr>
     </thead>
 {% endif %}
