@@ -43,3 +43,7 @@
 	</div>
 </nav>
 <div class="container-fluid">
+
+<div class="page-header">
+  <h1>{{ router.getControllerName() }}<small>{{ router.getActionName() }}</small></h1>
+</div>
