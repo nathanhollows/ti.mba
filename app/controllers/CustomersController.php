@@ -77,6 +77,9 @@ class CustomersController extends ControllerBase
      */
     public function editAction($customerCode)
     {
+
+        $this->tag->prependTitle("Edit Customer");
+
         if (!$this->request->isPost()) {
 
             $customer = Customers::findFirstBycustomerCode($customerCode);
