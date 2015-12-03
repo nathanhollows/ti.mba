@@ -82,8 +82,10 @@ class Customers extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany('freightAreas', 'App\Models\FreightAreas', 'id', array('alias' => 'FreightAreas'));
         $this->hasOne('freightCarrier', 'App\Models\FreightCarriers', 'id', array('alias' => 'freightcarrier'));
+        $this->hasOne('freightArea', 'App\Models\FreightAreas', 'id', array('alias' => 'freightarea'));
+        $this->hasOne('customerStatus', 'App\Models\customerStatus', 'id', array('alias' => 'customerstatus'));
+        $this->hasOne('customerGroup', 'App\Models\customerGroups', 'id', array('alias' => 'customergroup'));
     }
 
 
