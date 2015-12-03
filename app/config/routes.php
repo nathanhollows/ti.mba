@@ -23,7 +23,7 @@ $router->add('/:controller', array(
 
 // Auth controllers
 
-$router->add('/login', array(
+$router->add('/', array(
 	'controller' => 'session',
 	'action'	=>	'login'
 ));
