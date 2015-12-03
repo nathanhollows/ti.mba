@@ -75,7 +75,7 @@ class CustomersController extends ControllerBase
      *
      * @param string $customerCode
      */
-    public function editAction($customerCode)
+    public function viewAction($customerCode)
     {
 
         $this->tag->prependTitle("Edit Customer");

@@ -18,7 +18,7 @@
             <th>Name</th>
             <th>Telephone</th>
             <th>Fax</th>
-            <th>Carrier</th>
+            <th>Status</th>
         </tr>
     </thead>
 {% endif %}
@@ -28,9 +28,15 @@
             <td>{{ customers.customerName }}</td>
             <td>{{ customers.customerPhone }}</td>
             <td>{{ customers.customerFax }}</td>
-            <td>{% if customers.freightcarrier %}{{ customers.freightcarrier.name }} {% endif %}</td>
-            <td width="7%">{{ link_to("customers/edit/" ~ customers.customerCode, '<i class="glyphicon glyphicon-edit"></i> Edit', "class": "btn btn-default") }}</td>
-            <td width="7%">{{ link_to("customers/delete/" ~ customers.customerCode, '<i class="glyphicon glyphicon-remove"></i> Delete', "class": "btn btn-default") }}</td>
+            <td>
+                {% if customers.customerstatus %}
+                    <span class="label label-{{ customers.customerstatus.style }}">
+                        {{ customers.customerstatus.name }}
+                    </span>
+                {% endif %}
+            </td>
+            <td width="7%">{{ link_to("customers/view/" ~ customers.customerCode, '<i class="glyphicon glyphicon-edit"></i> Edit', "class": "btn btn-default") }}</td>
+            <td width="7%">{{ link_to("customers/delete/" ~ customers.customerCode, '<i class="glyphicon glyphicon-remove"></i> Delete', "class": "btn btn-danger") }}</td>
         </tr>
     </tbody>
 {% if loop.last %}

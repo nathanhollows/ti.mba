@@ -14,7 +14,8 @@
 					<ul class="dropdown-menu">
 						<li>{{ link_to('customers','Search')}}</li>
 						<li role="separator" class="divider"></li>
-						<li>{{ link_to('customers\Search','View')}}</li>
+						<li>{{ link_to('customers\search','View')}}</li>
+						<li>{{ link_to('customers\new','Add new')}}</li>
 					</ul>
 				</li>
 				<li class="dropdown">
@@ -22,7 +23,8 @@
 					<ul class="dropdown-menu">
 						<li>{{ link_to('orders','Search')}}</li>
 						<li role="separator" class="divider"></li>
-						<li>{{ link_to('orders\Search','View')}}</li>
+						<li>{{ link_to('orders\search','View')}}</li>
+						<li>{{ link_to('orders\new','View')}}</li>
 					</ul>
 				</li>
 			</ul>
