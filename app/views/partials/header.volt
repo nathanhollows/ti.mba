@@ -26,7 +26,7 @@
                     },
                     columns: [
                         {data: "customerCode", searchable: true},
-                        {data: "customerName"},
+                        {data: "customerName", searchable: true},
                         {data: "customerFax"},
                         {data: "customerPhone", searchable: false}
                     ]

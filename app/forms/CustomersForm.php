@@ -17,21 +17,21 @@ use App\Models\CustomerGroups,
 class CustomersForm extends Form
 {
 	// Initialize the customers form
-	public function initialize()
+	public function initialize($options = array())
 	{
 		if (!isset($options['edit'])) {
 			$element = new Text("customerCode");
 			$this->add($element->setLabel("Customer Code"));
+			$element->setFilters(array('striptags', 'string'));
+			$element->setAttributes(array(
+				'class'			=> 'form-control',
+				'placeholder'	=> 'Customer Code'
+				)
+			);
 		} else {
 			$this->add(new Hidden("customerCode"));
 		}
 		
-		$element->setFilters(array('striptags', 'string'));
-		$element->setAttributes(array(
-			'class'			=> 'form-control',
-			'placeholder'	=> 'Customer Code'
-			)
-		);
 
 		// Customer name
 		// Text field
