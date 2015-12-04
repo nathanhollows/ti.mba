@@ -14,6 +14,25 @@
     <link href="{{ static_url( "css/app.css" ) }}" rel="stylesheet">
 
 
+        <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    serverSide: true,
+                    ajax: {
+                        url: '/avaunt/customers/test',
+                        method: 'POST'
+                    },
+                    columns: [
+                        {data: "customerCode", searchable: true},
+                        {data: "customerName"},
+                        {data: "customerFax"},
+                        {data: "customerPhone", searchable: false}
+                    ]
+                });
+            });
+        </script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

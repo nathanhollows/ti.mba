@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
  
+use DataTables\Datatable;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
@@ -13,6 +14,18 @@ class CustomersController extends ControllerBase
     public function initialize()
     {
         $this->view->setTemplateBefore('private');
+    }
+
+    public function testAction()
+    {
+        if ($this->request->isAjax()) {
+          $builder = $this->modelsManager->createBuilder()
+                          ->columns('customerCode, customerName, customerFax, customerPhone')
+                          ->from('App\Models\Customers');
+
+          $dataTables = new DataTable();
+          $dataTables->fromBuilder($builder)->sendResponse();
+        }
     }
 
     /**
