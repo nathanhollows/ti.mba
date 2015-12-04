@@ -54,7 +54,7 @@ class CustomersController extends ControllerBase
         if (!is_array($parameters)) {
             $parameters = array();
         }
-        $parameters["order"] = "customerCode";
+        $parameters["order"] = "customerName";
 
         $customers = Customers::find($parameters);
         if (count($customers) == 0) {
@@ -240,7 +240,7 @@ class CustomersController extends ControllerBase
     {
         $customer = Customers::findFirstBycustomerCode($customerCode);
         if (!$customer) {
-            $this->flash->error("customer was not found");
+            $this->flash->error("Customer was not found");
 
             return $this->dispatcher->forward(array(
                 "controller" => "customers",
@@ -260,7 +260,7 @@ class CustomersController extends ControllerBase
             ));
         }
 
-        $this->flash->success("customer was deleted successfully");
+        $this->flash->success("Customer was deleted successfully");
 
         return $this->dispatcher->forward(array(
             "controller" => "customers",
