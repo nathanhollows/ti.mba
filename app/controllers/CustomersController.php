@@ -80,7 +80,8 @@ class CustomersController extends ControllerBase
      */
     public function newAction()
     {
-
+        $this->persistent->parameters = null;
+        $this->view->form = new CustomersForm;
     }
 
     /**
