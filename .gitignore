@@ -1,2 +1,4 @@
 app/cache/*
-vendor/phalcon*
+vendor/*
+!vendor/autoload.php
+!vendor/composer/*
