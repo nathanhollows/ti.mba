@@ -14,6 +14,7 @@ class CustomersController extends ControllerBase
     public function initialize()
     {
         $this->view->setTemplateBefore('private');
+        parent::initialize();
     }
 
     public function testAction()
@@ -33,6 +34,7 @@ class CustomersController extends ControllerBase
      */
     public function indexAction()
     {
+        $this->tag->prependTitle("Search Customers");
         $this->persistent->parameters = null;
         $this->view->form = new CustomersForm;
     }
@@ -80,6 +82,7 @@ class CustomersController extends ControllerBase
      */
     public function newAction()
     {
+        $this->tag->prependTitle("Create Customer");
         $this->persistent->parameters = null;
         $this->view->form = new CustomersForm;
     }
@@ -92,7 +95,6 @@ class CustomersController extends ControllerBase
     public function viewAction($customerCode)
     {
 
-        $this->tag->prependTitle("Edit Customer");
 
         if (!$this->request->isPost()) {
 
@@ -122,6 +124,8 @@ class CustomersController extends ControllerBase
             $this->tag->setDefault("customerGroup", $customer->customerGroup);
             
         }
+
+        $this->tag->prependTitle($customer->customerName);
     }
 
     /**
@@ -163,11 +167,11 @@ class CustomersController extends ControllerBase
             ));
         }
 
-        $this->flash->success("customer was created successfully");
+        $this->flash->success("Customer was created successfully");
 
         return $this->dispatcher->forward(array(
             "controller" => "customers",
-            "action" => "index"
+            "action" => "view/" . $customer->customerCode,
         ));
     }
 

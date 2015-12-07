@@ -7,13 +7,16 @@
                 <a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a>
             </li>
             <li role="presentation">
-                <a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Addresses</a>
+                <a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Contact History</a>
             </li>
             <li role="presentation">
-                <a href="#freight" aria-controls="freight" role="tab" data-toggle="tab">Freight</a>
+                <a href="#freight" aria-controls="freight" role="tab" data-toggle="tab">Personnel</a>
             </li>
             <li role="presentation">
-                <a href="#groups" aria-controls="groups" role="tab" data-toggle="tab">Grouping</a>
+                <a href="#groups" aria-controls="groups" role="tab" data-toggle="tab">Status</a>
+            </li>            
+            <li role="presentation">
+                <a href="#groups" aria-controls="groups" role="tab" data-toggle="tab">Notes</a>
             </li>
         </ul>
 
