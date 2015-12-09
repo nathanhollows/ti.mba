@@ -27,8 +27,9 @@
             {% for element in customer %}
                 {{ element }} <br>
             {% endfor %}
-                {{ customer.customerCode }}
+                {{ customer.customerCode }}<br />
                 {{ customer.customerName }}
+                    <span class="label label-{{ customer.customerstatus.style }}">{{ customer.customerstatus.name }}</span>
 
         </div>
         <div role="tabpanel" class="tab-pane" id="addresses">Addresses</div>
