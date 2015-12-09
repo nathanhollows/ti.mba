@@ -86,6 +86,7 @@ class Customers extends \Phalcon\Mvc\Model
         $this->hasOne('freightArea', 'App\Models\FreightAreas', 'id', array('alias' => 'freightarea'));
         $this->hasOne('customerStatus', 'App\Models\customerStatus', 'id', array('alias' => 'customerstatus'));
         $this->hasOne('customerGroup', 'App\Models\customerGroups', 'id', array('alias' => 'customergroup'));
+        $this->hasOne('defaultAddress', 'App\Modeles\customerAddress', 'id', array('alias'  => 'shippingaddress'));
     }
 
 
