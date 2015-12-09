@@ -109,7 +109,6 @@ class CustomersController extends ControllerBase
             }
 
             $this->view->customerCode = $customer->customerCode;
-
             $this->tag->setDefault("customerCode", $customer->customerCode);
             $this->tag->setDefault("customerName", $customer->customerName);
             $this->tag->setDefault("customerPhone", $customer->customerPhone);
@@ -123,6 +122,7 @@ class CustomersController extends ControllerBase
             $this->tag->setDefault("defaultContact", $customer->defaultContact);
             $this->tag->setDefault("customerGroup", $customer->customerGroup);
             
+            $this->view->customer = $customer;
         }
 
         $this->tag->prependTitle($customer->customerName);
