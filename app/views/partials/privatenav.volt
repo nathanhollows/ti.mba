@@ -47,5 +47,5 @@
 <div class="container-fluid">
 
 <div class="page-header">
-  <h1>{{ router.getControllerName() }}<small>{{ router.getActionName() }}</small></h1>
+  <h1>{{ router.getControllerName()|capitalize }} <small>{{ router.getActionName()|capitalize }}</small></h1>
 </div>
