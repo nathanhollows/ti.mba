@@ -24,6 +24,11 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="details">
 
+            {% for element in customer %}
+                {{ element }} <br>
+            {% endfor %}
+                {{ customer.customerCode }}
+                {{ customer.customerName }}
 
         </div>
         <div role="tabpanel" class="tab-pane" id="addresses">Addresses</div>
