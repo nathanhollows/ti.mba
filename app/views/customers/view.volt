@@ -57,6 +57,7 @@
                     <label for="fieldCustomeremail" class="col-sm-2 control-label">CustomerEmail</label>
                     <div class="col-sm-10">
                         {{ text_field("customerEmail", "size" : 30, "class" : "form-control", "id" : "fieldCustomeremail") }}
+                        {{ customer.customerCode }}
                     </div>
                 </div>
 
