@@ -6,6 +6,7 @@ use DataTables\Datatable;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+use App\Models\CustomerAddresses;
 use App\Models\Customers;
 use App\Forms\CustomersForm;
 
@@ -123,6 +124,10 @@ class CustomersController extends ControllerBase
             $this->tag->setDefault("customerGroup", $customer->customerGroup);
             
             $this->view->customer = $customer;
+            
+            $addresses = CustomerAddresses::find("customerCode = '$customerCode'");
+            $this->view->addresses = $addresses;
+            
         }
 
         $this->tag->prependTitle($customer->customerName);
