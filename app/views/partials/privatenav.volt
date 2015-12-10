@@ -8,6 +8,9 @@
 				<span class="icon-bar"></span>
 			</button>
 			{{ link_to('dashboard', constant('SITE_TITLE'), 'class': 'navbar-brand')}}
+
+		</div>
+		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
 					{{ link_to('customers', 'Customers <span class="caret"></span>', 'class': 'dropdown-toggle', 'data-toggle': 'dropdown', 'role': 'button', 'aria-haspopup': 'true', 'aria-expanded': 'true')}}
@@ -28,9 +31,6 @@
 					</ul>
 				</li>
 			</ul>
-
-		</div>
-		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth.getname() }} <span class="caret"></span></a>
