@@ -96,12 +96,11 @@ class CustomersController extends ControllerBase
     public function viewAction($customerCode)
     {
 
-
         if (!$this->request->isPost()) {
 
             $customer = Customers::findFirstBycustomerCode($customerCode);
             if (!$customer) {
-                $this->flash->error("customer was not found");
+                $this->flash->error("Customer was not found");
 
                 return $this->dispatcher->forward(array(
                     "controller" => "customers",
