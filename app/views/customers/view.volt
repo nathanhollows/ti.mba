@@ -1,5 +1,12 @@
 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 
+{% if !(customer.status.id is 1) %}
+    <div class="alert alert-{{customer.status.style}}">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        <strong>{{ customer.status.name|capitalize }}</strong> This account is marked: {{ customer.status.name }}
+    </div>
+{% endif %}
+
     <div role="tabpanel">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
