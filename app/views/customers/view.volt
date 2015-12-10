@@ -37,7 +37,30 @@
             <strong>Email</strong> <a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a> <br />
             <br />
 
+            {% if addresses %}
+                <div class="row">
+                    {% for address in addresses %}
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="well">
+                                <b> {{ address.type.typeDescription }} </b> 
 
+                                {% if (customer.defaultAddress is address.customerAddressId) %}
+                                    <span class="badge">Default</span>
+                                {% endif %}
+
+                                <br>
+                                {% for key, line in address.address %}
+                                    {% if !(line is empty) and !(key is 'id') and !(key is 'customerCode') %}
+                                        {{ line }}<br>
+                                    {% endif %}
+                                {% endfor %}    
+                            </div>
+                        </div>  
+                    {% endfor %}    
+                </div>
+            {% endif %}
+
+        </div>
         <div role="tabpanel" class="tab-pane" id="history">History</div>
         <div role="tabpanel" class="tab-pane" id="personnel">
         <div class="row">
