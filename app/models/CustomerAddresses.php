@@ -34,10 +34,9 @@ class CustomerAddresses extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany('customerAddressId', 'App\Models\Customers', 'defaultAddress', array('alias' => 'Customers'));
-        $this->belongsTo('addressId', 'App\Models\Addresses', 'id', array('alias' => 'Addresses'));
-        $this->belongsTo('typeCode', 'App\Models\AddressTypes', 'typeCode', array('alias' => 'AddressTypes'));
-        $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'Customers'));
+        $this->hasOne('addressId', 'App\Models\Addresses', 'id', array('alias'  => 'address'));
+        $this->hasOne('typeCode', 'App\Models\AddressTypes', 'typeCode', array('alias'  => 'type'));
+        $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode');
     }
 
     /**
