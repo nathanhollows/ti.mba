@@ -127,9 +127,9 @@ class CustomersController extends ControllerBase
             $addresses = CustomerAddresses::find("customerCode = '$customerCode'");
             $this->view->addresses = $addresses;
             
+            $this->tag->prependTitle($customer->customerName);
         }
 
-        $this->tag->prependTitle($customer->customerName);
     }
 
     /**
