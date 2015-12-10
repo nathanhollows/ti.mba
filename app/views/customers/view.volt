@@ -30,13 +30,13 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="details">
+            <br />
+            <strong>{{ customer.customerCode }}</strong> {{ customer.customerName }} <br />
+            <strong>Phone</strong> <a href="tel:{{customer.customerPhone}}">{{ customer.customerPhone }} </a><br />
+            <strong>Fax</strong> {{ customer.customerFax }} <br />
+            <strong>Email</strong> <a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a> <br />
+            <br />
 
-            {% for element in customer %}
-                {{ element }} <br>
-            {% endfor %}
-                {{ customer.customerCode }}<br />
-                {{ customer.customerName }}
-                    <span class="label label-{{ customer.customerstatus.style }}">{{ customer.customerstatus.name }}</span>
 
         <div role="tabpanel" class="tab-pane" id="history">History</div>
         <div role="tabpanel" class="tab-pane" id="personnel">
