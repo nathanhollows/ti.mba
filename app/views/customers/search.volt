@@ -29,9 +29,9 @@
             <td>{{ customers.customerPhone }}</td>
             <td>{{ customers.customerFax }}</td>
             <td>
-                {% if customers.customerstatus %}
-                    <span class="label label-{{ customers.customerstatus.style }}">
-                        {{ customers.customerstatus.name }}
+                {% if customers.status %}
+                    <span class="label label-{{ customers.status.style }}">
+                        {{ customers.status.name }}
                     </span>
                 {% endif %}
             </td>
