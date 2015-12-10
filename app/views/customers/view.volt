@@ -7,16 +7,16 @@
                 <a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a>
             </li>
             <li role="presentation">
-                <a href="#addresses" aria-controls="addresses" role="tab" data-toggle="tab">Contact History</a>
+                <a href="#history" aria-controls="history" role="tab" data-toggle="tab">Contact History</a>
             </li>
             <li role="presentation">
-                <a href="#freight" aria-controls="freight" role="tab" data-toggle="tab">Personnel</a>
+                <a href="#personnel" aria-controls="personnel" role="tab" data-toggle="tab">Personnel</a>
             </li>
             <li role="presentation">
-                <a href="#groups" aria-controls="groups" role="tab" data-toggle="tab">Status</a>
+                <a href="#status" aria-controls="status" role="tab" data-toggle="tab">Status</a>
             </li>            
             <li role="presentation">
-                <a href="#groups" aria-controls="groups" role="tab" data-toggle="tab">Notes</a>
+                <a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a>
             </li>
         </ul>
 
@@ -31,10 +31,12 @@
                 {{ customer.customerName }}
                     <span class="label label-{{ customer.customerstatus.style }}">{{ customer.customerstatus.name }}</span>
 
+        <div role="tabpanel" class="tab-pane" id="history">History</div>
+        <div role="tabpanel" class="tab-pane" id="personnel">
+        <div role="tabpanel" class="tab-pane" id="status">
+            Status
         </div>
-        <div role="tabpanel" class="tab-pane" id="addresses">Addresses</div>
-        <div role="tabpanel" class="tab-pane" id="freight">Freight</div>
-        <div role="tabpanel" class="tab-pane" id="groups">Grouping</div>
+        <div role="tabpanel" class="tab-pane" id="notes">Notes</div>
     </div>
 </div>
 
