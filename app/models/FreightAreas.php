@@ -28,7 +28,7 @@ class FreightAreas extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany('id', 'App\Models\Customers', 'freightArea', array('alias' => 'Customers'));
+        $this->belongsTo('id', 'App\Models\Customers', 'freightArea');
     }
 
     /**
