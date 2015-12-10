@@ -64,7 +64,7 @@ class Addresses extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany('id', 'App\Models\CustomerAddresses', 'addressId', array('alias' => 'CustomerAddresses'));
+        $this->belongsTo('id', 'App\Models\CustomerAddresses', 'addressId');
     }
 
     /**
