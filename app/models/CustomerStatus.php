@@ -46,7 +46,7 @@ class CustomerStatus extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->hasMany('id', 'App\Models\Customers', 'customerStatus', array('alias' => 'Customers'));
+        $this->belongsTo('id', 'App\Models\Customers', 'customerStatus');
     }
 
     /**
