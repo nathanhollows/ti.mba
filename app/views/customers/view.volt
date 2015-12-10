@@ -33,6 +33,69 @@
 
         <div role="tabpanel" class="tab-pane" id="history">History</div>
         <div role="tabpanel" class="tab-pane" id="personnel">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Joe Blogs</h3>
+                        <p>
+                            <strong>Sales Tep</strong><br>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                        <p>
+                            <a href="#" class="btn btn-primary">View</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Joe Blogs</h3>
+                        <p>
+                            <strong>Sales Tep</strong><br>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                        <p>
+                            <a href="#" class="btn btn-primary">View</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Joe Blogs</h3>
+                        <p>
+                            <strong>Sales Tep</strong><br>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                        <p>
+                            <a href="#" class="btn btn-primary">View</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="thumbnail">
+                    <div class="caption">
+                        <h3>Joe Blogs</h3>
+                        <p>
+                            <strong>Sales Tep</strong><br>
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua.
+                            </p>
+                        <p>
+                            <a href="#" class="btn btn-primary">View</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
         <div role="tabpanel" class="tab-pane" id="status">
             Status
         </div>
