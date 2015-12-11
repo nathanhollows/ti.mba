@@ -21,7 +21,7 @@ class ContactsController extends ControllerBase
 
 	public function viewAction($contact)
 	{
-		$personnel = Contacts::find("id = '$contact'");
-		$this->view->contactDetails = $personnel;
+		$contactDetails = Contacts::findFirst("id = $contact");
+		$this->view->contactDetails = $contactDetails;
 	}
 }
