@@ -74,7 +74,7 @@
                             tempor incididunt ut labore et dolore magna aliqua.
                             </p>
                         <p>
-                            <a href="#" class="btn btn-primary">View</a>
+                            {{ linkTo('contacts\1', 'dfg') }}
                         </p>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
                             tempor incididunt ut labore et dolore magna aliqua.
                             </p>
                         <p>
-                            <a href="#" class="btn btn-primary">View</a>
+                            {{ linkTo('contacts\1', 'dfg') }}
                         </p>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                             tempor incididunt ut labore et dolore magna aliqua.
                             </p>
                         <p>
-                            <a href="#" class="btn btn-primary">View</a>
+                            {{ linkTo('contacts\1', 'dfg') }}
                         </p>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                             tempor incididunt ut labore et dolore magna aliqua.
                             </p>
                         <p>
-                            <a href="#" class="btn btn-primary">View</a>
+                            {{ linkTo('contacts\1', 'dfg') }}
                         </p>
                     </div>
                 </div>
