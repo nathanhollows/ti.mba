@@ -28,6 +28,11 @@ $router->add('/', array(
 	'action'	=>	'login'
 ));
 
+$router->add('/login', array(
+	'controller' => 'session',
+	'action'	=>	'login'
+));
+
 $router->add('/logout', array(
 	'controller' => 'session',
 	'action'	=>	'logout'
