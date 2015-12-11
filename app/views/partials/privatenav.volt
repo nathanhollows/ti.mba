@@ -47,5 +47,19 @@
 <div class="container-fluid">
 
 <div class="page-header">
-  <h1>{{ router.getControllerName()|capitalize }} <small>{{ router.getActionName()|capitalize }}</small></h1>
+
+  <h1>
+  {% if pageTitle is not empty %}
+  	{{ pageTitle }}
+  {% else %}
+  	{{ router.getControllerName()|capitalize }} 
+  {% endif %}
+  
+  {% if pageSubtitle is not empty %}
+  	<small>{{ pageSubtitle }}</small>
+  {% else %}
+  	<small>{{ router.getActionName()|capitalize }}</small>
+  {% endif %}
+
+  </h1>
 </div>
