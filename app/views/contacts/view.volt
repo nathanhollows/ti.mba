@@ -1,21 +1,9 @@
-<div role="tabpanel">
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active">
-            <a href="#details" aria-controls="details" role="tab" data-toggle="tab">Details</a>
-        </li>
-        <li role="presentation">
-            <a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">History</a>
-        </li>
-    </ul>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+	<div class="panel panel-default">
+		<div class="panel-body">
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="details">
-        {{ contactDetails.id }}
-        </div>
-        <div role="tabpanel" class="tab-pane" id="tab">
-        	
-        </div>
-    </div>
+		{{ contactDetails.firstName }}
+
+		</div>
+	</div>
 </div>
