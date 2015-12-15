@@ -35,6 +35,7 @@ class CustomersController extends ControllerBase
      */
     public function indexAction()
     {
+        $this->view->pageSubtitle = "Search";
         $this->tag->prependTitle("Search Customers");
         $this->persistent->parameters = null;
         $this->view->form = new CustomersForm;
@@ -45,6 +46,7 @@ class CustomersController extends ControllerBase
      */
     public function searchAction()
     {
+
         $numberPage = 1;
         if ($this->request->isPost()) {
             $query = Criteria::fromInput($this->di, '\App\Models\Customers', $_POST);
@@ -126,7 +128,8 @@ class CustomersController extends ControllerBase
             
             $addresses = CustomerAddresses::find("customerCode = '$customerCode'");
             $this->view->addresses = $addresses;
-            
+            $this->view->pageTitle = $customer->customerCode;
+            $this->view->pageSubtitle = $customer->customerName;
             $this->tag->prependTitle($customer->customerName);
         }
 
