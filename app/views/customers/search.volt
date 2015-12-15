@@ -17,26 +17,24 @@
             <th>Id</th>
             <th>Name</th>
             <th>Telephone</th>
-            <th>Fax</th>
-            <th>Status</th>
+            <th class="hidden-xs">Fax</th>
+            <th class="hidden-xs">Status</th>
         </tr>
     </thead>
 {% endif %}
     <tbody>
         <tr>
-            <td>{{ customers.customerCode }}</td>
+            <td>{{ link_to("customers/view/" ~ customers.customerCode, customers.customerCode) }}</td>
             <td>{{ customers.customerName }}</td>
             <td>{{ customers.customerPhone }}</td>
-            <td>{{ customers.customerFax }}</td>
-            <td>
+            <td class="hidden-xs">{{ customers.customerFax }}</td>
+            <td class="hidden-xs">
                 {% if customers.status %}
                     <span class="label label-{{ customers.status.style }}">
                         {{ customers.status.name }}
                     </span>
                 {% endif %}
             </td>
-            <td width="7%">{{ link_to("customers/view/" ~ customers.customerCode, '<i class="glyphicon glyphicon-edit"></i> Edit', "class": "btn btn-default") }}</td>
-            <td width="7%">{{ link_to("customers/delete/" ~ customers.customerCode, '<i class="glyphicon glyphicon-remove"></i> Delete', "class": "btn btn-danger") }}</td>
         </tr>
     </tbody>
 {% if loop.last %}
