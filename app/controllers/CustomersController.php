@@ -78,6 +78,7 @@ class CustomersController extends ControllerBase
         ));
 
         $this->view->page = $paginator->getPaginate();
+        $this->view->form = new CustomersForm;
     }
 
     /**

@@ -9,6 +9,25 @@
     </li>
 </ul>
 
+{{ form("customers/search") }}
+
+<fieldset>
+
+<div class="control-group">
+    <div class="controls">
+    </div>
+</div>
+    <div class="input-group">
+      {{ text_field("customerCode", "size" : 30, "class" : "form-control", "id" : "fieldCustomercode", "placeholder": "Search for ...") }}
+      <span class="input-group-btn">
+      {{ submit_button("Search", "class": "btn btn-default") }}
+      </span>
+    </div><!-- /input-group -->
+
+</fieldset>
+
+</form>
+
 {% for customers in page.items %}
 {% if loop.first %}
 <table class="table table-bordered table-striped" align="center">

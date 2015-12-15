@@ -30,8 +30,8 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="details">
             <br />
-            <strong>{{ customer.customerCode }}</strong> {{ customer.customerName }} <br />
-            <span class="label label-{{ customer.status.description }}">{{ customer.status.name }}</span>
+            <strong>{{ customer.customerCode }}</strong> {{ customer.customerName }} 
+            <span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span> <br />
             <strong>Phone</strong> <a href="tel:{{customer.customerPhone}}">{{ customer.customerPhone }} </a><br />
             <strong>Fax</strong> {{ customer.customerFax }} <br />
             <strong>Email</strong> <a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a> <br />
@@ -68,7 +68,7 @@
         <div role="tabpanel" class="tab-pane" id="personnel">
             <div class="row">
                 {% for contact in customer.contacts %}
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                         <div class="thumbnail">
                             <div class="caption">
                                 <h3> {{ contact.firstName }} {{ contact.lastName }}
