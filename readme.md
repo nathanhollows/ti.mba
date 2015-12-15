@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/wisend/avaunt/badge.svg?branch=master&service=github)](https://coveralls.io/github/wisend/avaunt?branch=master)
+
 # Avaunt
 
 Avaunt is software designed for stock management and manipulation for specific business types.
