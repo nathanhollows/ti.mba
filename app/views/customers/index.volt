@@ -6,8 +6,6 @@
 
 {{ form("customers/search") }}
 
-<h2>Search customers</h2>
-
 <fieldset>
 
 {% for element in form %}
