@@ -1,4 +1,4 @@
-<table class="table table-striped table-hover" id="example">
+<table class="table table-striped table-hover" id="customers">
 	<thead>
 		<tr>
 			<th>Code</th>

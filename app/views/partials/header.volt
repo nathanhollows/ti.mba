@@ -17,7 +17,7 @@
     <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#example').DataTable({
+            $('#customers').DataTable({
                 serverSide: true,
                 ajax: {
                     url: '/avaunt/customers/test',
