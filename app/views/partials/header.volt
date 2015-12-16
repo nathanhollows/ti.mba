@@ -22,7 +22,7 @@
             $('#customers').DataTable({
                 serverSide: true,
                 ajax: {
-                    url: '/avaunt/customers/test',
+                    url: '{{ url('customers/test') }}',
                     method: 'POST'
                 },
                 order: true,
