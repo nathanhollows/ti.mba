@@ -23,6 +23,7 @@
                     url: '/avaunt/customers/test',
                     method: 'POST'
                 },
+                stateSave: true,
                 columns: [
                 {data: "customerCode", searchable: true,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
@@ -31,7 +32,7 @@
                 {data: "customerName", searchable: true},
                 {data: "customerPhone"},
                 {data: "customerFax", searchable: false},
-                ]
+                ],
             });
         });
     </script>
