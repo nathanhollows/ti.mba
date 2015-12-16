@@ -6,12 +6,24 @@
         <div class="panel-body">
             <strong>{{ customer.customerCode }}</strong> {{ customer.customerName }} 
             <span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span> <br />
-            <strong>Phone</strong> <a href="tel:{{customer.customerPhone}}">{{ customer.customerPhone }} </a><br />
+            {% if customer.customerPhone %}
+                <strong>Phone</strong> <a href="tel:{{customer.customerPhone}}">{{ customer.customerPhone }} </a><br />
+            {% endif %}
+            {% if customer.customerPhone %}
             <strong>Fax</strong> {{ customer.customerFax }} <br />
+            {% endif %}
+            {% if customer.customerEmail %}
             <strong>Email</strong> <a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a> <br />
+            {% endif %}
+            {% if customer.salesArea %}
             <strong>Sales Area</strong> {{ customer.salesArea }}<br />
+            {% endif %}
+            {% if customer.freightarea %}
             <strong>Freight Area</strong> {{ customer.freightarea.name }}<br />
+            {% endif %}
+            {% if customer.freightcarrier %}
             <strong>Freight Carrier</strong> {{ customer.freightcarrier.name }}<br />
+            {% endif %}
         </div>
     </div>
 </div>
