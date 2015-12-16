@@ -24,6 +24,7 @@
                     url: '/avaunt/customers/test',
                     method: 'POST'
                 },
+                order: true,
                 stateSave: true,
                 columns: [
                 {data: "customerCode", searchable: true,
