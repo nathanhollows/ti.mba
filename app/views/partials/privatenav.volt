@@ -30,6 +30,10 @@
 						<li>{{ link_to('orders\new','View')}}</li>
 					</ul>
 				</li>
+				<li>{{ link_to('tasks', 'Tasks') }}</li>
+				<li>{{ link_to('contacts', 'Contacts') }}</li>
+				<li>{{ link_to('quotes', 'Quotes') }}</li>
+				<li>{{ link_to('settings', 'Settings') }}</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
