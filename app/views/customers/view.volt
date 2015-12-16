@@ -70,7 +70,7 @@
         </div>
         <div class="panel-body">
             {% for contact in customer.contacts %}
-            <h3> {{ contact.firstName }} {{ contact.lastName }}
+            <h3> {{ contact.name }}
             </h3>
             <p>
             <h5>{{ contact.position }}</h5><br>
