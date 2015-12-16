@@ -1,8 +1,8 @@
 <table class="table table-striped table-hover" id="customers">
 	<thead>
 		<tr>
-			<th>Code</th>
-			<th>Customer Name</th>
+			<th>Code <i class="fa fa-sort"></i></th>
+			<th>Customer Name <i class="fa fa-sort"></i></th>
 			<th>Phone</th>
 			<th>Fax</th>
 		</tr>
