@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
  
-use DataTables\Datatable;
+use DataTables\DataTable;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
