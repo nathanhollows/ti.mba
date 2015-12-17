@@ -2,7 +2,7 @@
 	<div class="panel panel-default">
 		<div class="panel-body">
 
-		{{ contactDetails.firstName }}
+		{{ contactDetails.name }}
 
 		</div>
 	</div>

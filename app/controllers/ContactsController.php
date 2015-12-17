@@ -23,7 +23,7 @@ class ContactsController extends ControllerBase
 	{
 		$contactDetails = Contacts::findFirst("id = $contact");
 		$this->view->contactDetails = $contactDetails;
-		$this->view->pageTitle = $contactDetails->firstName . " " . $contactDetails->lastName;
+		$this->view->pageTitle = $contactDetails->name;
 		$this->view->pageSubtitle = $contactDetails->customers->customerName;
 	}
 }
