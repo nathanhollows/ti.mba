@@ -25,7 +25,8 @@ class CustomersForm extends Form
 			$element->setFilters(array('striptags', 'string'));
 			$element->setAttributes(array(
 				'class'			=> 'form-control',
-				'placeholder'	=> 'Customer Code'
+				'placeholder'	=> 'Customer Code',
+				'required'		=> 'true'
 				)
 			);
 		} else {
@@ -40,7 +41,8 @@ class CustomersForm extends Form
 		$name->setFilters(array('striptags', 'string'));
 		$name->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'Name'
+			'placeholder'	=> 'Name',
+				'required'		=> 'true'
 			)
 		);
 		$this->add($name);
@@ -91,7 +93,8 @@ class CustomersForm extends Form
 				'useEmpty'	=> true,
 				'emptyTest'	=> '...',
 				'emptyValue'=> '',
-				'class'		=> 'form-control'
+				'class'		=> 'form-control',
+				'required'		=> 'true'
 			)
 		);
 		$group->setLabel('Customer Group');
@@ -138,7 +141,8 @@ class CustomersForm extends Form
 				'using'		=> array('id', 'name'),
 				'useEmpty'	=> true,
 				'emptyValue'=> '',
-				'class'		=> 'form-control'
+				'class'		=> 'form-control',
+				'required'		=> 'true'
 			)
 		);
 		$status->setLabel('Customer Status');
