@@ -12,6 +12,21 @@ class QuotesController extends ControllerBase
 
 	public function indexAction()
 	{
-		
+		$this->tag->prependTitle('Quotes');
+	}
+
+	public function viewAction($quoteId)
+	{
+		$this->tag->prependTitle('Quote ' . strip_tags($quoteId));
+	}
+
+	public function deleteAction($quoteId)
+	{
+
+	}
+
+	public function newAction()
+	{
+		$this->tag->prependTitle('New Quote');
 	}
 }
