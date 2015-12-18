@@ -42,7 +42,7 @@
                 {data: "customerName", searchable: true},
                 {data: "customerPhone", searchable: true},
                 {data: "customerFax", searchable: false, class: "hidden-xs"},
-                {data: "name", searchable: true,
+                {data: "name", searchable: true, class: "hidden-xs",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                     $(nTd).html("<span class='label label-"+oData.style+"'>"+oData.name+"</span>");
                 }},
