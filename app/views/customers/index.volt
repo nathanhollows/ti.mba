@@ -1,26 +1,32 @@
 {{ content() }}
 
-<div align="right">
-    {{ link_to("customers/new", "Create customers", "class": "btn btn-primary") }}
+<ul class="pager">
+    <li class="pull-right">
+        {{ link_to("customers/new", "Create New") }}
+    </li>
+</ul>
+
+<div class="table-responsive">
+	<table class="table table-bordered table-striped table-hover" id="customers">
+		<thead>
+			<tr>
+				<th>Code</th>
+				<th>Customer Name</th>
+				<th>Phone</th>
+				<th class="hidden-xs">Fax</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<thead>
+			<tr>
+				<th>Code</th>
+				<th>Customer Name</th>
+				<th>Phone</th>
+				<th class="hidden-xs">Fax</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+	</table>
 </div>
-
-{{ form("customers/search") }}
-
-<fieldset>
-
-{% for element in form %}
-<div class="control-group">
-    {{ element.label(['class': 'control-label']) }}
-    <div class="controls">
-        {{ element }}
-    </div>
-</div>
-{% endfor %}
-
-<div class="control-group">
-    {{ submit_button("Search", "class": "btn btn-primary") }}
-</div>
-
-</fieldset>
-
-</form>
