@@ -17,6 +17,10 @@
     <!-- DataTables -->
     <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+    <!-- Bootstrap Editable -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('#customers').DataTable({
@@ -44,6 +48,14 @@
                 }},
                 ],
             });
+        $('div.dataTables_filter input').select();
+        $('#enable').click(function() {
+            $('.editable').editable('toggleDisabled');
+        });   
+        $.fn.editable.defaults.mode = 'inline';    
+        $('.generaledit').editable();
+        $('.editable').editable('toggleDisabled');
+
         });
     </script>
 
