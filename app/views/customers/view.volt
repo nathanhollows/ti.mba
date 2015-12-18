@@ -95,7 +95,8 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Contacts</h3>
+                        <h3 class="panel-title">Contacts
+                        <i class="fa fa-icon fa-plus pull-right"></i></h3>
                     </div>
                     <div class="panel-body">
                         {% for contact in customer.contacts %}
