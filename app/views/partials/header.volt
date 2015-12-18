@@ -25,15 +25,23 @@
                     url: '{{ url('customers/test') }}',
                     method: 'POST'
                 },
+                search: {
+                    smart: true
+                },
                 stateSave: true,
+                pagingType: "simple_numbers",
                 columns: [
                 {data: "customerCode", searchable: true,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<a href='{{ url('/customers/view/') }}"+oData.customerCode+"'>"+oData.customerCode+"</a>");
+                    $(nTd).html("<a href='/avaunt/customers/view/"+oData.customerCode+"'>"+oData.customerCode+"</a>");
                 }},
                 {data: "customerName", searchable: true},
                 {data: "customerPhone", searchable: true},
-                {data: "customerFax", searchable: false},
+                {data: "customerFax", searchable: false, class: "hidden-xs"},
+                {data: "name", searchable: true,
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    $(nTd).html("<span class='label label-"+oData.style+"'>"+oData.name+"</span>");
+                }},
                 ],
             });
         });
