@@ -18,7 +18,6 @@ class CustomersController extends ControllerBase
         parent::initialize();
     }
 
-    public function testAction()
     {
         if ($this->request->isAjax()) {
           $builder = $this->modelsManager->createBuilder()
