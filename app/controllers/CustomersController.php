@@ -4,6 +4,7 @@ namespace App\Controllers;
  
 use DataTables\DataTable;
 use Phalcon\Mvc\Model\Criteria;
+use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\CustomerAddresses;
@@ -138,6 +139,38 @@ class CustomersController extends ControllerBase
             "controller" => "customers",
             "action" => "view/" . $customer->customerCode,
         ));
+    }
+
+    /**
+     * Updates a customer record
+     *
+     */
+
+    public function updateAction()
+    {
+
+        $this->view->none;
+        if (!$this->request->isPost()) {
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "index"
+            ));
+        }
+
+        $name = $this->request->getPost('name');
+        $value = $this->request->getPost('value');
+        
+        $customerCode = $this->request->getPost('pk');
+        $customer = Customers::findFirst("customerCode = '" . $customerCode . "'");
+        if ($customer->save(array(
+                $name => $value )) == false) {
+            echo "Umh, We can't update that right now: \n";
+            foreach ($customer->getMessages() as $message) {
+                echo $message, "\n";
+            }
+        } else {
+            echo "Great, a that was saved successfully!";
+        }
     }
 
     /**
