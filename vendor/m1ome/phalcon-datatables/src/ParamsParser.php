@@ -77,6 +77,6 @@ class ParamsParser extends Component{
   }
 
   public function getSearchValue() {
-    return isset($this->params['search']['value']) ? $this->params['search']['value'] : '';
+    return isset($this->params['search']['value']) ? str_replace(" ", "%", $this->params['search']['value']) : '';
   }
 }
