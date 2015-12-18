@@ -106,9 +106,9 @@
                                 </h3>
                                 <p>
                                     <h5>{{ contact.position }}</h5><br>
-                                    {% if contact.directDial %}<strong>Phone</strong> {{ contact.directDial }}<br> {% endif %}
-                                    {% if contact.cellPhone %}<strong>Cell Phone</strong> {{ contact.cellPhone }}<br> {% endif %}
-                                    {% if contact.email %}<strong>Email</strong> {{ contact.email }}<br> {% endif %}
+                                    <strong>Phone</strong> {{ contact.directDial }}<br>
+                                    <strong>Cell Phone</strong> {{ contact.cellPhone }}<br>
+                                    <strong>Email</strong> {{ contact.email }}<br>
                                 </p>
                                 <p>
                                     {{ link_to("contacts/view/" ~ contact.id, 'View', 'class': 'btn btn-primary') }}
