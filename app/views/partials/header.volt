@@ -26,7 +26,7 @@
             $('#customers').DataTable({
                 serverSide: true,
                 ajax: {
-                    url: '{{ url('customers/test') }}',
+                    url: '{{ url('customers/index') }}',
                     method: 'POST'
                 },
                 search: {
