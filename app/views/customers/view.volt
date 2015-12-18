@@ -111,7 +111,7 @@
                                     <strong>Email</strong> {{ contact.email }}<br>
                                 </p>
                                 <p>
-                                    {{ link_to("contacts/view/" ~ contact.id, 'View', 'class': 'btn btn-primary') }}
+                                    {{ link_to("contacts/view/" ~ contact.id, 'View', 'class': 'btn btn-sm btn-info') }}
                                 </p>
                             </div>
                         </div>
