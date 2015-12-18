@@ -19,7 +19,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Name</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerName" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Customer Name">{{ customer.customerName }} </a>
+                                    <a href="#" id="customerName" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Customer Name">{{ customer.customerName }} </a>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Status</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerStatus }} </a>
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerStatus }} </a>
                                 </div>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Phone</strong>
                                 <div class="col-sm-10">
-                                    <a href="tel:{{ customer.customerPhone }}" id="customerPhone" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerPhone }} </a>
+                                    <a href="tel:{{ customer.customerPhone }}" id="customerPhone" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerPhone }} </a>
                                 </div>
                             </div>
                         </div>
@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Fax</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerFax }} </a>
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerFax }} </a>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Email</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerEmail" class="generaledit" data-type="email" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerEmail }} </a>
+                                    <a href="#" id="customerEmail" class="generaledit" data-type="email" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerEmail }} </a>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Group</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerGroup }} </a>
+                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerGroup }} </a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Freight Area</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerFreightArea" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.freightArea }} </a>
+                                    <a href="#" id="customerFreightArea" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightArea }} </a>
                                 </div>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Freight Carrier</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.freightCarrier }} </a>
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightCarrier }} </a>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                             <div class="form-group">
                                 <strong class="col-sm-2">Sales Area</strong>
                                 <div class="col-sm-10">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.salesArea }} </a>
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.salesArea }} </a>
                                 </div>
                             </div>
                         </div>
