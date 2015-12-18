@@ -182,7 +182,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">{{ address.type.typeDescription }}
-                    <div class="pull-right"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></div></h3>
+                    <div class="pull-right"><i class="fa fa-icon fa-edit"></i></div></h3>
                 </div>
                 <div class="panel-body">
                     {% for key, line in address.address %}
