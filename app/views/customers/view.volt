@@ -1,32 +1,125 @@
 <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-    <div class="panel panel-primary ">
-        <div class="panel-heading">
-            <h3 class="panel-title"><strong>Customer</strong> Info</h3>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="panel panel-primary ">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Customer</strong> Info
+                        <a href="#" id="enable" class="pull-right"><i class="fa fa-pencil"></i></a></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Code</strong>
+                                <div class="col-sm-10">
+                                    {{ customer.customerCode }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Name</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerName" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Customer Name">{{ customer.customerName }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Status</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerStatus }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Phone</strong>
+                                <div class="col-sm-10">
+                                    <a href="tel:{{ customer.customerPhone }}" id="customerPhone" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerPhone }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Fax</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerFax }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Email</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerEmail" class="generaledit" data-type="email" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerEmail }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Group</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.customerGroup }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Freight Area</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerFreightArea" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.freightArea }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Freight Carrier</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.freightCarrier }} </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <strong class="col-sm-2">Sales Area</strong>
+                                <div class="col-sm-10">
+                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="1" data-url="/post" data-title="Enter username">{{ customer.salesArea }} </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>            
         </div>
-        <div class="panel-body">
-            <strong>{{ customer.customerCode }}</strong> {{ customer.customerName }} 
-            <span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span> <br />
-            {% if customer.customerPhone %}
-                <strong>Phone</strong> <a href="tel:{{customer.customerPhone}}">{{ customer.customerPhone }} </a><br />
-            {% endif %}
-            {% if customer.customerPhone %}
-            <strong>Fax</strong> {{ customer.customerFax }} <br />
-            {% endif %}
-            {% if customer.customerEmail %}
-            <strong>Email</strong> <a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a> <br />
-            {% endif %}
-            {% if customer.salesArea %}
-            <strong>Sales Area</strong> {{ customer.salesArea }}<br />
-            {% endif %}
-            {% if customer.freightarea %}
-            <strong>Freight Area</strong> {{ customer.freightarea.name }}<br />
-            {% endif %}
-            {% if customer.freightcarrier %}
-            <strong>Freight Carrier</strong> {{ customer.freightcarrier.name }}<br />
-            {% endif %}
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Contacts</h3>
+                    </div>
+                    <div class="panel-body">
+                        {% for contact in customer.contacts %}
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="well">
+                                <h3> {{ contact.name }}
+                                </h3>
+                                <p>
+                                    <h5>{{ contact.position }}</h5><br>
+                                    {% if contact.directDial %}<strong>Phone</strong> {{ contact.directDial }}<br> {% endif %}
+                                    {% if contact.cellPhone %}<strong>Cell Phone</strong> {{ contact.cellPhone }}<br> {% endif %}
+                                    {% if contact.email %}<strong>Email</strong> {{ contact.email }}<br> {% endif %}
+                                </p>
+                                <p>
+                                    {{ link_to("contacts/view/" ~ contact.id, 'View', 'class': 'btn btn-primary') }}
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
     <div class="panel panel-default">
@@ -75,28 +168,6 @@
 </div>
 
 
-<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-    <div class="panel panel-info">
-        <div class="panel-heading">
-            <h3 class="panel-title">Contacts</h3>
-        </div>
-        <div class="panel-body">
-            {% for contact in customer.contacts %}
-            <h3> {{ contact.name }}
-            </h3>
-            <p>
-            <h5>{{ contact.position }}</h5><br>
-            <strong>Phone</strong> {{ contact.directDial }}<br>
-            <strong>Cell Phone</strong> {{ contact.cellPhone }}<br>
-            <strong>Email</strong> {{ contact.email }}<br>
-            </p>
-            <p>
-                {{ link_to("contacts/view/" ~ contact.id, 'View', 'class': 'btn btn-primary') }}
-            </p>
-            {% endfor %}
-        </div>
-    </div>
-</div>
 
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
     <div class="panel panel-default">
@@ -171,6 +242,7 @@
             </tbody>
         </table>
     </div>
+</div>
 </div>
 </div>
 
