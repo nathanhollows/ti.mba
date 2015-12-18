@@ -40,47 +40,7 @@ class CustomersController extends ControllerBase
         $this->view->pageSubtitle = "Search";
         $this->tag->prependTitle("Search Customers");
         $this->persistent->parameters = null;
-        $this->view->form = new CustomersForm;
-    }
-
-    /**
-     * Searches for customers
-     */
-    public function searchAction()
-    {
-
-        $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, '\App\Models\Customers', $_POST);
-            $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
-        }
-
-        $parameters = $this->persistent->parameters;
-        if (!is_array($parameters)) {
-            $parameters = array();
-        }
-        $parameters["order"] = "customerName";
-
-        $customers = Customers::find($parameters);
-        if (count($customers) == 0) {
-            $this->flash->notice("The search did not find any customers");
-
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "index"
-            ));
-        }
-
-        $paginator = new Paginator(array(
-            "data" => $customers,
-            "limit"=> 10,
-            "page" => $numberPage
-        ));
-
-        $this->view->page = $paginator->getPaginate();
-        $this->view->form = new CustomersForm;
+        };
     }
 
     /**
