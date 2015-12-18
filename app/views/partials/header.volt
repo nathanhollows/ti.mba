@@ -37,7 +37,7 @@
                 columns: [
                 {data: "customerCode", searchable: true,
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<a href='/avaunt/customers/view/"+oData.customerCode+"'>"+oData.customerCode+"</a>");
+                    $(nTd).html("<a href='{{ url('customers/view/') }}"+oData.customerCode+"'>"+oData.customerCode+"</a>");
                 }},
                 {data: "customerName", searchable: true},
                 {data: "customerPhone", searchable: true},
