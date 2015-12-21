@@ -20,5 +20,10 @@ return new \Phalcon\Config(array(
 		'cacheDir'       => __DIR__ . '/../../app/cache/',
 		'baseUri'        => '/avaunt/',
 		'siteTitle'		 => 'Avaunt'
-	)
+	),
+	'pbt' => array(
+		'ftpServer'		=> '',
+		'ftpUserName'	=> '',
+		'ftpPassword'	=> ''
+	),
 ));
