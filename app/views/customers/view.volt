@@ -210,38 +210,24 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Cust Ref</th>
                     <th>Date</th>
-                    <th>Status</th>
+                    <th>Staff</th>
+                    <th>Contact Type</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>45961</td>
-                    <td>DS 564121321</td>
-                    <td>{{ date('d-m-Y') }}</td>
-                    <td><span class="label label-primary">On track</span></td>
-                </tr>
-                <tr>
-                    <td>45961</td>
-                    <td>DS 564121321</td>
-                    <td>{{ date('d-m-Y') }}</td>
-                    <td><span class="label label-primary">On track</span></td>
-                </tr>
-                <tr>
-                    <td>45961</td>
-                    <td>DS 564121321</td>
-                    <td>{{ date('d-m-Y') }}</td>
-                    <td><span class="label label-primary">On track</span></td>
-                </tr>
-                <tr>
-                    <td>45961</td>
-                    <td>DS 564121321</td>
-                    <td>{{ date('d-m-Y') }}</td>
-                    <td><span class="label label-primary">On track</span></td>
-                </tr>
+                {% for line in history %}
+                    <tr>
+                        <td>{{ line.id }}</td>
+                        <td>{{ line.date }}</td>
+                        <td>{{ line.contactReference }}</td>
+                        <td>{% if line.staff %}{{ line.staff.name }}{% endif %}</td>
+                        <td>{{ line.type.name }}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
+
     </div>
 </div>
 </div>
