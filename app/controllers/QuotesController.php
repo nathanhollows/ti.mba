@@ -17,6 +17,7 @@ class QuotesController extends ControllerBase
 
 	public function viewAction($quoteId)
 	{
+		$this->view->setTemplateBefore('quote');
 		$this->tag->prependTitle('Quote ' . strip_tags($quoteId));
 	}
 
