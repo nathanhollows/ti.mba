@@ -5,8 +5,8 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<div class="jumbotron">
 			<div class="container">
-				<h1>Quote</h1>
-				<p>For what's his face</p>
+				<h1>Quote <small>#11561</small></h1>
+				<p>Prepared for <strong>Karl</strong> at <strong>Company Name</strong> by <strong>User</strong></p>
 			</div>
 		</div>
 	</div>	
@@ -17,61 +17,83 @@
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 				<div class="well">
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>	
+					<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>	
+					</div>
 				</div>
-			</div>
-			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-				<div class="well well-lg">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+					<div class="well well-lg">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>Line</th>
-						<th>Width</th>
-						<th>Thickness</th>
-						<th>Grade</th>
-						<th>Treatment</th>
-						<th>Dryness</th>
-						<th>Finish</th>
-						<th>Notes</th>
-						<th>Lineal</th>
-						<th>Lineal Cost</th>
-						<th>Cost</th>
-						<th>Total Cost</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><b>1</b></td>
-						<td>144</td>
-						<td>144</td>
-						<td>RNO1</td>
-						<td>H5</td>
-						<td>TW</td>
-						<td>BS4</td>
-						<td>This is a custom product and cannot be returned</td>
-						<td>$45.94</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>	
-	</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<table class="table table-hover table-striped">
+					<thead>
+						<tr>
+							<th>Line</th>
+							<th>Size</th>
+							<th>Description</th>
+							<th>Lengths Required</th>
+							<th>Notes</th>
+							<th>Cost</th>
+							<th>Total Cost</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><b>1</b></td>
+							<td>144 x 144</td>
+							<td>RNO1 H5 TW B/Sawn 4 Faces</td>
+							<td>1/6.0 5/5.4 3/2.4</td>
+							<td></td>
+							<td>$47.96 l/m</td>
+							<td>$596.23</td>
+						</tr>
+						<tr>
+							<td><b>2</b></td>
+							<td>256 x 144</td>
+							<td>RNO1 H5 TW B/Sawn 4 Faces</td>
+							<td>1/6.0 5/5.4 3/2.4</td>
+							<td></td>
+							<td>$47.96 l/m</td>
+							<td>$596.23</td>
+						</tr>
+						<tr>
+							<td><b>3</b></td>
+							<td>144 x 25</td>
+							<td>RNO1 H5 TW B/Sawn 4 Faces</td>
+							<td>1/6.0 5/5.4 3/2.4</td>
+							<td>Non-refundable product</td>
+							<td>$47.96 l/m</td>
+							<td>$596.23</td>
+						</tr>
+					</tbody>
+					<thead>
+						<tr>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th></th>
+							<th>$5332.25</th>
+						</tr>
+					</thead>
+				</table>
+			</div>	
+		</div>
 
-</div>
+	</div>
