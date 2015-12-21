@@ -156,7 +156,7 @@ class CustomersController extends ControllerBase
     public function updateAction()
     {
 
-        $this->view->none;
+        $this->view->disable;
         if (!$this->request->isPost()) {
             return $this->dispatcher->forward(array(
                 "controller" => "customers",
