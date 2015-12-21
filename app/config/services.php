@@ -128,14 +128,39 @@ $di->set('elements', function () {
 });
 
 /**
- * Dispatcher use a default namespace
+ * Dispatcher use a default namespace, set events managers and manage 404 errors
  */
-$di->set('dispatcher', function () {
-    $dispatcher = new Dispatcher();
-    $dispatcher->setDefaultNamespace('App\Controllers');
-    return $dispatcher;
-});
 
+$di->set(
+    'dispatcher',
+    function() use ($di) {
+
+        $evManager = $di->getShared('eventsManager');
+
+        $evManager->attach(
+            "dispatch:beforeException",
+            function($event, $dispatcher, $exception)
+            {
+                switch ($exception->getCode()) {
+                    case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
+                    case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
+                        $dispatcher->forward(
+                            array(
+                                'controller' => 'error',
+                                'action'     => 'show404',
+                            )
+                        );
+                        return false;
+                }
+            }
+        );
+        $dispatcher = new Dispatcher();
+    	$dispatcher->setDefaultNamespace('App\Controllers');
+        $dispatcher->setEventsManager($evManager);
+        return $dispatcher;
+    },
+    true
+);
 /**
  * Access Control List
  */
