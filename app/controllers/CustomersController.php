@@ -9,6 +9,7 @@ use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\CustomerAddresses;
 use App\Models\Customers;
+use App\Models\ContactRecord;
 use App\Forms\CustomersForm;
 
 class CustomersController extends ControllerBase
@@ -69,6 +70,11 @@ class CustomersController extends ControllerBase
                 ));
             }
 
+            $history = ContactRecord::find(array(
+                "customerCode = '$customerCode'",
+                'order'         => 'date DESC',
+            ));
+
             $this->view->customerCode = $customer->customerCode;
             $this->tag->setDefault("customerCode", $customer->customerCode);
             $this->tag->setDefault("customerName", $customer->customerName);
@@ -84,6 +90,7 @@ class CustomersController extends ControllerBase
             $this->tag->setDefault("customerGroup", $customer->customerGroup);
             
             $this->view->customer = $customer;
+            $this->view->history = $history;
             
             $addresses = CustomerAddresses::find("customerCode = '$customerCode'");
             $this->view->addresses = $addresses;
