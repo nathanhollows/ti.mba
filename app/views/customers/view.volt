@@ -11,7 +11,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Code</strong>
                                 <div class="col-xs-9">
-                                    {{ customer.customerCode }}
+                                    {{ customer.customerCode }} <span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span>
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Status</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerStatus }} </a>
+                                    <a href="#" id="customerStatus" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerStatus }} </a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,8 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Freight Area</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerFreightArea" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightArea }} </a>
+                                    <a href="#" id="fresdfightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightArea }} </a>
+                                    <a href="#" id="freightArea" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Select status"></a>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +126,9 @@
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Orders <span class="label label-default">4</span></h3>
+        <h3 class="panel-title">Orders <span class="label label-default">4</span>
+        <span class="pull-right"> Add <i class="fa fa-plus"></i></span>
+        </h3>
     </div>
     <div class="panel-body">
         <table class="table table-striped table-hover">
