@@ -30,9 +30,16 @@
 						<li>{{ link_to('orders\new','View')}}</li>
 					</ul>
 				</li>
+				<li class="dropdown">
+					{{ link_to('quotes', 'Quotes <span class="caret"></span>', 'class': 'dropdown-toggle', 'data-toggle': 'dropdown', 'role': 'button', 'aria-haspopup': 'true', 'aria-expanded': 'true')}}
+					<ul class="dropdown-menu">
+						<li>{{ link_to('quotes','Search')}}</li>
+						<li role="separator" class="divider"></li>
+						<li>{{ link_to('orders\new','New')}}</li>
+					</ul>
+				</li>
 				<li>{{ link_to('tasks', 'Tasks') }}</li>
 				<li>{{ link_to('contacts', 'Contacts') }}</li>
-				<li>{{ link_to('quotes', 'Quotes') }}</li>
 				<li>{{ link_to('settings', 'Settings') }}</li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
