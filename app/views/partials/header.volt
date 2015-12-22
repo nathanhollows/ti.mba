@@ -40,7 +40,10 @@
                     $(nTd).html("<a href='{{ url('customers/view/') }}"+oData.customerCode+"'>"+oData.customerCode+"</a>");
                 }},
                 {data: "customerName", searchable: true},
-                {data: "customerPhone", searchable: true},
+                {data: "customerPhone", searchable: true,
+                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+                    $(nTd).html("<a href='tel:"+oData.customerPhone+"')>"+oData.customerPhone+"</a>");
+                }},
                 {data: "customerFax", searchable: false, class: "hidden-xs"},
                 {data: "name", searchable: true, class: "hidden-xs",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
