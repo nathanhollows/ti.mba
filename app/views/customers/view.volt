@@ -97,7 +97,7 @@
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <h3 class="panel-title">Contacts
-                        <i class="fa fa-icon fa-plus pull-right"></i></h3>
+                        <a class="pull-right" data-toggle="modal" href='{{ url('contacts/new') }}' data-target="#modal-ajax">Add <i class="fa fa-icon fa-plus"></i></a></h3>
                     </div>
                     <div class="panel-body">
                         {% for contact in customer.contacts %}
@@ -236,4 +236,12 @@
 </div>
 </div>
 
+</div>
+
+<!-- AJAX modal for misc forms -->
+<div class="modal fade" id="modal-ajax">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
 </div>
