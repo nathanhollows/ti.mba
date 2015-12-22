@@ -14,7 +14,7 @@
 				<th>Customer Name</th>
 				<th>Phone</th>
 				<th class="hidden-xs">Fax</th>
-				<th>Status</th>
+				<th class="hidden-xs">Status</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -25,7 +25,7 @@
 				<th>Customer Name</th>
 				<th>Phone</th>
 				<th class="hidden-xs">Fax</th>
-				<th>Status</th>
+				<th class="hidden-xs">Status</th>
 			</tr>
 		</thead>
 	</table>
