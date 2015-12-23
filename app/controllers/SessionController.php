@@ -48,14 +48,16 @@ class SessionController extends ControllerBase
                     'name' => $this->request->getPost('name', 'striptags'),
                     'email' => $this->request->getPost('email'),
                     'password' => $this->security->hash($this->request->getPost('password')),
-                    'profilesId' => 2
+                    'profilesId' => 2,
+                    'banned'    => 'N',
+                    'suspended'    => 'N',
+                    'mustChangePassword'    => 'N',
+                    'active'    => 'N',
                 ));
 
                 if ($user->save()) {
-                    return $this->dispatcher->forward(array(
-                        'controller' => '',
-                        'action' => 'login'
-                    ));
+                    $this->response->redirect("login");
+                    $this->view->disable();
                 }
 
                 $this->flash->error($user->getMessages());

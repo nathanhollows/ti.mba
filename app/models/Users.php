@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Phalcon\Mvc\Model\Validator\Email as Email;
+use Phalcon\Mvc\Model;
+use Phalcon\Validation\Validator\Email;
+use Phalcon\Validation\Validator\Uniqueness;
 
-class Users extends \Phalcon\Mvc\Model
+class Users extends Model
 {
 
     /**
@@ -68,20 +70,17 @@ class Users extends \Phalcon\Mvc\Model
      */
     public function validation()
     {
-        $this->validate(
-            new Email(
-                array(
-                    'field'    => 'email',
-                    'required' => true,
-                )
-            )
-        );
+        $validation = new \Phalcon\Validation();
+        $validation->add('email', new Email(array(
+         'message' => 'The e-mail is not valid'
+         )));
 
-        if ($this->validationHasFailed() == true) {
-            return false;
+        $messages = $validation->validate($_POST);
+        if (count($messages)) {
+            foreach ($messages as $message) {
+                echo $message, '<br>';
+            }
         }
-
-        return true;
     }
 
     /**
