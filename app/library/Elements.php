@@ -18,15 +18,19 @@ class Elements extends Component
                 ),
             'customers' => array(
                 'caption' => 'Customers',
-                'action' => ''
-                ),
-            'orders' => array(
-                'caption' => 'Orders',
-                'action' => ''
+                'action' => '',
+                'children'  => array(
+                    array('Search', ''),
+                    array('New', 'New'),
+                    )
                 ),
             'quotes' => array(
                 'caption' => 'Quotes',
-                'action' => ''
+                'action' => '',
+                'children'  => array(
+                    array('Search', ''),
+                    array('New', 'New'),
+                    )
                 ),
             'tasks' => array(
                 'caption' => 'Tasks',
@@ -34,7 +38,11 @@ class Elements extends Component
                 ),
             'contacts' => array(
                 'caption' => 'Contacts',
-                'action' => ''
+                'action' => '',
+                'children'  => array(
+                    array('Search', ''),
+                    array('New', 'New'),
+                    )
                 ),
             'settings' => array(
                 'caption' => 'Settings',
@@ -83,18 +91,36 @@ private $_publicMenu = array(
         foreach ($this->_privateMenu as $position => $menu) {
             echo '<ul class="nav navbar-nav ', $position, '">';
             foreach ($menu as $controller => $option) {
-                if ($controllerName == $controller) {
+                if ($controllerName == $controller && isset($option['children'])) {
+                    echo '<li class="active dropdown">';
+                } elseif ($controllerName == $controller) {
                     echo '<li class="active">';
                 } else {
                     echo '<li>';
                 }
-                echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
+                if (isset($option['children'])) {
+                    echo $this->tag->linkTo(array($controller . '/' . $option['action'], $option['caption'] . "<span class='caret'></span>", "class" => "dropdown-toggle", "data-toggle" => "dropdown", "role" => "button", "aria-haspopup" => "true", "aria-expanded" => "false"));
+                    echo '<ul class="dropdown-menu">';
+                    foreach ($option['children'] as $key) {
+                    echo "<li>";
+                    echo $this->tag->linkTo($controller . '/' . $key['1'], $key[0]);
+                    echo "</li>";
+                    }
+                    echo '</ul>';
+                } else {
+                    echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
+                }
                 echo '</li>';
             }
             echo '</ul>';
         }
 
     }
+
+        // <li class="dropdown">
+        //   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown </a>
+        // </li>
+
 
     /**
      * Returns menu tabs
