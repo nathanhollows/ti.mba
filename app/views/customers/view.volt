@@ -27,7 +27,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Status</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerStatus" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerStatus }} </a>
+                                    <a href="#" id="customerStatus" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.status.name }} </a>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Group</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerGroup }} </a>
+                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customergroup.name }} </a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Freight Area</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="fresdfightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightArea }} </a>
+                                    <a href="#" id="fresdfightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightarea.name }} </a>
                                     <a href="#" id="freightArea" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Select status"></a>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Freight Carrier</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightCarrier }} </a>
+                                    <a href="#" id="freightCarrier" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightcarrier.name }} </a>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,21 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Sales Area</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.salesArea }} </a>
+                                <a href="#" id="status" data-type="select" data-pk="1" data-url="/post" data-title="Select status"></a>
+<script>
+$(function(){
+    $('#status').editable({
+        value: 2,    
+        source: [
+              {value: 1, text: 'Active'},
+              {value: 2, text: 'Blocked'},
+              {value: 3, text: 'Deleted'}
+           ]
+    });
+});
+</script>
+
+                                    <a href="#" id="salesArea" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.salesarea.name }} </a>
                                 </div>
                             </div>
                         </div>
@@ -107,12 +121,9 @@
                                 </h3>
                                 <p>
                                     <h5>{{ contact.position }}</h5><br>
-                                    <strong>Phone</strong> {{ contact.directDial }}<br>
-                                    <strong>Cell Phone</strong> {{ contact.cellPhone }}<br>
-                                    <strong>Email</strong> {{ contact.email }}<br>
-                                </p>
-                                <p>
-                                    {{ link_to("contacts/view/" ~ contact.id, 'View', 'class': 'btn btn-sm btn-info') }}
+                                    <i class="fa fa-phone"></i> <a href="tel:{{ contact.directDial }}">{{ contact.directDial }} </a><br>
+                                    <i class="fa fa-mobile"></i> <a href="tel:{{ contact.cellPhone }}">{{ contact.cellPhone }} </a><br>
+                                    <i class="fa fa-envelope"></i> <a href="mailto:{{ contact.email }}">{{ contact.email }} </a><br>
                                 </p>
                             </div>
                         </div>
@@ -212,20 +223,21 @@
         <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Date</th>
                     <th>Staff</th>
                     <th>Contact Type</th>
+                    <th>Reference</th>
+                    <th>Contact Complete</th>
                 </tr>
             </thead>
             <tbody>
                 {% for line in history %}
                     <tr>
-                        <td>{{ line.id }}</td>
                         <td>{{ line.date }}</td>
-                        <td>{{ line.contactReference }}</td>
                         <td>{% if line.staff %}{{ line.staff.name }}{% endif %}</td>
                         <td>{{ line.type.name }}</td>
+                        <td>{{ line.contactReference }}</td>
+                        <td>{{ line.complete }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
