@@ -21,7 +21,6 @@ class QuotesForm extends Form
 	{
 		$customerCode = new Text("customerCode");
 		$customerCode->setLabel("Customer");
-		$customerCode->setDefault($customer->customerName);
 		$this->add($customerCode);
 
 		$salesAgent = new Select(

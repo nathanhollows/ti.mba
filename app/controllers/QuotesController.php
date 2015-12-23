@@ -31,6 +31,6 @@ class QuotesController extends ControllerBase
 	public function newAction($customerCode = null)
 	{
 		$this->tag->prependTitle('New Quote');
-		$this->form = new QuotesForm($customerCode);
+		$this->form = new QuotesForm();
 	}
 }
