@@ -32,7 +32,7 @@ class SessionController extends ControllerBase
     /**
      * Allow a user to signup to the system
      */
-    public function signupAction()
+    public function registerAction()
     {
         $this->tag->prependTitle('Register');
 

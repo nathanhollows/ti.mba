@@ -33,9 +33,9 @@ $router->add('/logout', array(
 	'action'	=>	'logout'
 ));
 
-$router->add('/signup', array(
+$router->add('/register', array(
 	'controller' => 'session',
-	'action'	=>	'signup'
+	'action'	=>	'register'
 ));
 
 $router->add('/forgotpassword', array(
