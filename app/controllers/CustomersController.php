@@ -176,7 +176,7 @@ class CustomersController extends ControllerBase
                 echo $message, "\n";
             }
         } else {
-            echo "Great, a that was saved successfully!";
+            return "Great, a that was saved successfully!";
         }
     }
 
