@@ -10,59 +10,65 @@ use Phalcon\Mvc\User\Component;
 class Elements extends Component
 {
 
-    private $_headerMenu = array(
+    private $_privateMenu = array(
         'navbar-left' => array(
-            'index' => array(
-                'caption' => 'Home',
-                'action' => 'index'
+            'dashboard' => array(
+                'caption' => 'Dashboard',
+                'action' => ''
+                ),
+            'customers' => array(
+                'caption' => 'Customers',
+                'action' => ''
+                ),
+            'orders' => array(
+                'caption' => 'Orders',
+                'action' => ''
+                ),
+            'quotes' => array(
+                'caption' => 'Quotes',
+                'action' => ''
+                ),
+            'tasks' => array(
+                'caption' => 'Tasks',
+                'action' => ''
+                ),
+            'contacts' => array(
+                'caption' => 'Contacts',
+                'action' => ''
+                ),
+            'settings' => array(
+                'caption' => 'Settings',
+                'action' => ''
+                ),
+            'preferences' => array(
+                'caption'   => 'Preferences',
+                'action'    => ''
+                ),
             ),
-            'invoices' => array(
-                'caption' => 'Invoices',
-                'action' => 'index'
-            ),
-            'about' => array(
-                'caption' => 'About',
-                'action' => 'index'
-            ),
-            'contact' => array(
-                'caption' => 'Contact',
-                'action' => 'index'
-            ),
+'navbar-right' => array(
+    'logout' => array(
+        'caption' => 'Log Out',
+        'action' => ''
         ),
-        'navbar-right' => array(
-            'session' => array(
-                'caption' => 'Log In/Sign Up',
-                'action' => 'index'
-            ),
-        )
-    );
+    )
+);
 
-    private $_tabs = array(
-        'Invoices' => array(
-            'controller' => 'invoices',
-            'action' => 'index',
-            'any' => false
+private $_publicMenu = array(
+    'Home' => array(
+        'controller' => 'index',
+        'action' => '',
+        'any' => true
         ),
-        'Companies' => array(
-            'controller' => 'companies',
-            'action' => 'index',
-            'any' => true
+    'About' => array(
+        'controller' => 'about',
+        'action' => '',
+        'any' => true
         ),
-        'Products' => array(
-            'controller' => 'products',
-            'action' => 'index',
-            'any' => true
+    'Contact' => array(
+        'controller' => 'contact',
+        'action' => 'index',
+        'any' => true
         ),
-        'Product Types' => array(
-            'controller' => 'producttypes',
-            'action' => 'index',
-            'any' => true
-        ),
-        'Your Profile' => array(
-            'controller' => 'invoices',
-            'action' => 'profile',
-            'any' => false
-        )
     );
 
     /**
@@ -70,22 +76,11 @@ class Elements extends Component
      *
      * @return string
      */
-    public function getMenu()
+    public function getPrivateMenu()
     {
 
-        $auth = $this->session->get('auth');
-        if ($auth) {
-            $this->_headerMenu['navbar-right']['session'] = array(
-                'caption' => 'Log Out',
-                'action' => 'end'
-            );
-        } else {
-            unset($this->_headerMenu['navbar-left']['invoices']);
-        }
-
         $controllerName = $this->view->getControllerName();
-        foreach ($this->_headerMenu as $position => $menu) {
-            echo '<div class="nav-collapse">';
+        foreach ($this->_privateMenu as $position => $menu) {
             echo '<ul class="nav navbar-nav ', $position, '">';
             foreach ($menu as $controller => $option) {
                 if ($controllerName == $controller) {
@@ -97,7 +92,6 @@ class Elements extends Component
                 echo '</li>';
             }
             echo '</ul>';
-            echo '</div>';
         }
 
     }
@@ -105,12 +99,13 @@ class Elements extends Component
     /**
      * Returns menu tabs
      */
-    public function getTabs()
+    public function getPublicMenu()
     {
         $controllerName = $this->view->getControllerName();
         $actionName = $this->view->getActionName();
-        echo '<ul class="nav nav-tabs">';
-        foreach ($this->_tabs as $caption => $option) {
+        echo '<div id="navbar" class="collapse navbar-collapse">';
+        echo '<ul class="nav navbar-nav">';
+        foreach ($this->_publicMenu as $caption => $option) {
             if ($option['controller'] == $controllerName && ($option['action'] == $actionName || $option['any'])) {
                 echo '<li class="active">';
             } else {
@@ -119,5 +114,16 @@ class Elements extends Component
             echo $this->tag->linkTo($option['controller'] . '/' . $option['action'], $caption), '</li>';
         }
         echo '</ul>';
+        echo '<ul class="nav navbar-nav pull-right">';
+        $identity = $this->auth->getIdentity();
+        if (is_array($identity)) {
+            echo '<li>' . $this->tag->linkTo('dashboard', 'Dashboard') . '</li>';
+            echo $this->tag->linkTo(array("logout","Log out", "class" => "btn btn-default navbar-btn"));
+        } else {
+            echo "poncho";
+            echo $this->tag->linkTo(array("login","Sign In", "class" => "btn btn-default navbar-btn"));
+        }
+        echo '</ul>';
+        echo '</div><!--/.nav-collapse -->';
     }
 }
