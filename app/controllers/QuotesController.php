@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Forms\QuotesForm;
+
 class QuotesController extends ControllerBase
 {
 	public function initialize()
@@ -26,8 +28,9 @@ class QuotesController extends ControllerBase
 
 	}
 
-	public function newAction()
+	public function newAction($customerCode = null)
 	{
 		$this->tag->prependTitle('New Quote');
+		$this->form = new QuotesForm($customerCode);
 	}
 }
