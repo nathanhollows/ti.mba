@@ -35,7 +35,7 @@
 					<ul class="dropdown-menu">
 						<li>{{ link_to('quotes','Search')}}</li>
 						<li role="separator" class="divider"></li>
-						<li>{{ link_to('orders\new','New')}}</li>
+						<li>{{ link_to('quotes\new','New')}}</li>
 					</ul>
 				</li>
 				<li>{{ link_to('tasks', 'Tasks') }}</li>
