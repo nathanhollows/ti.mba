@@ -85,3 +85,13 @@
 		</table>	
 	</div>	
 </div>
+
+{{ form("quotes/create", "method":"post", "autocomplete" : "off") }}
+
+{% for element in form %}
+<div class="form-group">
+	{{ element.label() }}
+	{{ element }}
+</div>    
+{% endfor %}
+</form>
