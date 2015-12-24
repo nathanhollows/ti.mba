@@ -67,8 +67,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Freight Area</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="fresdfightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.freightarea %}{{ customer.freightarea.name }}{% endif %} </a>
-                                    <a href="#" id="freightArea" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Select status"></a>
+                                    <a href="#" id="freightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.freightarea %}{{ customer.freightarea.name }}{% endif %} </a>
                                 </div>
                             </div>
                         </div>
@@ -84,20 +83,6 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Sales Area</strong>
                                 <div class="col-xs-9">
-                                <a href="#" id="status" data-type="select" data-pk="1" data-url="/post" data-title="Select status"></a>
-<script>
-$(function(){
-    $('#status').editable({
-        value: 2,    
-        source: [
-              {value: 1, text: 'Active'},
-              {value: 2, text: 'Blocked'},
-              {value: 3, text: 'Deleted'}
-           ]
-    });
-});
-</script>
-
                                     <a href="#" id="salesArea" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.salesarea %}{{ customer.salesarea.name }}{% endif %} </a>
                                 </div>
                             </div>
@@ -137,7 +122,7 @@ $(function(){
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3 class="panel-title">Orders <span class="label label-default">4</span>
+        <h3 class="panel-title">Quotes
         <span class="pull-right"> Add <i class="fa fa-plus"></i></span>
         </h3>
     </div>
