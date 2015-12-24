@@ -51,7 +51,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Email</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerEmail" class="generaledit" data-type="email" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerEmail }} </a>
+                                    <a href="mailto:{{ customer.customerEmail }}" id="customerEmail" class="generaledit" data-type="email" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerEmail }} </a>
                                 </div>
                             </div>
                         </div>
