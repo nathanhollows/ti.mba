@@ -8,3 +8,36 @@
 		</div>	
 	</div>
 </div>
+
+<div class="row">
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Overdue follow ups</h3>
+			</div>
+			<div class="panel-body">
+				Count
+			</div>
+		</div>	
+	</div>
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">Outstanding Quotes</h3>
+			</div>
+			<div class="panel-body">
+				Count
+			</div>
+		</div>	
+	</div>
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title">KPI</h3>
+			</div>
+			<div class="panel-body">
+				Count
+			</div>
+		</div>	
+	</div>
+</div>
