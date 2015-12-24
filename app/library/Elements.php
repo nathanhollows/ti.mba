@@ -146,7 +146,6 @@ private $_publicMenu = array(
             echo '<li>' . $this->tag->linkTo('dashboard', 'Dashboard') . '</li>';
             echo $this->tag->linkTo(array("logout","Log out", "class" => "btn btn-default navbar-btn"));
         } else {
-            echo "poncho";
             echo $this->tag->linkTo(array("login","Sign In", "class" => "btn btn-default navbar-btn"));
         }
         echo '</ul>';
