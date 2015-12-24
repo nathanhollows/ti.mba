@@ -40,52 +40,37 @@
 
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-				<table class="table table-hover table-striped table-condensed">
+				<table class="table table-hover table-striped">
 					<thead>
 						<tr>
-							<th>Line</th>
-							<th>Size</th>
 							<th>Description</th>
-							<th>Lengths Required</th>
-							<th>Notes</th>
+							<th>Qty</th>
 							<th>Cost</th>
 							<th>Total Cost</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td><b>1</b></td>
-							<td>144 x 144</td>
-							<td>RNO1 H5 TW B/Sawn 4 Faces</td>
+							<td>144 x 144 RNO1 H5 TW B/Sawn 4 Faces</td>
 							<td>1/6.0 5/5.4 3/2.4</td>
-							<td></td>
 							<td>$47.96 l/m</td>
 							<td>$596.23</td>
 						</tr>
 						<tr>
-							<td><b>2</b></td>
-							<td>256 x 144</td>
-							<td>RNO1 H5 TW B/Sawn 4 Faces</td>
+							<td>256 x 144 RNO1 H5 TW B/Sawn 4 Faces</td>
 							<td>1/6.0 5/5.4 3/2.4</td>
-							<td></td>
 							<td>$47.96 l/m</td>
 							<td>$596.23</td>
 						</tr>
 						<tr>
-							<td><b>3</b></td>
-							<td>144 x 25</td>
-							<td>RNO1 H5 TW B/Sawn 4 Faces</td>
+							<td>144 x 25 RNO1 H5 TW B/Sawn 4 Faces</td>
 							<td>1/6.0 5/5.4 3/2.4</td>
-							<td>Non-refundable product</td>
 							<td>$47.96 l/m</td>
 							<td>$596.23</td>
 						</tr>
 					</tbody>
 					<thead>
 						<tr>
-							<th></th>
-							<th></th>
-							<th></th>
 							<th></th>
 							<th></th>
 							<th></th>
