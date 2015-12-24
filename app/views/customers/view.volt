@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Group</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customergroup.name }} </a>
+                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.customergroup %}{{ customer.customergroup.name }} {% endif %} </a>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Freight Area</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="fresdfightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightarea.name }} </a>
+                                    <a href="#" id="fresdfightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.freightarea %}{{ customer.freightarea.name }}{% endif %} </a>
                                     <a href="#" id="freightArea" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Select status"></a>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Freight Carrier</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="freightCarrier" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.freightcarrier.name }} </a>
+                                    <a href="#" id="freightCarrier" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.freightcarrier %}{{ customer.freightcarrier.name }}{% endif  %} </a>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@ $(function(){
 });
 </script>
 
-                                    <a href="#" id="salesArea" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.salesarea.name }} </a>
+                                    <a href="#" id="salesArea" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.salesarea %}{{ customer.salesarea.name }}{% endif %} </a>
                                 </div>
                             </div>
                         </div>
