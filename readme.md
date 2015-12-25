@@ -4,14 +4,14 @@ Avaunt is a CRM package for the timber industry.
 
 <description>
 
-### Version
+## Version
 0.1.0
 
 <version>
 
 ## Installation
 
-### GitHub
+## GitHub
 
 1. Navigate to htdocs (of server equivalent)
 2. Clone repository `git clone https://github.com/wisend/avaunt`
@@ -27,7 +27,7 @@ Wisend
 
 <authors>
 
-### Tech
+## Tech
 
 Avaunt uses a number of open source projects to work properly:
 
