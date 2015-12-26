@@ -7,7 +7,7 @@
 </ul>
 
 <div class="table-responsive">
-	<table class="table table-bordered table-striped table-hover" id="customers">
+	<table class="table table-bordered table-striped table-hover dataTable" data-source="{{ url('customers/index') }}">
 		<thead>
 			<tr>
 				<th>Code</th>

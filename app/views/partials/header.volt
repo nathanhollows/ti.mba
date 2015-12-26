@@ -23,10 +23,13 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#customers').DataTable({
+            $('.dataTable').each(function () {
+            var source = $(this).attr("data-source");
+            var state = $(this).attr("data-state");
+            $(this).DataTable({
                 serverSide: true,
                 ajax: {
-                    url: '{{ url('customers/index') }}',
+                    url: source,
                     method: 'POST'
                 },
                 search: {
@@ -50,6 +53,7 @@
                     $(nTd).html("<span class='label label-"+oData.style+"'>"+oData.name+"</span>");
                 }},
                 ],
+            });
             });
         $('div.dataTables_filter input').select();
         $('#enable').click(function() {
