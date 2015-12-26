@@ -1,36 +1,29 @@
-<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-	<div class="list-group">
-		<a href="#" class="list-group-item active">
-			<h4 class="list-group-item-heading">Customer Follow Ups</h4>
-		</a>
-		<a href="#" class="list-group-item">Item 1</a>
-		<a href="#" class="list-group-item">Item 2</a>
-		<a href="#" class="list-group-item">Item 3</a>
-	</div>		
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Link</th>
+					<th>Date</th>
+					<th>Complete By</th>
+					<th>User</th>
+					<th class="col-md-6">Notes</th>
+					<th>Complete</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for line in tasks %}
+					<tr>
+						<td>{{ linkTo(line.controller ~ '/' ~ line.action ~ '/' ~ line.params, line.id)}}</td>
+						<td>{{ line.date }}</td>
+						<td>{{ line.followUpDate }}</td>
+						<td>{{ line.chaseUser.name }}</td>
+						<td>{{ line.notes }}</td>
+						<td>{{ link_to('tasks/complete/' ~ line.id, 'Mark Complete', 'class': 'btn btn-primary btn-sm') }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>	
 </div>
 
-<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-	<div class="list-group">
-		<a href="#" class="list-group-item active">
-			<h4 class="list-group-item-heading">Quote Follow Up</h4>
-		</a>
-		<p class="list-group-item"> Up to date! </p>
-	</div>		
-</div>
-
-<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-	<div class="list-group">
-		<a href="#" class="list-group-item active">
-			<h4 class="list-group-item-heading">ETAs</h4>
-		</a>
-		<a href="#" class="list-group-item">Item 1</a>
-		<a href="#" class="list-group-item">Item 2</a>
-		<a href="#" class="list-group-item">Item 3</a>
-		<a href="#" class="list-group-item">Item 1</a>
-		<a href="#" class="list-group-item">Item 2</a>
-		<a href="#" class="list-group-item">Item 3</a>
-		<a href="#" class="list-group-item">Item 1</a>
-		<a href="#" class="list-group-item">Item 2</a>
-		<a href="#" class="list-group-item">Item 3</a>
-	</div>		
-</div>
