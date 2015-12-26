@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class Addresses extends \Phalcon\Mvc\Model
+use Phalcon\Mvc\Model;
+
+class Addresses extends Model
 {
 
     /**
