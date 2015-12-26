@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 26, 2015 at 02:44 AM
+-- Generation Time: Dec 26, 2015 at 11:01 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -71,18 +71,16 @@ CREATE TABLE `contacts` (
 --
 
 CREATE TABLE `contact_record` (
-  `id` int(11) NOT NULL DEFAULT '0',
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
   `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `user` int(11) NOT NULL,
-  `contactType` int(11) NOT NULL,
-  `status` int(11) NOT NULL,
-  `contactReference` text COLLATE utf8_unicode_ci NOT NULL,
-  `details` text COLLATE utf8_unicode_ci NOT NULL,
-  `followUpUser` int(11) NOT NULL,
-  `followUpNotes` text COLLATE utf8_unicode_ci NOT NULL,
-  `infoSent` text COLLATE utf8_unicode_ci NOT NULL,
-  `attachments` int(11) NOT NULL,
+  `user` int(11) DEFAULT NULL,
+  `contactType` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `contactReference` text COLLATE utf8_unicode_ci,
+  `details` text COLLATE utf8_unicode_ci,
+  `infoSent` text COLLATE utf8_unicode_ci,
+  `attachments` int(11) DEFAULT NULL,
   `completed` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -216,6 +214,26 @@ CREATE TABLE `finish` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `follow_up`
+--
+
+CREATE TABLE `follow_up` (
+  `id` int(11) NOT NULL,
+  `controller` varchar(25) NOT NULL,
+  `action` varchar(25) NOT NULL,
+  `params` varchar(25) NOT NULL,
+  `user` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `notes` text,
+  `followUpDate` date NOT NULL,
+  `followUpUser` int(11) NOT NULL,
+  `followUpNotes` text,
+  `completed` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `freight_areas`
 --
 
@@ -235,6 +253,17 @@ CREATE TABLE `freight_carriers` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `generic_status`
+--
+
+CREATE TABLE `generic_status` (
+  `id` int(11) NOT NULL,
+  `name` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -494,6 +523,12 @@ ALTER TABLE `finish`
   ADD UNIQUE KEY `shortCode` (`shortCode`);
 
 --
+-- Indexes for table `follow_up`
+--
+ALTER TABLE `follow_up`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `freight_areas`
 --
 ALTER TABLE `freight_areas`
@@ -503,6 +538,12 @@ ALTER TABLE `freight_areas`
 -- Indexes for table `freight_carriers`
 --
 ALTER TABLE `freight_carriers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `generic_status`
+--
+ALTER TABLE `generic_status`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -588,6 +629,11 @@ ALTER TABLE `addresses`
 ALTER TABLE `address_types`
   MODIFY `typeCode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `contact_record`
+--
+ALTER TABLE `contact_record`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56745;
+--
 -- AUTO_INCREMENT for table `customer_addresses`
 --
 ALTER TABLE `customer_addresses`
@@ -617,6 +663,11 @@ ALTER TABLE `failed_logins`
 --
 ALTER TABLE `finish`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `follow_up`
+--
+ALTER TABLE `follow_up`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `freight_areas`
 --
@@ -666,12 +717,12 @@ ALTER TABLE `sales_areas`
 -- AUTO_INCREMENT for table `success_logins`
 --
 ALTER TABLE `success_logins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
