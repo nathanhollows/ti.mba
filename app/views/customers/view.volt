@@ -222,7 +222,12 @@
                         <td>{% if line.staff %}{{ line.staff.name }}{% endif %}</td>
                         <td>{{ line.type.name }}</td>
                         <td>{{ line.contactReference }}</td>
-                        <td>{{ line.complete }}</td>
+                        <td>
+                        {% if line.completed == 1 %}
+                            <span class="label label-info">Complete</span>
+                        {% else %}
+                            <span class="label label-danger">Incomplete</span>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>
