@@ -7,8 +7,9 @@ use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
-use App\Models\CustomerAddresses;
 use App\Models\Customers;
+use App\Models\CustomerAddresses;
+use App\Models\CustomerNotes;
 use App\Models\ContactRecord;
 use App\Forms\CustomersForm;
 
@@ -75,6 +76,11 @@ class CustomersController extends ControllerBase
                 'order'         => 'date DESC',
             ));
 
+            $notes = CustomerNotes::find(array(
+                "customerCode = '$customerCode'",
+                'order'         => 'date DESC',
+            ));
+
             $this->view->customerCode = $customer->customerCode;
             $this->tag->setDefault("customerCode", $customer->customerCode);
             $this->tag->setDefault("customerName", $customer->customerName);
@@ -91,7 +97,8 @@ class CustomersController extends ControllerBase
             
             $this->view->customer = $customer;
             $this->view->history = $history;
-            
+            $this->view->notes = $notes;
+
             $addresses = CustomerAddresses::find("customerCode = '$customerCode'");
             $this->view->addresses = $addresses;
             $this->view->pageTitle = $customer->customerCode;

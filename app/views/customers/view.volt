@@ -199,6 +199,22 @@
 
 </div>
 
+<!-- Notes -->
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
+    <div class="panel panel-default">
+          <div class="panel-heading">
+                <h3 class="panel-title">Customer Notes</h3>
+          </div>
+          <div class="panel-body">
+                {% for note in notes %}
+                    {{ note.note }}
+                    by {{ note.user.name }} on {{ note.date }}
+                {% endfor %}
+          </div>
+    </div>
+</div>
+
+<!-- Customer History -->
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
     <div class="panel panel-default">
       <div class="panel-heading">
