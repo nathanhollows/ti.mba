@@ -59,7 +59,8 @@
                             <div class="form-group">
                                 <strong class="col-xs-3 text-right">Group</strong>
                                 <div class="col-xs-9">
-                                    <a href="#" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.customergroup %}{{ customer.customergroup.name }} {% endif %} </a>
+                                    <a href="{% if customer.customergroup.headOffice %}{{ url('customers/view/' ~ customer.customergroup.headOffice)}}{% else %}#{% endif %}" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.customergroup %}{{ customer.customergroup.name }}{% endif %} 
+                                    {% if customer.customergroup.headOffice %} <span class="label label-info">Head Office</span> {% endif %}</a>
                                 </div>
                             </div>
                         </div>

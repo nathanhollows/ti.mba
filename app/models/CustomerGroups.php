@@ -24,6 +24,12 @@ class CustomerGroups extends \Phalcon\Mvc\Model
     public $description;
 
     /**
+     *
+     * @var string
+     */
+    public $headOffice;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
