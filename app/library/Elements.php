@@ -54,6 +54,14 @@ class Elements extends Component
                 ),
             ),
 'navbar-right' => array(
+    'messages' => array(
+        'caption' => '<span><i class="fa fa-envelope"></i></span>&nbsp;',
+        'action' => ''
+        ),
+    'tasks' => array(
+        'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
+        'action' => ''
+        ),
     'logout' => array(
         'caption' => 'Log Out',
         'action' => ''
