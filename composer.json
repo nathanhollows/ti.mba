@@ -1,6 +1,5 @@
 {
     "require": {
-        "phalcon/devtools": "dev-master",
         "m1ome/phalcon-datatables": "1.*",
         "knplabs/knp-snappy": "^0.4.3"
     }
