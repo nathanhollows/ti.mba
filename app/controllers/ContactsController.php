@@ -46,4 +46,36 @@ class ContactsController extends ControllerBase
 
         $contact = new Contacts();
 	}
+
+	public function deleteAction($id)
+	{
+		$contact = Contacts::findFirstById($id);
+		if (!$contact) {
+			$this->flash->error("Contact was not found");
+
+			return $this->dispatcher->forward(array(
+				"controller"	=> "contacts",
+				"action"		=> "index"
+			));
+		}
+
+		if (!$contact->delete()) {
+
+			foreach ($contact->getMessages() as $message) {
+				$this->flash->error($message);
+			}
+
+			return $this->dispatcher->forward(array(
+				"controller"	=> "contacts",
+				"action"		=> "index"
+			));
+		}
+
+		$this->flash->success("Contact was deleted successfully");
+
+		return $this->dispatcher->forward(array(
+			"controller"	=> "contacts",
+			"action"		=> "index"
+		));
+	}
 }
