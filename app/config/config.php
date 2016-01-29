@@ -19,7 +19,8 @@ return new \Phalcon\Config(array(
 		'libraryDir'     => __DIR__ . '/../../app/library/',
 		'cacheDir'       => __DIR__ . '/../../app/cache/',
 		'baseUri'        => '/avaunt/',
-		'siteTitle'		 => 'Avaunt'
+		'siteTitle'		 => 'Avaunt',
+		'version'		 => '0.1'
 	),
 	'pbt' => array(
 		'ftpServer'		=> '',
