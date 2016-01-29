@@ -5,7 +5,7 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<div class="jumbotron">
 			<div class="container">
-				<h1>Quote <small>#11561</small></h1>
+				<h1>Quote <small>#{{ quote.id }}</small></h1>
 				<p>Prepared for <strong>Karl</strong> at <strong>Company Name</strong> by <strong>User</strong></p>
 			</div>
 		</div>
