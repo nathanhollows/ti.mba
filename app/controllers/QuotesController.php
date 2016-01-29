@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Quotes;
 use App\Forms\QuotesForm;
 
 class QuotesController extends ControllerBase
@@ -15,11 +16,18 @@ class QuotesController extends ControllerBase
 	public function indexAction()
 	{
 		$this->tag->prependTitle('Quotes');
+		$quotes = new Quotes;
 	}
 
 	public function viewAction($quoteId)
 	{
-		$this->view->setTemplateBefore('quote');
+		$quote = Quotes::findFirstBywebId($quoteId);
+		if ($quote) {
+			$this->view->setTemplateBefore('quote');
+		} else {
+			return "Panic!";
+		}
+		$this->view->quote = $quote;
 		$this->tag->prependTitle('Quote ' . strip_tags($quoteId));
 	}
 
