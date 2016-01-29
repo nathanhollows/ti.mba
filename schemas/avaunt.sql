@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
+-- version 4.5.2
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 26, 2015 at 11:01 AM
--- Server version: 10.1.8-MariaDB
--- PHP Version: 5.6.14
+-- Host: localhost
+-- Generation Time: Jan 29, 2016 at 01:26 AM
+-- Server version: 5.6.24
+-- PHP Version: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -140,8 +140,23 @@ CREATE TABLE `customer_addresses` (
 CREATE TABLE `customer_groups` (
   `id` int(11) NOT NULL,
   `name` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL
+  `description` text COLLATE utf8_unicode_ci,
+  `headOffice` varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customer_notes`
+--
+
+CREATE TABLE `customer_notes` (
+  `id` int(11) NOT NULL,
+  `customerCode` varchar(6) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `note` text NOT NULL,
+  `date` date NOT NULL,
+  `user` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -397,6 +412,20 @@ CREATE TABLE `success_logins` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tasks`
+--
+
+CREATE TABLE `tasks` (
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `completed` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `treatment`
 --
 
@@ -488,6 +517,12 @@ ALTER TABLE `customer_addresses`
 -- Indexes for table `customer_groups`
 --
 ALTER TABLE `customer_groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `customer_notes`
+--
+ALTER TABLE `customer_notes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -602,6 +637,12 @@ ALTER TABLE `success_logins`
   ADD KEY `usersId` (`usersId`);
 
 --
+-- Indexes for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `treatment`
 --
 ALTER TABLE `treatment`
@@ -643,6 +684,11 @@ ALTER TABLE `customer_addresses`
 --
 ALTER TABLE `customer_groups`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `customer_notes`
+--
+ALTER TABLE `customer_notes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `customer_status`
 --
@@ -717,7 +763,12 @@ ALTER TABLE `sales_areas`
 -- AUTO_INCREMENT for table `success_logins`
 --
 ALTER TABLE `success_logins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+--
+-- AUTO_INCREMENT for table `tasks`
+--
+ALTER TABLE `tasks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `users`
 --
