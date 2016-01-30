@@ -39,7 +39,7 @@ class QuotesController extends ControllerBase
 	public function newAction($customerCode = null)
 	{
 		$this->tag->prependTitle('New Quote');
-		$this->form = new QuotesForm();
+		$this->view->quoteForm = new QuotesForm();
 	}
 
 	public function createAction()
