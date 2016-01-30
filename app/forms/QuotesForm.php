@@ -40,15 +40,6 @@ class QuotesForm extends Form
 		$contact->setLabel("Contact");
 		$this->add($contact);
 
-		$validation->add(
-		    $contact,
-		    new PresenceOf(
-		        array(
-		            'message' => 'A contact is required'
-		        )
-		    )
-		);
-
 		$customerRef = new Text("customerRef");
 		$customerRef->setAttributes(array(
 			'required'	=> 'true',
