@@ -33,12 +33,17 @@ class QuotesController extends ControllerBase
 
 	public function deleteAction($quoteId)
 	{
-
+		$this->view->disable;
 	}
 
 	public function newAction($customerCode = null)
 	{
 		$this->tag->prependTitle('New Quote');
 		$this->form = new QuotesForm();
+	}
+
+	public function createAction()
+	{
+		$this->view->disable;
 	}
 }
