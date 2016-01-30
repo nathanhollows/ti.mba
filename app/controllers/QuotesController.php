@@ -59,7 +59,7 @@ class QuotesController extends ControllerBase
 		// Store and check for errors
 		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'user', 'contact'));
 		if ($success) {
-			$this->response->redirect('/quotes/');
+			$this->response->redirect('quotes/');
 			$this->view->disable;
 		} else {
 			$this->flash->error("Sorry, the quote could not be saved");
