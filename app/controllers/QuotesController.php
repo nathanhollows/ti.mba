@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Phalcon\Security\Random;
 use App\Models\Quotes;
 use App\Forms\QuotesForm;
 
@@ -44,6 +45,27 @@ class QuotesController extends ControllerBase
 
 	public function createAction()
 	{
-		$this->view->disable;
+		if (!$this->request->isPost()) {
+			return $this->dispatcher->forward(array(
+				"controller"	=> "quotes",
+				"action"		=> "index"
+				)
+			);
+		}
+
+		$quote = new Quotes();
+		$random = new Random();
+		$quote->webId = $random->base64Safe(6);
+		// Store and check for errors
+		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'user', 'contact'));
+		if ($success) {
+			$this->response->redirect('/quotes/');
+			$this->view->disable;
+		} else {
+			$this->flash->error("Sorry, the quote could not be saved");
+			foreach ($quote->getMessages() as $message) {
+				$this->flash->error($message->getMessage());
+			}
+		}
 	}
 }
