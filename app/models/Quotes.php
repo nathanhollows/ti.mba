@@ -18,8 +18,6 @@ class Quotes extends Model
 
 	public $user;
 
-	public $attention;
-
 	public $contact;
 
 	public function initialize()
