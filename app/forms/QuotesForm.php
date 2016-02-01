@@ -65,7 +65,7 @@ class QuotesForm extends Form
 		$this->add($notes);
 
 		$salesAgent = new Select(
-			"salesagent",
+			"user",
 			Users::find(),
 			array(
 				'using'	=> array(
