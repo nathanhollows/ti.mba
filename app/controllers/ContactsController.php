@@ -30,7 +30,9 @@ class ContactsController extends ControllerBase
 
 	public function newAction()
 	{
-		$this->view->setTemplateBefore('blank');
+		if ($this->request->isAjax()) {
+			$this->view->setTemplateBefore('blank');
+		}
 		$this->view->pageTitle = "Create new Contact";
 		$this->view->form = new ContactsForm;
 	}
