@@ -66,5 +66,17 @@ class Tasks extends Model
           }
      }
 
+     public static function getFuture()
+     {
+          $auth = new Auth;
+          $tasks = Tasks::Find(array(
+               'conditions'   => 'user = ?1 and completed IS NULL and followUp > ?2',
+               'bind'         => array(
+                    1         => $auth->getId(),
+                    2         => date('Y-m-d')
+               )
+          ));
+
+          return $tasks;
      }
 }
