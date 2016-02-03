@@ -34,16 +34,17 @@ class QuotesController extends ControllerBase
       };
 	}
 
-	public function viewAction($quoteId)
+	public function viewAction($quoteId = null)
 	{
 		$quote = Quotes::findFirstBywebId($quoteId);
 		if ($quote) {
+			$this->tag->prependTitle('Quote');
 			$this->view->setTemplateBefore('quote');
+			$this->view->quote = $quote;
 		} else {
-			return "Panic!";
+			// If the quote does not exist then send the user to a 404 page
+			$this->response->redirect('error');
 		}
-		$this->view->quote = $quote;
-		$this->tag->prependTitle('Quote ' . strip_tags($quoteId));
 	}
 
 	public function deleteAction($quoteId)
