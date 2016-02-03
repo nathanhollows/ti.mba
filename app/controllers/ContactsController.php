@@ -47,6 +47,17 @@ class ContactsController extends ControllerBase
         }
 
         $contact = new Contacts();
+        $success = $contact->save($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial', 'position'));
+		if ($success) {
+			$this->response->redirect('cotnacts/');
+			$this->view->disable;
+		} else {
+			$this->flash->error("Sorry, the quote could not be saved");
+			foreach ($quote->getMessages() as $message) {
+				$this->flash->error($message->getMessage());
+			}
+		}
+
 	}
 
 	public function deleteAction($id)
