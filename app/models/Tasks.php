@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Phalcon\Mvc\Model;
+use Phalcon\Db\RawValue;
 use App\Auth\Auth;
 
 class Tasks extends Model
@@ -78,5 +79,10 @@ class Tasks extends Model
           ));
 
           return $tasks;
+     }
+
+     public function beforeSave()
+     {
+          $this->created = new RawValue("'" . date('Y-m-d H:i:s') . "'");
      }
 }
