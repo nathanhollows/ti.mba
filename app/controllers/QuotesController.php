@@ -2,7 +2,12 @@
 
 namespace App\Controllers;
 
+use DataTables\DataTable;
 use Phalcon\Security\Random;
+use Phalcon\Mvc\Model\Criteria;
+use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Forms;
+use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Quotes;
 use App\Forms\QuotesForm;
 
@@ -16,8 +21,17 @@ class QuotesController extends ControllerBase
 
 	public function indexAction()
 	{
-		$this->tag->prependTitle('Quotes');
-		$quotes = new Quotes;
+		$this->tag->prependTitle('Search Quotes');
+		if ($this->request->isAjax()) {
+            $builder = $this->modelsManager->createBuilder()
+            ->columns('id, date, customerCode, customerRef, user, contact')
+            ->from('App\Models\Quotes')
+            ->orderBy('id');
+
+            $dataTables = new DataTable();
+            $dataTables->fromBuilder($builder)->sendResponse();
+            $this->persistent->parameters = null;
+      };
 	}
 
 	public function viewAction($quoteId)
