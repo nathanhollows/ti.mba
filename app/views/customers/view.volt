@@ -124,7 +124,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Quotes
-        <span class="pull-right"> Add <i class="fa fa-plus"></i></span>
+        <a class="pull-right" data-toggle="modal" href='{{ url('quotes/new/' ~ customer.customerCode) }}' data-target="#modal-ajax">Add <i class="fa fa-icon fa-plus"></i></a></h3>
         </h3>
     </div>
     <div class="panel-body">
