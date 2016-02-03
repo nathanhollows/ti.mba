@@ -17,7 +17,7 @@ class DashboardController extends ControllerBase
 
     public function indexAction()
     {
-        $myTasks = Tasks::getCount();
+        $myTasks = Tasks::getToday('count');
         $this->view->myTasks = $myTasks;
     }
 }
