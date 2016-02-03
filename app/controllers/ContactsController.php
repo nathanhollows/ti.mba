@@ -20,12 +20,24 @@ class ContactsController extends ControllerBase
 		
 	}
 
-	public function viewAction($contact)
+	public function viewAction($contact = null)
 	{
-		$contactDetails = Contacts::findFirst("id = $contact");
+		$contactDetails = Contacts::findFirst("id = '$contact'");
+
+		if (!$contactDetails) {
+			$this->flash->error("Woops! There is no contact with that ID");
+			$this->dispatcher->forward(array(
+				"controller"	=> "contacts",
+				"action"		=> ""
+			));
+		} else {
+
 		$this->view->contactDetails = $contactDetails;
+
+		// Set page titles
 		$this->view->pageTitle = $contactDetails->name;
 		$this->view->pageSubtitle = $contactDetails->customers->customerName;
+		}
 	}
 
 	public function newAction()
