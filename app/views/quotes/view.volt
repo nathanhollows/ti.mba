@@ -6,7 +6,7 @@
 		<div class="jumbotron">
 			<div class="container">
 				<h1>Quote <small>#{{ quote.id }}</small></h1>
-				<p>Prepared for <strong>Karl</strong> at <strong>Company Name</strong> by <strong>User</strong></p>
+				<p>Prepared for <strong>{{ quote.customerContact.name }}</strong> at <strong>{{ quote.customer.customerName }}</strong> by <strong>{{ quote.salesRep.name }}</strong></p>
 			</div>
 		</div>
 	</div>	
