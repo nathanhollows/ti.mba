@@ -4,6 +4,7 @@ namespace App\Forms;
 
 use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\Text,
+	Phalcon\Forms\Element\Date,
 	Phalcon\Forms\Element\Select,
 	Phalcon\Forms\Element\Submit,
 	Phalcon\Forms\Element\TextArea,
@@ -30,6 +31,14 @@ class TasksForm extends Form
 			'class'		=> 'form-control'));
 		$user->setDefault($auth->getId());
 		$user->setLabel("User");
+
+		$followUp = new Date('followUp', array(
+			'class'		=> 'form-control',
+			'value'		=> date('Y-m-d')
+		));
+		$followUp->setLabel('Follow Up Date');
+		$this->add($followUp);
+
 		$this->add($user);
 	}
 }
