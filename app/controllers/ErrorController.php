@@ -24,6 +24,6 @@ class ErrorController extends ControllerBase
     public function permissionDeniedAction()
     {
         $this->tag->prependTitle('Woops!');
-        
     }
+    
 }
