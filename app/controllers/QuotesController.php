@@ -54,6 +54,9 @@ class QuotesController extends ControllerBase
 
 	public function newAction($customerCode = null)
 	{
+		if ($this->request->isAjax()) {
+			$this->view->setTemplateBefore('blank');
+		}
 		$this->tag->prependTitle('New Quote');
 		$this->view->quoteForm = new QuotesForm();
 	}
