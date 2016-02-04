@@ -1,26 +1,31 @@
+{{ content() }}
+
 <div class="table-responsive">
 	<table class="table table-hover">
 		<thead>
 			<tr>
 				<th>#</th>
-				<th>Customer</th>
 				<th>Date</th>
-				<th>Ref</th>
-				<th>Rep</th>
-				<th>Value</th>
+				<th>Customer</th>
+				<th>Sales Rep</th>
+				<th>Reference</th>
+				<th>Contact</th>
 				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
+			{% for quote in quotes %}
 			<tr>
-				<td>1</td>
-				<td>Placemakers Cook St</td>
-				<td>12 days ago</td>
-				<td>Wharf</td>
-				<td>Dave</td>
-				<td>$12,365</td>
-				<td><span class="badge">Warm</span></td>
+				<td>
+				{{ link_to("quotes/edit/" ~ quote.id, quote.id) }}</td>
+				<td>{{ quote.date }}</td>
+				<td>{{ quote.customerCode }}</td>
+				<td>{{ quote.user }}</td>
+				<td>{{ quote.customerRef }}</td>
+				<td>{{ quote.contact }}</td>
+				<td>{{ quote.status }}</td>
 			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 </div>
