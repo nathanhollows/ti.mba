@@ -31,13 +31,13 @@ class QuotesForm extends Form
 		$customerCode->setAttributes(array(
 			'required'	=> 'true',
 			'class'		=> 'form-control'
-		));
+			));
 		$this->add($customerCode);
 
-		$contact = new Text("contact");
+		$contact = new Numeric("contact");
 		$contact->setAttributes(array(
 			'class'		=> 'form-control'
-		));
+			));
 		$contact->setLabel("Contact");
 		$this->add($contact);
 
@@ -45,7 +45,7 @@ class QuotesForm extends Form
 		$customerRef->setAttributes(array(
 			'required'	=> 'true',
 			'class'		=> 'form-control'
-		));
+			));
 		$customerRef->setLabel("Customer Reference");
 		$this->add($customerRef);
 
@@ -53,7 +53,7 @@ class QuotesForm extends Form
 		$date->setAttributes(array(
 			'required'	=> 'true',
 			'class'		=> 'form-control'
-		));
+			));
 		$date->setLabel("Date");
 		$date->setDefault(date('Y-m-d'));
 		$this->add($date);
@@ -61,10 +61,11 @@ class QuotesForm extends Form
 		$notes = new TextArea("notes");
 		$notes->setAttributes(array(
 			'class'		=> 'form-control'
-		));
+			));
 		$notes->setLabel("Notes");
 		$this->add($notes);
 
+		$auth = new Auth;
 		$salesAgent = new Select(
 			"user",
 			Users::find(),
@@ -72,10 +73,10 @@ class QuotesForm extends Form
 				'using'	=> array(
 					'id',
 					'name'
-				),
+					),
 				'class'	=> 'form-control'
-			)
-		);
+				)
+			);
 		$salesAgent->setLabel("Sales Agent");	
 		$salesAgent->setDefault($auth->getId());
 		$this->add($salesAgent);
@@ -98,7 +99,7 @@ class QuotesForm extends Form
 		$submit = new Submit("submit");
 		$submit->setAttributes(array(
 			'class'	=> 'btn btn-primary'
-		));
+			));
 		$this->add($submit);
 	}
 }
