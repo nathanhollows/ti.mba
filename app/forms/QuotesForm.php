@@ -13,6 +13,7 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 
 use App\Models\Users;
+use App\Models\GenericStatus;
 
 class QuotesForm extends Form
 {
@@ -78,6 +79,21 @@ class QuotesForm extends Form
 		$salesAgent->setLabel("Sales Agent");	
 		$salesAgent->setDefault('3');
 		$this->add($salesAgent);
+
+		$status = new Select(
+			"status",
+			GenericStatus::find(),
+			array(
+				'using'	=> array(
+					'id',
+					'name'
+					),
+				'class'	=> 'form-control'
+				)
+			);
+		$status->setLabel("Status");	
+		$status->setDefault('1');
+		$this->add($status);
 
 		$submit = new Submit("submit");
 		$submit->setAttributes(array(

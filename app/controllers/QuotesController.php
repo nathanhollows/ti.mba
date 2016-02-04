@@ -24,7 +24,7 @@ class QuotesController extends ControllerBase
 		$this->tag->prependTitle('Search Quotes');
 		if ($this->request->isAjax()) {
             $builder = $this->modelsManager->createBuilder()
-            ->columns('id, date, customerCode, customerRef, user, contact')
+            ->columns('id, date, customerCode, customerRef, user, contact, status')
             ->from('App\Models\Quotes')
             ->orderBy('id');
 
@@ -75,7 +75,7 @@ class QuotesController extends ControllerBase
 		$random = new Random();
 		$quote->webId = $random->base64Safe(6);
 		// Store and check for errors
-		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'user', 'contact'));
+		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'user', 'contact', 'status'));
 		if ($success) {
 			$this->response->redirect('quotes/');
 			$this->view->disable;
