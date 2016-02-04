@@ -21,7 +21,7 @@ class Elements extends Component
                 'action' => '',
                 'children'  => array(
                     array('Search', ''),
-                    array('New', 'New'),
+                    array('New', 'new'),
                     )
                 ),
             'quotes' => array(
@@ -29,7 +29,7 @@ class Elements extends Component
                 'action' => '',
                 'children'  => array(
                     array('Search', ''),
-                    array('New', 'New'),
+                    array('New', 'new'),
                     )
                 ),
             'tasks' => array(
@@ -41,7 +41,7 @@ class Elements extends Component
                 'action' => '',
                 'children'  => array(
                     array('Search', ''),
-                    array('New', 'New'),
+                    array('New', 'new'),
                     )
                 ),
             'settings' => array(
