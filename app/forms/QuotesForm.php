@@ -11,7 +11,7 @@ use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Submit;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
-
+use App\Auth\Auth;
 use App\Models\Users;
 use App\Models\GenericStatus;
 
@@ -77,7 +77,7 @@ class QuotesForm extends Form
 			)
 		);
 		$salesAgent->setLabel("Sales Agent");	
-		$salesAgent->setDefault('3');
+		$salesAgent->setDefault($auth->getId());
 		$this->add($salesAgent);
 
 		$status = new Select(
