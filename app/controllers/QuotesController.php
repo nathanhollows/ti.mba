@@ -9,6 +9,7 @@ use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Quotes;
+use App\Models\QuoteItems;
 use App\Forms\QuotesForm;
 
 class QuotesController extends ControllerBase
@@ -23,18 +24,18 @@ class QuotesController extends ControllerBase
 	{
 		$this->tag->prependTitle('Search Quotes');
 		if ($this->request->isAjax()) {
-            $builder = $this->modelsManager->createBuilder()
-            ->columns('id, date, customerCode, customerRef, user, contact, status')
-            ->from('App\Models\Quotes')
-            ->orderBy('id');
+			$builder = $this->modelsManager->createBuilder()
+			->columns('id, date, customerCode, customerRef, user, contact, status')
+			->from('App\Models\Quotes')
+			->orderBy('id');
 
-            $dataTables = new DataTable();
-            $dataTables->fromBuilder($builder)->sendResponse();
-            $this->persistent->parameters = null;
-      };
+			$dataTables = new DataTable();
+			$dataTables->fromBuilder($builder)->sendResponse();
+			$this->persistent->parameters = null;
+		};
 
-      $quotes = Quotes::find();
-      $this->view->quotes = $quotes;
+		$quotes = Quotes::find();
+		$this->view->quotes = $quotes;
 	}
 
 	public function viewAction($quoteId = null)
@@ -56,13 +57,20 @@ class QuotesController extends ControllerBase
 		if ($quote) {
 			$this->tag->prependTitle('Quote');
 			$this->view->quote = $quote;
+			$items = QuoteItems::Find(array(
+				"conditions"	=> "quoteId = ?1",
+				"bind"			=> array(
+					1			=> $quoteId
+				)
+			));
+			$this->view->items = $items;
 		} else {
 			// If the quote does not exist then spit out an error
 			$this->flash->error("That quote doesn't exist! Weird.");
 			$this->dispatcher->forward(array(
 				"controller"	=> "quotes",
 				"action"		=> ""
-			));
+				));
 		}
 	}
 

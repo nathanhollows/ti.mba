@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Feb 03, 2016 at 04:56 PM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Host: 127.0.0.1
+-- Generation Time: Feb 04, 2016 at 08:38 AM
+-- Server version: 10.1.8-MariaDB
+-- PHP Version: 5.6.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -392,8 +392,29 @@ CREATE TABLE `quotes` (
   `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `customerRef` text COLLATE utf8_unicode_ci NOT NULL,
   `user` int(3) NOT NULL,
-  `contact` int(4) NOT NULL
+  `contact` int(4) NOT NULL,
+  `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote_items`
+--
+
+CREATE TABLE `quote_items` (
+  `id` int(11) NOT NULL,
+  `quoteId` int(11) NOT NULL,
+  `width` int(11) NOT NULL,
+  `thickness` int(11) NOT NULL,
+  `grade` int(11) NOT NULL,
+  `treatment` int(11) NOT NULL,
+  `dryness` int(11) NOT NULL,
+  `finish` int(11) NOT NULL,
+  `price` decimal(10,0) NOT NULL,
+  `priceMethod` int(11) NOT NULL,
+  `linealTotal` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -657,6 +678,13 @@ ALTER TABLE `quotes`
   ADD UNIQUE KEY `webId` (`webId`);
 
 --
+-- Indexes for table `quote_items`
+--
+ALTER TABLE `quote_items`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
@@ -716,6 +744,11 @@ ALTER TABLE `addresses`
 --
 ALTER TABLE `address_types`
   MODIFY `typeCode` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `contact_record`
 --
@@ -795,6 +828,11 @@ ALTER TABLE `profiles`
 -- AUTO_INCREMENT for table `quotes`
 --
 ALTER TABLE `quotes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `quote_items`
+--
+ALTER TABLE `quote_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `remember_tokens`
