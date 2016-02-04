@@ -32,6 +32,9 @@ class QuotesController extends ControllerBase
             $dataTables->fromBuilder($builder)->sendResponse();
             $this->persistent->parameters = null;
       };
+
+      $quotes = Quotes::find();
+      $this->view->quotes = $quotes;
 	}
 
 	public function viewAction($quoteId = null)
@@ -44,6 +47,22 @@ class QuotesController extends ControllerBase
 		} else {
 			// If the quote does not exist then send the user to a 404 page
 			$this->response->redirect('error');
+		}
+	}
+
+	public function editAction($quoteId = null)
+	{
+		$quote = Quotes::findFirstByid($quoteId);
+		if ($quote) {
+			$this->tag->prependTitle('Quote');
+			$this->view->quote = $quote;
+		} else {
+			// If the quote does not exist then spit out an error
+			$this->flash->error("That quote doesn't exist! Weird.");
+			$this->dispatcher->forward(array(
+				"controller"	=> "quotes",
+				"action"		=> ""
+			));
 		}
 	}
 
