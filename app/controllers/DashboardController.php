@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-
+use App\Models\Tasks;
 
 class DashboardController extends ControllerBase
 {
@@ -17,6 +17,7 @@ class DashboardController extends ControllerBase
 
     public function indexAction()
     {
-
+        $myTasks = Tasks::getToday('count');
+        $this->view->myTasks = $myTasks;
     }
 }

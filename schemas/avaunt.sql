@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Jan 29, 2016 at 01:26 AM
--- Server version: 5.6.24
--- PHP Version: 5.6.8
+-- Host: 127.0.0.1
+-- Generation Time: Feb 04, 2016 at 08:38 AM
+-- Server version: 10.1.8-MariaDB
+-- PHP Version: 5.6.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -310,6 +310,29 @@ CREATE TABLE `password_changes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pbtdump`
+--
+
+CREATE TABLE `pbtdump` (
+  `consignment` text COLLATE utf8_unicode_ci NOT NULL,
+  `pbtConsignment` text COLLATE utf8_unicode_ci,
+  `itemCount` int(11) DEFAULT NULL,
+  `weight` int(11) DEFAULT NULL,
+  `pickupDate` date DEFAULT NULL,
+  `podDate` date DEFAULT NULL,
+  `podTime` time DEFAULT NULL,
+  `podSignature` text COLLATE utf8_unicode_ci,
+  `deliveryCourier` int(11) DEFAULT NULL,
+  `ticketNo` text COLLATE utf8_unicode_ci,
+  `cost` decimal(10,0) DEFAULT NULL,
+  `runsheet` text COLLATE utf8_unicode_ci,
+  `account` int(11) DEFAULT NULL,
+  `volume` decimal(10,0) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `pbt_consignments`
 --
 
@@ -354,6 +377,43 @@ CREATE TABLE `profiles` (
   `id` int(10) UNSIGNED NOT NULL,
   `name` varchar(64) NOT NULL,
   `active` char(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quotes`
+--
+
+CREATE TABLE `quotes` (
+  `id` int(11) NOT NULL,
+  `webId` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `date` datetime NOT NULL,
+  `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `customerRef` text COLLATE utf8_unicode_ci NOT NULL,
+  `user` int(3) NOT NULL,
+  `contact` int(4) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quote_items`
+--
+
+CREATE TABLE `quote_items` (
+  `id` int(11) NOT NULL,
+  `quoteId` int(11) NOT NULL,
+  `width` int(11) NOT NULL,
+  `thickness` int(11) NOT NULL,
+  `grade` int(11) NOT NULL,
+  `treatment` int(11) NOT NULL,
+  `dryness` int(11) NOT NULL,
+  `finish` int(11) NOT NULL,
+  `price` decimal(10,0) NOT NULL,
+  `priceMethod` int(11) NOT NULL,
+  `linealTotal` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -420,6 +480,7 @@ CREATE TABLE `tasks` (
   `user` int(11) NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `followUp` date DEFAULT NULL,
   `completed` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -610,6 +671,20 @@ ALTER TABLE `profiles`
   ADD KEY `active` (`active`);
 
 --
+-- Indexes for table `quotes`
+--
+ALTER TABLE `quotes`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `webId` (`webId`);
+
+--
+-- Indexes for table `quote_items`
+--
+ALTER TABLE `quote_items`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
@@ -663,27 +738,32 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `addresses`
 --
 ALTER TABLE `addresses`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2896;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `address_types`
 --
 ALTER TABLE `address_types`
-  MODIFY `typeCode` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `typeCode` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `contact_record`
 --
 ALTER TABLE `contact_record`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56745;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `customer_addresses`
 --
 ALTER TABLE `customer_addresses`
-  MODIFY `customerAddressId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2896;
+  MODIFY `customerAddressId` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `customer_groups`
 --
 ALTER TABLE `customer_groups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `customer_notes`
 --
@@ -693,17 +773,17 @@ ALTER TABLE `customer_notes`
 -- AUTO_INCREMENT for table `customer_status`
 --
 ALTER TABLE `customer_status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `email_confirmations`
 --
 ALTER TABLE `email_confirmations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `failed_logins`
 --
 ALTER TABLE `failed_logins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `finish`
 --
@@ -713,17 +793,17 @@ ALTER TABLE `finish`
 -- AUTO_INCREMENT for table `follow_up`
 --
 ALTER TABLE `follow_up`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `freight_areas`
 --
 ALTER TABLE `freight_areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `freight_carriers`
 --
 ALTER TABLE `freight_carriers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `grade`
 --
@@ -738,17 +818,27 @@ ALTER TABLE `password_changes`
 -- AUTO_INCREMENT for table `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `profiles`
 --
 ALTER TABLE `profiles`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `quotes`
+--
+ALTER TABLE `quotes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `quote_items`
+--
+ALTER TABLE `quote_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `reset_passwords`
 --
@@ -758,22 +848,22 @@ ALTER TABLE `reset_passwords`
 -- AUTO_INCREMENT for table `sales_areas`
 --
 ALTER TABLE `sales_areas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `success_logins`
 --
 ALTER TABLE `success_logins`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

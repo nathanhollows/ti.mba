@@ -34,7 +34,7 @@ class ControllerBase extends Controller
             // If there is no identity available the user is redirected to index/index
             if (!is_array($identity)) {
 
-                $this->flash->notice('You don\'t have access to this module: ' . $controllerName);
+                $this->flash->notice('You don\'t have access to this module: ' . ucwords($controllerName));
 
                 $dispatcher->forward(array(
                     'controller' => 'session',

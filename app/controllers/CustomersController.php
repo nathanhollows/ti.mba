@@ -29,17 +29,17 @@ class CustomersController extends ControllerBase
         $this->view->pageSubtitle = "Search";
         $this->tag->prependTitle("Search Customers");
         if ($this->request->isAjax()) {
-          $builder = $this->modelsManager->createBuilder()
-                          ->columns('customerCode, customerName, customerFax, customerPhone, customerStatus.style, customerStatus.name')
-                          ->from('App\Models\Customers')
-                          ->join('App\Models\CustomerStatus', 'customerStatus = customerStatus.id', 'customerStatus', 'INNER')
-                          ->orderBy('customerName');
+            $builder = $this->modelsManager->createBuilder()
+            ->columns('customerCode, customerName, customerFax, customerPhone, customerStatus.style, customerStatus.name')
+            ->from('App\Models\Customers')
+            ->join('App\Models\CustomerStatus', 'customerStatus = customerStatus.id', 'customerStatus', 'INNER')
+            ->orderBy('customerName');
 
-          $dataTables = new DataTable();
-          $dataTables->fromBuilder($builder)->sendResponse();
-        $this->persistent->parameters = null;
-        };
-    }
+            $dataTables = new DataTable();
+            $dataTables->fromBuilder($builder)->sendResponse();
+            $this->persistent->parameters = null;
+      };
+  }
 
     /**
      * Displays the creation form

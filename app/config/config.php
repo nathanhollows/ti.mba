@@ -25,6 +25,7 @@ return new \Phalcon\Config(array(
 	'pbt' => array(
 		'ftpServer'		=> '',
 		'ftpUserName'	=> '',
-		'ftpPassword'	=> ''
+		'ftpPassword'	=> '',
+		'ftpDirectory'	=> ''
 	),
 ));

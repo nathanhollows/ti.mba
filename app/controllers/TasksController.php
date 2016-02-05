@@ -18,17 +18,15 @@ class TasksController extends ControllerBase
 	{
 		$this->tag->prependTitle('Tasks');
 		
-		// Fetch all current tasks belonging to the logged in user
-		$auth = new Auth;
-		$tasks = Tasks::find(array(
-			'conditions'	=> 'user = ?1 AND completed IS NULL',
-			'bind'			=> array(
-				1 =>  $auth->getId(),
-			)
-		));
+		// Fetch today's current tasks belonging to the logged in user
+		$tasks = Tasks::getToday();
+
+		// Fetch all current tasks belonging to the current user
+		$futureTasks = Tasks::getFuture();
 
 		// Send the Tasks form and Tasks list to the view
 		$this->view->tasks = $tasks;
+		$this->view->futureTasks = $futureTasks;
 		$this->view->taskForm = new TasksForm;
 
 	}
@@ -53,7 +51,7 @@ class TasksController extends ControllerBase
 		$task = new Tasks();
 
 		// Store and check for errors
-		$success = $task->save($this->request->getPost(), array('description', 'user'));
+		$success = $task->save($this->request->getPost(), array('description', 'user', 'followUp'));
 
 		if ($success) {
 			$this->response->redirect('/tasks/');	

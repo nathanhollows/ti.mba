@@ -18,6 +18,25 @@
 			{% endfor %}
 		</ul>
 	</div>
+	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+		<ul class="list-group">
+			<li class="list-group-item active">
+				<h4>Coming Up <span class="badge">{{ futureTasks|length }}</span>
+					<button type="button" class="btn btn-default btn-sm pull-right" data-toggle="modal" href='#addtask'><i class="fa fa-icon fa-plus"></i> Add New</button>
+				</h4>
+			</li>			
+			{% for item in futureTasks %}
+			<li class="list-group-item">
+				{{ item.description }}
+				<span class="pull-right">
+					<a href="{{ url('tasks/complete/' ~ item.id ) }}">
+						<i class="fa fa-icon fa-times"></i>
+					</a>
+				</span>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
 </div>
 <!-- Modal for adding a new task -->
 <div class="modal fade" id="addtask">
