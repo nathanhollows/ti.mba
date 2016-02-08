@@ -13,6 +13,8 @@ use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
 use App\Auth\Auth;
 use App\Models\Users;
+use App\Models\Customers;
+use App\Models\Contacts;
 use App\Models\GenericStatus;
 
 class QuotesForm extends Form
@@ -26,18 +28,29 @@ class QuotesForm extends Form
 	{
 		$validation = new Validation();
 
-		$customerCode = new Text("customerCode");
+		$customerCode = new Select(
+			'customerCode',
+			Customers::find(),
+			array(
+				'using' => array('customerCode', 'customerName'),
+				'required'	=> 'true',
+				'useEmpty'	=> true,
+				'class' => 'form-control'
+			)
+		);
 		$customerCode->setLabel("Customer");
-		$customerCode->setAttributes(array(
-			'required'	=> 'true',
-			'class'		=> 'form-control'
-			));
 		$this->add($customerCode);
 
-		$contact = new Numeric("contact");
-		$contact->setAttributes(array(
-			'class'		=> 'form-control'
-			));
+		$contact = new Select(
+			'contact',
+			Contacts::find(),
+			array(
+				'using'	=> array('id', 'name'),
+				'required'	=> 'true',
+				'useEmpty'	=> true,
+				'class'	=> 'form-control'
+				)
+		);
 		$contact->setLabel("Contact");
 		$this->add($contact);
 
