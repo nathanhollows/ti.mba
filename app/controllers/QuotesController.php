@@ -102,10 +102,14 @@ class QuotesController extends ControllerBase
 		$random = new Random();
 		$quote->webId = $random->base64Safe(6);
 		// Store and check for errors
-		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'user', 'contact', 'status'));
+		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'details', 'user', 'contact', 'status'));
 		if ($success) {
-			$this->response->redirect('quotes/');
-			$this->view->disable;
+			$this->flash->success("Quote created successfully!");
+			return $this->dispatcher->forward(array(
+				"controller"	=> "quotes",
+				"action"		=> "edit",
+				"params"		=> array($quote->id)
+			));
 		} else {
 			$this->flash->error("Sorry, the quote could not be saved");
 			foreach ($quote->getMessages() as $message) {
