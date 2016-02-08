@@ -80,6 +80,7 @@ class CustomersController extends ControllerBase
             $history = ContactRecord::find(array(
                 "customerCode = '$customerCode'",
                 'order'         => 'date DESC',
+                'limit'         => 8
             ));
 
             $notes = CustomerNotes::find(array(
