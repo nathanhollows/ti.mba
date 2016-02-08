@@ -7,16 +7,21 @@
 				<h3 class="panel-title">Details</h3>
 			</div>
 			<div class="panel-body">
-				Panel content
+				{{ quote.customer.customerName }} <br>
+				{{ quote.customerContact.name }} <br>
+				{{ quote.customerRef }} <br>
+				{{ quote.date }} <br>
+				{{ quote.salesRep.name }} <br>
+				{{ quote.genericStatus.name }} <br>
 			</div>
 		</div>
 
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<h3 class="panel-title">Follow Up</h3>
+				<h3 class="panel-title">Notes</h3>
 			</div>
 			<div class="panel-body">
-				Panel content
+				{{ quote.details }}
 			</div>
 		</div>
 	</div>
