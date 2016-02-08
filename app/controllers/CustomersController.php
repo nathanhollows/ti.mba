@@ -11,6 +11,7 @@ use App\Models\Customers;
 use App\Models\CustomerAddresses;
 use App\Models\CustomerNotes;
 use App\Models\ContactRecord;
+use App\Models\Quotes;
 use App\Forms\CustomersForm;
 
 class CustomersController extends ControllerBase
@@ -70,6 +71,11 @@ class CustomersController extends ControllerBase
                     "action" => "index"
                 ));
             }
+
+            $quotes = Quotes::find(array(
+                "customerCode = '$customerCode'",
+                'order'         => 'id DESC'));
+            $this->view->quotes = $quotes;
 
             $history = ContactRecord::find(array(
                 "customerCode = '$customerCode'",
