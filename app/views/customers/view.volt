@@ -109,7 +109,6 @@
                                         <p>
                                             <h5>{{ contact.position }}</h5><br>
                                             <i class="fa fa-phone"></i> <a href="tel:{{ contact.directDial }}">{{ contact.directDial }} </a><br>
-                                            <i class="fa fa-mobile"></i> <a href="tel:{{ contact.cellPhone }}">{{ contact.cellPhone }} </a><br>
                                             <i class="fa fa-envelope"></i> <a href="mailto:{{ contact.email }}">{{ contact.email }} </a><br>
                                         </p>
                                     </div>
