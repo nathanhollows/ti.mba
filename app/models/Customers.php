@@ -124,4 +124,10 @@ class Customers extends \Phalcon\Mvc\Model
         return 'customers';
     }
 
+    public static function getName($customerCode = null)
+    {
+        $customer = parent::findFirstByCustomerCode($customerCode);
+        return $customer->customerName;
+    }
+
 }
