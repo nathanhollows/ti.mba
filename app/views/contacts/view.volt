@@ -17,15 +17,8 @@
 			<h3 class="panel-title">Organisation</h3>
 		</div>
 		<div class="panel-body">
-			{{ contactDetails.name }}
-		</div>
-	</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">Value</h3>
-		</div>
-		<div class="panel-body">
-			{{ contactDetails.name }}
+			{{ link_to("customers/view/" ~ contact.company.customerCode, contact.company.customerName) }}<br>
+			{{ contact.company.customerPhone }}
 		</div>
 	</div>
 </div>
