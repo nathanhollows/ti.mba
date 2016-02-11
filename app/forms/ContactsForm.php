@@ -5,7 +5,12 @@ namespace App\Forms;
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Email;
+use Phalcon\Forms\Element\Select;
+use Phalcon\Forms\Element\Hidden ;
 use Phalcon\Validation\Validator\PresenceOf;
+
+use App\Models\Contacts;
+use App\Models\Customers;
 
 class ContactsForm extends Form
 {
@@ -38,6 +43,19 @@ class ContactsForm extends Form
 			'placeholder'	=> 'Position',
 		));
 		$this->add($position);
+
+		$customerCode = new Select(
+			'customerCode',
+			Customers::find(),
+			array(
+				'using' => array('customerCode', 'customerName'),
+				'required'	=> 'true',
+				'useEmpty'	=> true,
+				'class' => 'form-control'
+			)
+		);
+		$customerCode->setLabel("Customer");
+		$this->add($customerCode);
 
 		$email = new Email("email");
 		$email->setLabel("Email Address");
