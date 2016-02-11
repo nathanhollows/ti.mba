@@ -45,10 +45,15 @@ class ControllerBase extends Controller
             }
         }
     }
-    
+
     public function initialize()
     {
         $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
         $this->tag->appendTitle(' | ' . SITE_TITLE);
     }
+    
+    protected function _redirectBack() {
+        return $this->response->redirect($this->request->getServer('HTTP_REFERER'));
+    }
+    
 }
