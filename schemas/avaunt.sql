@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 04, 2016 at 08:38 AM
+-- Generation Time: Feb 11, 2016 at 07:54 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -73,7 +73,9 @@ CREATE TABLE `contacts` (
 CREATE TABLE `contact_record` (
   `id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `customerCode` varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `contact` int(10) DEFAULT NULL,
+  `job` int(10) DEFAULT NULL,
   `user` int(11) DEFAULT NULL,
   `contactType` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
@@ -81,7 +83,9 @@ CREATE TABLE `contact_record` (
   `details` text COLLATE utf8_unicode_ci,
   `infoSent` text COLLATE utf8_unicode_ci,
   `attachments` int(11) DEFAULT NULL,
-  `completed` tinyint(1) NOT NULL
+  `followupDate` date DEFAULT NULL,
+  `followUpUser` int(5) DEFAULT NULL,
+  `completed` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -92,7 +96,8 @@ CREATE TABLE `contact_record` (
 
 CREATE TABLE `contact_type` (
   `id` int(11) NOT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `icon` varchar(12) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -234,14 +239,14 @@ CREATE TABLE `finish` (
 
 CREATE TABLE `follow_up` (
   `id` int(11) NOT NULL,
-  `controller` varchar(25) NOT NULL,
-  `action` varchar(25) NOT NULL,
-  `params` varchar(25) NOT NULL,
+  `customerCode` varchar(6) NOT NULL,
+  `contact` int(5) NOT NULL,
+  `job` int(10) NOT NULL,
   `user` int(11) NOT NULL,
   `date` date NOT NULL,
   `notes` text,
-  `followUpDate` date NOT NULL,
-  `followUpUser` int(11) NOT NULL,
+  `followUpDate` date DEFAULT NULL,
+  `followUpUser` int(11) DEFAULT NULL,
   `followUpNotes` text,
   `completed` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -278,7 +283,8 @@ CREATE TABLE `freight_carriers` (
 
 CREATE TABLE `generic_status` (
   `id` int(11) NOT NULL,
-  `name` text NOT NULL
+  `name` text NOT NULL,
+  `style` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -536,20 +542,26 @@ ALTER TABLE `address_types`
 -- Indexes for table `contacts`
 --
 ALTER TABLE `contacts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `contact_record`
 --
 ALTER TABLE `contact_record`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `customerCode` (`customerCode`);
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `customerCode` (`customerCode`),
+  ADD KEY `job` (`job`),
+  ADD KEY `contact` (`contact`),
+  ADD KEY `user` (`user`);
 
 --
 -- Indexes for table `contact_type`
 --
 ALTER TABLE `contact_type`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `customers`
@@ -678,13 +690,6 @@ ALTER TABLE `quotes`
   ADD UNIQUE KEY `webId` (`webId`);
 
 --
--- Indexes for table `quote_items`
---
-ALTER TABLE `quote_items`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
 -- Indexes for table `remember_tokens`
 --
 ALTER TABLE `remember_tokens`
@@ -753,6 +758,11 @@ ALTER TABLE `contacts`
 -- AUTO_INCREMENT for table `contact_record`
 --
 ALTER TABLE `contact_record`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `contact_type`
+--
+ALTER TABLE `contact_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `customer_addresses`
@@ -828,11 +838,6 @@ ALTER TABLE `profiles`
 -- AUTO_INCREMENT for table `quotes`
 --
 ALTER TABLE `quotes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `quote_items`
---
-ALTER TABLE `quote_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `remember_tokens`
