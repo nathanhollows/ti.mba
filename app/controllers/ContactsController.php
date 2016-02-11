@@ -39,13 +39,21 @@ class ContactsController extends ControllerBase
 		$this->view->pageSubtitle = $contact->company->customerName;
 	}
 
-	public function newAction()
+	public function newAction($customerCode = null)
 	{
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('blank');
 		}
+
+		$profile = new Contacts();
+		$profile->assign(array(
+			'customerCode'	=> $customerCode
+		));
+		
 		$this->view->pageTitle = "Create new Contact";
-		$this->view->form = new ContactsForm;
+		$this->view->form = new ContactsForm($profile, array(
+			'edit' => true
+		));
 	}
 
 	public function createAction()
