@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Forms;
 use App\Models\Contacts;
+use App\Models\ContactRecord;
 use App\Forms\ContactsForm;
 
 class ContactsController extends ControllerBase
@@ -20,9 +21,9 @@ class ContactsController extends ControllerBase
 		
 	}
 
-	public function viewAction($contact = null)
+	public function viewAction($id = null)
 	{
-		$contact = Contacts::findFirst("id = '$contact'");
+		$contact = Contacts::findFirst("id = '$id'");
 
 		if (!$contact) {
 			$this->flash->error("Woops! There is no contact with that ID");
@@ -32,6 +33,10 @@ class ContactsController extends ControllerBase
 			));
 		}
 		
+		$history = ContactRecord::findFirstByContact($id);
+
+		$this->view->history = $history;
+
 		$this->view->contact = $contact;
 
 		// Set page titles
