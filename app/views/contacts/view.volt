@@ -6,10 +6,10 @@
 			<h3 class="panel-title">Cotnact Details</h3>
 		</div>
 		<div class="panel-body">
-			{{ contactDetails.name }}<br>
-			{{ contactDetails.email }}<br>
-			{{ contactDetails.directDial }}<br>
-			{{ contactDetails.position }}<br>
+			{{ contact.name }}<br>
+			{{ contact.email }}<br>
+			{{ contact.directDial }}<br>
+			{{ contact.position }}<br>
 		</div>
 	</div>
 	<div class="panel panel-default">
