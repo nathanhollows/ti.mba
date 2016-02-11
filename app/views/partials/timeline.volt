@@ -1,4 +1,4 @@
-{% if history is iterable %}
+{% if history|length is not 0 %}
             <div class="timeline-centered">
 
                     {% for line in history %}
