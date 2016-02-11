@@ -18,7 +18,6 @@ class ContactsForm extends Form
 	 * Initialize the products form
 	 */
 
-	public function initialize()
 	public function initialize($entity = null, $option = null)
 	{
 		$name = new Text("name");
