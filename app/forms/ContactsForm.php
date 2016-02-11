@@ -46,20 +46,12 @@ class ContactsForm extends Form
 		));
 		$this->add($email);
 
-		$phone = new Text("phone");
+		$phone = new Text("directDial");
 		$phone->setLabel("Phone");
 		$phone->setAttributes(array(
 			'class'			=> 'form-control',
 			'placeholder'	=> 'Direct Dial',
 		));
 		$this->add($phone);	
-
-		$mobile = new Text("mobile");
-		$mobile->setLabel("Cell Phone");
-		$mobile->setAttributes(array(
-			'class'			=> 'form-control',
-			'placeholder'	=> 'Cell Phone',
-		));
-		$this->add($mobile);
 	}
 }
