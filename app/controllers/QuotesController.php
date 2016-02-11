@@ -84,8 +84,25 @@ class QuotesController extends ControllerBase
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('blank');
 		}
+
+		$quote = new Quotes;
+
+		if (null !== ($this->request->getQuery('company'))) {
+			$quote->assign(array(
+				'customerCode'	=> $this->request->getQuery('company')
+				)
+			);
+		}		
+
+		if (null !== ($this->request->getQuery('contact'))) {
+			$quote->assign(array(
+				'contact'	=> $this->request->getQuery('contact')
+				)
+			);
+		}
+
 		$this->tag->prependTitle('New Quote');
-		$this->view->quoteForm = new QuotesForm();
+		$this->view->quoteForm = new QuotesForm($quote);
 	}
 
 	public function createAction()
