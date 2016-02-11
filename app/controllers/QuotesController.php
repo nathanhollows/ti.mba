@@ -61,8 +61,8 @@ class QuotesController extends ControllerBase
 				"conditions"	=> "quoteId = ?1",
 				"bind"			=> array(
 					1			=> $quoteId
-				)
-			));
+					)
+				));
 			$this->view->items = $items;
 		} else {
 			// If the quote does not exist then spit out an error
@@ -109,7 +109,7 @@ class QuotesController extends ControllerBase
 				"controller"	=> "quotes",
 				"action"		=> "edit",
 				"params"		=> array($quote->id)
-			));
+				));
 		} else {
 			$this->flash->error("Sorry, the quote could not be saved");
 			foreach ($quote->getMessages() as $message) {
