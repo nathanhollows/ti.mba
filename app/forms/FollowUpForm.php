@@ -28,7 +28,8 @@ class FollowUpForm extends Form
 					'customerCode',
 					'customerName'
 				),
-			'class'	=> 'form-control'
+			'class'	=> 'form-control',
+			'useEmpty'	=> true
 			)
 		);
 		$customer->setLabel("Customer");
@@ -42,7 +43,7 @@ class FollowUpForm extends Form
 					'id',
 					'name'
 				),
-			'class'	=> 'form-control'
+			'class'	=> 'form-control',
 			)
 		);
 		$contact->setLabel("Contact");
