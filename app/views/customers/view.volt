@@ -161,7 +161,7 @@
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">Quotes
-                        <a class="pull-right" data-toggle="modal" href='{{ url('quotes/new/' ~ customer.customerCode) }}' data-target="#modal-ajax">Add <i class="fa fa-icon fa-plus"></i></a></h3>
+                        <a class="pull-right" data-toggle="modal" href='{{ url('quotes/new/?company=' ~ customer.customerCode) }}' data-target="#modal-ajax">Add <i class="fa fa-icon fa-plus"></i></a></h3>
                     </h3>
                 </div>
                 <div class="panel-body">
@@ -177,7 +177,7 @@
                         <tbody>
                             {% for quote in quotes %}
                             <tr>
-                                <td>{{ quote.id }}</td>
+                                <td>{{ link_to("quotes/edit/" ~ quote.id, quote.id) }}</td>
                                 <td>{{ quote.customerRef }}</td>
                                 <td>{{ quote.date }}</td>
                                 <td><span class="label label-{{ quote.genericStatus.style }}">{{ quote.genericStatus.name }}</span></td>
