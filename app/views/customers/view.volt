@@ -103,7 +103,8 @@
                                 {% for contact in customer.contacts %}
                                 <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
                                     <div class="well">
-                                        <h3> {{ contact.name }}
+                                        <h3> 
+                                            {{ link_to("contacts/view/" ~ contact.id, contact.name) }}
                                         </h3>
                                         <p>
                                             <h5>{{ contact.position }}</h5><br>
