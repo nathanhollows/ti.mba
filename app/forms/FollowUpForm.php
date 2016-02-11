@@ -18,7 +18,7 @@ use App\Models\Customers,
 class FollowUpForm extends Form
 {
 	// Initialize the Follow Up form
-	public function initialize()
+	public function initialize($entity = null, $option = null)
 	{
 		$customer = new Select(
 			"customerCode",
