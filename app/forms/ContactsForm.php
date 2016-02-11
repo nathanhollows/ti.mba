@@ -14,6 +14,7 @@ class ContactsForm extends Form
 	 */
 
 	public function initialize()
+	public function initialize($entity = null, $option = null)
 	{
 		$name = new Text("name");
 		$name->setLabel("Name");
