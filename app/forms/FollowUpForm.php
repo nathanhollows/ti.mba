@@ -66,6 +66,7 @@ class FollowUpForm extends Form
 
 		$date = new Date("date");
 		$date->setAttributes(array(
+			'value'		=> date('Y-m-d'),
 			'required'	=> 'true',
 			'class'		=> 'form-control'
 			));
