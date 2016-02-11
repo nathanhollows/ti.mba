@@ -92,6 +92,9 @@ class FollowUpForm extends Form
 		$this->add($rep);
 
 		$submit = new Submit("submit");
+		$submit->setAttributes(array(
+			'class'	=> 'btn btn-primary'
+		));
 		$this->add($submit);
 	}
 }
