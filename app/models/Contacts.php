@@ -58,7 +58,7 @@ class Contacts extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode', array('alias'  => 'customers'));
+        $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode', array('alias'  => 'company'));
     }
 
     /**
