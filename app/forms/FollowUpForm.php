@@ -44,6 +44,7 @@ class FollowUpForm extends Form
 					'name'
 				),
 			'class'	=> 'form-control',
+			'useEmpty'	=> true,
 			)
 		);
 		$contact->setLabel("Contact");
