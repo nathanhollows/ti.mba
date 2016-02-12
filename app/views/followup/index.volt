@@ -3,7 +3,7 @@
 <form action="{{ static_url('followup/create') }}" method="POST" role="form">
 	<div class="modal-body">
 		<div class="row">
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 				<div class="input-group">
 					<div class="input-group-addon">
 						<i class="fa fa-building"></i> 
@@ -11,7 +11,7 @@
 					{{ form.render('customerCode') }}
 				</div>
 			</div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 				<div class="input-group">
 					<div class="input-group-addon">
 						<i class="fa fa-user"></i> 
@@ -19,7 +19,12 @@
 					{{ form.render('contact') }}
 				</div>
 			</div>
-			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+		</div>
+
+		<hr>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="input-group">
 					<div class="input-group-addon">
 						<i class="fa fa-quote-left"></i> 
