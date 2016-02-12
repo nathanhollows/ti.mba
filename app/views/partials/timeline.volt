@@ -6,7 +6,7 @@
 
                     <div class="timeline-entry-inner">
 
-                        <div class="timeline-icon bg-{% if line.completed == 1%}success{% else %}danger{% endif %}">
+                        <div class="timeline-icon bg-{{ line.type.style }}">
                             <i class="fa fa-icon fa-{{ line.type.icon }}"></i>
                         </div>
 
