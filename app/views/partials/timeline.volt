@@ -5,7 +5,6 @@
                 <article class="timeline-entry">
 
                     <div class="timeline-entry-inner">
-                        <time class="timeline-time"><span>{{ line.date }}</span> <span>Today</span></time>
 
                         <div class="timeline-icon bg-{% if line.completed == 1%}success{% else %}danger{% endif %}">
                             <i class="fa fa-icon fa-{{ line.type.icon }}"></i>
