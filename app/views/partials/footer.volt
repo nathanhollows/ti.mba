@@ -1,8 +1,15 @@
 </div>
 
-
+<!-- AJAX modal for misc forms -->
+<div class="modal fade" id="modal-ajax">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
     <!-- Bootstrap Core JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   	<script type="text/javascript" src="{{ static_url( "js/app.js" ) }}"></script>
 
 	<footer class="footer">
 		Made with love by the Avaunt team
