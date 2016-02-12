@@ -13,6 +13,9 @@
                         <div class="timeline-label">
                             <h2>{{ line.staff.name }} <span>{{ line.type.name }}</span></h2>
                             <p>{{ line.details }}</p>
+                            <p>{{ line.date|timeAgo }}
+                                <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('followup/edit/' ~ line.id) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
+                            </p>
                         </div>
                     </div>
 
