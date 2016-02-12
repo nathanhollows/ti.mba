@@ -19,10 +19,9 @@ class FollowUpController extends ControllerBase
 			$this->view->setTemplateBefore('modal-form');
 		}
 
-		$this->view->pageTitle = "New Contact";
-
+		$this->view->pageTitle = "New Contact Record";
 		$followUp = new FollowUp;
-		
+
 		if (null !== ($this->request->getQuery('company'))) {
 			$followUp->assign(array(
 				'customerCode'	=> $this->request->getQuery('company')
@@ -53,9 +52,11 @@ class FollowUpController extends ControllerBase
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('modal-form');
 		}
-		$this->view->pageTitle = "Edit Contact";
+
+		$this->view->pageTitle = "Edit History Record";
 
 		$contact = ContactRecord::findFirstById($id);
+
 		if (!$contact) {
 			return $this->dispatcher->forward(array(
 				"controller"	=> "Error",
