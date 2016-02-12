@@ -1,6 +1,7 @@
 {
     "require": {
         "m1ome/phalcon-datatables": "1.*",
-        "knplabs/knp-snappy": "^0.4.3"
+        "knplabs/knp-snappy": "^0.4.3",
+        "nesbot/carbon": "~1.14"
     }
 }

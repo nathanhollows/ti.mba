@@ -86,6 +86,12 @@ $di->set('view', function() use ($config) {
 				'compiledSeparator' => '_',
 			));
 
+		    $compiler = $volt->getCompiler();
+
+		    $compiler->addFilter('timeAgo', function($resolvedArgs, $exprArgs){
+		        return '\Carbon\Carbon::createFromFormat("Y-m-d", '.$resolvedArgs.')->diffForHumans()';
+		    });
+
 			return $volt;
 		},
 		'.phtml' => 'Phalcon\Mvc\View\Engine\Php'
