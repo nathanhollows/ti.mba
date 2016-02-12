@@ -58,10 +58,8 @@ class FollowUpController extends ControllerBase
 		$contact = ContactRecord::findFirstById($id);
 
 		if (!$contact) {
-			return $this->dispatcher->forward(array(
-				"controller"	=> "Error",
-				"action"		=> "show404"
-			));
+			$this->flash->error("That isn't a valid record.");
+			return false;
 		}
 
 		$form = new followUpForm($contact);
