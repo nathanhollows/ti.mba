@@ -47,7 +47,7 @@ class ContactsController extends ControllerBase
 	public function newAction($customerCode = null)
 	{
 		if ($this->request->isAjax()) {
-			$this->view->setTemplateBefore('blank');
+			$this->view->setTemplateBefore('modal-form');
 		}
 
 		$profile = new Contacts();
