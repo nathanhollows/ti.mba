@@ -25,7 +25,7 @@
                     <div class="timeline-entry-inner">
 
                         <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
-                            <i class="entypo-flight"></i>
+                            
                         </div>
 
                     </div>
