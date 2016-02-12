@@ -64,31 +64,31 @@
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="btn-group" data-toggle="buttons">
 					<label class="btn btn-default active">
-						<input type="radio" name="type" value="13" autocomplete="off" checked> Note
+						<input type="radio" name="contactType" value="13" autocomplete="off" checked> Note
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="14" autocomplete="off"> Phone
+						<input type="radio" name="contactType" value="14" autocomplete="off"> Phone
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="3" autocomplete="off"> Email
+						<input type="radio" name="contactType" value="3" autocomplete="off"> Email
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="4" autocomplete="off"> Rep Visit
+						<input type="radio" name="contactType" value="4" autocomplete="off"> Rep Visit
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="5" autocomplete="off"> Quote
+						<input type="radio" name="contactType" value="5" autocomplete="off"> Quote
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="6" autocomplete="off"> Other
+						<input type="radio" name="contactType" value="6" autocomplete="off"> Other
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="7" autocomplete="off"> Mail
+						<input type="radio" name="contactType" value="7" autocomplete="off"> Mail
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="11" autocomplete="off"> Dispute
+						<input type="radio" name="contactType" value="11" autocomplete="off"> Dispute
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="type" value="12" autocomplete="off"> Gift
+						<input type="radio" name="contactType" value="12" autocomplete="off"> Gift
 					</label>
 				</div>
 			</div>	
