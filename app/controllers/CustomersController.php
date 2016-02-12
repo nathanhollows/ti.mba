@@ -128,38 +128,15 @@ class CustomersController extends ControllerBase
         }
 
         $customer = new Customers();
-
-        $customer->customerCode = $this->request->getPost("customerCode");
-        $customer->customerName = $this->request->getPost("customerName");
-        $customer->customerPhone = $this->request->getPost("customerPhone");
-        $customer->customerFax = $this->request->getPost("customerFax");
-        $customer->customerEmail = $this->request->getPost("customerEmail");
-        $customer->freightArea = $this->request->getPost("freightArea");
-        $customer->freightCarrier = $this->request->getPost("freightCarrier");
-        $customer->salesArea = $this->request->getPost("salesArea");
-        $customer->customerStatus = $this->request->getPost("customerStatus");
-        $customer->defaultAddress = $this->request->getPost("defaultAddress");
-        $customer->defaultContact = $this->request->getPost("defaultContact");
-        $customer->customerGroup = $this->request->getPost("customerGroup");
-        
-
-        if (!$customer->save()) {
+        $success = $customer->save($this->request->getPost(), array('customerCode', 'customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup'));     
+        if ($success) {
+            $this->response->redirect("customers/view/" . $customer->customerCode);
+        } else {
             foreach ($customer->getMessages() as $message) {
-                $this->flash->error($message);
+                $this->flash->error($message->getMessage());
             }
-
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "new"
-            ));
         }
 
-        $this->flash->success("Customer was created successfully");
-
-        return $this->dispatcher->forward(array(
-            "controller" => "customers",
-            "action" => "view/" . $customer->customerCode,
-        ));
     }
 
     /**
