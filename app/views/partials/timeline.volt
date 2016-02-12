@@ -33,4 +33,42 @@
                 </article>
 
             </div>
+{% else %}
+
+            <div class="timeline-centered">
+
+                <article class="timeline-entry begin">
+
+                    <div class="timeline-entry-inner">
+
+                        <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
+                            
+                        </div>
+
+                        <div class="timeline-label">
+                            <h2>Woops! <span>There doesn't seem to be anything here!</span></h2>
+                            <p>You can be the first to
+                                <a class="text-info" data-target="#modal-ajax" href='{{ url('followup/?company=' ~ customer.customerCode) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> add a record!</a>
+                            </p>
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <article class="timeline-entry begin">
+
+                    <div class="timeline-entry-inner">
+
+                        <div class="timeline-icon">
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
 {% endif %}
