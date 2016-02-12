@@ -84,6 +84,25 @@ class FollowUpController extends ControllerBase
 				$this->flash->error($message->getMessage());
 			}
 		}
+	}
+
+	public function updateAction()
+	{
+		$this->view->disable();
+
+		$contact = new ContactRecord();
+
+		// Store and check for errors
+		$success = $contact->update($this->request->getPost(), array('customerCode', 'contact', 'job', 'details', 'contactType', 'user', 'date'));
+		if ($success) {
+			$this->flash->success("Note updated successfully!");
+			return $this->_redirectBack();
+				} else {
+			$this->flash->error("Sorry, the note could not be saved");
+			foreach ($contact->getMessages() as $message) {
+				$this->flash->error($message->getMessage());
+			}
+		}
 
 	}
 }
