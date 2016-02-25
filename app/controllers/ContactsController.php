@@ -33,6 +33,13 @@ class ContactsController extends ControllerBase
 				"action"		=> ""
 			));
 		}
+
+		$history = ContactRecord::find(array(
+            "contact = '$id'",
+            'order'         => 'id DESC',
+            'limit'         => 8
+        ));
+        $this->view->history = $history;
 		
 		$history = ContactRecord::findFirstByContact($id);
 
