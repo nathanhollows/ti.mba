@@ -53,7 +53,7 @@ class FollowUpController extends ControllerBase
 			$this->view->setTemplateBefore('modal-form');
 		}
 
-		$this->view->pageTitle = "Edit History Record";
+		$this->view->pageTitle = "Edit Contact Record";
 
 		$contact = ContactRecord::findFirstById($id);
 
