@@ -73,7 +73,7 @@ class Auth extends Component
 
     /**
      * Implements login throttling
-     * Reduces the efectiveness of brute force attacks
+     * Reduces the effectiveness of brute force attacks
      *
      * @param int $userId
      */
