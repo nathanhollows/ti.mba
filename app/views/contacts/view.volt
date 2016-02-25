@@ -3,7 +3,7 @@
 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">Cotnact Details</h3>
+			<h3 class="panel-title">Contact Details
 		</div>
 		<div class="panel-body">
 			{{ contact.name }}<br>
