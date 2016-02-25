@@ -7,6 +7,7 @@ use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\TextArea,
 	Phalcon\Forms\Element\Date,
 	Phalcon\Forms\Element\Select,
+	Phalcon\Forms\Element\Hidden,
 	Phalcon\Forms\Element\Submit;
 
 use App\Auth\Auth;
@@ -20,6 +21,9 @@ class FollowUpForm extends Form
 	// Initialize the Follow Up form
 	public function initialize($entity = null, $option = null)
 	{
+		$id = new Hidden("id");
+		$this->add($id);
+		
 		$customer = new Select(
 			"customerCode",
 			Customers::find(),
