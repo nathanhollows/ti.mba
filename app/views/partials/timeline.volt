@@ -11,8 +11,12 @@
                         </div>
 
                         <div class="timeline-label">
-                            <h2>{{ line.staff.name }} <span>{{ line.type.name }}</span></h2>
-                            <p>{{ line.details }}</p>
+                            <h2>{{ line.staff.name }} <span>{{ line.type.name }}</span> 
+                            {% if line.contact is not empty %}
+                                <span class="pull-right">{{ line.person.name }}</span>
+                            {% endif %}
+                            </h2>
+                            <p>{{ parser.parse(line.details) }}</p>
                             <p>{{ line.date|timeAgo }}
                                 <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('followup/edit/' ~ line.id) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
                             </p>
