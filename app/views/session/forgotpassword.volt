@@ -1,16 +1,9 @@
-</div>
-<div class="jumbotron">
-	<div class="container">
-		<h1>Forgot your password?</h1>
-		<p>We'll send you a new one.. for free!</p>
-	</div>
-</div>
-
 <div class="container">
 
-{{ content() }}
-
-{{ form() }}
+	{{ form('class': 'form-signin') }}
+	{{ content() }}
+	<h2 class="form-signin-heading">Forgot your password?</h2>
+	<p>No worries! Just enter your email address below and we'll let you know what to do next!</p>
 
 	<div class="form-group">
 		{{ form.label('Email' )}}
@@ -19,6 +12,7 @@
 
 	<div class="form-group">
 		{{ form.render('Send') }}
-	</div>
-
+	</div>		
 </form>
+
+</div>
