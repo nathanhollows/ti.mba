@@ -63,7 +63,10 @@ class FollowUpForm extends Form
 
 		$details = new TextArea("details");
 		$details->setAttributes(array(
-			'class'		=> 'form-control'
+			'class'		=> 'form-control',
+			'data-provide'=>'markdown-editable',
+			'autofocus'	=> 'true',
+			'data-iconlibrary'=>'fa',
 			));
 		$details->setLabel("Details");
 		$this->add($details);
