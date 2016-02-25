@@ -15,7 +15,7 @@ use App\Models\Customers;
 class ContactsForm extends Form
 {
 	/**
-	 * Initialize the products form
+	 * Initialize the contact form
 	 */
 
 	public function initialize($entity = null, $option = null)
