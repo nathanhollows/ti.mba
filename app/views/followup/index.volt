@@ -81,7 +81,7 @@
 						<input type="radio" name="contactType" value="4" autocomplete="off"> Rep Visit
 					</label>
 					<label class="btn btn-default">
-						<input type="radio" name="contactType" value="5" autocomplete="off"> Quote
+						<input type="radio" name="contactType" value="15" autocomplete="off"> ETA
 					</label>
 					<label class="btn btn-default">
 						<input type="radio" name="contactType" value="6" autocomplete="off"> Other
