@@ -93,4 +93,9 @@ class ContactRecord extends \Phalcon\Mvc\Model
 		$this->hasOne('user', 'App\Models\Users', 'id', array('alias'  => 'staff'));
 		$this->hasOne('contactType', 'App\Models\ContactType', 'id', array('alias'  => 'type'));
 	}
+
+    public function beforeCreate()
+    {
+        $this->date = date('Y-m-d H:i:s');
+    }
 }
