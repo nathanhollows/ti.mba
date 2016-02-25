@@ -7,9 +7,9 @@
 		</div>
 		<div class="panel-body">
 			{{ contact.name }}<br>
-			{{ contact.email }}<br>
-			{{ contact.directDial }}<br>
-			{{ contact.position }}<br>
+			{% if contact.email is not empty %} {{ contact.email }}<br> {% endif %}
+			{% if contact.directDial is not empty %} {{ contact.directDial }}<br> {% endif %}
+			{% if contact.position is not empty %} {{ contact.position }}<br> {% endif %}
 		</div>
 	</div>
 	<div class="panel panel-default">
