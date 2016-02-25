@@ -164,7 +164,9 @@
     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title"><strong>Customer</strong> Addresses <span class="label label-primary">{{ addresses|length }}</span></h3>
+            <h3 class="panel-title"><strong>Customer</strong> Addresses <span class="label label-primary">{{ addresses|length }}</span>
+            <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('address/new/' ~ customer.customerCode) }}' data-target="#modal-ajax"><i class="fa fa-plus"></i> Add</a>
+            </h3>
         </div>
         <div class="panel-body">
             {% if addresses %}
