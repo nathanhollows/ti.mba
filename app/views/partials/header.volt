@@ -16,56 +16,10 @@
     <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- DataTables -->
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css">
-    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
     <!-- Bootstrap Editable -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.dataTable').each(function () {
-            var source = $(this).attr("data-source");
-            var state = $(this).attr("data-state");
-            $(this).DataTable({
-                serverSide: true,
-                ajax: {
-                    url: source,
-                    method: 'POST'
-                },
-                search: {
-                    smart: true
-                },
-                stateSave: true,
-                pagingType: "simple_numbers",
-                columns: [
-                {data: "customerCode", searchable: true,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<a href='{{ url('customers/view/') }}"+oData.customerCode+"'>"+oData.customerCode+"</a>");
-                }},
-                {data: "customerName", searchable: true},
-                {data: "customerPhone", searchable: true,
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<a href='tel:"+oData.customerPhone+"')>"+oData.customerPhone+"</a>");
-                }},
-                {data: "customerFax", searchable: false, class: "hidden-xs"},
-                {data: "name", searchable: true, class: "hidden-xs",
-                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<span class='label label-"+oData.style+"'>"+oData.name+"</span>");
-                }},
-                ],
-            });
-            });
-        $('div.dataTables_filter input').select();
-        $('#enable').click(function() {
-            $('.editable').editable('toggleDisabled');
-        });   
-        $.fn.editable.defaults.mode = 'inline';    
-        $('.generaledit').editable();
-        $('.editable').editable('toggleDisabled');
-
-        });
-    </script>
+    <!-- Selec2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/css/select2.min.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
