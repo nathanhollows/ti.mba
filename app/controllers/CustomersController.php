@@ -8,7 +8,7 @@ use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Customers;
-use App\Models\CustomerAddresses;
+use App\Models\Addresses;
 use App\Models\CustomerNotes;
 use App\Models\ContactRecord;
 use App\Models\Quotes;
