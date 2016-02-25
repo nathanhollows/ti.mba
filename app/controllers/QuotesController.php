@@ -85,7 +85,7 @@ class QuotesController extends ControllerBase
 			$this->view->setTemplateBefore('modal-form');
 		}
 
-		$this->view->pageTitle = "Create Quote";
+		$this->view->pageTitle = "Create a Quote";
 
 		$quote = new Quotes;
 
