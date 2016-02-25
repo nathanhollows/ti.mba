@@ -23,6 +23,7 @@ class ContactsController extends ControllerBase
 
 	public function viewAction($id = null)
 	{
+		$this->view->parser = new \cebe\markdown\Markdown();
 		$contact = Contacts::findFirst("id = '$id'");
 
 		if (!$contact) {
