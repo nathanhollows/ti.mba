@@ -41,7 +41,7 @@ class ContactsController extends ControllerBase
         ));
         $this->view->history = $history;
 		
-		$history = ContactRecord::findFirstByContact($id);
+        $this->view->headerButton = \Phalcon\Tag::linkTo(array("followup/?company=" . $contact->customerCode . "&contact=" . $id, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
 
 		$this->view->history = $history;
 
