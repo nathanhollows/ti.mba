@@ -99,7 +99,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Quotes
-                    <a class="pull-right" data-toggle="modal" href='{{ url('quotes/new/?company=' ~ customer.customerCode) }}' data-target="#modal-ajax">Add <i class="fa fa-icon fa-plus"></i></a></h3>
+                    <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('quotes/new/?company=' ~ customer.customerCode) }}' data-target="#modal-ajax"><i class="fa fa-plus"></i> Add</a>
                 </h3>
             </div>
             <div class="panel-body">
