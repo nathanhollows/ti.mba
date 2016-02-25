@@ -76,10 +76,10 @@ class FollowUpController extends ControllerBase
 		// Store and check for errors
 		$success = $contact->save($this->request->getPost(), array('customerCode', 'contact', 'job', 'details', 'contactType', 'user', 'date'));
 		if ($success) {
-			$this->flash->success("Note created successfully!");
+			$this->flash->success("Quote created successfully!");
 			return $this->_redirectBack();
 				} else {
-			$this->flash->error("Sorry, the note could not be saved");
+			$this->flash->error("Sorry, the quote could not be saved");
 			foreach ($contact->getMessages() as $message) {
 				$this->flash->error($message->getMessage());
 			}
