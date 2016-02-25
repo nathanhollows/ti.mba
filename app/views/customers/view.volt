@@ -8,91 +8,58 @@
                     </h3>
                     </div>
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Code</strong>
-                                <div class="col-xs-9">
-                                    {{ customer.customerCode }} 
-                                    {% if customer.status.name is defined %}
-                                    <span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Name</strong>
-                                <div class="col-xs-9">
-                                    <a href="#" id="customerName" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Customer Name">{{ customer.customerName }} </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Status</strong>
-                                <div class="col-xs-9">
-                                    {% if customer.status.name is defined %}<a href="#" id="customerStatus" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.status.name }} </a>{% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Phone</strong>
-                                <div class="col-xs-9">
-                                    <a href="tel:{{ customer.customerPhone }}" id="customerPhone" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerPhone }} </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Fax</strong>
-                                <div class="col-xs-9">
-                                    <a href="#" id="customerFax" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerFax }} </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Email</strong>
-                                <div class="col-xs-9">
-                                    <a href="mailto:{{ customer.customerEmail }}" id="customerEmail" class="generaledit" data-type="email" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{{ customer.customerEmail }} </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Group</strong>
-                                <div class="col-xs-9">
-                                    {% if customer.customergroup.headOffice is defined %}<a href="{% if customer.customergroup.headOffice %}{{ url('customers/view/' ~ customer.customergroup.headOffice)}}{% else %}#{% endif %}" id="customerGroup" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.customergroup %}{{ customer.customergroup.name }}{% endif %} 
-                                    {% if customer.customergroup.headOffice %} <span class="label label-info">Head Office</span> {% endif %}</a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Freight Area</strong>
-                                <div class="col-xs-9">
-                                    <a href="#" id="freightArea" class="generaledit" data-type="select" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.freightarea %}{{ customer.freightarea.name }}{% endif %} </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Freight Carrier</strong>
-                                <div class="col-xs-9">
-                                    <a href="#" id="freightCarrier" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.freightcarrier %}{{ customer.freightcarrier.name }}{% endif  %} </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <strong class="col-xs-3 text-right">Sales Area</strong>
-                                <div class="col-xs-9">
-                                    <a href="#" id="salesArea" class="generaledit" data-type="text" data-pk="{{ customer.customerCode }}" data-url="{{ url('customers/update') }}" data-title="Enter username">{% if customer.salesarea %}{{ customer.salesarea.name }}{% endif %} </a>
-                                </div>
-                            </div>
-                        </div>
+                        <table class="table table-responsive table-condensed">
+                            <tbody>
+                                <tr>
+                                    <td>Code</td>
+                                    <td>{{ customer.customerCode }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>{{ customer.customerName }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td><span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    <td>{{ customer.customerPhone }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Fax</td>
+                                    <td>{{ customer.customerFax }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Email</td>
+                                    <td>{{ customer.customerEmail }}</td>
+                                </tr>
+                                {% if customer.group is not empty %}
+                                <tr>
+                                    <td>Group</td>
+                                    <td>{{ customer.group.name }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if customer.freightarea is not empty %}
+                                <tr>
+                                    <td>Freight Area</td>
+                                    <td>{{ customer.freightarea.name }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if customer.freightcarrier is not empty %}
+                                <tr>
+                                    <td>Freight Carrier</td>
+                                    <td>{{ customer.freightcarrier.name }}</td>
+                                </tr>
+                                {% endif %}
+                                {% if customer.salesarea is not empty %}
+                                <tr>
+                                    <td>Sales Area</td>
+                                    <td>{{ customer.salesarea.name }}</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>            
