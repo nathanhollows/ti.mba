@@ -47,24 +47,16 @@ class FollowUpController extends ControllerBase
 
 	}
 
-	public function editAction($id)
+	public function editAction($id) 
 	{
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('modal-form');
 		}
 
 		$this->view->pageTitle = "Edit Contact Record";
+		$followUp = ContactRecord::findFirstById($id);
 
-		$contact = ContactRecord::findFirstById($id);
-
-		if (!$contact) {
-			$this->flash->error("That isn't a valid record.");
-			return false;
-		}
-
-		$form = new followUpForm($contact);
-
-		$this->view->form = $form;
+		$this->view->form = new FollowUpForm($followUp);
 
 	}
 
@@ -88,21 +80,28 @@ class FollowUpController extends ControllerBase
 
 	public function updateAction()
 	{
-		$this->view->disable();
 
-		$contact = new ContactRecord();
+        $this->view->disable;
+        if (!$this->request->isPost()) {
+            return $this->dispatcher->forward(array(
+                "controller" => "customers",
+                "action" => "index"
+                ));
+        }
 
-		// Store and check for errors
-		$success = $contact->update($this->request->getPost(), array('customerCode', 'contact', 'job', 'details', 'contactType', 'user', 'date'));
-		if ($success) {
-			$this->flash->success("Note updated successfully!");
-			return $this->_redirectBack();
-				} else {
-			$this->flash->error("Sorry, the note could not be saved");
-			foreach ($contact->getMessages() as $message) {
-				$this->flash->error($message->getMessage());
-			}
-		}
+        $history = ContactRecord::findFirstById($this->request->getPost('id'));
+        // Store and check for errors
+        $success = $history->save($this->request->getPost(), array('details', 'contact', 'job', 'company', 'date', 'user',));
+        if ($success) {
+            $this->flash->success("Quote created successfully!");
+            return $this->_redirectBack();
+        } else {
+            $this->flash->error("Sorry, the quote could not be saved");
+            foreach ($contact->getMessages() as $message) {
+                $this->flash->error($message->getMessage());
+            }
+        }
+
 
 	}
 }
