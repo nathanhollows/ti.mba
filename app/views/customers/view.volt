@@ -173,7 +173,8 @@
                 <div class="panel panel-default">
                   <div class="panel-heading">
                     <h3 class="panel-title">{{ address.type.typeDescription }}
-                        <div class="pull-right"><i class="fa fa-icon fa-edit"></i></div></h3>
+                        <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
+                    </h3>
                     </div>
                     <div class="panel-body">
                         {% for key, line in address.address %}
