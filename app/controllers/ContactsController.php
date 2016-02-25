@@ -75,13 +75,20 @@ class ContactsController extends ControllerBase
 		));
 	}
 
-	public function editAction($id)
+	public function editAction($id = null)
 	{
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('modal-form');
-		} else {
-			$this->response->redirect('dashboard');
 		}
+
+		if (!isset($id)) {
+			$this->flash->error("Malformed URL");
+            return $this->dispatcher->forward(array(
+                "controller" => "contacts",
+                "action" => "index"
+            ));
+		}
+
 
 		$this->view->pageTitle = 'Edit';
 
