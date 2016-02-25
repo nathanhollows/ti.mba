@@ -3,10 +3,11 @@
 namespace App\Freight;
 
 use Phalcon\Mvc\User\Component;
+use App\Models\PbtConsignments;
 
 class Freight extends component
 {
-	public function pbt()
+	public function downloadPBT()
 	{
 		$config = include __DIR__ . "/../../config/config.php";
 
@@ -36,7 +37,7 @@ class Freight extends component
 		// output $contents
 		//var_dump($contents);
 		if (empty($contents)) {
-			$this->flash->notice("No files to download!");
+			return true;
 		} else {
 			foreach ($contents as $file) {
 				$local_file = 'ftp/pbt/'.$file;
@@ -50,5 +51,64 @@ class Freight extends component
 		// close the connection
 		ftp_close($conn_id);
 
+	}
+
+	public function importPBT()
+	{
+
+		$dir = getcwd();
+		chdir('ftp/pbt/');
+		$newDir = getcwd();
+		// read input file
+		$files = glob('*.txt');
+		foreach($files as $file) {
+
+			$fp = fopen($file, "r");
+
+
+			$row = 1;
+			while( ( $data = fgetcsv( $fp, '', "\t" ) ) !== FALSE ) {
+				if ($row == 1) {
+					$row ++;
+				} elseif ($data[4] == 0){
+					return true;
+				} else {
+					$data4 = date_create_from_format('d/m/Y', $data[4]);
+					$data5 = date_create_from_format('d/m/Y', $data[5]);
+
+					$import = new PbtConsignments();
+					$import->conNote = $data[0];
+					$import->pbtConsignmentNote = $data[1];
+					$import->numberOfItems = $data[2];
+					$import->weight = $data[3];
+					$import->pickupDate = date_format($data4, 'Y-m-d');
+					$import->podDate = date_format($data5, 'Y-m-d');
+					$import->podTime = $data[6];
+					$import->deliveryBy = $data[7];
+					$import->podSignature = $data[8];
+					$import->deliveryCourier = $data[9];
+					$import->ticketNo = $data[10];
+					$import->cost = $data[11];
+					$import->runsheet = $data[12];
+					$import->accountNo = $data[13];
+					$import->volume = $data[14];
+					$success = $import->save();
+					if (!$success) {
+						foreach ($import->getMessages() as $message) {
+							$this->flash->error($message->getMessage());
+						}
+
+					}
+				}
+
+			}
+
+			fclose( $fp );
+
+			rename($file, 'archive/' . $file);
+
+		}
+
+		chdir($dir);
 	}
 }
