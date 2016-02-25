@@ -59,6 +59,7 @@ class Contacts extends \Phalcon\Mvc\Model
     public function initialize()
     {
         $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode', array('alias'  => 'company'));
+        $this->hasMany('id', 'App\Models\ContactRecords', array('alias' => 'history'));
     }
 
     /**
