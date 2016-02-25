@@ -32,5 +32,9 @@
   	<small>{{ router.getActionName()|capitalize }}</small>
   {% endif %}
 
+{% if headerButton is not empty %}
+	{{ headerButton }}
+{% endif %}
+
   </h1>
 </div>
