@@ -49,7 +49,11 @@ class ContactsController extends ControllerBase
 
 		// Set page titles
 		$this->view->pageTitle = $contact->name;
-		$this->view->pageSubtitle = $contact->company->customerName;
+		$this->tag->prependTitle($contact->name);
+		$this->view->pageSubtitle = " ";
+		if ($contact->company <> null) {
+			$this->view->pageSubtitle = $contact->company->customerName;
+		}
 	}
 
 	public function newAction($customerCode = null)
@@ -57,6 +61,8 @@ class ContactsController extends ControllerBase
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('modal-form');
 		}
+
+		$this->tag->prependTitle("Create a Contact");
 
 		$profile = new Contacts();
 		$profile->assign(array(
