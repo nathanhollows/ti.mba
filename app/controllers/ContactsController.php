@@ -69,6 +69,22 @@ class ContactsController extends ControllerBase
 		));
 	}
 
+	public function editAction($id)
+	{
+		if ($this->request->isAjax()) {
+			$this->view->setTemplateBefore('modal-form');
+		} else {
+			$this->response->redirect('dashboard');
+		}
+
+		$this->view->pageTitle = 'Edit';
+
+		$contact = Contacts::findFirstById($id);
+
+		$form = new ContactsForm($contact);
+		$this->view->form = $form;
+	}
+
 	public function createAction()
 	{
         if (!$this->request->isPost()) {
