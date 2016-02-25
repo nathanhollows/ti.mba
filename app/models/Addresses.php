@@ -21,6 +21,12 @@ class Addresses extends Model
 
     /**
      *
+     * @var int
+     */
+    public $typeCode;
+
+    /**
+     *
      * @var string
      */
     public $line1;
@@ -66,7 +72,7 @@ class Addresses extends Model
      */
     public function initialize()
     {
-        $this->belongsTo('id', 'App\Models\CustomerAddresses', 'addressId');
+        $this->hasOne('typeCode', 'App\Models\AddressTypes', 'typeCode', array('alias' => 'type'));
     }
 
     /**
