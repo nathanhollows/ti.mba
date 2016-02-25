@@ -42,35 +42,43 @@ class ResetPasswords extends \Phalcon\Mvc\Model
     public $reset;
 
     /**
-     * Allows to query a set of records that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return ResetPasswords[]
+     * Before create the user assign a password
      */
-    public static function find($parameters = null)
+    public function beforeValidationOnCreate()
     {
-        return parent::find($parameters);
+        // Timestamp the confirmaton
+        $this->createdAt = time();
+        // Generate a random confirmation code
+        $this->code = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(24)));
+        // Set status to non-confirmed
+        $this->reset = 'N';
     }
-
     /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return ResetPasswords
+     * Sets the timestamp before update the confirmation
      */
-    public static function findFirst($parameters = null)
+    public function beforeValidationOnUpdate()
     {
-        return parent::findFirst($parameters);
+        // Timestamp the confirmaton
+        $this->modifiedAt = time();
     }
-
     /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
+     * Send an e-mail to users allowing him/her to reset his/her password
      */
-    public function getSource()
+    public function afterCreate()
     {
-        return 'reset_passwords';
+        $this->getDI()
+            ->getMail()
+            ->send(array(
+            $this->user->email => $this->user->name
+        ), "Reset your password", 'reset', array(
+            'resetUrl' => '/reset-password/' . $this->code . '/' . $this->user->email
+        ));
+    }
+    public function initialize()
+    {
+        $this->belongsTo('usersId', __NAMESPACE__ . '\Users', 'id', array(
+            'alias' => 'user'
+        ));
     }
 
 }
