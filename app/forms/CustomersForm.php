@@ -17,7 +17,7 @@ use App\Models\CustomerGroups,
 class CustomersForm extends Form
 {
 	// Initialize the customers form
-	public function initialize($options = array())
+	public function initialize($entity = null, $option = null)
 	{
 		if (!isset($options['edit'])) {
 			$element = new Text("customerCode");
