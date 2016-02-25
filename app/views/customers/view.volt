@@ -177,11 +177,11 @@
                     </h3>
                     </div>
                     <div class="panel-body">
-                        {% for key, line in address.address %}
-                        {% if !(line is empty) and !(key is 'id') and !(key is 'customerCode') %}
-                        {{ line }}<br>
-                        {% endif %}
-                        {% endfor %}
+                        {% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
+                        {% if address.line2 is not empty %} {{ address.line2 }} <br>{% endif %}
+                        {% if address.line3 is not empty %} {{ address.line3 }} <br>{% endif %}
+                        {% if address.city is not empty %} {{ address.city }} {% endif %} {% if address.zipCode is not empty %} {{ address.zipCode }}{% endif %}
+                        {% if address.country is not "New Zealand" %}<br> {{ address.country }} {% endif %}
                     </div>
                 </div>    
             </div>
