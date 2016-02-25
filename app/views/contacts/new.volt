@@ -1,5 +1,3 @@
-{{ content() }}
-
 {{ form("contacts/create", "method":"post", "autocomplete" : "off") }}
     <div class="modal-body">
         {{ content() }}
