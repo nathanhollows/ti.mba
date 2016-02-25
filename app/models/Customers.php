@@ -85,7 +85,7 @@ class Customers extends \Phalcon\Mvc\Model
         $this->hasOne('freightCarrier', 'App\Models\FreightCarriers', 'id', array('alias' => 'freightcarrier'));
         $this->hasOne('freightArea', 'App\Models\FreightAreas', 'id', array('alias' => 'freightarea'));
         $this->hasOne('customerStatus', 'App\Models\CustomerStatus', 'id', array('alias' => 'status'));
-        $this->hasOne('customerGroup', 'App\Models\CustomerGroups', 'id', array('alias' => 'customergroup'));
+        $this->hasOne('customerGroup', 'App\Models\CustomerGroups', 'id', array('alias' => 'group'));
         $this->hasOne('salesArea', 'App\Models\SalesAreas', 'id', array('alias' => 'salesarea'));
         $this->hasMany('customerCode', 'App\Models\CustomerAddress', 'customerCode', array('alias'  => 'addresses'));
         $this->hasMany('customerCode', 'App\Models\Contacts', 'customerCode', array('alias' => 'contacts'));
