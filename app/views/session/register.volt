@@ -1,16 +1,10 @@
-</div>
-
-<div class="jumbotron">
-    <div class="container">
-        <h1>Register</h1>
-    </div>
-</div>
-
 <div class="container">
 
 {{ content() }}
 
-{{ form() }}
+{{ form('class': 'form-signin') }}
+
+    <h2 class="form-signin-heading">Register</h2>
 
     <div class="form-group">
         {{ form.label('name') }}    
