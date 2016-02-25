@@ -22,7 +22,7 @@ class AddressTypes extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo('typeCode', 'App\Models\CustomerAddresses', 'typeCode');
+        $this->belongsTo('typeCode', 'App\Models\Addresses', 'typeCode');
     }
 
     /**
