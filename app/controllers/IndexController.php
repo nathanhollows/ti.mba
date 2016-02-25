@@ -15,6 +15,7 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-    	$this->tag->prependTitle('Home');
+    	$this->view->disable();
+    	$this->response->redirect('dashboard');
     }
 }
