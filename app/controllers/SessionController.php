@@ -21,7 +21,7 @@ class SessionController extends ControllerBase
     public function initialize()
     {
         parent::initialize();
-        $this->view->setTemplateBefore('public');
+        $this->view->setTemplateBefore('auth');
     }
 
     public function indexAction()
