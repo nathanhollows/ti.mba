@@ -4,6 +4,8 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">Contact Details
+			<a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('contacts/edit/' ~ contact.id) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i></a>
+			</h3>
 		</div>
 		<div class="panel-body">
 			{{ contact.name }}<br>
