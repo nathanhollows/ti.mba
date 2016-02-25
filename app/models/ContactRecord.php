@@ -90,7 +90,8 @@ class ContactRecord extends \Phalcon\Mvc\Model
 
 	public function initialize()
 	{
-		$this->hasOne('user', 'App\Models\Users', 'id', array('alias'  => 'staff'));
+        $this->hasOne('user', 'App\Models\Users', 'id', array('alias'  => 'staff'));
+		$this->hasOne('contact', 'App\Models\Contacts', 'id', array('alias'  => 'person'));
 		$this->hasOne('contactType', 'App\Models\ContactType', 'id', array('alias'  => 'type'));
 	}
 
