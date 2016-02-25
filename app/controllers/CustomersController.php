@@ -191,19 +191,17 @@ class CustomersController extends ControllerBase
                 ));
         }
 
-        $name = $this->request->getPost('name');
-        $value = $this->request->getPost('value');
-        
-        $customerCode = $this->request->getPost('pk');
-        $customer = Customers::findFirst("customerCode = '" . $customerCode . "'");
-        if ($customer->save(array(
-                $name => $value )) == false) {
-            echo "Umh, We can't update that right now: \n";
-            foreach ($customer->getMessages() as $message) {
-                echo $message, "\n";
-            }
+        $customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
+        // Store and check for errors
+        $success = $customer->save($this->request->getPost(), array('customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'customerGroup', 'salesArea', 'customerStatus'));
+        if ($success) {
+            $this->flash->success("Quote created successfully!");
+            return $this->_redirectBack();
         } else {
-            return "Great, a that was saved successfully!";
+            $this->flash->error("Sorry, the quote could not be saved");
+            foreach ($contact->getMessages() as $message) {
+                $this->flash->error($message->getMessage());
+            }
         }
     }
 
