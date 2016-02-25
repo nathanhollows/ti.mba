@@ -4,7 +4,8 @@
             <div class="panel panel-primary ">
                 <div class="panel-heading">
                     <h3 class="panel-title"><strong>Customer</strong> Info
-                        <a href="#" id="enable" class="pull-right"><i class="fa fa-pencil"></i> Edit</a></h3>
+                        <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
+                    </h3>
                     </div>
                     <div class="panel-body">
                         <div class="row">
