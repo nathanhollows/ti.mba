@@ -35,7 +35,7 @@ class QuotesForm extends Form
 				'using' => array('customerCode', 'customerName'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class' => 'form-control'
+				'class' => 'form-control select2'
 			)
 		);
 		$customerCode->setLabel("Customer");
@@ -48,7 +48,7 @@ class QuotesForm extends Form
 				'using'	=> array('id', 'name'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class'	=> 'form-control'
+				'class'	=> 'form-control select2'
 				)
 		);
 		$contact->setLabel("Contact");

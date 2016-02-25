@@ -50,7 +50,7 @@ class ContactsForm extends Form
 				'using' => array('customerCode', 'customerName'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class' => 'form-control'
+				'class' => 'form-control select2'
 			)
 		);
 		$customerCode->setLabel("Customer");

@@ -28,7 +28,7 @@ class FollowUpForm extends Form
 					'customerCode',
 					'customerName'
 				),
-			'class'	=> 'form-control',
+			'class'	=> 'form-control select2',
 			'useEmpty'	=> true
 			)
 		);
@@ -43,7 +43,7 @@ class FollowUpForm extends Form
 					'id',
 					'name'
 				),
-			'class'	=> 'form-control',
+			'class'	=> 'form-control select2',
 			'useEmpty'	=> true,
 			)
 		);
