@@ -16,6 +16,7 @@
 				<h3 class="panel-title">Overdue follow ups</h3>
 			</div>
 			<div class="panel-body">
+				<h4>{{ tasks|length }}</h4> 
 				items on your Todo list.
 			</div>
 		</div>	
