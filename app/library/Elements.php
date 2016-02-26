@@ -32,26 +32,6 @@ class Elements extends Component
                     array('New', 'new'),
                     )
                 ),
-            'tasks' => array(
-                'caption' => 'Tasks',
-                'action' => ''
-                ),
-            'contacts' => array(
-                'caption' => 'Contacts',
-                'action' => '',
-                'children'  => array(
-                    array('Search', ''),
-                    array('New', 'new'),
-                    )
-                ),
-            'settings' => array(
-                'caption' => 'Settings',
-                'action' => ''
-                ),
-            'preferences' => array(
-                'caption'   => 'Preferences',
-                'action'    => ''
-                ),
             ),
         'navbar-right' => array(
             'messages' => array(
