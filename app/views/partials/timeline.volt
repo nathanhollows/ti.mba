@@ -48,8 +48,7 @@
 
                     <div class="timeline-entry-inner">
 
-                        <div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
-                            
+                        <div class="timeline-icon"> 
                         </div>
 
                         <div class="timeline-label">
