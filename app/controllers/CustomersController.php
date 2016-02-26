@@ -63,12 +63,11 @@ class CustomersController extends ControllerBase
         $this->view->parser = new \cebe\markdown\Markdown();
         $customer = Customers::findFirstBycustomerCode($customerCode);
         if (!$customer) {
-            $this->flash->error("Customer was not found");
+            $this->flashSession->error("Customer was not found");
 
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "index"
-                ));
+            return $this->response->redirect('customers');
+
+            $this->view->disable();
         }
 
         $quotes = Quotes::find(array(

@@ -1,3 +1,4 @@
+{{ flashSession.output() }}
 {{ content() }}
 
 <ul class="pager">
