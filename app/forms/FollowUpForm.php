@@ -71,7 +71,7 @@ class FollowUpForm extends Form
 		$details->setLabel("Details");
 		$this->add($details);
 
-		$date = new Date("date");
+		$date = new Date("followUpDate");
 		$date->setAttributes(array(
 			'value'		=> date('Y-m-d'),
 			'required'	=> 'true',
