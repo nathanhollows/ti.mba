@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\ContactRecord;
 
 class TasksController extends ControllerBase
 {
@@ -16,6 +17,9 @@ class TasksController extends ControllerBase
 		$this->tag->prependTitle('Tasks');
 		
 		// Fetch today's current tasks belonging to the logged in user
+		$data = new ContactRecord;
+		$tasks = $data->getTasks();
+        $this->view->parser = new \cebe\markdown\Markdown();
 
 		// Send the Tasks form and Tasks list to the view
 		$this->view->tasks = $tasks;

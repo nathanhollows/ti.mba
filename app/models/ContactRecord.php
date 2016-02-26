@@ -3,6 +3,10 @@
 namespace App\Models;
 
 class ContactRecord extends \Phalcon\Mvc\Model
+use Phalcon\Mvc\Model;
+use App\Auth\Auth;
+
+class ContactRecord extends Model
 {
 	/**
      *
@@ -98,5 +102,28 @@ class ContactRecord extends \Phalcon\Mvc\Model
     public function beforeCreate()
     {
         $this->date = date('Y-m-d H:i:s');
+        $auth = new Auth;
+        $this->user = $auth->getId();
     }
+
+    public function getTasks()
+    {
+        $auth = new Auth;
+        $user = $auth->getId();
+        return parent::find(array(
+            "conditions" => "followUpUser = ?1 AND completed = 0 AND followUpDate <= NOW()",
+            "bind"  => array(1 => $user)
+        ));
+    }
+
+    public function getFutureTasks()
+    {
+        $auth = new Auth;
+        $user = $auth->getId();
+        return parent::find(array(
+            "conditions" => "followUpUser = ?1 AND completed = 0 AND followUpDate > NOW()",
+            "bind"  => array(1 => $user)
+        ));
+    }
+
 }
