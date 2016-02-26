@@ -11,19 +11,16 @@ Avaunt is a CRM package for the timber industry.
 
 ## Installation
 
-## GitHub
-
-1. Navigate to htdocs (of server equivalent)
+1. Navigate to htdocs (or server equivalent)
 2. Clone repository `git clone https://github.com/wisend/avaunt`
 3. Edit avaunt/app/config.php to the settings appropriate for your server
-
-## Usage
+4. Run `composer update`
 
 <instructions>
 
 ## Authors
 
-Wisend
+Nathan Hollows
 
 <authors>
 
