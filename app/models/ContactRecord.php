@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-class ContactRecord extends \Phalcon\Mvc\Model
 use Phalcon\Mvc\Model;
 use App\Auth\Auth;
 
