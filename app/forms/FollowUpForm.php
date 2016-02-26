@@ -92,10 +92,10 @@ class FollowUpForm extends Form
 				),
 			"required"	=> "true",
 			"class"		=> "form-control",
-			"default"	=> $auth->getId(),
 			)
 		);
 		$rep->setLabel("Sales Rep");
+		$rep->setDefault($auth->getId());
 		$this->add($rep);
 
 		$submit = new Submit("submit");
