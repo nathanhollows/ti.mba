@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    	$( ".select2, .select2-multiple" ).select2( {  } );
 	$('.dataTable').each(function () {
 		var source = $(this).attr("data-source");
 		var state = $(this).attr("data-state");
