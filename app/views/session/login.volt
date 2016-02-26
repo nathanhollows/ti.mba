@@ -1,6 +1,7 @@
 <div class="container">
 
 	{{ form('class': 'form-signin') }}
+		{{ flashSession.output() }}
 		{{ content() }}
 		<h2 class="form-signin-heading">Please sign in</h2>
 
