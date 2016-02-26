@@ -11,6 +11,7 @@ use Phalcon\DI\FactoryDefault,
 	Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter,
 	Phalcon\Session\Adapter\Files as SessionAdapter,
 	Phalcon\Flash\Direct as Flash,
+	Phalcon\Flash\Session as FlashSession,
 	Phalcon\Events\Manager as EventsManager;
 
 
@@ -51,6 +52,18 @@ $di->set('crypt', function () use ($config) {
  */
 $di->set('flash', function () {
     return new Flash(array(
+        'error' => 'alert alert-danger',
+        'success' => 'alert alert-success',
+        'notice' => 'alert alert-info',
+        'warning' => 'alert alert-warning'
+    ));
+});
+
+/**
+ * Flash service with custom CSS classes
+ */
+$di->set('flashSession', function () {
+    return new FlashSession(array(
         'error' => 'alert alert-danger',
         'success' => 'alert alert-success',
         'notice' => 'alert alert-info',
