@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2016 at 07:54 AM
+-- Generation Time: Feb 26, 2016 at 11:32 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 CREATE TABLE `addresses` (
   `id` int(11) NOT NULL,
   `customerCode` varchar(6) DEFAULT NULL,
+  `typeCode` int(2) NOT NULL,
   `line1` varchar(255) DEFAULT NULL,
   `line2` varchar(255) DEFAULT NULL,
   `line3` varchar(255) DEFAULT NULL,
-  `suburb` varchar(255) DEFAULT NULL,
   `zipCode` varchar(255) DEFAULT NULL,
   `city` text,
   `country` varchar(255) DEFAULT NULL
@@ -72,7 +72,7 @@ CREATE TABLE `contacts` (
 
 CREATE TABLE `contact_record` (
   `id` int(11) NOT NULL,
-  `date` date NOT NULL,
+  `date` datetime DEFAULT NULL,
   `customerCode` varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL,
   `contact` int(10) DEFAULT NULL,
   `job` int(10) DEFAULT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE `contact_record` (
   `details` text COLLATE utf8_unicode_ci,
   `infoSent` text COLLATE utf8_unicode_ci,
   `attachments` int(11) DEFAULT NULL,
-  `followupDate` date DEFAULT NULL,
+  `followUpDate` date DEFAULT NULL,
   `followUpUser` int(5) DEFAULT NULL,
   `completed` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -97,7 +97,8 @@ CREATE TABLE `contact_record` (
 CREATE TABLE `contact_type` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `icon` varchar(12) COLLATE utf8_unicode_ci NOT NULL
+  `icon` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
+  `style` varchar(7) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -133,8 +134,8 @@ CREATE TABLE `customer_addresses` (
   `customerAddressId` int(11) NOT NULL,
   `addressId` int(11) NOT NULL,
   `typeCode` int(11) NOT NULL,
-  `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `customerCode` varchar(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -316,35 +317,12 @@ CREATE TABLE `password_changes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pbtdump`
---
-
-CREATE TABLE `pbtdump` (
-  `consignment` text COLLATE utf8_unicode_ci NOT NULL,
-  `pbtConsignment` text COLLATE utf8_unicode_ci,
-  `itemCount` int(11) DEFAULT NULL,
-  `weight` int(11) DEFAULT NULL,
-  `pickupDate` date DEFAULT NULL,
-  `podDate` date DEFAULT NULL,
-  `podTime` time DEFAULT NULL,
-  `podSignature` text COLLATE utf8_unicode_ci,
-  `deliveryCourier` int(11) DEFAULT NULL,
-  `ticketNo` text COLLATE utf8_unicode_ci,
-  `cost` decimal(10,0) DEFAULT NULL,
-  `runsheet` text COLLATE utf8_unicode_ci,
-  `account` int(11) DEFAULT NULL,
-  `volume` decimal(10,0) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `pbt_consignments`
 --
 
 CREATE TABLE `pbt_consignments` (
-  `customerConsignment` text COLLATE utf8_unicode_ci,
-  `pbtConsignmentNote` text COLLATE utf8_unicode_ci,
+  `conNote` varchar(11) COLLATE utf8_unicode_ci NOT NULL,
+  `pbtConsignmentNote` varchar(11) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `numberOfItems` int(11) DEFAULT NULL,
   `weight` float DEFAULT NULL,
   `pickupDate` date DEFAULT NULL,
@@ -474,21 +452,6 @@ CREATE TABLE `success_logins` (
   `ipAddress` char(15) NOT NULL,
   `userAgent` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tasks`
---
-
-CREATE TABLE `tasks` (
-  `id` int(11) NOT NULL,
-  `user` int(11) NOT NULL,
-  `description` text COLLATE utf8_unicode_ci NOT NULL,
-  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `followUp` date DEFAULT NULL,
-  `completed` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -669,6 +632,13 @@ ALTER TABLE `password_changes`
   ADD KEY `usersId` (`usersId`);
 
 --
+-- Indexes for table `pbt_consignments`
+--
+ALTER TABLE `pbt_consignments`
+  ADD PRIMARY KEY (`pbtConsignmentNote`),
+  ADD UNIQUE KEY `idx_name` (`pbtConsignmentNote`);
+
+--
 -- Indexes for table `permissions`
 --
 ALTER TABLE `permissions`
@@ -715,12 +685,6 @@ ALTER TABLE `sales_areas`
 ALTER TABLE `success_logins`
   ADD PRIMARY KEY (`id`),
   ADD KEY `usersId` (`usersId`);
-
---
--- Indexes for table `tasks`
---
-ALTER TABLE `tasks`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `treatment`
@@ -859,11 +823,6 @@ ALTER TABLE `sales_areas`
 --
 ALTER TABLE `success_logins`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `tasks`
---
-ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --
