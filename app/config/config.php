@@ -23,6 +23,7 @@ return new \Phalcon\Config(array(
 		'version'		 => '0.1'
 	),
 	'pbt' => array(
+		'enable'		=> false,
 		'ftpServer'		=> '',
 		'ftpUserName'	=> '',
 		'ftpPassword'	=> '',

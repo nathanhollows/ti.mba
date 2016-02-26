@@ -11,6 +11,10 @@ class Freight extends component
 	{
 		$config = include __DIR__ . "/../../config/config.php";
 
+		if ($config->pbt->enable == false) {
+			return false;
+		}
+
 		$ftp_server		= $config->pbt->ftpServer;
 		$ftp_user_name	= $config->pbt->ftpUserName;
 		$ftp_user_pass	= $config->pbt->ftpPassword;
