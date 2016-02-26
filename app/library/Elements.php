@@ -53,39 +53,39 @@ class Elements extends Component
                 'action'    => ''
                 ),
             ),
-'navbar-right' => array(
-    'messages' => array(
-        'caption' => '<span><i class="fa fa-envelope"></i></span>&nbsp;',
-        'action' => ''
-        ),
-    'tasks' => array(
-        'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
-        'action' => ''
-        ),
-    'logout' => array(
-        'caption' => 'Log Out',
-        'action' => ''
-        ),
-    )
-);
+        'navbar-right' => array(
+            'messages' => array(
+                'caption' => '<span><i class="fa fa-envelope"></i></span>&nbsp;',
+                'action' => ''
+                ),
+            'tasks' => array(
+                'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
+                'action' => ''
+                ),
+            'logout' => array(
+                'caption' => 'Log Out',
+                'action' => ''
+                ),
+            )
+        );
 
-private $_publicMenu = array(
-    'Home' => array(
-        'controller' => 'index',
-        'action' => '',
-        'any' => true
-        ),
-    'About' => array(
-        'controller' => 'about',
-        'action' => '',
-        'any' => true
-        ),
-    'Contact' => array(
-        'controller' => 'contact',
-        'action' => 'index',
-        'any' => true
-        ),
-    );
+    private $_publicMenu = array(
+        'Home' => array(
+            'controller' => 'index',
+            'action' => '',
+            'any' => true
+            ),
+        'About' => array(
+            'controller' => 'about',
+            'action' => '',
+            'any' => true
+            ),
+        'Contact' => array(
+            'controller' => 'contact',
+            'action' => 'index',
+            'any' => true
+            ),
+        );
 
     /**
      * Builds header menu with left and right items
@@ -110,9 +110,9 @@ private $_publicMenu = array(
                     echo $this->tag->linkTo(array($controller . '/' . $option['action'], $option['caption'] . "<span class='caret'></span>", "class" => "dropdown-toggle", "data-toggle" => "dropdown", "role" => "button", "aria-haspopup" => "true", "aria-expanded" => "false"));
                     echo '<ul class="dropdown-menu">';
                     foreach ($option['children'] as $key) {
-                    echo "<li>";
-                    echo $this->tag->linkTo($controller . '/' . $key['1'], $key[0]);
-                    echo "</li>";
+                        echo "<li>";
+                        echo $this->tag->linkTo($controller . '/' . $key['1'], $key[0]);
+                        echo "</li>";
                     }
                     echo '</ul>';
                 } else {
