@@ -18,7 +18,7 @@ class ContactsController extends ControllerBase
 
 	public function indexAction()
 	{
-		
+		$this->view->headerButton = \Phalcon\Tag::linkTo(array('contacts/new', 'New', 'class' => ' btn btn-default pull-right'));
 	}
 
 	public function viewAction($id = null)
@@ -69,7 +69,8 @@ class ContactsController extends ControllerBase
 			'customerCode'	=> $customerCode
 		));
 		
-		$this->view->pageTitle = "Create new Contact";
+		$this->tag->prependTitle("Create Contact");
+		$this->view->pageTitle = "Create Contact";
 		$this->view->form = new ContactsForm($profile, array(
 			'edit' => true
 		));
