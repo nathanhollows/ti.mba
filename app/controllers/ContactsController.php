@@ -69,8 +69,7 @@ class ContactsController extends ControllerBase
 			'customerCode'	=> $customerCode
 		));
 		
-		$this->tag->prependTitle("Create Contact");
-		$this->view->pageTitle = "Create Contact";
+		$this->view->pageTitle = "Create new Contact";
 		$this->view->form = new ContactsForm($profile, array(
 			'edit' => true
 		));
