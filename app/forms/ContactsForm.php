@@ -20,6 +20,9 @@ class ContactsForm extends Form
 
 	public function initialize($entity = null, $option = null)
 	{
+		$id = new Hidden("id");
+		$this->add($id);
+
 		$name = new Text("name");
 		$name->setLabel("Name");
 		$name->setFilters(array('striptags', 'string'));
