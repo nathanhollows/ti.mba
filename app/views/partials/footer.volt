@@ -16,6 +16,8 @@
     <!-- DataTables -->
     <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+    <!-- Chartist -->
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
 	<footer class="footer">

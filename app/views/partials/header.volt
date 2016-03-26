@@ -14,6 +14,8 @@
     <link href="{{ static_url( "css/app.css" ) }}" rel="stylesheet">
     <!-- Bootstrap Markdown -->
     <link href="{{ static_url( "css/bootstrap-markdown.min.css" ) }}" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     <!-- JQuery -->
     <script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- DataTables -->
