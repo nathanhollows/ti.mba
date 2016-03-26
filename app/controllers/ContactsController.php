@@ -121,6 +121,31 @@ class ContactsController extends ControllerBase
 
 	}
 
+    public function updateAction()
+    {
+
+        $this->view->disable;
+        if (!$this->request->isPost()) {
+            return $this->dispatcher->forward(array(
+                "controller" => "contacts",
+                "action" => "index"
+                ));
+        }
+
+        $contact = Contacts::findFirstById($this->request->getPost('id'));
+        // Store and check for errors
+        $success = $contact->save($this->request->getPost(), array('directDial', 'email', 'name', 'position', 'customerCode'));
+        if ($success) {
+            $this->flash->success("Contact update successfully!");
+            return $this->_redirectBack();
+        } else {
+            $this->flash->error("Sorry, the contact could not be updated");
+            foreach ($contact->getMessages() as $message) {
+                $this->flash->error($message->getMessage());
+            }
+        }
+    }
+
 	public function deleteAction($id)
 	{
 		$contact = Contacts::findFirstById($id);
