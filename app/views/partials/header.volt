@@ -7,7 +7,7 @@
     {{ get_title() }}</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" rel="stylesheet" integrity="sha256-QSktus/KATft+5BD6tKvAwzSxP75hHX0SrIjYto471M= sha512-787L1W8XyGQkqtvQigyUGnPxsRudYU2fEunzUP5c59Z3m4pKl1YaBGTcdhfxOfBvqTmJFmb6GDgm0iQRVWOvLQ==" crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/flatly/bootstrap.min.css" rel="stylesheet" integrity="sha384-XYCjB+hFAjSbgf9yKUgbysEjaVLOXhCgATTEBpCqT1R3jvG5LGRAK5ZIyRbH5vpX" crossorigin="anonymous">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Custom CSS -->
