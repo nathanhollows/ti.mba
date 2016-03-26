@@ -1,12 +1,6 @@
 {{ flashSession.output() }}
 {{ content() }}
 
-<ul class="pager">
-    <li class="pull-right">
-        {{ link_to("customers/new", "Create New") }}
-    </li>
-</ul>
-
 <div class="table-responsive">
 	<table class="table table-bordered table-striped table-hover dataTable" data-source="{{ url('customers/index') }}">
 		<thead>
