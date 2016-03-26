@@ -43,6 +43,21 @@ $router->add('/forgotpassword', array(
 	'action'	=>	'forgotpassword'
 ));
 
+// KPI router
+
+$router->add(
+	"/kpi/([0-9]{4})/([0-9]{2})/([0-9]{2})/:params",
+	array(
+		"controller"	=> "kpi",
+		"action"		=> "edit",
+		"year"			=> 1, // ([0-9]{4})
+		"month"			=> 2, // ([0-9]{2})
+		"day"			=> 3, // ([0-9]{2})
+		"params"		=> 4 // :params
+));
+
+// 404 Controller
+
 $router->notFound(
   array(
     'controller' => 'error',
