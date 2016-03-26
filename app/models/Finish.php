@@ -10,17 +10,17 @@ class Finish extends Model
      *
      * @var integer
      */
-	public function $id;
+	public $id;
 
 	/**
      *
      * @var string
      */
-	public function $shortCode;
+	public $shortCode;
 
 	/**
      *
      * @var string
      */
-	public function $name;
+	public $name;
 }
