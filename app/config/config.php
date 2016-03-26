@@ -2,6 +2,7 @@
 
 return new \Phalcon\Config(array(
 	'database' => array(
+		// Describe how the app is to connect to the database
 		'adapter'     => 'Mysql',
 		'host'        => 'localhost',
 		'username'    => 'admin',
@@ -9,6 +10,7 @@ return new \Phalcon\Config(array(
 		'dbname'      => 'avaunt',
 	),
 	'application' => array(
+		// Define the folders for various components
 		'controllersDir' => __DIR__ . '/../../app/controllers/',
 		'modelsDir'      => __DIR__ . '/../../app/models/',
 		'viewsDir'       => __DIR__ . '/../../app/views/',
@@ -19,7 +21,10 @@ return new \Phalcon\Config(array(
 		'libraryDir'     => __DIR__ . '/../../app/library/',
 		'cacheDir'       => __DIR__ . '/../../app/cache/',
 		'baseUri'        => '/avaunt/',
+		// Set the root URI
+		// Define the site title
 		'siteTitle'		 => 'Avaunt',
+		// Define version number
 		'version'		 => '0.1'
 	),
 	'pbt' => array(
@@ -28,5 +33,8 @@ return new \Phalcon\Config(array(
 		'ftpUserName'	=> '',
 		'ftpPassword'	=> '',
 		'ftpDirectory'	=> ''
+		// Toggle PBT file downloads
+		// Use value supplied by PBT
+		// No slashes required
 	),
 ));
