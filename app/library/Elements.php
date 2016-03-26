@@ -17,20 +17,20 @@ class Elements extends Component
                 'action' => ''
                 ),
             'customers' => array(
-                'caption' => 'Customers',
+                'caption' => 'Companies',
                 'action' => '',
-                'children'  => array(
-                    array('Search', ''),
-                    array('New', 'new'),
-                    )
+                ),
+            'contacts' => array(
+                'caption' => 'Contacts',
+                'action' => '',
                 ),
             'quotes' => array(
                 'caption' => 'Quotes',
                 'action' => '',
-                'children'  => array(
-                    array('Search', ''),
-                    array('New', 'new'),
-                    )
+                ),
+            'tasks' => array(
+                'caption' => 'Tasks',
+                'action' => '',
                 ),
             ),
         'navbar-right' => array(
@@ -42,9 +42,13 @@ class Elements extends Component
                 'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
                 'action' => ''
                 ),
-            'logout' => array(
-                'caption' => 'Log Out',
-                'action' => ''
+            '' => array(
+                'caption' => 'User',
+                'action' => '',
+                                'children'  => array(
+                    array('Profile', 'profile'),
+                    array('Logout', 'logout'),
+                    )
                 ),
             )
         );
