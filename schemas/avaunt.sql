@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2016 at 11:32 AM
+-- Generation Time: Mar 26, 2016 at 09:10 AM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -19,6 +19,21 @@ SET time_zone = "+00:00";
 --
 -- Database: `avaunt`
 --
+
+DELIMITER $$
+--
+-- Procedures
+--
+CREATE DEFINER=`admin`@`localhost` PROCEDURE `FillCalendar` (`start_date` DATE, `end_date` DATE)  BEGIN
+	DECLARE crt_date DATE;
+	SET crt_date = start_date;
+	WHILE crt_date <= end_date DO
+		INSERT IGNORE INTO calendar VALUES(crt_date);
+		SET crt_date = ADDDATE(crt_date, INTERVAL 1 DAY);
+	END WHILE;
+END$$
+
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -48,6 +63,28 @@ CREATE TABLE `address_types` (
   `typeCode` int(11) NOT NULL,
   `typeDescription` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `calendar`
+--
+
+CREATE TABLE `calendar` (
+  `calendarDate` date NOT NULL,
+  `day` int(2) NOT NULL,
+  `month` int(2) NOT NULL,
+  `year` int(4) NOT NULL,
+  `dayOfWeek` int(11) NOT NULL,
+  `dayOfMonth` int(2) NOT NULL,
+  `dayOfYear` int(3) NOT NULL,
+  `weekOfMonth` int(11) NOT NULL,
+  `weekday` tinyint(1) NOT NULL,
+  `weekend` tinyint(1) NOT NULL,
+  `workDay` tinyint(4) NOT NULL,
+  `payday` tinyint(1) NOT NULL,
+  `holiday` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -297,8 +334,31 @@ CREATE TABLE `generic_status` (
 CREATE TABLE `grade` (
   `id` int(11) NOT NULL,
   `shortCode` varchar(10) NOT NULL,
-  `name` varchar(50) NOT NULL
+  `name` varchar(50) NOT NULL,
+  `species` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kpis`
+--
+
+CREATE TABLE `kpis` (
+  `id` int(5) NOT NULL,
+  `date` date NOT NULL,
+  `chargeOut` int(11) NOT NULL,
+  `sales` varchar(10) NOT NULL,
+  `time` varchar(10) NOT NULL,
+  `onsiteDispatch` varchar(10) NOT NULL,
+  `offsiteDispatch` varchar(10) NOT NULL,
+  `day` varchar(10) NOT NULL,
+  `monthlyChargeGoal` varchar(10) NOT NULL,
+  `dailySalesGoal` int(11) NOT NULL,
+  `days` int(3) NOT NULL,
+  `ordersSent` int(3) NOT NULL,
+  `truckTime` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -443,6 +503,18 @@ CREATE TABLE `sales_areas` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `species`
+--
+
+CREATE TABLE `species` (
+  `id` int(11) NOT NULL,
+  `name` text COLLATE utf8_unicode_ci NOT NULL,
+  `scientificName` text COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `success_logins`
 --
 
@@ -452,6 +524,21 @@ CREATE TABLE `success_logins` (
   `ipAddress` char(15) NOT NULL,
   `userAgent` varchar(120) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tasks`
+--
+
+CREATE TABLE `tasks` (
+  `id` int(11) NOT NULL,
+  `user` int(11) NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `followUp` date DEFAULT NULL,
+  `completed` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -500,6 +587,23 @@ ALTER TABLE `addresses`
 --
 ALTER TABLE `address_types`
   ADD PRIMARY KEY (`typeCode`);
+
+--
+-- Indexes for table `calendar`
+--
+ALTER TABLE `calendar`
+  ADD PRIMARY KEY (`calendarDate`),
+  ADD UNIQUE KEY `calendar_date` (`calendarDate`),
+  ADD KEY `weekday` (`weekday`),
+  ADD KEY `weekend` (`weekend`),
+  ADD KEY `payday` (`payday`),
+  ADD KEY `holiday` (`holiday`),
+  ADD KEY `day` (`day`),
+  ADD KEY `month` (`month`),
+  ADD KEY `year` (`year`),
+  ADD KEY `dayOfMonth` (`dayOfMonth`),
+  ADD KEY `dayOfYear` (`dayOfYear`),
+  ADD KEY `workDay` (`workDay`);
 
 --
 -- Indexes for table `contacts`
@@ -625,6 +729,13 @@ ALTER TABLE `grade`
   ADD UNIQUE KEY `shortCode` (`shortCode`);
 
 --
+-- Indexes for table `kpis`
+--
+ALTER TABLE `kpis`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indexes for table `password_changes`
 --
 ALTER TABLE `password_changes`
@@ -680,11 +791,23 @@ ALTER TABLE `sales_areas`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `species`
+--
+ALTER TABLE `species`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `success_logins`
 --
 ALTER TABLE `success_logins`
   ADD PRIMARY KEY (`id`),
   ADD KEY `usersId` (`usersId`);
+
+--
+-- Indexes for table `tasks`
+--
+ALTER TABLE `tasks`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `treatment`
@@ -784,6 +907,11 @@ ALTER TABLE `freight_carriers`
 ALTER TABLE `grade`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `kpis`
+--
+ALTER TABLE `kpis`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `password_changes`
 --
 ALTER TABLE `password_changes`
@@ -823,6 +951,11 @@ ALTER TABLE `sales_areas`
 --
 ALTER TABLE `success_logins`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `tasks`
+--
+ALTER TABLE `tasks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --
