@@ -40,6 +40,8 @@ class CustomersController extends ControllerBase
             $dataTables->fromBuilder($builder)->sendResponse();
             $this->persistent->parameters = null;
         };
+
+        $this->view->headerButton = \Phalcon\Tag::linkTo(array('customers/new', 'New', 'class' => ' btn btn-default pull-right'));
     }
 
     /**
