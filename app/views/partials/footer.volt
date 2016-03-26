@@ -9,7 +9,6 @@
 </div>
     <!-- Bootstrap Core JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    {{ javascript_include("js/app.js") }}
     {{ javascript_include("js/to-markdown.js") }}
     {{ javascript_include("js/bootstrap-markdown.js") }}
     {{ javascript_include("js/markdown.js") }}
