@@ -20,11 +20,12 @@
     <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2-rc.1/js/select2.min.js"></script>
-	<footer class="footer">
-		Made with love by the Avaunt team
-		{{link_to('privacy','Privacy Policy')}} |
-		{{link_to('terms','Terms of Use')}}
-		© {{ date('Y') }} Avaunt Team.
+    {{ javascript_include("js/app.js") }}
+    <footer class="footer">
+        Open sourced under the GNU scheme.
+        {{link_to('privacy','Privacy Policy')}} |
+        {{link_to('terms','Terms of Use')}}
+        © {{ date('Y') }} Nathan Hollows.
 	</footer>
 
   </body>
