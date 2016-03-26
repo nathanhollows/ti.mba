@@ -19,10 +19,12 @@ class TasksController extends ControllerBase
 		// Fetch today's current tasks belonging to the logged in user
 		$data = new ContactRecord;
 		$tasks = $data->getTasks();
+		$futureTasks = $data->getFutureTasks();
         $this->view->parser = new \cebe\markdown\Markdown();
 
 		// Send the Tasks form and Tasks list to the view
 		$this->view->tasks = $tasks;
+		$this->view->upcoming = $futureTasks;
 
 	}
 }
