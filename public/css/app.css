@@ -297,3 +297,43 @@ img
     -ms-filter: alpha(opacity=60);
     filter: alpha(opacity=60);
 }
+
+/* Modal styling for phones and tablets */ 
+@media only screen and (max-width : 773px) {
+    .modal-header {
+        background: #3EBFA8;
+    }
+
+    .modal-header:after {
+        content: '';
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-top: solid 20px #3EBFA8;
+        border-left: solid 20px transparent;
+        border-right: solid 20px transparent;
+        margin: 0 auto;
+    }
+
+    .modal-header h4 {
+        color: #fff;
+    }
+
+    .modal-header .close {
+        margin-top: 12px;
+        color: white;
+        opacity: 1;
+    }
+
+    .modal-dialog {
+        margin: 0;
+        width: 100%;
+    }
+
+    .modal-content {
+        border: none;
+    }
+}
