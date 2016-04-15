@@ -4,6 +4,7 @@ namespace App\Forms;
 
 use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\Select,
+	Phalcon\Forms\Element\Hidden,
 	Phalcon\Forms\Element\Text;
 
 use App\Models\AddressTypes,
@@ -17,6 +18,8 @@ class AddressForm extends Form
 
 	public function initialize($entity = null, $option = null)
 	{
+		$id = new Hidden('id');
+		$this->add($id);
 
 		$customerCode = new Select(
 			'customerCode',
