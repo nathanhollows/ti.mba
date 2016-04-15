@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Freight\Freight;
 use App\Models\ContactRecord;
+use App\Models\Quotes;
 
 class DashboardController extends ControllerBase
 {
@@ -30,5 +31,6 @@ class DashboardController extends ControllerBase
             $this->view->pbt = $freight->importPBT();
         }
 
+        $this->view->quotes = new Quotes();
     }
 }
