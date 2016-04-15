@@ -14,7 +14,7 @@
 			{% if contact.position is not empty %} {{ contact.position }}<br> {% endif %}
 		</div>
 	</div>
-	{% if customer.company is not empty %}
+	{% if contact.company is not empty %}
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">Organisation</h3>
