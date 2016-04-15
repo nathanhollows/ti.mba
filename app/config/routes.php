@@ -43,6 +43,12 @@ $router->add('/forgotpassword', array(
 	'action'	=>	'forgotpassword'
 ));
 
+$router->add('/quote/:params', array(
+	'controller' => 'quotes',
+	'action'	=>	'public',
+	'params'	=> 1
+));
+
 // KPI router
 
 $router->add(
