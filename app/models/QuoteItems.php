@@ -10,21 +10,24 @@ class QuoteItems extends Model
 
 	public $quoteId;
 
-	public $width;
-
-	public $thickness;
-
 	public $grade;
-
-	public $treatment;
-
-	public $dryness;
 
 	public $finish;
 
-	public $price;
+	public $callSize;
 
-	public $priceMethod;
+	public $finSize;
 
-	public $linealTotal;
+	public $lengths;
+
+	public $qty;
+
+	public $priceUnit;
+
+	public $unitPrice;
+
+	public function initialize()
+	{
+		$this->hasOne('priceUnit', 'App\Models\PricingUnit', 'id', array('alias'  => 'unit'));
+	}
 }
