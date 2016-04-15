@@ -41,6 +41,9 @@ class CustomersController extends ControllerBase
             $this->persistent->parameters = null;
         };
 
+        $this->assets->collection('footer')
+            ->addJs('js/datatables/companies.js');
+
         $this->view->headerButton = \Phalcon\Tag::linkTo(array('customers/new', 'New', 'class' => ' btn btn-default pull-right'));
     }
 
