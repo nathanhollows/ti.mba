@@ -18,12 +18,17 @@ class DashboardController extends ControllerBase
 
     public function indexAction()
     {
+        $config = include __DIR__ . "/../config/config.php";
+
         $tasks = new ContactRecord;
 
         $this->view->tasks = $tasks->getTasks();
 
-        $freight = new Freight;
-        $this->view->pbt = $freight->downloadPBT();
-        $this->view->pbt = $freight->importPBT();
+        if ($config->pbt->enable) {
+            $freight = new Freight;
+            $this->view->pbt = $freight->downloadPBT();
+            $this->view->pbt = $freight->importPBT();
+        }
+
     }
 }
