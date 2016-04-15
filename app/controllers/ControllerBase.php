@@ -47,6 +47,36 @@ class ControllerBase extends Controller
     {
         $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
         $this->tag->appendTitle(' | ' . SITE_TITLE);
+        // Globally used CSS
+        $this->assets->collection('header')
+            ->addCss('css/bootstrap.css')
+            ->addCss('//cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css')
+            ->addCss('css/bootstrap-markdown.min.css')
+            ->addCss('css/app.css')
+            ->addCss('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
+            ->addCss('//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css')
+            ->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css')
+            ->addCss('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css');
+        // Globally used JQuery
+        $this->assets->collection('jquery')
+            ->addJs('//code.jquery.com/jquery-1.11.1.min.js');
+        // JS for footer
+        $this->assets->collection('footer')
+            // Bootstrap Core JS
+            ->addJs('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+            // In-Browser Markdown Parser for live editing
+            ->addJs('js/to-markdown.js')
+            ->addJs('js/bootstrap-markdown.js')
+            ->addJs('js/markdown.js')
+            // DataTables
+            ->addJs('//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js')
+            ->addJs('//cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js')
+             // Chartist
+            ->addJs('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js')
+            // Bootstrap Select 2
+            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js')
+            // Custom JS
+            ->addJs('js/app.js');
     }
     
     protected function _redirectBack() {
