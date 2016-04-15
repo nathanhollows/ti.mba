@@ -14,14 +14,14 @@ return new \Phalcon\Config(array(
 		'controllersDir' => __DIR__ . '/../../app/controllers/',
 		'modelsDir'      => __DIR__ . '/../../app/models/',
 		'viewsDir'       => __DIR__ . '/../../app/views/',
-		'formsDir'       => __DIR__ . '/../../app/forms/',
 		'partialsDir'    => 'partials/',
 		'layoutsDir'     => 'layouts/',
+		'formsDir'       => __DIR__ . '/../../app/forms/',
 		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
 		'libraryDir'     => __DIR__ . '/../../app/library/',
 		'cacheDir'       => __DIR__ . '/../../app/cache/',
-		'baseUri'        => '/',
 		// Set the root URI
+		'baseUri'        => '/',
 		// Define the site title
 		'siteTitle'		 => 'Avaunt',
 		// Define version number
