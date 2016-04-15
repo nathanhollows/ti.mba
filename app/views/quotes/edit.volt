@@ -1,5 +1,5 @@
 {{ content() }}
-
+{{ flashSession.output() }}
 <div class="row">
 	<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
 		<div class="panel panel-primary">
@@ -10,6 +10,7 @@
 				{{ quote.customer.customerName }} <br>
 				{{ quote.customerContact.name }} <br>
 				{{ quote.customerRef }} <br>
+				{{ quote.webId }} <br>
 				{{ quote.date }} <br>
 				{{ quote.salesRep.name }} <br>
 				{{ quote.genericStatus.name }} <br>
@@ -29,7 +30,9 @@
 	<div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Items</h3>
+				<h3 class="panel-title">Items
+				<a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('quotes/item/' ~ quote.id) }}' data-target="#modal-ajax"><i class="fa fa-plus"></i> Add Item</a>
+				</h3>
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
