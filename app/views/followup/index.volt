@@ -68,31 +68,31 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="btn-group" data-toggle="buttons">
-					<label class="btn btn-default active">
+					<label class="btn btn-small btn-default active">
 						<input type="radio" name="contactType" value="13" autocomplete="off" checked> Note
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="14" autocomplete="off"> Phone
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="3" autocomplete="off"> Email
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="4" autocomplete="off"> Rep Visit
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="15" autocomplete="off"> ETA
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="6" autocomplete="off"> Other
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="7" autocomplete="off"> Mail
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="11" autocomplete="off"> Dispute
 					</label>
-					<label class="btn btn-default">
+					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="12" autocomplete="off"> Gift
 					</label>
 				</div>
