@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2016 at 09:10 AM
+-- Generation Time: Apr 15, 2016 at 12:08 PM
 -- Server version: 10.1.8-MariaDB
 -- PHP Version: 5.6.14
 
@@ -414,6 +414,17 @@ CREATE TABLE `permissions` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pricing_unit`
+--
+
+CREATE TABLE `pricing_unit` (
+  `id` int(11) NOT NULL,
+  `name` varchar(10) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `profiles`
 --
 
@@ -430,14 +441,21 @@ CREATE TABLE `profiles` (
 --
 
 CREATE TABLE `quotes` (
-  `id` int(11) NOT NULL,
-  `webId` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `date` datetime NOT NULL,
-  `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `customerRef` text COLLATE utf8_unicode_ci NOT NULL,
-  `user` int(3) NOT NULL,
-  `contact` int(4) NOT NULL,
-  `status` int(11) NOT NULL
+  `quoteId` int(9) NOT NULL,
+  `webId` char(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `date` date DEFAULT NULL,
+  `customerCode` varchar(53) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `user` varchar(37) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `attention` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `notes` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `moreNotes` varchar(198) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `reference` varchar(68) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `status` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `validity` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sale` bit(1) DEFAULT NULL,
+  `freight` decimal(6,2) DEFAULT NULL,
+  `directDial` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `leadTime` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -449,16 +467,18 @@ CREATE TABLE `quotes` (
 CREATE TABLE `quote_items` (
   `id` int(11) NOT NULL,
   `quoteId` int(11) NOT NULL,
-  `width` int(11) NOT NULL,
-  `thickness` int(11) NOT NULL,
-  `grade` int(11) NOT NULL,
-  `treatment` int(11) NOT NULL,
-  `dryness` int(11) NOT NULL,
-  `finish` int(11) NOT NULL,
-  `price` decimal(10,0) NOT NULL,
-  `priceMethod` int(11) NOT NULL,
-  `linealTotal` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `width` int(11) DEFAULT NULL,
+  `thickness` int(11) DEFAULT NULL,
+  `grade` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `finish` varchar(29) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `callSize` varchar(18) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `finSize` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lengths` varchar(48) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `qty` varchar(9) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `priceUnit` int(11) DEFAULT NULL,
+  `unitPrice` varchar(9) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `note` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -509,7 +529,10 @@ CREATE TABLE `sales_areas` (
 CREATE TABLE `species` (
   `id` int(11) NOT NULL,
   `name` text COLLATE utf8_unicode_ci NOT NULL,
-  `scientificName` text COLLATE utf8_unicode_ci NOT NULL
+  `scientificName` text COLLATE utf8_unicode_ci NOT NULL,
+  `hardwood` tinyint(1) NOT NULL,
+  `native` tinyint(1) NOT NULL,
+  `imported` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -757,6 +780,14 @@ ALTER TABLE `permissions`
   ADD KEY `profilesId` (`profilesId`);
 
 --
+-- Indexes for table `pricing_unit`
+--
+ALTER TABLE `pricing_unit`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `id_2` (`id`);
+
+--
 -- Indexes for table `profiles`
 --
 ALTER TABLE `profiles`
@@ -767,8 +798,15 @@ ALTER TABLE `profiles`
 -- Indexes for table `quotes`
 --
 ALTER TABLE `quotes`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `webId` (`webId`);
+  ADD PRIMARY KEY (`quoteId`),
+  ADD UNIQUE KEY `webId` (`webId`),
+  ADD KEY `webId_2` (`webId`);
+
+--
+-- Indexes for table `quote_items`
+--
+ALTER TABLE `quote_items`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `remember_tokens`
@@ -922,6 +960,11 @@ ALTER TABLE `password_changes`
 ALTER TABLE `permissions`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `pricing_unit`
+--
+ALTER TABLE `pricing_unit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `profiles`
 --
 ALTER TABLE `profiles`
@@ -930,6 +973,11 @@ ALTER TABLE `profiles`
 -- AUTO_INCREMENT for table `quotes`
 --
 ALTER TABLE `quotes`
+  MODIFY `quoteId` int(9) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `quote_items`
+--
+ALTER TABLE `quote_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `remember_tokens`
@@ -945,6 +993,11 @@ ALTER TABLE `reset_passwords`
 -- AUTO_INCREMENT for table `sales_areas`
 --
 ALTER TABLE `sales_areas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `species`
+--
+ALTER TABLE `species`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `success_logins`
