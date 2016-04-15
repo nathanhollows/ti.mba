@@ -11,6 +11,7 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Quotes;
 use App\Models\QuoteItems;
 use App\Forms\QuotesForm;
+use App\Forms\ItemForm;
 
 class QuotesController extends ControllerBase
 {
@@ -131,5 +132,13 @@ class QuotesController extends ControllerBase
 				$this->flash->error($message->getMessage());
 			}
 		}
+	}
+
+	public function itemAction($id = null)
+	{
+		$this->view->setTemplateBefore('modal-form');
+		$this->view->pageTitle = "Add a line";
+		$form = new ItemForm();
+		$this->view->form = $form;
 	}
 }
