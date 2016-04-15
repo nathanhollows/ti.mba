@@ -24,6 +24,8 @@ class QuotesController extends ControllerBase
 	public function indexAction()
 	{
 		$this->tag->prependTitle('Search Quotes');
+		$this->assets->collection('footer')
+			->addJs('js/datatables/quotes.js');
 		if ($this->request->isAjax()) {
 			$builder = $this->modelsManager->createBuilder()
 			->columns('id, date, customerCode, customerRef, user, contact, status')

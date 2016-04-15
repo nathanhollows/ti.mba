@@ -117,6 +117,9 @@ class CustomersController extends ControllerBase
         $this->view->pageSubtitle = $customer->customerName;
         $this->tag->prependTitle($customer->customerName);
 
+        $this->assets->collection('footer')
+            ->addJs('js/datatables/customerQuotes.js');
+
     }
 
     public function editAction($customerCode = null)
