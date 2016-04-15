@@ -123,12 +123,8 @@ class QuotesController extends ControllerBase
 		// Store and check for errors
 		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'details', 'user', 'contact', 'status'));
 		if ($success) {
-			$this->flash->success("Quote created successfully!");
-			return $this->dispatcher->forward(array(
-				"controller"	=> "quotes",
-				"action"		=> "edit",
-				"params"		=> array($quote->id)
-				));
+			$this->flashSession->success("Quote created successfully!");
+			return $this->response->redirect("quotes/edit/" . $quote->id);
 		} else {
 			$this->flash->error("Sorry, the quote could not be saved");
 			foreach ($quote->getMessages() as $message) {
