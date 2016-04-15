@@ -8,27 +8,48 @@ class Quotes extends Model
 {
 	public $id;
 
-	public $webId;
-
 	public $date;
 
 	public $customerCode;
 
-	public $customerRef;
-
-	public $details;
-
 	public $user;
 
-	public $contact;
+	public $attention;
+
+	public $notes;
+
+	public $moreNotes;
+
+	public $reference;
 
 	public $status;
+
+	public $validity;
+
+	public $sale;
+
+	public $freight;
+
+	public $directDial;
+
+	public $leadTime;
 
 	public function initialize()
 	{
 		$this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
 		$this->hasOne('contact', 'App\Models\Contacts', 'id', array('alias' => 'customerContact'));
-		$this->hasOne('user', 'App\Models\Users', 'id', array('alias' => 'salesRep'));
+		$this->hasOne('user', 'App\Models\Users', 'id', array('alias' => 'rep'));
 		$this->hasOne('status', 'App\Models\GenericStatus', 'id', array('alias' => 'genericStatus'));
 	}
+
+	public static function presented(){
+		return parent::count("MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW())");
+	}
+
+	public static function won()
+	{
+		$results = parent::count("MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW()) AND sale = 1");
+		return count($results);
+	}
+	
 }
