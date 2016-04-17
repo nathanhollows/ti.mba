@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Forms;
+namespace App\Forms\Quotes;
 
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
@@ -35,7 +35,8 @@ class QuotesForm extends Form
 				'using' => array('customerCode', 'customerName'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class' => 'form-control select2'
+				'class' => 'form-control selectpicker',
+				'data-live-search' => 'true',
 			)
 		);
 		$customerCode->setLabel("Customer");
@@ -43,12 +44,13 @@ class QuotesForm extends Form
 
 		$contact = new Select(
 			'contact',
-			Contacts::find(),
+			[null => 'Select a Customer First..'],
 			array(
 				'using'	=> array('id', 'name'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class'	=> 'form-control select2'
+				'class'	=> 'form-control selectpicker',
+				'data-live-search' => 'true',
 				)
 		);
 		$contact->setLabel("Contact");
@@ -73,7 +75,8 @@ class QuotesForm extends Form
 
 		$notes = new TextArea("notes");
 		$notes->setAttributes(array(
-			'class'		=> 'form-control'
+			'class'		=> 'form-control',
+			'placeholder' => 'This will be visible on the quote'
 			));
 		$notes->setLabel("Notes");
 		$this->add($notes);
