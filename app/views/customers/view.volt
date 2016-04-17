@@ -113,9 +113,6 @@
                 </div>
             {% endfor %}    
         </div>
-        {% endfor %}    
-        {% endif %}
-
     {% endif %}
     <!-- End Addresses -->
 </div>
