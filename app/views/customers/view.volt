@@ -75,18 +75,16 @@
                     </div>
                     <div class="panel-body">
                         {% for contact in customer.contacts %}
-                        <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
                             <div class="well">
-                                <h3> 
+                                <h4> 
                                     {{ link_to("contacts/view/" ~ contact.id, contact.name) }}
-                                </h3>
+                                </h4>
                                 <p>
                                     <h5>{{ contact.position }}</h5><br>
                                     <i class="fa fa-phone"></i> <a href="tel:{{ contact.directDial }}">{{ contact.directDial }} </a><br>
                                     <i class="fa fa-envelope"></i> <a href="mailto:{{ contact.email }}">{{ contact.email }} </a><br>
                                 </p>
                             </div>
-                        </div>
                         {% endfor %}
                     </div>
                 </div>
