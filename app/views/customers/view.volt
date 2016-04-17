@@ -50,7 +50,7 @@
                             {% endif %}
                             {% if customer.freightcarrier is not empty %}
                             <tr>
-                                <td>Freight Carrier</td>
+                                <td>Carrier</td>
                                 <td>{{ customer.freightcarrier.name }}</td>
                             </tr>
                             {% endif %}
