@@ -90,30 +90,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- Begin Address -->
+    {% if addresses %}
         <div class="row">
-            {% if addresses %}
             {% for address in addresses %}
-            <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
-                <div class="panel panel-default">
-                  <div class="panel-heading">
-                    <h3 class="panel-title">{{ address.type.typeDescription }}
-                        <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
-                    </h3>
+                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">{{ address.type.typeDescription }}
+                                <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            {% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
+                            {% if address.line2 is not empty %} {{ address.line2 }} <br>{% endif %}
+                            {% if address.line3 is not empty %} {{ address.line3 }} <br>{% endif %}
+                            {% if address.city is not empty %} {{ address.city }} {% endif %} {% if address.zipCode is not empty %} {{ address.zipCode }}{% endif %}
+                            {% if address.country is not "New Zealand" %}<br> {{ address.country }} {% endif %}
+                        </div>
+                    </div>    
                 </div>
-                <div class="panel-body">
-                    {% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
-                    {% if address.line2 is not empty %} {{ address.line2 }} <br>{% endif %}
-                    {% if address.line3 is not empty %} {{ address.line3 }} <br>{% endif %}
-                    {% if address.city is not empty %} {{ address.city }} {% endif %} {% if address.zipCode is not empty %} {{ address.zipCode }}{% endif %}
-                    {% if address.country is not "New Zealand" %}<br> {{ address.country }} {% endif %}
-                </div>
-            </div>    
+            {% endfor %}    
         </div>
         {% endfor %}    
         {% endif %}
 
-
-    </div>
+    {% endif %}
+    <!-- End Addresses -->
 </div>
 
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
