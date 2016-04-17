@@ -77,7 +77,7 @@ class CustomersController extends ControllerBase
 
         $quotes = Quotes::find(array(
             "customerCode = '$customerCode'",
-            'order'         => 'id DESC'));
+            'order'         => 'quoteId DESC'));
         $this->view->quotes = $quotes;
 
         $history = ContactRecord::find(array(
