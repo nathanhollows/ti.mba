@@ -34,7 +34,7 @@
                             </tr>
                             <tr>
                                 <td>Email</td>
-                                <td>{{ customer.customerEmail }}</td>
+                                <td><a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a></td>
                             </tr>
                             {% if customer.group is not empty %}
                             <tr>
