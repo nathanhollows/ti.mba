@@ -117,7 +117,7 @@
     <!-- End Addresses -->
 </div>
 
-<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 pull-right">
+<div class="col-xs-12 col-sm-12 col-md-8 col-lg-9 pull-right">
 
     {{ partial('timeline') }}
 
@@ -131,23 +131,26 @@
         <table class="table table-bordered table-striped table-hover dataTable" data-source="{{ url('quotes/ajax/' ~ customer.customerCode) }} ">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Cust Ref</th>
+                    <th>#</th>
                     <th>Date</th>
+                    <th>Reference</th>
+                    <th>Rep</th>
+                    <th>Contact</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                {% for quote in quotes %}
                 <tr>
-                    <td>{{ link_to("quotes/edit/" ~ quote.id, quote.id) }}</td>
-                    <td>{{ quote.customerRef }}</td>
-                    <td>{{ quote.date }}</td>
-                    <td><span class="label label-{{ quote.genericStatus.style }}">{{ quote.genericStatus.name }}</span></td>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Reference</th>
+                    <th>Rep</th>
+                    <th>Contact</th>
+                    <th>Status</th>
                 </tr>
-                {% endfor %}
             </tbody>
         </table>
+
     </div>
 </div>
 </div>
