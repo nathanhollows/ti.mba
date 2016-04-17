@@ -128,7 +128,7 @@
         </h3>
     </div>
     <div class="panel-body">
-        <table class="table table-striped table-hover">
+        <table class="table table-bordered table-striped table-hover dataTable" data-source="{{ url('quotes/ajax/' ~ customer.customerCode) }} ">
             <thead>
                 <tr>
                     <th>ID</th>
