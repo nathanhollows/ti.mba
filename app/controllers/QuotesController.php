@@ -10,8 +10,9 @@ use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Quotes;
 use App\Models\QuoteItems;
-use App\Forms\QuotesForm;
-use App\Forms\ItemForm;
+use App\Models\GenericStatus;
+use App\Forms\Quotes\QuotesForm;
+use App\Forms\Quotes\ItemForm;
 
 class QuotesController extends ControllerBase
 {
@@ -23,51 +24,55 @@ class QuotesController extends ControllerBase
 
 	public function indexAction()
 	{
+
 		$this->tag->prependTitle('Search Quotes');
+		$this->view->pageSubtitle = "Search";
+		$this->flash->warning("Searching by Rep and Status do not currently work");
+
 		$this->assets->collection('footer')
 			->addJs('js/datatables/quotes.js');
+	}
+
+	public function ajaxAction($customerCode = NULL)
+	{
 		if ($this->request->isAjax()) {
 			$builder = $this->modelsManager->createBuilder()
-			->columns('id, date, customerCode, customerRef, user, contact, status')
+			->columns('quoteId, date, customerCode, reference, user, attention, status, quoteStatus.style, quoteStatus.name, rep.name AS salesRep')
 			->from('App\Models\Quotes')
-			->orderBy('id');
+			->join('App\Models\GenericStatus', 'status = quoteStatus.id', 'quoteStatus', 'INNER')
+			->join('App\Models\Users', 'user = rep.id', 'rep', 'INNER');
+
+			if (isset($customerCode)) {
+				$builder->where("customerCode = '$customerCode'");
+			}
 
 			$dataTables = new DataTable();
 			$dataTables->fromBuilder($builder)->sendResponse();
 			$this->persistent->parameters = null;
 		};
+	}
 
-		$quotes = Quotes::find();
-		$this->view->quotes = $quotes;
+	public function publicAction($quoteId = null)
+	{
+		$quote = Quotes::findFirstBywebId($quoteId);
+		$items = QuoteItems::find("quoteId = $quote->quoteId");
+
+		if (!$quote) {
+			// If the quote does not exist then send the user to a 404 page
+			$this->response->redirect('error');
+		}
+
+		$this->tag->prependTitle('Quote');
+		$this->view->setTemplateBefore('quote');
+		$this->view->quote = $quote;
+		$this->view->items = $items;
+
 	}
 
 	public function viewAction($quoteId = null)
 	{
-		$quote = Quotes::findFirstBywebId($quoteId);
-		if ($quote) {
-			$this->tag->prependTitle('Quote');
-			$this->view->setTemplateBefore('quote');
-			$this->view->quote = $quote;
-		} else {
-			// If the quote does not exist then send the user to a 404 page
-			$this->response->redirect('error');
-		}
-	}
-
-	public function editAction($quoteId = null)
-	{
-		$quote = Quotes::findFirstByid($quoteId);
-		if ($quote) {
-			$this->tag->prependTitle('Quote');
-			$this->view->quote = $quote;
-			$items = QuoteItems::Find(array(
-				"conditions"	=> "quoteId = ?1",
-				"bind"			=> array(
-					1			=> $quoteId
-					)
-				));
-			$this->view->items = $items;
-		} else {
+		$quote = Quotes::findFirstByquoteId($quoteId);
+		if (!$quote) {
 			// If the quote does not exist then spit out an error
 			$this->flash->error("That quote doesn't exist! Weird.");
 			$this->dispatcher->forward(array(
@@ -75,6 +80,35 @@ class QuotesController extends ControllerBase
 				"action"		=> ""
 				));
 		}
+
+		$this->tag->prependTitle('Quote');
+		$this->view->quote = $quote;
+		$items = QuoteItems::Find(array(
+			"conditions"	=> "quoteId = ?1",
+			"bind"			=> array(
+				1			=> $quoteId
+				)
+			));
+		if ($this->view->quote->sale == "1") {
+			$this->flash->notice("This quote has been turned into a sale");
+		}
+		$this->view->items = $items;
+	}
+
+	public function editAction($quoteId = null)
+	{
+		$this->view->setTemplateBefore('modal-form');
+
+		$this->view->pageTitle = "Edit quote details";
+
+		if (!$quoteId) {
+			$this->flash->error("Error: Missing the Quote ID");
+			return true;
+		}
+
+		$quote = Quotes::findFirstByquoteId($quoteId);
+		$form = new QuotesForm($quote);
+		$this->view->form = $form;
 	}
 
 	public function deleteAction($quoteId)
@@ -122,7 +156,7 @@ class QuotesController extends ControllerBase
 
 		$quote = new Quotes();
 		$random = new Random();
-		$quote->webId = $random->base64Safe(6);
+		$quote->webId = $random->uuid();
 		// Store and check for errors
 		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'customerRef', 'details', 'user', 'contact', 'status'));
 		if ($success) {
@@ -134,6 +168,10 @@ class QuotesController extends ControllerBase
 				$this->flash->error($message->getMessage());
 			}
 		}
+	}
+
+	public function updateAction() {
+		
 	}
 
 	public function itemAction($id = null)
