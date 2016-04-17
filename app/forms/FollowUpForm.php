@@ -32,7 +32,8 @@ class FollowUpForm extends Form
 					'customerCode',
 					'customerName'
 				),
-			'class'	=> 'form-control select2',
+			'class'	=> 'form-control selectpicker',
+				'data-live-search' => 'true',
 			'useEmpty'	=> true
 			)
 		);
@@ -47,7 +48,8 @@ class FollowUpForm extends Form
 					'id',
 					'name'
 				),
-			'class'	=> 'form-control select2',
+			'class'	=> 'form-control selectpicker',
+				'data-live-search' => 'true',
 			'useEmpty'	=> true,
 			)
 		);
