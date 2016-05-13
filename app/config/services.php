@@ -101,8 +101,16 @@ $di->set('view', function() use ($config) {
 
 		    $compiler = $volt->getCompiler();
 
+		    $compiler->addFunction('dump', 'print_r');
+
+			$compiler->addFunction('strtotime', 'strtotime');
+
 		    $compiler->addFilter('timeAgo', function($resolvedArgs, $exprArgs){
 		        return '\Carbon\Carbon::createFromFormat("Y-m-d H:i:s", '.$resolvedArgs.')->diffForHumans()';
+		    });
+
+		    $compiler->addFilter('timeAgoDate', function($resolvedArgs, $exprArgs){
+		        return '\Carbon\Carbon::createFromFormat("Y-m-d", '.$resolvedArgs.')->diffForHumans()';
 		    });
 
 			return $volt;
