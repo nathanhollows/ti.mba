@@ -113,8 +113,8 @@ class CustomersController extends ControllerBase
         $addresses = Addresses::find("customerCode = '$customerCode'");
         $this->view->addresses = $addresses;
         
-        $this->view->pageTitle = $customer->customerCode;
-        $this->view->pageSubtitle = $customer->customerName;
+        $this->view->pageTitle = '<i class="fa fa-building-o" aria-hidden="true"></i> ' . $customer->customerName;
+        $this->view->pageSubtitle = $customer->customerCode;
         $this->tag->prependTitle($customer->customerName);
 
         $this->assets->collection('footer')
