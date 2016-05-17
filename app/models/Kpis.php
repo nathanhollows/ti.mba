@@ -25,4 +25,14 @@ class Kpis extends Model
 	public $dailySalesGoal;
 
 	public $ordersSent;
+
+	public static function thisMonth() {
+		return parent::find(
+			array(
+				"MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW())",
+				"order" => "date ASC"
+			)
+		);
+	}
+	
 }
