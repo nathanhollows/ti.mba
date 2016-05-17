@@ -65,6 +65,24 @@ class KpiController extends ControllerBase
             $this->response->redirect('kpi/dashboard/' . date('Y/m/d'));
         }
 
-        $this->view->setTemplateBefore('blank');
+        $this->view->month = Kpis::thisMonth();
+
+        $dateRaw = strtotime("$year-$month-$day");
+        $date = date('Y-m-d', $dateRaw);
+
+        $this->view->date = $date;
+
+        $data = Kpis::findFirstByDate($date);
+        $this->view->data = $data;
+
+        $this->view->setTemplateBefore('none');
+
+        $this->assets->collection('header')
+            ->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css');
+        
+        $this->assets->collection('footer')
+            ->addJs('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js')
+            ->addJs('js/dashboard/charts.js');
+
     }
 }
