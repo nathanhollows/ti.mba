@@ -2,7 +2,8 @@
     "require": {
         "m1ome/phalcon-datatables": "1.*",
         "knplabs/knp-snappy": "^0.4.3",
-        "nesbot/carbon": "~1.14",
-        "cebe/markdown": "~1.0.1"
+        "nesbot/carbon": "~1.21.0",
+        "cebe/markdown": "~1.1.0",
+        "tecnickcom/tcpdf": "6.*"
     }
 }
