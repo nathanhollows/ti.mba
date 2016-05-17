@@ -49,14 +49,15 @@ class ControllerBase extends Controller
         $this->tag->appendTitle(' | ' . SITE_TITLE);
         // Globally used CSS
         $this->assets->collection('header')
-            ->addCss('css/bootstrap.css')
+            ->addCss('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+            ->addCss('https://cdnjs.cloudflare.com/ajax/libs/bootflat/2.0.4/css/bootflat.min.css')
             ->addCss('//cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css')
             ->addCss('css/bootstrap-markdown.min.css')
             ->addCss('css/app.css')
             ->addCss('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
             ->addCss('//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css')
-            ->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css')
-            ->addCss('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css');
+            ->addCss('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css')
+            ->addCss('//cdn.datatables.net/plug-ins/1.10.11/integration/font-awesome/dataTables.fontAwesome.css');
         // Globally used JQuery
         $this->assets->collection('jquery')
             ->addJs('//code.jquery.com/jquery-1.11.1.min.js');
@@ -71,8 +72,6 @@ class ControllerBase extends Controller
             // DataTables
             ->addJs('//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js')
             ->addJs('//cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js')
-             // Chartist
-            ->addJs('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js')
             // Bootstrap Select 2
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js')
             // Custom JS
