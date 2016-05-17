@@ -55,7 +55,35 @@ class KpiController extends ControllerBase
 
     public function saveAction()
     {
-        echo "Hello, world!";
+        $this->view->disable();
+
+        if (!$this->request->isPost()) {
+            return $this->_redirectBack();
+        }
+
+        // Check if the date has already been saved before
+        $kpi = Kpis::findFirstByDate($this->request->getPost('date'));
+        if ($kpi) {
+            // If the date HAS been saved the update the data
+            $success = $kpi->update($this->request->getPost(), array('chargeOut', 'sales', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
+        } else {
+            // If the data has NOT yet been been saved then submit a new record
+            $kpi = new Kpis();
+            $success = $kpi->save($this->request->getPost(), array('date','chargeOut', 'sales', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
+        }
+
+        // Check success and print results
+        if ($success) {
+            $this->flashSession->success("The data has been updated!");
+            return $this->_redirectBack();
+                } else {
+            $this->flashSession->error("Woops! Something went wrong.");
+            foreach ($kpi->getMessages() as $message) {
+                $this->flashSession->error($message->getMessage());
+            }
+            return $this->_redirectBack();
+        }
+
     }
 
     // Action to generate TV dashboard view
