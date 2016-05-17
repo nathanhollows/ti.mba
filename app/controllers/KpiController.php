@@ -31,6 +31,7 @@ class KpiController extends ControllerBase
         if (checkdate($month, $day, $year)) {
             $dateRaw = strtotime("$year-$month-$day");
             $date = date('Y/m/d', $dateRaw);
+            $dateSql = date('Y-m-d', $dateRaw);
         } else {
             $this->flash->error("This is not a valid date");
             return true;
@@ -39,9 +40,10 @@ class KpiController extends ControllerBase
         $form = new KpiForm;
         $data = Kpis::findFirst("date = '$date'");
         if ($data) {
-            $form = new KpiForm($data);
+            $form = new KpiForm($data, array('date' => $date));
         }
         $this->view->form = $form;
+        $this->view->date = $dateSql;
 
         $this->view->tomorrow = date('Y/m/d', strtotime($date . "+1 days"));
         $this->view->yesterday = date('Y/m/d', strtotime($date . "-1 days"));
