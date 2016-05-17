@@ -48,12 +48,9 @@ class ContactsController extends ControllerBase
 		$this->view->contact = $contact;
 
 		// Set page titles
-		$this->view->pageTitle = $contact->name;
+		$this->view->pageTitle = '<i class="fa fa-user" aria-hidden="true"></i> ' . $contact->name;
 		$this->tag->prependTitle($contact->name);
 		$this->view->pageSubtitle = " ";
-		if ($contact->company <> null) {
-			$this->view->pageSubtitle = $contact->company->customerName;
-		}
 	}
 
 	public function newAction($customerCode = null)
