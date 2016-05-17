@@ -1,35 +1,34 @@
 {{ content() }}
 
 <div class="row">
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-		<div class="alert alert-danger">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			<strong>Alert!</strong> This is currently in active development and is not yet ready for production.
-		</div>	
-	</div>
-</div>
-
-<div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Chargeout and Sales</h3>
+				<h3 class="panel-title">Budget and Sales {{ link_to('kpi', '<i class="fa fa-icon fa-pencil"></i>', 'class': 'pull-right') }}</h3>
 			</div>
 			<div class="panel-body">
-				<div class="ct-chart ct-double-octave"></div>
+				<canvas id="myChart" width="3" height="1"></canvas>
 			</div>
 		</div>		
 	</div>
 	<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 		<div class="list-group">
-			<a href="#" class="list-group-item active">
-				<h4 class="list-group-item-heading">Currently in progress</h4>
-				<p class="list-group-item-text">This week: Quotes</p>
+			<a href="/tasks" class="list-group-item active">
+				<h4 class="list-group-item-heading">Follow Ups</h4>
+				<p class="list-group-item-text"></p>
 			</a>
 			<ul class="list-group">
-				<li class="list-group-item">Creating and editing Quotes</li>
-				<li class="list-group-item">KPIs</li>
-				<li class="list-group-item">Sales tracking</li>
+				{% for item in overdue %}
+				<li class="list-group-item">
+					<span class="badge">Overdue</span>
+					{{ parser.parse(item.notes) }}
+				</li>
+				{% endfor %}
+				{% for item in today %}
+				<li class="list-group-item">
+					{{ parser.parse(item.notes) }}
+				</li>
+				{% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -92,9 +91,40 @@
 				<h3 class="panel-title">Quote % Won (this month)</h3>
 			</div>
 			<div class="panel-body">
-				{# Yeah, yeah, I shouldn't have logic in the view #}
-				{{ quotes.won()/quotes.presented()*100 }}
+
 			</div>
 		</div>	
 	</div>
 </div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		var myChart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: [
+				{% for item in kpis %}
+				"Day {{ loop.index }}",
+				{% endfor %}
+				],
+				datasets: [{
+					label: 'Budget',
+					backgroundColor: "rgba(0,0,0,0)",
+					borderColor: "rgba(0,0,0,1)",
+					data: [
+					{% for item in kpis %}32778,{% endfor %}
+					]
+				},{
+					label: 'Sales $',
+					borderColor: "rgb(52, 152, 219)",
+					data: [
+					{% for item in kpis %}{{ item.sales }},{% endfor %}
+					]
+				},
+				]
+			},
+			options: {
+			}
+		});
+	});
+</script>

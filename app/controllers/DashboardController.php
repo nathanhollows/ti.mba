@@ -3,8 +3,9 @@
 namespace App\Controllers;
 
 use App\Freight\Freight;
-use App\Models\ContactRecord;
+use App\Models\FollowUp;
 use App\Models\Quotes;
+use App\Models\Kpis;
 
 class DashboardController extends ControllerBase
 {
@@ -21,9 +22,21 @@ class DashboardController extends ControllerBase
     {
         $config = include __DIR__ . "/../config/config.php";
 
-        $tasks = new ContactRecord;
+        $tasks = new FollowUp;
 
-        $this->view->tasks = $tasks->getTasks();
+        $this->view->kpis = Kpis::thisMonth();
+
+        $this->view->overdue     = $tasks->getOverdue(10);
+        $this->view->today       = $tasks->getToday(10);
+        
+        $this->view->parser = new \cebe\markdown\Markdown();
+        
+        $this->assets->collection('header')
+            ->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css');
+        
+        $this->assets->collection('footer')
+            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.bundle.min.js')
+            ->addJs('js/dashboard/charts.js');
 
         if ($config->pbt->enable) {
             $freight = new Freight;
