@@ -141,6 +141,11 @@ class QuotesController extends ControllerBase
 				));
 		}
 
+		$this->view->form = new ItemForm();
+
+		$this->assets->collection('footer')
+			->addJs('js/quotes/view.js');
+
 		$this->tag->prependTitle('Quote');
 		$this->view->quote = $quote;
 		$items = QuoteItems::Find(array(
