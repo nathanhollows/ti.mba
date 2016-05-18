@@ -32,7 +32,10 @@ class QuotesController extends ControllerBase
 		$this->flash->warning("Searching by Rep and Status do not currently work");
 
 		$this->assets->collection('footer')
-			->addJs('js/datatables/quotes.js');
+		->addJs('js/datatables/quotes.js');
+
+		$this->view->headerButton = \Phalcon\Tag::linkTo(array('quotes/new', 'New', 'class' => ' btn btn-default pull-right'));
+
 	}
 
 	public function ajaxAction($customerCode = NULL)
