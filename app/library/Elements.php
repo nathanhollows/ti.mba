@@ -20,16 +20,20 @@ class Elements extends Component
                 'caption' => 'Companies',
                 'action' => '',
                 ),
-            'contacts' => array(
-                'caption' => 'Contacts',
-                'action' => '',
-                ),
             'quotes' => array(
                 'caption' => 'Quotes',
                 'action' => '',
                 ),
-            'tasks' => array(
-                'caption' => 'Tasks',
+            'orders' => array(
+                'caption' => 'Orders',
+                'action' => '',
+                'children' => array (
+                    array('View Orders', ''),
+                    array('Gantt', 'gantt'),
+                    array('Import', 'import'),
+                )),
+            'projects' => array(
+                'caption' => 'Projects',
                 'action' => '',
                 ),
             ),
