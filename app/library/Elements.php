@@ -49,7 +49,7 @@ class Elements extends Component
             '' => array(
                 'caption' => 'User',
                 'action' => '',
-                                'children'  => array(
+                    'children'  => array(
                     array('Profile', 'profile'),
                     array('Logout', 'logout'),
                     )
