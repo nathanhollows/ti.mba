@@ -2,7 +2,8 @@
 
 namespace App\Controllers;
 
-use App\Models\ContactRecord;
+use App\Auth\Auth;
+use App\Models\FollowUp;
 
 class TasksController extends ControllerBase
 {
@@ -14,17 +15,19 @@ class TasksController extends ControllerBase
 
 	public function indexAction()
 	{
+		$auth = new Auth;
+		$user = $auth->getId();
+
 		$this->tag->prependTitle('Tasks');
 		
-		// Fetch today's current tasks belonging to the logged in user
-		$data = new ContactRecord;
-		$tasks = $data->getTasks();
-		$futureTasks = $data->getFutureTasks();
         $this->view->parser = new \cebe\markdown\Markdown();
 
-		// Send the Tasks form and Tasks list to the view
-		$this->view->tasks = $tasks;
-		$this->view->upcoming = $futureTasks;
+		// Fetch today's current tasks belonging to the logged in user
+		$data = new FollowUp;
+
+		$this->view->overdue	= $data->getOverdue($user);
+		$this->view->today		= $data->getToday($user);
+		$this->view->coming 	= $data->getComing($user);
 
 	}
 }
