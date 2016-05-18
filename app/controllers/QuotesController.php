@@ -100,7 +100,33 @@ class QuotesController extends ControllerBase
 		$this->view->setTemplateBefore('quote');
 		$this->view->quote = $quote;
 		$this->view->items = $items;
+		$this->view->dated  = strtotime($quote->date);
 
+	}
+
+	public function turntosaleAction($quoteId)
+	{
+		$this->view->disable();
+
+		$quote = Quotes::findFirstByquoteId($quoteId);
+		if ($quote->sale === 1){
+			$quote->sale = 0;
+		} else {
+			$quote->sale = 1;
+		}
+		$quote->update();
+
+		return $this->_redirectBack();
+	}
+
+	public function headerAction()
+	{
+		$this->view->setTemplateBefore("none");
+	}	
+
+	public function footerAction()
+	{
+		$this->view->setTemplateBefore("none");
 	}
 
 	public function viewAction($quoteId = null)
