@@ -57,6 +57,35 @@ class QuotesController extends ControllerBase
 		};
 	}
 
+	public function getAction($quoteId)
+	{
+		$this->view->disable();
+		$quote = Quotes::findFirstByquoteId($quoteId);
+		$snappy = new Pdf('C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe');
+		// $snappy = new Pdf('xvfb-run -a /usr/bin/wkhtmltopdf');
+		$snappy->setOptions(
+			array(
+				'header-html'	=> 'http://dev/quotes/header',
+				'header-spacing'=> '10',
+				'footer-html'	=> 'http://dev/quotes/footer',
+				'footer-spacing'=> '10',
+				'margin-top'	=> '44',
+				'margin-bottom'	=> '20',
+				'margin-left'	=> '0',
+				'margin-right'	=> '0',
+				'page-size'		=> 'A4',
+				'disable-smart-shrinking'	=> true,
+				'dpi'			=> '720',
+				)
+			);
+		$response = new Response;
+		// Setting a header by its name
+		$response->setHeader("Content-Type", "application/pdf");
+		$response->setHeader("Content-Disposition", 'inline; filename="' . $quote->quoteId . ' ' . $quote->customer->customerName . '"');
+		$response->setContent($snappy->getOutput('dev/quote/' . $quote->webId ));
+		$response->send();
+	}
+
 	public function publicAction($quoteId = null)
 	{
 		$quote = Quotes::findFirstBywebId($quoteId);
