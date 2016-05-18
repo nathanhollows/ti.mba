@@ -1,11 +1,16 @@
 <?php
- 
+
 namespace App\Controllers;
 
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
-use App\Models\CustomerOrders;
-
+use Phalcon\Mvc\Model\Resultset;
+use App\Models\CustomerOrders,
+    App\Models\Orders,
+    App\Models\ContactRecord,
+    App\Models\OrderItems;
+include('../vendor/gantti/lib/gantti.php');
+use Gantti;
 class OrdersController extends ControllerBase
 {
     public function initialize()
@@ -21,53 +26,131 @@ class OrdersController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
+        $this->view->headerButton = \Phalcon\Tag::linkTo(array('orders/import', 'Import', 'class' => ' btn btn-default pull-right'));
+
+        $orders = Orders::find(
+            array(
+                "complete = 0",
+                "order" => "orderNumber DESC"
+                )
+            );
+        $this->view->orders = $orders;
+
+        $this->view->scheduled = Orders::scheduled();
     }
 
-    /**
-     * Searches for customer_orders
-     */
-    public function searchAction()
+    public function ganttAction()
     {
+        $this->view->noHeader = true;
 
-        $numberPage = 1;
-        if ($this->request->isPost()) {
-            $query = Criteria::fromInput($this->di, 'App\Models\CustomerOrders', $_POST);
-            $this->persistent->parameters = $query->getParams();
-        } else {
-            $numberPage = $this->request->getQuery("page", "int");
-        }
+        $orders = Orders::find(
+            array(
+                "complete = 0",
+                "hydration" => Resultset::HYDRATE_ARRAYS,
+            )
+        );
 
-        $parameters = $this->persistent->parameters;
-        if (!is_array($parameters)) {
-            $parameters = array();
-        }
-        $parameters["order"] = "orderNumber";
+        $data = $orders;
 
-        $customer_orders = CustomerOrders::find($parameters);
-        if (count($customer_orders) == 0) {
-            $this->flash->notice("The search did not find any orders");
 
-            return $this->dispatcher->forward(array(
-                "controller" => "orders",
-                "action" => "index"
-            ));
-        }
-
-        $paginator = new Paginator(array(
-            "data" => $customer_orders,
-            "limit"=> 10,
-            "page" => $numberPage
+        $gantti = new Gantti($data, array(
+          'title'      => 'Orders',
+          'cellwidth'  => 25,
+          'cellheight' => 35,
+          'start'   => 'date',
+          'end'     => 'eta'
         ));
 
-        $this->view->page = $paginator->getPaginate();
+        $this->view->gantt = $gantti;
     }
 
-    /**
-     * Displays the creation form
+    /*
+     * Import Action responsible for parsing raw data into database
      */
-    public function newAction()
+    public function importAction()
     {
+        if ($this->request->isPost()) {
+            $string = preg_replace('#\\n(?=[^"]*"[^"]*(?:"[^"]*"[^"]*)*$)#' , ' ', $this->request->getPost('orderDump'));
+            $splitOrders = explode(PHP_EOL, $string);
+            $i = 0;
+            foreach ($splitOrders as $key => $order) {
+                $orders[$i] = explode("\t", $order);
+                $i++;
+            }
 
+            $string = preg_replace('#\\n(?=[^"]*"[^"]*(?:"[^"]*"[^"]*)*$)#' , ' ', $this->request->getPost('itemDump'));
+            $splitItems = explode(PHP_EOL, $string);
+            $i = 0;
+            foreach ($splitItems as $key => $item) {
+                $items[$i] = explode("\t", $item);
+                $i++;
+            }
+            unset($orders[0]);
+
+            $allOrders = Orders::find(
+                array(
+                    'complete = 0',
+                    )
+                );
+            foreach ($allOrders as $key => $order) {
+                $order->complete = 1;
+                $order->save();
+            }
+
+            foreach ($orders as $key => $order) {
+                $record = new Orders();
+                $record->orderNumber = $order[0];
+                $record->customerRef = $order[1];
+                $newDateString = date_format(date_create_from_format('d/m/Y', $order[2]), 'Y-m-d');
+                $record->date = $newDateString;
+                $record->quoted = $order[4];
+                $record->complete = 0;
+                $record->description = $order[6];
+                $record->cancelled = $order[7];
+                if ($record->save() == false) {
+                    // $this->flash->error("The order import failed");
+                    foreach ($record->getMessages() as $message) {
+                        $this->flash->error($message . "\n");
+                    }
+                }
+            }
+
+            unset($items[0]);
+            foreach ($items as $key => $item) {
+                $record = new OrderItems();
+                $record->grade = $item[0];
+                $record->treatment = $item[1];
+                $record->dryness = $item[2];
+                $record->finish = $item[3];
+                $record->width = $item[4];
+                $record->thickness = $item[5];
+                $record->length = $item[6];
+                $record->dry = $item[7];
+                $record->customerCode = $item[8];
+                $record->orderNo = $item[9];
+                $record->itemNo = $item[10];
+                $record->requiredBy = $item[11];
+                $record->ordered = $item[12];
+                $record->sent = $item[13];
+                $record->outstanding = $item[14];
+                $record->unit = $item[15];
+                $record->despatch = $item[16];
+                $record->comments = $item[17];
+                $record->orderStock = $item[18];
+                $record->notes = $item[19];
+                $record->despatchNotes = $item[20];
+                $record->location = $item[21];
+                if ($record->save() == false) {
+                    $this->flash->error("The item import failed");
+                    // foreach ($record->getMessages() as $message) {
+                    //     $this->flash->error($message . "\n");
+                    // }
+                }
+            }
+
+            $this->view->itemDump = $items;
+            $this->view->orderDump = $orders;
+        }
     }
 
     /**
@@ -75,37 +158,19 @@ class OrdersController extends ControllerBase
      *
      * @param string $orderNumber
      */
-    public function editAction($orderNumber)
+    public function viewAction($orderNumber)
     {
-
-        if (!$this->request->isPost()) {
-
-            $customer_order = CustomerOrders::findFirstByorderNumber($orderNumber);
-            if (!$customer_order) {
-                $this->flash->error("customer_order was not found");
-
-                return $this->dispatcher->forward(array(
-                    "controller" => "orders",
-                    "action" => "index"
-                ));
-            }
-
-            $this->view->orderNumber = $customer_order->orderNumber;
-
-            $this->tag->setDefault("orderNumber", $customer_order->orderNumber);
-            $this->tag->setDefault("customerId", $customer_order->customerId);
-            $this->tag->setDefault("customerAddress", $customer_order->customerAddress);
-            $this->tag->setDefault("salesAgent", $customer_order->salesAgent);
-            $this->tag->setDefault("customerContact", $customer_order->customerContact);
-            $this->tag->setDefault("customerOrderNumber", $customer_order->customerOrderNumber);
-            $this->tag->setDefault("dateOrdered", $customer_order->dateOrdered);
-            $this->tag->setDefault("dateRequired", $customer_order->dateRequired);
-            $this->tag->setDefault("complete", $customer_order->complete);
-            $this->tag->setDefault("quote", $customer_order->quote);
-            $this->tag->setDefault("cancelled", $customer_order->cancelled);
-            $this->tag->setDefault("freightCarrier", $customer_order->freightCarrier);
-            
-        }
+        $order = Orders::findFirstByorderNumber($orderNumber);
+        $this->view->order = $order;
+        $this->view->headerButton = \Phalcon\Tag::linkTo(array("followup/?company=" . $order->customerCode . "&job=" . $order->orderNumber, '<i class="fa fa-pencil"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
+       
+        $history = ContactRecord::find(array(
+            "job = '$order->orderNumber'",
+            'order'         => 'date DESC',
+            'limit'         => 8
+        ));
+        $this->view->parser = new \cebe\markdown\Markdown();
+        $this->view->history = $history;
     }
 
     /**
@@ -118,7 +183,7 @@ class OrdersController extends ControllerBase
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
                 "action" => "index"
-            ));
+                ));
         }
 
         $customer_order = new CustomerOrders();
@@ -144,7 +209,7 @@ class OrdersController extends ControllerBase
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
                 "action" => "new"
-            ));
+                ));
         }
 
         $this->flash->success("customer_order was created successfully");
@@ -152,7 +217,7 @@ class OrdersController extends ControllerBase
         return $this->dispatcher->forward(array(
             "controller" => "orders",
             "action" => "index"
-        ));
+            ));
 
     }
 
@@ -167,7 +232,7 @@ class OrdersController extends ControllerBase
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
                 "action" => "index"
-            ));
+                ));
         }
 
         $orderNumber = $this->request->getPost("orderNumber");
@@ -179,7 +244,7 @@ class OrdersController extends ControllerBase
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
                 "action" => "index"
-            ));
+                ));
         }
 
         $customer_order->customerId = $this->request->getPost("customerId");
@@ -205,7 +270,7 @@ class OrdersController extends ControllerBase
                 "controller" => "orders",
                 "action" => "edit",
                 "params" => array($customer_order->orderNumber)
-            ));
+                ));
         }
 
         $this->flash->success("customer_order was updated successfully");
@@ -213,7 +278,7 @@ class OrdersController extends ControllerBase
         return $this->dispatcher->forward(array(
             "controller" => "orders",
             "action" => "index"
-        ));
+            ));
 
     }
 
@@ -232,7 +297,7 @@ class OrdersController extends ControllerBase
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
                 "action" => "index"
-            ));
+                ));
         }
 
         if (!$customer_order->delete()) {
@@ -244,7 +309,7 @@ class OrdersController extends ControllerBase
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
                 "action" => "search"
-            ));
+                ));
         }
 
         $this->flash->success("customer_order was deleted successfully");
@@ -252,7 +317,7 @@ class OrdersController extends ControllerBase
         return $this->dispatcher->forward(array(
             "controller" => "orders",
             "action" => "index"
-        ));
+            ));
     }
 
 }
