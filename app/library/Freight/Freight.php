@@ -15,15 +15,31 @@ class Freight extends component
 			return false;
 		}
 
-		$ftp_server		= $config->pbt->ftpServer;
-		$ftp_user_name	= $config->pbt->ftpUserName;
-		$ftp_user_pass	= $config->pbt->ftpPassword;
+		if (!empty($config->pbt->ftpServer)) {
+			$ftp_server	= $config->pbt->ftpServer;
+		} else {
+			$this->flash->error("The PTB FTP server is not defined in the config. Please check this and try again.");
+			return true;
+		}
+
+		if (!empty($config->pbt->ftpUserName)) {
+			$ftp_user_name	= $config->pbt->ftpUserName;
+		} else {
+			$this->flash->error("The PTB FTP username is not defined in the config. Please check this and try again.");
+			return true;
+		}
+
+		if (!empty($config->pbt->ftpPassword)) {
+			$ftp_user_pass	= $config->pbt->ftpPassword;
+		} else {
+			$this->flash->error("The PTB FTP username is not defined in the config. Please check this and try again.");
+			return true;
+		}
 
 		// set up basic connection
 		$conn_id = ftp_connect($ftp_server); 
 		if (!$conn_id) {
 			$this->flash->error("The FTP connection to PBT has failed. Please check the config file and try again.");
-			return false;
 		}
 
 		// login with username and password
@@ -32,11 +48,13 @@ class Freight extends component
 		// check connection
 		if ((!$conn_id) || (!$login_result)) {
 			$this->flash->error("FTP connection has failed !");
+			return true;
 		}
 
 		// try to change the directory to somedir
 		if (!ftp_chdir($conn_id, "ats")) {
 			$this->flash->error("Couldn't change directory");
+			return true;
 		}
 
 		// get contents of the current directory
