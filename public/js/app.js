@@ -7,7 +7,7 @@ $(document).ready(function() {
     // load the url and show modal on success
     $.fn.modal.Constructor.prototype.enforceFocus = function() {
       $('.selectpicker').selectpicker('refresh');
-      $("#details").markdown({ });
+      $(".markdown-edit").markdown({ });
     };
     $("#modal-ajax .modal-content").load(target, function() { 
       $("#modal-ajax").modal("show"); 
