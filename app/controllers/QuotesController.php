@@ -11,8 +11,10 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Quotes;
 use App\Models\QuoteItems;
 use App\Models\GenericStatus;
-use App\Forms\Quotes\QuotesForm;
-use App\Forms\Quotes\ItemForm;
+use App\Forms\quotes\QuotesForm;
+use App\Forms\quotes\ItemForm;
+use Knp\Snappy\Pdf;
+use Phalcon\Http\Response;
 
 class QuotesController extends ControllerBase
 {
