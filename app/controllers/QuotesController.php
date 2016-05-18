@@ -205,14 +205,100 @@ class QuotesController extends ControllerBase
 	}
 
 	public function updateAction() {
-		
+		// Disable the view, this is an information processing action
+		$this->view->disable();
+
+		// If the user stubmles accross this page without having submitted data then forward them to the quotes index
+		if (!$this->request->isPost()) {
+			return $this->dispatcher->forward(array(
+				"controller"	=> "quotes",
+				"action"		=> "index"
+				)
+			);
+		}
+
+		$quote = Quotes::findFirstByquoteId($this->request->getPost('quoteId'));
+		// Store and check for errors
+		$success = $quote->update($this->request->getPost(), array('customerCode', 'contact', 'reference', 'date', 'notes', 'moreNotes', 'user', 'status'));
+		if ($success) {
+			$this->flash->success('Quote updated successfully');
+			return $this->_redirectBack();
+		} else {
+			$this->flash->error('Sorry, the quote could not be updated');
+			foreach($quote->getMessages() as $message) {
+				$this->flash->error($message->getMessage());
+			}
+		}
 	}
 
-	public function itemAction($id = null)
+	public function addItemAction($id = null)
 	{
 		$this->view->setTemplateBefore('modal-form');
 		$this->view->pageTitle = "Add a line";
-		$form = new ItemForm();
+
+		$item = new QuoteItems();
+		$item->quoteId = $id;
+
+		$form = new ItemForm($item);
 		$this->view->form = $form;
 	}
+
+	public function createItemAction()
+	{
+		$this->view->disable();
+		if (!$this->request->isPost()){
+			$this->_redirectBack();
+		}
+
+		$item = new QuoteItems();
+
+		$success = $item->save($this->request->getPost(), array('quoteId', 'width', 'thickness', 'grade', 'finish', 'lengths', 'priceUnit', 'unitPrice'));
+		if ($success) {
+			$this->flashSession->success('Item added!');
+			return $this->_redirectBack();
+		} else {
+			$this->flashSession->error('Sorry, the item could not be added');
+			foreach($item->getMessages() as $message) {
+				$this->flashSession->error($message->getMessage());
+			}
+		}
+
+	}
+
+	public function editItemAction($id)
+	{
+		$this->view->disable();
+		if (!$this->request->isPost()){
+			$this->_redirectBack();
+		}
+	}
+
+	public function deleteItemAction($id)
+	{
+		// Disable the view and redirect anyone visiting this page incorrectly
+		$this->view->disable();
+		if (!$this->request->isPost()){
+			$this->_redirectBack();
+		}
+
+		// Find the quote item based on the id in the url
+		$item = QuoteItems::findFirstById($id);
+
+		// If the item does not exist
+		if (!$item) {
+			$this->flashSession->warning('Hmmm.. That item couldn\'t be found');
+			$this->_redirectBack();
+		}
+
+		// Try to delete the item,
+		// Flash the outcome to the session and redirect back
+		if ($item->delete()) {
+			$this->flashSession->info('Item was successfully deleted');
+			$this->_redirectBack();
+		} else {
+			$this->flashSession->warning('Something went wrong and this item could not be deleted');
+			$this->_redirectBack();
+		}
+	}
+
 }
