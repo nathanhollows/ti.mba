@@ -57,7 +57,8 @@ class ControllerBase extends Controller
             ->addCss('https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
             ->addCss('//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css')
             ->addCss('//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css')
-            ->addCss('//cdn.datatables.net/plug-ins/1.10.11/integration/font-awesome/dataTables.fontAwesome.css');
+            ->addCss('//cdn.datatables.net/plug-ins/1.10.11/integration/font-awesome/dataTables.fontAwesome.css')
+            ->addCss('//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css');
         // Globally used JQuery
         $this->assets->collection('jquery')
             ->addJs('//code.jquery.com/jquery-1.11.1.min.js');
@@ -75,7 +76,8 @@ class ControllerBase extends Controller
             // Bootstrap Select 2
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js')
             // Custom JS
-            ->addJs('js/app.js');
+            ->addJs('js/app.js')
+            ->addJs('//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js');
     }
     
     protected function _redirectBack() {
