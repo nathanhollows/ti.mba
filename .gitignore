@@ -1,4 +1,4 @@
 app/cache/*
 vendor/*
-!vendor/composer/*
+!vendor/*
 public/ftp/pbt/*
