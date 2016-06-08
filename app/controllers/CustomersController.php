@@ -93,22 +93,25 @@ class CustomersController extends ControllerBase
             ));
 
         $this->view->customerCode = $customer->customerCode;
-        $this->tag->setDefault("customerCode", $customer->customerCode);
-        $this->tag->setDefault("customerName", $customer->customerName);
-        $this->tag->setDefault("customerPhone", $customer->customerPhone);
-        $this->tag->setDefault("customerFax", $customer->customerFax);
-        $this->tag->setDefault("customerEmail", $customer->customerEmail);
-        $this->tag->setDefault("freightArea", $customer->freightArea);
-        $this->tag->setDefault("freightCarrier", $customer->freightCarrier);
-        $this->tag->setDefault("salesArea", $customer->salesArea);
-        $this->tag->setDefault("customerStatus", $customer->customerStatus);
-        $this->tag->setDefault("defaultAddress", $customer->defaultAddress);
-        $this->tag->setDefault("defaultContact", $customer->defaultContact);
-        $this->tag->setDefault("customerGroup", $customer->customerGroup);
 
         $this->view->customer = $customer;
         $this->view->notes = $notes;
-        $this->view->headerButton = \Phalcon\Tag::linkTo(array("followup/?company=" . $customerCode, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
+        $this->view->headerButton = '
+        <!-- Split button -->
+        <div class="btn-group pull-right">
+            <a class="btn btn-default" data-target="#modal-ajax" href="/followup/?company=' . $customer->customerCode . '" role="button"><i class="fa fa-icon fa-pencil"></i> Add Record</a>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+                <li><a href="/quotes/new/?company=' . $customer->customerCode . '">New Quote</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="/customers/delete/' . $customer->customerCode . '">Delete</a></li>
+            </ul>
+        </div>
+        ';
+        \Phalcon\Tag::linkTo(array("followup/?company=" . $customerCode, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
 
         $addresses = Addresses::find("customerCode = '$customerCode'");
         $this->view->addresses = $addresses;
