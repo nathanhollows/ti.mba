@@ -15,7 +15,8 @@ use App\Models\Grade,
 	App\Models\Treatment,
 	App\Models\Finish,
 	App\Models\Dryness,
-	App\Models\PricingUnit;
+	App\Models\PricingUnit,
+	App\Models\QuoteCodes;
 
 class ItemForm extends Form
 {
