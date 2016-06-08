@@ -165,46 +165,28 @@ class CustomersController extends ControllerBase
      */
     public function createAction()
     {
+
+        // If the user has come accross this page by mistake then redirect to the customer index
         if (!$this->request->isPost()) {
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "index"
-                ));
+            $this->response->redirect("customers/");
         }
 
+        // Lets start by creating a new customers
         $customer = new Customers();
 
-        $customer->customerCode = $this->request->getPost("customerCode");
-        $customer->customerName = $this->request->getPost("customerName");
-        $customer->customerPhone = $this->request->getPost("customerPhone");
-        $customer->customerFax = $this->request->getPost("customerFax");
-        $customer->customerEmail = $this->request->getPost("customerEmail");
-        $customer->freightArea = $this->request->getPost("freightArea");
-        $customer->freightCarrier = $this->request->getPost("freightCarrier");
-        $customer->salesArea = $this->request->getPost("salesArea");
-        $customer->customerStatus = $this->request->getPost("customerStatus");
-        $customer->defaultAddress = $this->request->getPost("defaultAddress");
-        $customer->defaultContact = $this->request->getPost("defaultContact");
-        $customer->customerGroup = $this->request->getPost("customerGroup");
-        
-
-        if (!$customer->save()) {
+        // Lets populate that customer information uisng the posted data
+        // If the save doesn't work then redirect back to the previous form and flash the error messages
+        if (!$customer->save($this->request->getPost(), array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup'))) {
             foreach ($customer->getMessages() as $message) {
-                $this->flash->error($message);
+                $this->flashSession->error($message);
             }
 
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "new"
-                ));
+            $this->_redirectBack();
+        } else {
+        // If the customer does save correctly then forward the user to the "View" of the new customer
+            $this->flashSession->success("Customer was created successfully");
+            $this->response->redirect("customers/view/" . $customer->customerCode );
         }
-
-        $this->flash->success("Customer was created successfully");
-
-        return $this->dispatcher->forward(array(
-            "controller" => "customers",
-            "action" => "view/" . $customer->customerCode,
-            ));
     }
 
     /**
