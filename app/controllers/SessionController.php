@@ -130,7 +130,7 @@ class SessionController extends ControllerBase
                 }
             } else {
 
-                $user = Users::findFirstByEmail($this->request->getPost('email'));
+                $user = Users::findFirstByemail($this->request->getPost('Email'));
                 if (!$user) {
                     $this->flash->success('There is no account associated to this email');
                 } else {
