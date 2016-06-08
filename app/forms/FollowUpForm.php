@@ -26,14 +26,19 @@ class FollowUpForm extends Form
 		
 		$customer = new Select(
 			"customerCode",
-			Customers::find(),
+			Customers::find(
+				array(
+					"conditions"	=> "customerCode = ?1",
+					"bind"			=> array(1 => $option["customerCode"]),
+				)
+			),
 			array(
 				'using'	=> array(
 					'customerCode',
-					'customerName'
+					'customerName',
 				),
 			'class'	=> 'form-control selectpicker',
-				'data-live-search' => 'true',
+			'data-live-search' => 'true',
 			'useEmpty'	=> true
 			)
 		);
@@ -42,7 +47,12 @@ class FollowUpForm extends Form
 
 		$contact = new Select(
 			"contact",
-			Contacts::find(),
+			Contacts::find(
+				array(
+					"conditions"	=> "customerCode = ?1",
+					"bind"			=> array(1 => $option["customerCode"]),
+				)
+			),
 			array(
 				'using'	=> array(
 					'id',
@@ -58,7 +68,8 @@ class FollowUpForm extends Form
 
 		$job = new Text("job");
 		$job->setAttributes(array(
-			'class'		=> 'form-control'
+			'class'		=> 'form-control',
+			'placeholder'	=> 'Quote Number',
 			));
 		$job->setLabel("Job");
 		$this->add($job);
@@ -73,9 +84,14 @@ class FollowUpForm extends Form
 		$details->setLabel("Details");
 		$this->add($details);
 
-		$date = new Date("followUpDate");
+		$theDate = date('Y-m-d');
+		if (isset($option["followUpDate"])) {
+			$theDate = $option["followUpDate"];
+		}
+
+		$date = new Text("followUpDate");
 		$date->setAttributes(array(
-			'value'		=> date('Y-m-d'),
+			'value'		=> $theDate,
 			'required'	=> 'true',
 			'class'		=> 'form-control'
 			));
