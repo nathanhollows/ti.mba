@@ -125,6 +125,28 @@ class CustomersController extends ControllerBase
 
     }
 
+    public function reportAction($customerCode = null) 
+    {
+        if ($customerCode == NULL) {
+            $this->_redirectBack();
+        }
+
+        $customer = Customers::findFirstBycustomerCode($customerCode);
+        if (!$customer) {
+            $this->flash->error("The customer could not be found");
+            return false;
+        } else {
+            $this->view->setTemplateBefore('none');
+        }
+
+        $quotes = Quotes::findBycustomerCode($customerCode);
+        $history = ContactRecord::findBycustomerCode($customerCode);
+
+        $this->view->customer = $customer;
+        $this->view->history = $history;
+        $this->view->quotes = $quotes;
+    }
+
     public function editAction($customerCode = null)
     {
         if ($this->request->isAjax()) {
