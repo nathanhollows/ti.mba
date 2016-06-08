@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Freight\Freight;
-use App\Models\FollowUp;
+use App\Models\ContactRecord;
 use App\Models\Quotes;
 use App\Models\Kpis;
 
@@ -22,12 +22,12 @@ class DashboardController extends ControllerBase
     {
         $config = include __DIR__ . "/../config/config.php";
 
-        $tasks = new FollowUp;
+        $tasks = new ContactRecord;
 
         $this->view->kpis = Kpis::thisMonth();
 
-        $this->view->overdue     = $tasks->getOverdue(10);
-        $this->view->today       = $tasks->getToday(10);
+        $this->view->overdue     = $tasks->getOverdue();
+        $this->view->today       = $tasks->getToday();
         
         $this->view->parser = new \cebe\markdown\Markdown();
         
