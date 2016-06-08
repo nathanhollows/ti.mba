@@ -11,6 +11,7 @@ use Phalcon\Validation\Validator\PresenceOf;
 
 use App\Models\Contacts;
 use App\Models\Customers;
+use App\Models\ContactRoles;
 
 class ContactsForm extends Form
 {
@@ -38,12 +39,16 @@ class ContactsForm extends Form
 		));
 		$this->add($name);
 
-		$position = new Text("position");
+		$position = new Select(
+			'position',
+			ContactRoles::find(array("order" => "rank ASC")),
+			array(
+				'using'	=> array('id', 'name'),
+				'required'	=> 'true',
+				'class'	=> 'form-control'
+			)
+		);
 		$position->setLabel("Position");
-		$position->setAttributes(array(
-			'class'			=> 'form-control',
-			'placeholder'	=> 'Position',
-		));
 		$this->add($position);
 
 		$customerCode = new Select(
