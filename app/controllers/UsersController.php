@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class UserController extends ControllerBase
+class UsersController extends ControllerBase
 {
 
 	public function initialize()
