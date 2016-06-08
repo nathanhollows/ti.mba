@@ -115,4 +115,17 @@ class KpiController extends ControllerBase
             ->addJs('js/dashboard/charts.js');
 
     }
+
+    // Action to generate TV dashboard view
+    public function dailySalesAction($year = null, $month = null, $day = null)
+    {
+        if (!$year || !$month || !$day) {
+            $this->response->redirect('kpi/dailysales/' . date('Y/m/d'));
+        }
+
+        $dateRaw = strtotime("$year-$month-$day");
+        $date = date('Y-m-d', $dateRaw);
+
+    }
+
 }
