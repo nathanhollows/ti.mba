@@ -14,6 +14,10 @@ class QuoteItems extends Model
 
 	public $finish;
 
+	public $width;
+
+	public $thickness;
+
 	public $callSize;
 
 	public $finSize;
@@ -29,5 +33,9 @@ class QuoteItems extends Model
 	public function initialize()
 	{
 		$this->hasOne('priceUnit', 'App\Models\PricingUnit', 'id', array('alias'  => 'unit'));
+		// Layer of compatiblity for migration
+		$this->hasOne('grade', 'App\Models\QuoteCodes', 'code', array('alias'  => 'legacy'));
+		$this->hasOne('finish', 'App\Models\Finish', 'id', array('alias'  => 'fin'));
 	}
+
 }
