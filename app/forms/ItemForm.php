@@ -112,5 +112,14 @@ class ItemForm extends Form
 
 		$priceMethod = new Select('priceMethod');
 
+		$qty = new Numeric('qty');
+		$qty 	->setLabel("qty")
+				->setAttributes(array(
+					"class"		=> "form-control",
+					"step"		=> "any",
+				)
+			);
+		$this->add($qty);
+
 	}
 }

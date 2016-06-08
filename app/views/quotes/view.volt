@@ -34,40 +34,65 @@
 	<div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Items
-				<a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('quotes/item/' ~ quote.id) }}' data-target="#modal-ajax"><i class="fa fa-plus"></i> Add Item</a>
-				</h3>
+				<h3 class="panel-title">Items <button id="enable" class="btn btn-sm btn-default">Edit</button></h3>
 			</div>
 			<div class="panel-body">
 				<div class="table-responsive">
 					<table class="table table-hover">
 						<thead>
 							<tr>
-								<th>Specie</th>
-								<th>Call Size</th>
-								<th>Fin Size</th>
 								<th>Description</th>
-								<th>Lengths</th>
+								<th>Size</th>
+								<th>Finish</th>
+								<th>Notes</th>
 								<th>Qty</th>
 								<th>Unit</th>
 								<th>Price</th>
+								<th></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="items">
 
-						{% for item in items %}
+							{% for item in items %}
 							<tr>
-								<td>{{ item.grade }}</td>
-								<td>{{ item.callSize }}</td>
-								<td>{{ item.finSize }}</td>
-								<td>{{ item.finish }}</td>
-								<td>{{ item.lengths }}</td>
-								<td>{{ item.qty }}</td>
-								<td>{{ item.unit.name }}</td>
-								<td>{{ item.unitPrice }}</td>
+								<td><a href="#" class="xedit" id="grade" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Grade">{{ item.legacy.description }}</a></td>
+								<td>
+									{# Because of legacy information I've had to account for the fact that#}
+
+											<a href="#" class="xedit" id="width" data-type="number" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Width">{{ item.width }}</a> x 
+											<a href="#" class="xedit" id="thickness" data-type="number" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Thickness">{{ item.thickness }}</a>
+								</td>
+								<td><a href="#" class="xedit" id="finish" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Finish">{{ item.fin.name }}</a></td>
+								<td><a href="#" class="xedit" id="lengths" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Lengths / Notes">{{ item.lengths }}</a></td>
+								<td><a href="#" class="xedit" id="qty" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Quantity">{{ item.qty }}</a></td>
+								<td><a href="#" class="xedit" id="unitPrice" data-type="select" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Pricing Method">{{ item.unit.name }}</a></td>
+								<td><a href="#" class="xedit" id="price" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Price">{{ item.unitPrice }}</a></td>
+								<td>
+									{{ link_to('quotes/deleteitem/' ~ item.id, 'Delete')}}
+									
+								</td>
 							</tr>
-						{% endfor %}
+							{% endfor %}
+							<tr>
+								{{ form('quotes/createitem', 'method': 'post') }}
+									<td hidden="true">{{ form.render('quoteId') }}</td>
+									<td>{{ form.render('grade') }}</td>
+									<td>{{ form.render('width') }} {{ form.render('thickness') }}</td>
+									<td>{{ form.render('finish') }} </td>
+									<td>{{ form.render('lengths') }} </td>
+									<td>{{ form.render('qty') }} </td>
+									<td>{{ form.render('priceMethod') }} </td>
+									<td>{{ form.render('price') }} </td>
+									<td>
+										<button type="submit" class="btn btn-primary">Save</button>
+									</td>
+								{{ end_form() }}
+							</tr>
 						</tbody>
+						<tfoot>
+							<tr>
+							</tr>
+						</tfoot>
 					</table>
 				</div>
 			</div>

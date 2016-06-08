@@ -1,5 +1,7 @@
-<form action="{{ static_url('quote/item/create') }}" method="POST" role="form">
+<form action="{{ static_url('quotes/createitem') }}" method="POST" role="form">
 	<div class="modal-body">
+				{{ form.render('quoteId') }}
+				{{ form.render('id') }}
 		<div class="row">
 			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 				{{ form.render('width') }}
