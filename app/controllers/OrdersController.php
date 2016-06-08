@@ -37,6 +37,11 @@ class OrdersController extends ControllerBase
         $this->view->orders = $orders;
 
         $this->view->scheduled = Orders::scheduled();
+
+        $this->assets->collection("footer")
+            ->addJs("//cdnjs.cloudflare.com/ajax/libs/Sortable/1.4.2/Sortable.min.js")
+            ->addJs("//cdnjs.cloudflare.com/ajax/libs/hideseek/0.7.1/jquery.hideseek.min.js");
+            
     }
 
     public function ganttAction()
@@ -162,6 +167,8 @@ class OrdersController extends ControllerBase
     {
         $order = Orders::findFirstByorderNumber($orderNumber);
         $this->view->order = $order;
+        $this->view->pageTitle = "Order " .  $order->orderNumber;
+        $this->view->pageSubtitle = $order->customer->customerName;
         $this->view->headerButton = \Phalcon\Tag::linkTo(array("followup/?company=" . $order->customerCode . "&job=" . $order->orderNumber, '<i class="fa fa-pencil"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
        
         $history = ContactRecord::find(array(
