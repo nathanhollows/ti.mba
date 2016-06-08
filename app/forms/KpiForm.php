@@ -5,6 +5,7 @@ namespace App\Forms;
 use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\Text,
 	Phalcon\Forms\Element\Numeric,
+	Phalcon\Forms\Element\Hidden,
 	Phalcon\Forms\Element\TextArea,
 	Phalcon\Forms\Element\Submit;
 
@@ -18,6 +19,7 @@ class KpiForm extends Form
 		$chargeout->setLabel('Charge Out');
 		$chargeout->setAttributes(array(
 			'class'	=> 'form-control',
+			'required'	=> 'true',
 			'step'	=> 'any'
 		));
 		$this->add($chargeout);
@@ -26,6 +28,7 @@ class KpiForm extends Form
 		$sales->setLabel('Sales');
 		$sales->setAttributes(array(
 			'class'	=> 'form-control',
+			'required'	=> 'true',
 			'step'	=> 'any'
 		));
 		$this->add($sales);
@@ -34,6 +37,7 @@ class KpiForm extends Form
 		$truck->setLabel('Truck Time');
 		$truck->setAttributes(array(
 			'class'	=> 'form-control',
+			'required'	=> 'true',
 			'rows'	=> 1,
 		));
 		$this->add($truck);
@@ -42,6 +46,7 @@ class KpiForm extends Form
 		$onsite->setLabel('Onsite Dispatch');
 		$onsite->setAttributes(array(
 			'class'	=> 'form-control',
+			'required'	=> 'true',
 			'step'	=> 'any'
 		));
 		$this->add($onsite);
@@ -50,6 +55,7 @@ class KpiForm extends Form
 		$offsite->setLabel('Offsite Dispatch');
 		$offsite->setAttributes(array(
 			'class'	=> 'form-control',
+			'required'	=> 'true',
 			'step'	=> 'any'
 		));
 		$this->add($offsite);
@@ -58,6 +64,7 @@ class KpiForm extends Form
 		$ordersSent->setLabel('Orders Sent');
 		$ordersSent->setAttributes(array(
 			'class'	=> 'form-control',
+			'required'	=> 'true',
 		));
 		$this->add($ordersSent);
 
