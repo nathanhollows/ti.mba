@@ -344,10 +344,19 @@ class QuotesController extends ControllerBase
 		if (!$this->request->isPost()){
 			$this->_redirectBack();
 		}
-
+		echo "<pre>" . print_r($this->request->getPost()) . "</pre>";
 		$item = new QuoteItems();
 
-		$success = $item->save($this->request->getPost(), array('quoteId', 'width', 'thickness', 'grade', 'finish', 'lengths', 'priceUnit', 'unitPrice'));
+		$item->quoteId  = $this->request->getPost('quoteId');
+		$item->width  = $this->request->getPost('width');
+		$item->thickness  = $this->request->getPost('thickness');
+		$item->grade  = $this->request->getPost('grade');
+		$item->finish  = $this->request->getPost('finish');
+		$item->lengths  = $this->request->getPost('lengths');
+		$item->priceUnit  = $this->request->getPost('priceMethod');
+		$item->unitPrice  = $this->request->getPost('price');
+		$item->qty  = $this->request->getPost('qty');
+		$success = $item->save();
 		if ($success) {
 			$this->flashSession->success('Item added!');
 			return $this->_redirectBack();
