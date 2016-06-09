@@ -435,7 +435,7 @@ class QuotesController extends ControllerBase
 		// Try to delete the item,
 		// Flash the outcome to the session and redirect back
 		if ($item->delete()) {
-			$this->flashSession->info('Item was successfully deleted');
+			$this->flashSession->success('Item was successfully deleted');
 			$this->_redirectBack();
 		} else {
 			$this->flashSession->warning('Something went wrong and this item could not be deleted');
