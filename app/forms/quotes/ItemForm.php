@@ -102,7 +102,10 @@ class ItemForm extends Form
 				'using' => array('id', 'name'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class' => 'form-control select2'
+				'class' => 'form-control',
+				'data-container' => 'body',
+				'emptyText'	=> 'Treatment',
+				'data-live-search' => 'true',
 			)
 		);
 		$treatment->setLabel("Treatment");
@@ -116,7 +119,10 @@ class ItemForm extends Form
 				'using' => array('id', 'name'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class' => 'form-control select2'
+				'class' => 'form-control',
+				'data-container' => 'body',
+				'emptyText'	=> 'Dryness',
+				'data-live-search' => 'true',
 			)
 		);
 		$dryness->setLabel("Dryness");
