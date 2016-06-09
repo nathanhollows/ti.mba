@@ -233,7 +233,7 @@ class QuotesController extends ControllerBase
 		}
 
 		$this->tag->prependTitle('New Quote');
-		$this->view->quoteForm = new QuotesForm($quote);
+		$this->view->form = new QuotesForm($quote);
 	}
 
 	public function createAction()
