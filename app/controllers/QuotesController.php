@@ -109,7 +109,7 @@ class QuotesController extends ControllerBase
 		$this->view->disable();
 
 		$quote = Quotes::findFirstByquoteId($quoteId);
-		if ($quote->sale === 1){
+		if ($quote->sale == 1){
 			$quote->sale = 0;
 		} else {
 			$quote->sale = 1;
