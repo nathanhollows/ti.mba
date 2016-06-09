@@ -160,13 +160,38 @@ class QuotesController extends ControllerBase
 			$this->flash->notice("This quote has been turned into a sale");
 		}
 		$this->view->items = $items;
-	}
 
+		$this->view->pageTitle = "Quote " . $quote->quoteId;
+		$this->view->pageSubtitle = $quote->customer->customerName;
+		$this->view->headerButton = '
+		<!-- Split button -->
+		<div class="btn-group pull-right">
+		<button type="button" id="enable" class="btn btn-success">Edit Quote</button>
+			<a class="btn btn-default" data-target="#modal-ajax" href="/followup/?company=' . $quote->customerCode . '&job=' . $quote->quoteId . '" role="button"><i class="fa fa-icon fa-pencil"></i> Add Record</a>
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="caret"></span>
+				<span class="sr-only">Toggle Dropdown</span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><a href="/quotes/get/' . $quote->quoteId . '" target="_blank">Get PDF</a></li>
+				<li><a href="/quotes/turntosale/' . $quote->quoteId . '">Toggle Sale</a></li>
+				<li><a data-target="#modal-ajax" href="/followup/remindme">Remind Me ...</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="/quotes/delete/' . $quote->quoteId . '">Delete</a></li>
+			</ul>
+		</div>
+		';
+	}
+	
 	public function editAction($quoteId = null)
 	{
-		$this->view->setTemplateBefore('modal-form');
+		$this->view->ajax = false;
 
-		$this->view->pageTitle = "Edit quote details";
+		if ($this->request->isAjax()) {
+			$this->view->ajax = true;
+			$this->view->setTemplateBefore('modal-form');
+		}
+
 
 		if (!$quoteId) {
 			$this->flash->error("Error: Missing the Quote ID");
