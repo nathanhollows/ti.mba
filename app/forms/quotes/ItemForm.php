@@ -32,12 +32,28 @@ class ItemForm extends Form
 		$quoteId = new Hidden("quoteId");
 		$this->add($quoteId);
 
+		$legacy = new Select(
+			'grade',
+			QuoteCodes::find(),
+			array(
+				'using'	=> array('code', 'description'),
+				'required'	=> true,
+				'useEmpty'	=> true,
+				'emptyText'	=> 'Grade',
+				'class'		=> 'form-control selectpicker',
+				'data-live-search'	=> 'true',
+				'data-container'	=> 'body',
+			)
+		);
+		$this->add($legacy);
+
 		// Numeric value for width
 		$width = new Numeric('width');
 		$width->setLabel('Width');
 		$width->setAttributes(array(
 			"class"	=> "form-control",
 			"step"	=> "1",
+			"placeholder"	=> "Width",
 		));
 		$this->add($width);
 
