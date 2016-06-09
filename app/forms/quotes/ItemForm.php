@@ -63,22 +63,36 @@ class ItemForm extends Form
 		$thickness->setAttributes(array(
 			"class"	=> "form-control",
 			"step"	=> "1",
+			"placeholder"	=> "Thickness",
 		));
 		$this->add($thickness);
 
-		// Select list containing all usable grades
-		$grade = new Select(
-			'grade',
-			Grade::find(),
-			array(
-				'using' => array('id', 'name'),
-				'required'	=> 'true',
-				'useEmpty'	=> true,
-				'class' => 'form-control select2'
-			)
-		);
-		$grade->setLabel("Grade");
-		$this->add($grade);
+		// Numeric value for quantity
+		$qty = new Numeric('qty');
+		$qty->setLabel("Qty");
+		$qty->setAttributes(array(
+			"class"	=> "form-control",
+			"step"	=> "1",
+			"placeholder"	=> "Qty",
+		));
+		$this->add($qty);
+
+		// // Select list containing all usable grades
+		// $grade = new Select(
+		// 	'grade',
+		// 	Grade::find(),
+		// 	array(
+		// 		'using' => array('id', 'name'),
+		// 		'required'	=> 'true',
+		// 		'useEmpty'	=> true,
+		// 		'class' => 'form-control',
+		// 		'data-container' => 'body',
+		// 		'emptyText'	=> 'Grade',
+		// 		'data-live-search' => 'true',
+		// 	)
+		// );
+		// $grade->setLabel("Grade");
+		// $this->add($grade);
 
 		// Select list containing all usable treatments
 		$treatment = new Select(
