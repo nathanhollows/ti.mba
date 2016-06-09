@@ -141,7 +141,9 @@ class QuotesController extends ControllerBase
 				));
 		}
 
-		$this->view->form = new ItemForm();
+		$item = new QuoteItems();
+		$item->quoteId = $quote->quoteId;
+		$this->view->form = new ItemForm($item);
 
 		$this->assets->collection('footer')
 			->addJs('js/quotes/view.js');
