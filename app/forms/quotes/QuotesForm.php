@@ -3,6 +3,7 @@
 namespace App\Forms\Quotes;
 
 use Phalcon\Forms\Form;
+use Phalcon\Forms\Element\Hidden;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Date;
 use Phalcon\Forms\Element\TextArea;
@@ -24,9 +25,12 @@ class QuotesForm extends Form
 	 * Initiliaze the quotes form
 	 */
 
-	public function initialize()
+	public function initialize($entity = null, $option = null)
 	{
 		$validation = new Validation();
+
+		$id = new Hidden('quoteId');
+		$this->add($id);
 
 		$customerCode = new Select(
 			'customerCode',
