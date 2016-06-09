@@ -289,6 +289,43 @@ class QuotesController extends ControllerBase
 		}
 	}
 
+	public function ajaxUpdateAction()
+	{
+		$this->view->disable();
+		if (!$this->request->isPost()){
+			$this->_redirectBack();
+		}
+
+		$quote = Quotes::findFirstByquoteId($this->request->getPost("pk"));
+		switch ($this->request->getPost('name')) {
+			case 'notes':
+				$quote->notes = $this->request->getPost('value');
+				break;
+			case 'moreNote':
+				$quote->moreNote = $this->request->getPost('value');
+				break;
+			case 'leadTime':
+				$quote->leadTime = $this->request->getPost('value');
+				break;
+			case 'validity':
+				$quote->validity = $this->request->getPost('value');
+				break;
+			case 'freight':
+				$quote->freight = $this->request->getPost('value');
+				break;
+		}
+		
+		$response = new \Phalcon\Http\Response();
+		if ($quote->save()) {
+			$response->setStatusCode(200, "Update successful");
+		} else {
+			$response->setStatusCode(500, "Something went wrong");
+		}
+		$response->send();
+
+
+	}
+
 	public function addItemAction($id = null)
 	{
 		$this->view->setTemplateBefore('modal-form');
