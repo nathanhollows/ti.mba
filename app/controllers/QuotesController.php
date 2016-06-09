@@ -199,19 +199,38 @@ class QuotesController extends ControllerBase
 		}
 
 		$quote = Quotes::findFirstByquoteId($quoteId);
-		$form = new QuotesForm($quote);
+		$options = array(
+			"customerCode"	=> $quote->customerCode,
+		);
+		$form = new QuotesForm($quote, $options);
 		$this->view->form = $form;
+
+		$this->view->pageTitle = "Editing quote " . $quote->quoteId;
 	}
 
 	public function deleteAction($quoteId)
 	{
-		$this->view->disable;
+		$this->view->disable();
+		$quote = Quotes::findFirstByquoteId($quoteId);
+		if ($quote != false) {
+			if ($quote->delete() == false) {
+				$this->flashSession->error("The quote has not been deleted");
+			} else {
+				$this->flashSession->success("The quote has been deleted");
+			}
+		} else {
+			$this->flashSession->error("The quote could not be found");
+		}
+		return $this->response->redirect("quotes/");
 	}
 
 	public function newAction($customerCode = null)
 	{
+		$this->view->ajax = false;
+
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('modal-form');
+			$this->view->ajax = true;
 		}
 
 		$this->view->pageTitle = "Create a Quote";
