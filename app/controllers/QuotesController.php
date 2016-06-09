@@ -369,12 +369,50 @@ class QuotesController extends ControllerBase
 
 	}
 
-	public function editItemAction($id)
+	public function editItemAction()
 	{
 		$this->view->disable();
 		if (!$this->request->isPost()){
 			$this->_redirectBack();
 		}
+
+		$item = QuoteItems::findFirstById($this->request->getPost("pk"));
+		switch ($this->request->getPost('name')) {
+			case 'grade':
+				$item->grade = $this->request->getPost('value');
+				break;
+			case 'width':
+				$item->width = $this->request->getPost('value');
+				break;
+			case 'thickness':
+				$item->thickness = $this->request->getPost('value');
+				break;
+			case 'finish':
+				$item->finish = $this->request->getPost('value');
+				break;
+			case 'lengths':
+				$item->lengths = $this->request->getPost('lengths');
+				break;
+			case 'qty':
+				$item->qty = $this->request->getPost('lengths');
+				break;
+			case 'priceUnit':
+				$item->priceUnit = $this->request->getPost('lengths');
+				break;
+			case 'unitPrice':
+				$item->unitPrice = $this->request->getPost('lengths');
+				break;
+		}
+		
+		$response = new \Phalcon\Http\Response();
+		if ($item->save()) {
+			$response->setStatusCode(200, "Update successful");
+		} else {
+			$response->setStatusCode(500, "Something went wrong");
+		}
+		$response->send();
+
+
 	}
 
 	public function deleteItemAction($id)
