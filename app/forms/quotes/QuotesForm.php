@@ -46,9 +46,16 @@ class QuotesForm extends Form
 		$customerCode->setLabel("Customer");
 		$this->add($customerCode);
 
+		if (isset($option["customerCode"])) {
+			$customerCode = $option["customerCode"];
+			$contactRestrict = array("customerCode = '$customerCode'");
+		} else {
+			$contactRestrict = array("order"	=> "name");
+		}
+
 		$contact = new Select(
 			'contact',
-			[null => 'Select a Customer First..'],
+			Contacts::find($contactRestrict),
 			array(
 				'using'	=> array('id', 'name'),
 				'required'	=> 'true',
