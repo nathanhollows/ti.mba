@@ -17,7 +17,7 @@
                             {% endif %}
                             </h2>
                             <p>{{ parser.parse(line.details) }}</p>
-                            <p>{{ line.date|timeAgo }}
+                            <p>{{ date('d M Y', strtotime(line.date)) }}
                                 <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('followup/edit/' ~ line.id) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
                             </p>
                         </div>
