@@ -105,24 +105,51 @@ class ContactRecord extends Model
         $this->user = $auth->getId();
     }
 
-    public function getTasks()
+    public function getToday($user = null)
     {
-        $auth = new Auth;
-        $user = $auth->getId();
+        if (!$user) {
+            $auth = new Auth;
+            $user = $auth->getId();
+        }
         return parent::find(array(
-            "conditions" => "followUpUser = ?1 AND completed = 0 AND followUpDate <= NOW()",
+            "conditions" => "user = ?1 AND completed = 0 AND followUpDate = DATE(NOW())",
             "bind"  => array(1 => $user)
         ));
     }
 
-    public function getFutureTasks()
+    public function getOverdue($user = null)
     {
-        $auth = new Auth;
-        $user = $auth->getId();
+        if (!$user) {
+            $auth = new Auth;
+            $user = $auth->getId();
+        }
         return parent::find(array(
-            "conditions" => "followUpUser = ?1 AND completed = 0 AND followUpDate > NOW()",
+            "conditions" => "user = ?1 AND completed = 0 AND followUpDate < DATE(NOW())",
             "bind"  => array(1 => $user)
         ));
     }
+
+    public function getComing($user = null)
+    {
+        if (!$user) {
+            $auth = new Auth;
+            $user = $auth->getId();
+        }
+        return parent::find(array(
+            "conditions" => "user = ?1 AND completed = 0 AND followUpDate > DATE(NOW())",
+            "bind"  => array(1 => $user)
+        ));
+    }
+
+    public function complete()
+    {
+        $this->completed = 1;
+        $success = $this->save();
+        if ($success) {
+            return true;
+        } else {
+            return false;
+        }
+     }
 
 }
