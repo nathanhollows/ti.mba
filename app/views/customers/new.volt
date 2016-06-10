@@ -1,15 +1,8 @@
+{{ flashSession.output() }}
 {{ content() }}
 
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3 ">
 {{ form("customers/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
-
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-	<div class="panel panel-primary">
-		<div class="panel-heading">
-			<h3 class="panel-title">General Info</h3>
-		</div>
-		<div class="panel-body">
-
-
 			{% for element in form %}
 			<div class="form-group">
 				{{ element.label(['class': 'col-md-3 control-label']) }}
@@ -18,11 +11,8 @@
 				</div>
 			</div>
 			{% endfor %}
-
-		</div>
-	</div>
+{{ submit_button('Save', 'class': 'btn btn-default') }}
 </div>
 
-{{ submit_button('Save', 'class': 'btn btn-default') }}
 
 </form>
