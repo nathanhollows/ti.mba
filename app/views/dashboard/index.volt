@@ -1,5 +1,8 @@
 {{ content() }}
-
+<div class="alert alert-warning">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	<strong>Beta Testing!</strong> The timeline, dashboard, bug reporting (ironically) and followups / tasks are still being developed
+</div>
 <div class="row">
 	<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
 		<div class="panel panel-primary">
@@ -21,12 +24,12 @@
 				{% for item in overdue %}
 				<li class="list-group-item">
 					<span class="badge">Overdue</span>
-					{{ parser.parse(item.notes) }}
+					{{ parser.parse(item.details) }}
 				</li>
 				{% endfor %}
 				{% for item in today %}
 				<li class="list-group-item">
-					{{ parser.parse(item.notes) }}
+					{{ parser.parse(item.details) }}
 				</li>
 				{% endfor %}
 			</ul>
@@ -38,10 +41,10 @@
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-				<h3 class="panel-title">Overdue follow ups</h3>
+				<h3 class="panel-title">Holding</h3>
 			</div>
 			<div class="panel-body">
-				{{ tasks|length }} items on your Todo list.
+				Something can go here later
 			</div>
 		</div>	
 	</div>
@@ -109,19 +112,35 @@
 				],
 				datasets: [{
 					label: 'Budget',
-					backgroundColor: "rgba(0,0,0,0)",
+					backgroundColor: "rgba(0,0,0,0.2)",
 					borderColor: "rgba(0,0,0,1)",
 					data: [
-					{% for item in kpis %}32778,{% endfor %}
+					{% for item in kpis %}0,{% endfor %}
 					]
 				},{
 					label: 'Sales $',
 					borderColor: "rgb(52, 152, 219)",
+					backgroundColor: "rgba(52, 152, 219, 0.2)",
 					data: [
-					{% for item in kpis %}{{ item.sales }},{% endfor %}
+					{% set base = 37278 %}
+					{% for item in kpis %}
+						{% if loop.first %}
+							{% set difference = 0 %}
+						{% endif %}
+						{% set difference = difference + item.sales - base %} 
+							{{ difference }},
+					{% endfor %}
 					]
-				},
-				]
+				},{
+					label: 'Chargeout',
+					backgroundColor: "rgba(55,188,155,0.2)",
+					borderColor: "rgb(55,188,155)",
+					data: [
+					{% for item in kpis %}
+						{{ item.chargeOut - (base * loop.index) }},
+					{% endfor %}
+					]
+				}]
 			},
 			options: {
 			}
