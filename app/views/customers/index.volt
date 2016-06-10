@@ -1,6 +1,6 @@
 {{ flashSession.output() }}
 {{ content() }}
-
+</div>
 <div class="table-responsive">
 	<table class="table table-bordered table-striped table-hover dataTable" data-source="{{ url('customers/index') }}">
 		<thead>
