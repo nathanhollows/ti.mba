@@ -57,6 +57,13 @@ class Contacts extends Model
      */
     public $position;
 
+
+    /**
+     *
+    * @var int
+    */
+    public $role;
+
     /**
      * Initialize method for model.
      */
@@ -64,6 +71,7 @@ class Contacts extends Model
     {
         $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode', array('alias'  => 'company'));
         $this->hasMany('id', 'App\Models\ContactRecords', array('alias' => 'history'));
+        $this->hasOne('role', 'App\Models\ContactRoles', 'id', array('alias'  => 'job'));
     }
 
     /**
