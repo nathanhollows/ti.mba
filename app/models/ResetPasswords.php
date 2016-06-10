@@ -47,7 +47,7 @@ class ResetPasswords extends \Phalcon\Mvc\Model
     public function beforeValidationOnCreate()
     {
         // Timestamp the confirmaton
-        $this->createdAt = time();
+        $this->createdAt = date('Y-m-d G:i:s');
         // Generate a random confirmation code
         $this->code = preg_replace('/[^a-zA-Z0-9]/', '', base64_encode(openssl_random_pseudo_bytes(24)));
         // Set status to non-confirmed
@@ -59,7 +59,7 @@ class ResetPasswords extends \Phalcon\Mvc\Model
     public function beforeValidationOnUpdate()
     {
         // Timestamp the confirmaton
-        $this->modifiedAt = time();
+        $this->modifiedAt = date('Y-m-d G:i:s');
     }
     /**
      * Send an e-mail to users allowing him/her to reset his/her password
