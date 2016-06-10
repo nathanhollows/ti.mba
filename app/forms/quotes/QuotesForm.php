@@ -123,9 +123,9 @@ class QuotesForm extends Form
 		$status->setDefault('1');
 		$this->add($status);
 
-		$submit = new Submit("submit");
+		$submit = new Submit("Submit");
 		$submit->setAttributes(array(
-			'class'	=> 'btn btn-primary'
+			'class'	=> 'btn btn-primary',
 			));
 		$this->add($submit);
 	}
