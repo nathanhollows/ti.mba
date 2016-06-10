@@ -88,9 +88,17 @@ class QuotesForm extends Form
 		$notes->setAttributes(array(
 			'class'		=> 'form-control',
 			'placeholder' => 'This will be visible on the quote'
-			));
+		));
 		$notes->setLabel("Notes");
 		$this->add($notes);
+
+		$moreNotes = new TextArea("moreNotes");
+		$moreNotes->setAttributes(array(
+			'class'		=> 'form-control',
+			'placeholder' => 'Private notes. These will not be visible on the customers version'
+		));
+		$moreNotes->setLabel("Private Notes");
+		$this->add($moreNotes);
 
 		$auth = new Auth;
 		$salesAgent = new Select(
