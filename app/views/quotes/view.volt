@@ -5,18 +5,28 @@
 	<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h3 class="panel-title">Details
-				 <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('quotes/edit/' ~ quote.quoteId) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
-				 </h3>
+				<h3 class="panel-title"><strong>Quote</strong> Details
+					<a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('quotes/edit/' ~ quote.quoteId) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
+				</h3>
 			</div>
 			<div class="panel-body">
-				Quote {{ quote.id }} <span class="label label-{{ quote.genericStatus.style }}">{{ quote.genericStatus.name }}</span> <br>
-				{{ quote.customer.customerName }} <br>
-				{{ quote.attention }} <br>
-				{{ quote.reference }} <br>
-				{{ link_to("quote/" ~ quote.webId, "Web Link") }} <br>
-				{{ quote.date }} <br>
-				{{ quote.rep.name }} <br>
+				<strong>Quote: </strong> {{ quote.quoteId }} <span class="label label-{{ quote.genericStatus.style }}">{{ quote.genericStatus.name }}</span> <br>
+				<strong>Attention: </strong>{{ quote.attention }} {% if quote.customerContact is not empty %}{{ quote.customerContact.name }}{% endif %}<br>
+				<strong>Reference: </strong>{{ quote.reference }} <br>
+				<strong>Date: </strong>{{ date('dS F Y', strtotime(quote.date)) }}  <br>
+				<strong>Rep: </strong>{{ quote.rep.name }} <br>
+				<strong>Value: </strong> ${{ quote.value }}
+			</div>
+		</div>
+
+		<div class="panel panel-success">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Quote</strong> Specifics</h3>
+			</div>
+			<div class="panel-body" id="specifics">
+				Lead Time: <a href="#" class="xedit" id="leadTime" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Lead Time">{{ quote.leadTime }}</a> <br>
+				Validity: <a href="#" class="xedit" id="validity" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Vailidity">{{ quote.validity }}</a> days<br> 
+				Freight: $<a href="#" class="xedit" id="freight" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Freight">{{ quote.freight }}</a> <br>
 			</div>
 		</div>
 
