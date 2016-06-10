@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Phalcon\Mvc\Model;
+use App\Models\ContactRecord;
+use App\Auth\Auth;
 
 class Quotes extends Model
 {
