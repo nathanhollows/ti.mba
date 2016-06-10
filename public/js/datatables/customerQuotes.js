@@ -13,7 +13,7 @@ $(document).ready(function() {
 			columns: [
 			{data: "quoteId",			
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<a href='/quotes/edit/"+oData.quoteId+"'>"+oData.quoteId+"</a>");
+				$(nTd).html("<a href='/quotes/view/"+oData.quoteId+"'>"+oData.quoteId+"</a>");
 			}},
 			{data: "date"},
 			{data: "reference"},
