@@ -151,6 +151,7 @@ class ItemForm extends Form
 				->setAttributes(array(
 					"class"		=> "form-control",
 					"step"		=> "any",
+					"placeholder"	=> "Price",
 				)
 			);
 		$this->add($price);
