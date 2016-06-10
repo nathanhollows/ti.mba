@@ -25,8 +25,30 @@
 				<h3 class="panel-title">Notes</h3>
 			</div>
 			<div class="panel-body">
-				{{ quote.notes }}
-				{{ quote.moreNotes }}
+				<strong>Quote Notes:</strong><br>
+				<a href="#" class="xedit" id="notes" data-type="textarea" data-mode="inline" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Public Notes">{{ quote.notes }}</a> <br>
+				<strong>Private Notes:</strong><br>
+				<a href="#" class="xedit" id="moreNotes" data-type="textarea" data-mode="inline" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Private Notes">{{ quote.moreNotes }}</a> <br>
+			</div>
+		</div>
+
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title"><strong>Customer</strong> Details</h3>
+			</div>
+			<div class="panel-body">
+				{{ link_to("/customers/view/" ~ quote.customer.customerCode, quote.customer.customerName) }}<br>
+				{% if quote.customer.addresses %}
+				{% for address in quote.customer.addresses %}
+				{% if address.typeCode is 2 %}
+				{% if address.line1 %} {{ address.line1 }} <br> {% endif %}
+				{% if address.line2 %} {{ address.line2 }} <br> {% endif %}
+				{% if address.line3 %} {{ address.line3 }} <br> {% endif %}
+				{% if address.zipCode %} {{ address.zipCode }} {% endif %}
+				{% if address.city %} {{ address.city }} <br> {% endif %}
+				{% endif %}
+				{% endfor %}
+				{% endif %}
 			</div>
 		</div>
 	</div>
