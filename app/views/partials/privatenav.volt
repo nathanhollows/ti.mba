@@ -15,11 +15,10 @@
 		</div><!--/.nav-collapse -->
 	</div>
 </nav>
-<div class="container-fluid">
-
+{% if noHeader is empty %}
 <div class="page-header">
 
-  <h1>
+  <h2>
   {% if pageTitle is not empty %}
   	{{ pageTitle }}
   {% else %}
@@ -36,5 +35,7 @@
 	{{ headerButton }}
 {% endif %}
 
-  </h1>
+  </h2>
 </div>
+{% endif %}
+<div class="container-fluid">
