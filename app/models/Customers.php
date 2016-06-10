@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Auth\Auth;
+use App\Models\ContactRecord;
+
 class Customers extends \Phalcon\Mvc\Model
 {
 
@@ -121,6 +124,30 @@ class Customers extends \Phalcon\Mvc\Model
     {
         $customer = parent::findFirstByCustomerCode($customerCode);
         return $customer->customerName;
+    }
+
+    public function afterCreate()
+    {
+        $auth = new Auth;
+        // Lets make some history
+        $history = new ContactRecord();
+        $history->date = date('Y-m-d');
+        $history->customerCode = $this->customerCode;
+        $history->user = $auth->getId();
+        $history->contactType = 13;
+        $history->contact = $this->id;
+        $history->details = "Customer created by " . $auth->getName();
+        $history->save();
+    }
+
+    public function beforeDelete()
+    {
+        if ($this->quotes) {
+            return false;
+        }
+        if ($this->history > 2) {
+            return false;
+        }
     }
 
 }
