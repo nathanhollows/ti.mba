@@ -559,7 +559,7 @@ img
   padding: 8px 0 8px 0 !important;
 }
 
-#items input, button, select {
+#items input, #items button, #items select {
   border-radius: 0px !important;
   border-right: none !important;
 }
@@ -567,3 +567,24 @@ img
 #priceMethod {
   width: 68px;
 }
+
+input#width, input#thickness {
+  width: 50%;
+  float: left;
+}
+
+/* Draggable handles */
+
+span.my-handle {
+    margin-right: 8px;
+    font: bold 2em Sans-serif;
+    color: #337AB7;
+    display: inline-block;
+    cursor: move;
+    cursor: -webkit-grabbing;
+    float: left;
+}
+span.my-handle:before {
+    content: '\2630';
+  }
+  
