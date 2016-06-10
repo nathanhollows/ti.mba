@@ -135,7 +135,11 @@ class ItemForm extends Form
 				'using' => array('id', 'name'),
 				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class' => 'form-control select2'
+				'class' => 'form-control selectpicker',
+				'data-container' => 'body',
+				'emptyText'	=> 'Finish',
+				'data-live-search' => 'true',
+				'data-show-subtext'	=> 'true',
 			)
 		);
 		$finish->setLabel("Finish");
