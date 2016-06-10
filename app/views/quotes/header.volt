@@ -14,7 +14,7 @@
 </head>
 <body style="margin: 0;">
 	<div id="header" style="width: 100vw; border-bottom: 1mm solid orange; padding: 6.5mm 0 6.5mm 15mm;">
-		<img src="/public/img/ats_logo.jpg" height="80mm" style="vertical-align: middle;">
+		<img src="/public/img/logo.png" height="80mm" style="vertical-align: middle;">
 		<span style="padding: 9mm; font-weight: 700; letter-spacing: 0.26mm">The Timber Innovators</span>
 	</div>
 </body>
