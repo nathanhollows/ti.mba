@@ -67,13 +67,13 @@ class QuotesForm extends Form
 		$contact->setLabel("Contact");
 		$this->add($contact);
 
-		$customerRef = new Text("customerRef");
-		$customerRef->setAttributes(array(
+		$reference = new Text("reference");
+		$reference->setAttributes(array(
 			'required'	=> 'true',
 			'class'		=> 'form-control'
 			));
-		$customerRef->setLabel("Customer Reference");
-		$this->add($customerRef);
+		$reference->setLabel("Our Reference");
+		$this->add($reference);
 
 		$date = new Date("date");
 		$date->setAttributes(array(
