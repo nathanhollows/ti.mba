@@ -85,16 +85,6 @@ class Contacts extends Model
         return parent::find($parameters);
     }
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return Contacts
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 
     /**
      * Returns table name mapped in the model.
