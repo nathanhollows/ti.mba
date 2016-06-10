@@ -13,4 +13,9 @@ $(document).ready(function() {
       $("#modal-ajax").modal("show"); 
     });
   });
+  $('.xedit').editable();
+  $('.xedit').editable('toggleDisabled');
+  $('#enable').click(function() {
+    $('.xedit').editable('toggleDisabled');
+  });   
 });
