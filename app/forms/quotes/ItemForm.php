@@ -163,12 +163,21 @@ class ItemForm extends Form
 				'using'	=> array('id', 'name'),
 				'required'	=> 'true',
 				'useEmpty'	=> false,
-				'class'		=> 'form-control'
+				'class'		=> 'form-control',
 			)
 		);
 		$this->add($priceMethod);
 
 		$priceMethod = new Select('priceMethod');
+
+		$notes = new Text('lengths');
+		$notes->setAttributes(
+			array(
+				'class'	=> 'form-control',
+				'placeholder'	=> 'Notes',
+			)
+		);
+		$this->add($notes);
 
 	}
 }
