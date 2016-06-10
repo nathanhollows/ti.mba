@@ -13,6 +13,8 @@ $(document).ready(function() {
 			},
 			stateSave: true,
 			pagingType: "simple_numbers",
+
+			lengthMenu: [10,25,50,100,500,1500],
 			columns: [
 			{data: "customerCode", searchable: true,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
