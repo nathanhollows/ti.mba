@@ -94,7 +94,10 @@
 							{% endif %}
 							<td>{{ order.date }} <br> 
 								{{ order.eta }} </td>
-							<td>{% if order.scheduled is 1 %} <span class="label label-success">Scheduled</span> {% endif %}</td>
+							<td>
+								<p>{% if order.scheduled is 1 %} <span class="label label-success">Scheduled</span> {% endif %}</p>
+								<p>{% if order.location %} <span class="label">{{ order.whereabouts.name }}</span> {% endif %}</p>
+							</td>
 						</tr>
 						{% endfor %}
 					</tbody>
