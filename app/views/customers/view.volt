@@ -11,58 +11,33 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <table class="table table-responsive table-condensed">
-                        <tbody>
-                            <tr>
-                                <td>Code</td>
-                                <td>{{ customer.customerCode }}</td>
-                            </tr>
-                            <tr>
-                                <td>Name</td>
-                                <td>{{ customer.customerName }}</td>
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td><span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span></td>
-                            </tr>
-                            <tr>
-                                <td>Phone</td>
-                                <td>{{ customer.customerPhone }}</td>
-                            </tr>
-                            <tr>
-                                <td>Fax</td>
-                                <td>{{ customer.customerFax }}</td>
-                            </tr>
-                            <tr>
-                                <td>Email</td>
-                                <td><a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a></td>
-                            </tr>
+                                <td>Code {{ customer.customerCode }}</td>
+                                <td>Name {{ customer.customerName }}
+                                <hr>
+                                Status <span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span>
+                                <hr>
+                                Phone {{ customer.customerPhone }}
+                                <hr>
+                                Fax {{ customer.customerFax }}
+                                <hr>
+                                Email <a href="mailto:{{ customer.customerEmail }}">{{ customer.customerEmail }}</a>
+                                <hr>
                             {% if customer.group is not empty %}
-                            <tr>
-                                <td>Group</td>
-                                <td>{{ customer.group.name }}</td>
-                            </tr>
+                                Group {{ customer.group.name }}
+                                <hr>
                             {% endif %}
                             {% if customer.freightarea is not empty %}
-                            <tr>
-                                <td>Freight Area</td>
-                                <td>{{ customer.freightarea.name }}</td>
-                            </tr>
+                                Freight Area {{ customer.freightarea.name }}
+                                <hr>
                             {% endif %}
                             {% if customer.freightcarrier is not empty %}
-                            <tr>
-                                <td>Carrier</td>
-                                <td>{{ customer.freightcarrier.name }}</td>
-                            </tr>
+                                Carrier {{ customer.freightcarrier.name }}
+                                <hr>
                             {% endif %}
                             {% if customer.salesarea is not empty %}
-                            <tr>
-                                <td>Sales Area</td>
-                                <td>{{ customer.salesarea.name }}</td>
-                            </tr>
+                                Sales Area {{ customer.salesarea.name }}
+                                <hr>
                             {% endif %}
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>            
@@ -74,6 +49,8 @@
                     <h3 class="panel-title">Contacts
                         <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('contacts/new/' ~ customer.customerCode) }}' data-target="#modal-ajax"><i class="fa fa-plus"></i> Add</a>
                     </div>
+                </div>
+            </div>
                     <div class="panel-body">
                         {% for contact in customer.contacts %}
                             <div class="well">
@@ -81,15 +58,18 @@
                                     {{ link_to("contacts/view/" ~ contact.id, contact.name) }}
                                 </h4>
                                 <p>
-                                    <h5>{{ contact.position }}</h5><br>
+                                    <h5>
+                                        {% if contact.position is numeric %}
+                                            {{ contact.job.name }}
+                                        {% else %}
+                                            {{ contact.position }}
+                                        {% endif %}</h5><br>
                                     <i class="fa fa-phone"></i> <a href="tel:{{ contact.directDial }}">{{ contact.directDial }} </a><br>
                                     <i class="fa fa-envelope"></i> <a href="mailto:{{ contact.email }}">{{ contact.email }} </a><br>
                                 </p>
                             </div>
                         {% endfor %}
                     </div>
-                </div>
-            </div>
         </div>
 
         <!-- Begin Address -->
