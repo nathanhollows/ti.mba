@@ -32,12 +32,21 @@
 					{{ form.render('job') }}
 				</div>
 			</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="input-group">
+					<div class="input-group-addon">
+						<i class="fa fa-user"></i> 
+					</div>
+					{{ form.render('user') }}
+				</div>
+			</div>	
 		</div>
 
 		<hr>
 
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<label>Record Date</label> <br>
 				<div class="input-group">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i> 
