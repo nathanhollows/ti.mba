@@ -101,6 +101,8 @@ $di->set('view', function() use ($config) {
 
 		    $compiler = $volt->getCompiler();
 
+		    $compiler->addFilter('number', 'number_format');
+
 		    $compiler->addFunction('dump', 'print_r');
 
 			$compiler->addFunction('strtotime', 'strtotime');
