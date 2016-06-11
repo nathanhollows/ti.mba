@@ -4,30 +4,38 @@
 			<div class="panel-body">
 				<h5>General Information</h5>
 				<hr>
-				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-					First Name:
-				</div>
-				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-					<input type="text" name="" id="input" class="form-control" value="" required="required" pattern="" title="">
-				</div>
-				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-					Last Name:
-				</div>
-				<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-					<input type="text" name="" id="input" class="form-control" value="" required="required" pattern="" title="">
-				</div>
-				<h5>Change password</h5>
+
+				<label>Name</label>
+				<input type="text" name="\" id="input\" class="form-control" value="" required="required" pattern="" title="">
+
+				<label>Position</label>
+				<input type="text" name="\" id="input\" class="form-control" value="" required="required" pattern="" title="">
+
+				<h5>Contact Info</h5>
 				<hr>
-				Password | Repeat Passsword
-				<h5>Contact Information</h5>
+				
+				<label>Cellphone</label>
+				<input type="tel" name="" id="input" class="form-control" value="" required="required" title="">
+				
+				<label>Landline</label>
+				<input type="text" name="" id="input" class="form-control" value="" required="required" title="">
+				
+				<label>Fax</label>
+				<input type="text" name="" id="input" class="form-control" value="" required="required" title="">
+				
+				<label>Website</label>
+				<input type="text" name="" id="input" class="form-control" value="" required="required" title="">
+				
+				<label>Twitter handle</label>
+				<input type="text" name="" id="input" class="form-control" value="" required="required" title="">
+				
+				<label>Linkedin</label>
+				<input type="text" name="" id="input" class="form-control" value="" required="required" title="">
+
+
+				<h5>Preferences</h5>
 				<hr>
-				Email
-				Office location
-				Phone
-				Fax
-				<h5>Email Notifications</h5>
-				<hr>
-					Weekly reports | Daily Reports | Monthly Reports
+
 			</div>
 		</div>
 	</div>
