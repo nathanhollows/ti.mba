@@ -25,6 +25,7 @@ class Orders extends Model
 
 		$this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
 		$this->hasMany('orderNumber', 'App\Models\OrderItems', 'orderNo', array('alias'	=> 'items'));
+		$this->hasOne('location', 'App\Models\OrderLocations', 'id', array('alias'	=> 'whereabouts'));
 
 	}
 
