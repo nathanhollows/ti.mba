@@ -43,9 +43,7 @@
 								{% for order in scheduled %}
 								<tr>
 									<td>
-										<a href="view/{{ order.orderNumber }}">
-											{{ order.orderNumber }}
-										</a>
+				                        <a data-target="#modal-ajax" href='{{ url('orders/edit/' ~ order.orderNumber) }}' data-target="#modal-ajax">{{ order.orderNumber }}</a>
 									</td>
 									<td>{{ order.customerRef }}</td>
 									<td>{{ order.customer.customerName }}</td>
@@ -85,9 +83,7 @@
 						{% for order in orders %}
 						<tr>
 							<td>
-								<a href="view/{{ order.orderNumber }}">
-									{{ order.orderNumber }}
-								</a>
+		                        <a data-target="#modal-ajax" href='{{ url('orders/edit/' ~ order.orderNumber) }}' data-target="#modal-ajax">{{ order.orderNumber }}</a>
 							</td>
 							{% if order.customerCode is null %}
 							<td></td>
