@@ -59,7 +59,7 @@ class FollowUpForm extends Form
 					'name'
 				),
 			'class'	=> 'form-control selectpicker',
-				'data-live-search' => 'true',
+			'data-live-search' => 'true',
 			'useEmpty'	=> true,
 			)
 		);
