@@ -9,6 +9,7 @@ use App\Models\CustomerOrders,
     App\Models\Orders,
     App\Models\ContactRecord,
     App\Models\OrderItems;
+use App\Forms\OrdersForm;
 include('../vendor/gantti/lib/gantti.php');
 use Gantti;
 class OrdersController extends ControllerBase
@@ -287,6 +288,28 @@ class OrdersController extends ControllerBase
             "action" => "index"
             ));
 
+    }
+
+    /**
+     * Action for editing orders
+     *
+     * @param int 
+     */
+    public function editAction($orderNumber = null)
+    {
+
+        if ($this->request->isAjax()) {
+            $this->view->setTemplateBefore("modal-form");
+        }
+
+        if (!isset($orderNumber)) {
+            $this->flashSession->error("Missing order number");
+            $this->response->redirect("orders");
+        }
+
+        $order = Orders::findFirstByorderNumber($orderNumber);
+        $this->view->order = $order;
+        $this->view->form = new OrdersForm($order);
     }
 
     /**
