@@ -313,6 +313,43 @@ class OrdersController extends ControllerBase
     }
 
     /**
+     * Updates an order
+     *
+     */
+
+    public function updateAction()
+    {
+        echo "<pre>";
+        print_r($this->request->getPost());
+        echo "</pre>";
+
+        $order = Orders::findFirstByorderNumber($this->request->getPost("orderNumber"));
+
+        // If the date is today then an ETA was most likely NOT added.
+        // Set to NULL if date is Today
+        if ($this->request->getPost("eta") == date("Y-m-d")) {
+            $date = null;
+        } else {
+            $date = $this->request->getPost($date);
+        }
+
+        $order->eta = $date;
+        $success = $order->save($this->request->getPost(), array('location'));
+
+        if ($success) {
+            $this->flashSession->success("Order updated");
+            $this->response->redirect('orders');
+            $this->view->disable;
+        } else {
+            $this->flash->error("Sorry, the order could not be updated");
+            foreach ($contact->getMessages() as $message) {
+                $this->flash->error($message->getMessage());
+            }
+        }
+
+    }
+
+    /**
      * Deletes a customer_order
      *
      * @param string $orderNumber
