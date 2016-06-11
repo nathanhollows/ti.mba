@@ -1,3 +1,4 @@
+{{ flashSession.output() }}
 {{ content() }}
 
 <div class="row">
