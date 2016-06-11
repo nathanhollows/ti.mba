@@ -54,14 +54,15 @@
 					{{ form.render('followUpDate') }}
 				</div>
 			</div>	
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+				<label>Remind Me</label> <br>
 				<div class="input-group">
-					<div class="input-group-addon">
-						<i class="fa fa-user"></i> 
-					</div>
-					{{ form.render('user') }}
-				</div>
-			</div>	
+					<span class="input-group-addon">
+						<input type="checkbox" name="remind" aria-label="...">
+					</span>
+					<input type="date" class="form-control" name="followUpDate" aria-label="..." value="{{ date('Y-m-d') }}">
+				</div><!-- /input-group -->
+			</div>
 		</div>
 
 		<hr>
@@ -81,7 +82,11 @@
 						<input type="radio" name="contactType" value="13" autocomplete="off" checked> Note
 					</label>
 					<label class="btn btn-small btn-default">
-						<input type="radio" name="contactType" value="14" autocomplete="off"> Phone
+						<input type="radio" name="contactType" value="1" autocomplete="off"> Phone In
+					</label>
+
+					<label class="btn btn-small btn-default">
+						<input type="radio" name="contactType" value="2" autocomplete="off"> Phone Out
 					</label>
 					<label class="btn btn-small btn-default">
 						<input type="radio" name="contactType" value="3" autocomplete="off"> Email
@@ -96,13 +101,7 @@
 						<input type="radio" name="contactType" value="6" autocomplete="off"> Other
 					</label>
 					<label class="btn btn-small btn-default">
-						<input type="radio" name="contactType" value="7" autocomplete="off"> Mail
-					</label>
-					<label class="btn btn-small btn-default">
-						<input type="radio" name="contactType" value="11" autocomplete="off"> Dispute
-					</label>
-					<label class="btn btn-small btn-default">
-						<input type="radio" name="contactType" value="12" autocomplete="off"> Gift
+						<input type="radio" name="contactType" value="5" autocomplete="off"> Quote
 					</label>
 				</div>
 			</div>	
