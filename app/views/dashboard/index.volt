@@ -11,6 +11,33 @@
 			</div>
 			<div class="panel-body">
 				<canvas id="myChart" width="3" height="1"></canvas>
+				<div class="row text-center">
+				<hr>
+					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+						<strong>Total Sales</strong> <br>
+						{% set sales = 0 %}
+						{% for item in kpis %}
+							{% set sales = sales + item.sales %}
+						{% endfor %}
+						${{ sales|number }}
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+						<strong>Charge Out</strong> <br>
+						{% for item in kpis %}
+							{% if loop.last %}
+								${{ item.chargeOut|number }}
+							{% endif %}
+						{% endfor %}
+					</div>
+					<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+						<strong>Total Sales</strong> <br>
+						{% set orderCount = 0 %}
+						{% for item in kpis %}
+							{% set orderCount = orderCount + item.ordersSent %}
+						{% endfor %}
+						{{ orderCount|number }}
+					</div>
+				</div>
 			</div>
 		</div>		
 	</div>
