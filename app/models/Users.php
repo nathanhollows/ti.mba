@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Validation\Validator\Email;
 use Phalcon\Validation\Validator\Uniqueness;
 
@@ -35,7 +36,7 @@ class Users extends Model
 
     /**
      *
-     * @var string
+     * @var int
      */
     public $mustChangePassword;
 
@@ -53,13 +54,13 @@ class Users extends Model
 
     /**
      *
-     * @var string
+     * @var int
      */
     public $suspended;
 
     /**
      *
-     * @var string
+     * @var int
      */
     public $active;
 
@@ -115,4 +116,21 @@ class Users extends Model
         return 'users';
     }
 
+    /**
+     * Activates the selected user
+     *
+     * @return boolean
+     */
+    public static function activate()
+    {
+        $this->active = 1;
+    }
+
+    public static function listUsers()
+    {
+        $results = parent::find(array(
+            "columns"   => "id,name",
+        ));
+        return $results;
+    }
 }
