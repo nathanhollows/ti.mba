@@ -78,6 +78,7 @@ class ControllerBase extends Controller
             // Custom JS
             ->addJs('js/app.js')
             ->addJs('//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js');
+        $this->view->parser = new \cebe\markdown\Markdown();
     }
     
     protected function _redirectBack() {
