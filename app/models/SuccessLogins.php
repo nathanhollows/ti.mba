@@ -27,7 +27,13 @@ class SuccessLogins extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $userAgent;
+    public $userAgent; 
+
+    /**
+     *
+     * @var string
+     */
+    public $timestamp;
 
     /**
      * Allows to query a set of records that match the specified conditions
