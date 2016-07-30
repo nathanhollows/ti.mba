@@ -75,6 +75,15 @@ class Contacts extends Model
     }
 
     /**
+     * Clear custom position on update
+     * Contact role is required instead
+     */
+    public function beforeUpdate() 
+    {
+        $this->position = null;
+    }
+
+    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
