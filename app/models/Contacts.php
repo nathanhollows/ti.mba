@@ -96,18 +96,4 @@ class Contacts extends Model
         return 'contacts';
     }
 
-    public function afterCreate()
-    {
-        $auth = new Auth;
-        // Lets make some history
-        $history = new ContactRecord();
-        $history->date = date('Y-m-d');
-        $history->customerCode = $this->customerCode;
-        $history->user = $auth->getId();
-        $history->contactType = 13;
-        $history->contact = $this->id;
-        $history->details = "Contact created by " . $auth->getName();
-        $history->save();
-    }
-
 }
