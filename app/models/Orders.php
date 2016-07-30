@@ -20,16 +20,27 @@ class Orders extends Model
 	
 	public $cancelled;
 
+	public $checked;
+
 	public function initialize()
 	{
-
+		$this->keepSnapshots(true);
 		$this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
 		$this->hasMany('orderNumber', 'App\Models\OrderItems', 'orderNo', array('alias'	=> 'items'));
 		$this->hasOne('location', 'App\Models\OrderLocations', 'id', array('alias'	=> 'whereabouts'));
 
 	}
 
-	public static function scheduled() {
+	public function beforeUpdate()
+	{
+		if ($this->hasChanged('eta')) {
+			$this->checked = date("Y-m-d H:i:s");
+			$this->followUp = 0;
+		}
+	}
+
+	public static function scheduled() 
+	{
 		return parent::find(
 			array(
 				"scheduled = 1 AND complete = 0",
