@@ -103,7 +103,8 @@ $di->set('view', function() use ($config) {
 
 		    $compiler->addFilter('number', 'number_format');
 
-		    $compiler->addFunction('dump', 'print_r');
+		    $compiler->addFilter('dump', 'print_r');
+		    $compiler->addFilter('positive', 'abs');
 
 			$compiler->addFunction('strtotime', 'strtotime');
 
