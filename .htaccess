@@ -1,5 +1,37 @@
 <IfModule mod_rewrite.c>
-	RewriteEngine on
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^(www\.)(.+) [OR]
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} ^(www\.)?(.+)
+    RewriteRule ^ https://%2%{REQUEST_URI} [R=301,L]
 	RewriteRule  ^$ public/    [L]
 	RewriteRule  (.*) public/$1 [L]
 </IfModule>
+
+<IfModule pagespeed_module>
+    ModPagespeed off
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Images
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # CSS, JavaScript
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType text/javascript "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# Begin - Prevent Browsing and Set Default Resources
+Options -Indexes
+DirectoryIndex index.php index.html
+# End - Prevent Browsing and Set Default Resources
+
+
+php_value session.gc_maxlifetime 86400

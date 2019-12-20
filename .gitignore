@@ -1,5 +1,4 @@
 app/cache/*
 vendor/*
-!vendor/*
 public/ftp/pbt/*
 public/pdf/*
