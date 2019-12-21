@@ -1,6 +1,6 @@
-# Avaunt
+# Ti.mba
 
-Avaunt is a CRM package for the timber industry.
+Ti.mba is a CRM package for the timber industry.
 
 <description>
 
@@ -12,8 +12,8 @@ Avaunt is a CRM package for the timber industry.
 ## Installation
 
 1. Navigate to htdocs (or server equivalent)
-2. Clone repository `git clone https://github.com/wisend/avaunt`
-3. Edit avaunt/app/config.php to the settings appropriate for your server
+2. Clone repository `git clone https://github.com/nathanhollows/ti.mba.git`
+3. Edit `app/config.php` to the settings appropriate for your server
 4. Run `composer update`
 
 <instructions>
@@ -26,21 +26,21 @@ Nathan Hollows
 
 ## Tech
 
-Avaunt uses a number of open source projects to work properly:
+Ti.mba uses a number of open source projects to work properly:
 
-* [Phalcon 2.0.9] - php framework that makes everything blazingly fast and easy
+* [Phalcon 4+] - php framework that makes everything blazingly fast and easy
 * [Twitter Bootstrap] - great UI boilerplate for modern web apps
 * [jQuery] - duh
 
    [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
-   [Phalcon 2.0.9]: <https://phalconphp.com/en/>
+   [Phalcon 4+]: <https://phalconphp.com/en/>
    [jQuery]: <https://jquery.com/>
 
 <tech>
 
 ## License
 
-Copyright (C) 2016 Nathan Hollows
+Copyright (C) 2019 Nathan Hollows
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
