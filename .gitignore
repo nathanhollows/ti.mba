@@ -1,4 +1,5 @@
 app/cache/*
 vendor/*
-public/ftp/pbt/*
+public/img/icons/*
 public/pdf/*
+.composer.lock
