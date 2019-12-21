@@ -100,7 +100,7 @@
                         </li>
                         <li class="divider"></li>
                         <li>
-                            {{ link_to('/logout', '<i class="fa fa-fw fa-power-off"></i> Log Out')}}
+                            {{ link_to('logout', '<i class="fa fa-fw fa-power-off"></i> Log Out')}}
                         </li>
                     </ul>
                 </li>

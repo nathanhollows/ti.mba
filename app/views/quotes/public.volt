@@ -1,11 +1,14 @@
 {{ content() }}
 <div class="page">
 	<div id="quote-details">
-		<span id="header"><h2><strong>Quote: {{ quote.quoteId }}</strong> 
-		{% if quote.reference is not empty %}
-			<span style="white-space: nowrap;">Ref: {{ quote.reference }}</span>
-		{% endif %}
-		</h2></span>
+		<span id="header"><h2><strong>Quote: {{ quote.quoteId }} &nbsp;</strong>
+		</h2>
+		<h2>
+			{% if quote.reference is not empty %}
+				<span style="font-size: 25px;">Ref: {{ quote.reference }}</span>
+			{% endif %}
+		</h2>
+		</span>
 		<span id="subheader">
 		<h3><strong>Date:</strong> {{ date('d F Y', dated) }}</h3>
 	</div>
@@ -14,19 +17,19 @@
 		<div id="client">
 			<h4><strong>{{ quote.customer.customerName }} </strong></h4>
 			<p>
-				<span><strong>Attn:</strong> {{quote.attention }} 
+				<span><strong>Attn:</strong> {{quote.attention }}
 				{% if quote.customerContact %} {{ quote.customerContact.name }} {% endif %}<br></span>
-				<span><strong>Address:</strong> 
+				<span><strong>Address:</strong>
 				{% for address in quote.customer.addresses %}
 					{% if address.type.typeCode is 2 %}
 						{% if address.line2 %}
-							{{ address.line2 }}, 
+							{{ address.line2 }},
 						{% endif %}
 						{% if address.line3 %}
 						{% endif %}
 						{% if address.city or address.zipCode or address.country %}
 							<br>
-							<strong>&nbsp;</strong> 
+							<strong>&nbsp;</strong>
 							{% if address.city %}
 								{{ address.city }},
 							{% endif %}
@@ -43,15 +46,15 @@
 			</p>
 		</div>
 		<div id="supplier">
-			<h4><strong>AVAUNT TIMBER LIMITED</strong></h4>
+			<h4><strong>ATS TIMBER LIMITED</strong></h4>
 			<p>
 				<strong>Prepared by:</strong> {{quote.rep.name }} <br>
 				<strong>Email:</strong> {{ quote.rep.email }}<br>
 				<strong>Phone:</strong> {{ quote.rep.directDial }}<br>
-				<strong>Fax:</strong>0000 000 000<br>
+				<strong>Fax:</strong>0508 22 77 22<br>
 			</p>
 		</div>
-	</div>	
+	</div>
 	<div id="particulars">
 		<table>
 			<thead>
@@ -67,23 +70,27 @@
 			{% for item in items %}
 				<tr>
 					<td class="item"> {{ loop.index }} </td>
-					<td>{{ item.legacy.description }} {{ item.fin.name }}
+					<td>
+						{% if item.gra.name is not empty %}
+							{{ item.gra.name }}&nbsp;
+						{% endif %}
+						{% if item.treat.name is not empty %}
+							{{ item.treat.name }}&nbsp;
+						{% endif %}
+						{% if item.dry.name  is not empty %}
+							{{ item.dry.name }}&nbsp;
+						{% endif %}
+						{% if item.fin.name is not empty %}
+							{{ item.fin.name }}&nbsp;
+						{% endif %}
 						<br>
 						<span class="deets">{{ item.lengths }}</span>
 					</td>
 					<td class="description">
-						{% if item.finSize is not empty %}
-							{{ item.finSize }}
-						{% else %}
-							{% if item.callSize is not empty %}
-								{{ item.callSize }}
-							{% else %}
-								{{ item.width }} x {{ item.thickness }}
-							{% endif %}
-						{% endif %}
+						{{ item.width }} x {{ item.thickness }}
 					</td>
-					<td class="qty">{{ item.qty }} {{ item.unit.name }}</td>
-					<td class="price">${{ item.unitPrice}} {{ item.unit.name }}</td>
+					<td class="qty">{{ item.qty }} {% if item.qty is not null %}{{ item.unit.name }}{% else %}-{% endif %}</td>
+					<td class="price">${{ item.price}} {{ item.unit.name }}</td>
 				</tr>
 			{% endfor %}
 			</tbody>
@@ -121,12 +128,12 @@
 		</ul>
 	{% endif %}
 	<h5><strong>ADDITIONAL NOTES</strong></h5>
-		<p><small>
-		All prices exclude GST. All products are random length up to 6.0m unless specified otherwise. 
-		Priced as a job lot. Any variations will be subject to a requote. Lead times are approximate 
-		and subject to change. Prices are net only and exclude any allowance for preferred supplier 
-		rebates, retenetions or other financial implications. Users of AVAUNT Timber Products should rely 
-		on their own professional judgement and skill in determining appropriateness of product 
+		<p style="padding-bottom: 0px;"><small>
+		All prices exclude GST. All products are random length up to 6.0m unless specified otherwise.
+		Priced as a job lot. Any variations will be subject to a requote. Lead times are approximate
+		and subject to change. Prices are net only and exclude any allowance for preferred supplier
+		rebates, retenetions or other financial implications. Users of ATS Timber Products should rely
+		on their own professional judgement and skill in determining appropriateness of product
 		choices and design for NZ Building Code compliant systems.
 		</small></p>
 	</div>

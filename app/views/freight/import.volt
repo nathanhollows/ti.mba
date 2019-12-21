@@ -1,0 +1,2 @@
+{{ content() }}
+{{ flashSession.output() }}

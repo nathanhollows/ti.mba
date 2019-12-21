@@ -9,41 +9,61 @@
 	<div class="form-group">
 		<label>Customer</label>
 		{{ form.render('customerCode') }}
-	</div>    
+	</div>
 	<div class="form-group">
 		<label>Contact</label>
 		{{ form.render('contact') }}
-	</div>    
+	</div>
 	<div class="form-group">
 		<label>Reference</label>
 		{{ form.render('reference') }}
-	</div>    
+	</div>
 	<div class="form-group">
 		<label>Date</label>
 		{{ form.render('date') }}
-	</div>    
+	</div>
 	<div class="form-group">
 		<label>Notes</label>
 		{{ form.render('notes') }}
-	</div>  
+	</div>
 	<div class="form-group">
 		<label>Private Notes</label>
 		{{ form.render('moreNotes') }}
-	</div>    
+	</div>
 	<div class="form-group">
 		<label>Sales Rep</label>
 		{{ form.render('user') }}
-	</div>    
+	</div>
 	<div class="form-group">
 		<label>Status</label>
 		{{ form.render('status') }}
-	</div>    
+	</div>
  	{% if ajax is false %}
 		<div class="form-group">
 			{{ form.render('Submit') }}
-		</div>    
-		</div>    
+		</div>
+		</div>
 	{% endif %}
 </form>
 
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#customerCode').change(function () {
+        var customerCode = $(this).find("option:selected").val();
+        if(customerCode){
+            $.ajax({
+                type:'POST',
+                url:'/customers/getcontacts/'+customerCode,
+                data: null,
+                success:function(html){
+                	$('#contact').selectpicker('destroy');
+                    $('#contact').html(html);
+                	$('#contact').selectpicker();
+                }
+            });
+        }
+    });
+});
+</script>

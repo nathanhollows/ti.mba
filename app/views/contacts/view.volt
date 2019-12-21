@@ -9,9 +9,13 @@
 		</div>
 		<div class="panel-body">
 			{{ contact.name }}<br>
-			{% if contact.email is not empty %} {{ contact.email }}<br> {% endif %}
-			{% if contact.directDial is not empty %} {{ contact.directDial }}<br> {% endif %}
-			{% if contact.position is not empty %} {{ contact.position }}<br> {% endif %}
+			{% if contact.email is not empty %} <a href="mailto:{{ contact.email }}">{{ contact.email }}</a><br> {% endif %}
+			{% if contact.directDial is not empty %} <a href="tel:{{ contact.directDial }}" class="tel-link">{{ contact.directDial }}</a><br> {% endif %}
+            {% if contact.role is defined %}
+			    {% if contact.role is numeric %}
+                    {{ contact.job.name }}<br>
+                {% endif %}
+            {% endif %}
 		</div>
 	</div>
 	{% if contact.company is not empty %}
@@ -21,7 +25,7 @@
 		</div>
 		<div class="panel-body">
 			{{ link_to("customers/view/" ~ contact.company.customerCode, contact.company.customerName) }}<br>
-			{{ contact.company.customerPhone }}
+			<a href="tel:{{ contact.company.phone }}" class="tel-link">{{ contact.company.phone }}</a>
 		</div>
 	</div>
 	{% endif %}

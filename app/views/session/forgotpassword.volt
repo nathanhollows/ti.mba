@@ -1,18 +1,12 @@
-<div class="container">
-
-	{{ form('class': 'form-signin') }}
-	{{ content() }}
-	<h2 class="form-signin-heading">Forgot your password?</h2>
-	<p>No worries! Just enter your email address below and we'll let you know what to do next!</p>
-
-	<div class="form-group">
-		{{ form.label('Email' )}}
-		{{ form.render('Email') }}
-	</div>
-
-	<div class="form-group">
-		{{ form.render('Send') }}
-	</div>		
-</form>
-
+<div class="login-page">
+    {{ flashSession.output() }}
+    {{ content() }}
+    <div class="form">
+        <h1 class="form-signin-heading">Forgot your password?</h1>
+        <form class="login-form" method="post">
+            {{ form.render('Email') }}
+            {{ form.render('Send') }}
+            <p class="message">{{ link_to("login", "Login instead", 'tabindex': '-1') }}</p>
+        </form>
+    </div>
 </div>

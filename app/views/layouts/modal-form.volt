@@ -1,7 +1,6 @@
 <div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	{% if pageTitle is not empty %}
-		<h4>{{ pageTitle }}</h4>
+		<h4>{{ pageTitle }}<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
 	{% else %}
 		<h4>Form</h4>
 	{% endif %}

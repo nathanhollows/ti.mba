@@ -1,133 +1,292 @@
 {{ content() }}
 {{ flashSession.output() }}
-
-<div class="row">
-	<div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-		<div class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title"><strong>Quote</strong> Details
-					<a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('quotes/edit/' ~ quote.quoteId) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
-				</h3>
-			</div>
-			<div class="panel-body">
-				<strong>Quote: </strong> {{ quote.quoteId }} <span class="label label-{{ quote.genericStatus.style }}">{{ quote.genericStatus.name }}</span> <br>
-				<strong>Attention: </strong>{{ quote.attention }} {% if quote.customerContact is not empty %}{{ quote.customerContact.name }}{% endif %}<br>
-				<strong>Reference: </strong>{{ quote.reference }} <br>
-				<strong>Date: </strong>{{ date('dS F Y', strtotime(quote.date)) }}  <br>
-				<strong>Rep: </strong>{{ quote.rep.name }} <br>
-				<strong>Value: </strong> ${{ quote.value }}
-			</div>
-		</div>
-
-		<div class="panel panel-success">
-			<div class="panel-heading">
-				<h3 class="panel-title"><strong>Quote</strong> Specifics</h3>
-			</div>
-			<div class="panel-body" id="specifics">
-				Lead Time: <a href="#" class="xedit" id="leadTime" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Lead Time">{{ quote.leadTime }}</a> <br>
-				Validity: <a href="#" class="xedit" id="validity" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Vailidity">{{ quote.validity }}</a> days<br> 
-				Freight: $<a href="#" class="xedit" id="freight" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Freight">{{ quote.freight }}</a> <br>
-			</div>
-		</div>
-
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h3 class="panel-title">Notes</h3>
-			</div>
-			<div class="panel-body">
-				<strong>Quote Notes:</strong><br>
-				<a href="#" class="xedit" id="notes" data-type="textarea" data-mode="inline" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Public Notes">{{ quote.notes }}</a> <br>
-				<strong>Private Notes:</strong><br>
-				<a href="#" class="xedit" id="moreNotes" data-type="textarea" data-mode="inline" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Private Notes">{{ quote.moreNotes }}</a> <br>
-			</div>
-		</div>
-
-		<div class="panel panel-info">
-			<div class="panel-heading">
-				<h3 class="panel-title"><strong>Customer</strong> Details</h3>
-			</div>
-			<div class="panel-body">
-				{{ link_to("/customers/view/" ~ quote.customer.customerCode, quote.customer.customerName) }}<br>
-				{% if quote.customer.addresses %}
-				{% for address in quote.customer.addresses %}
-				{% if address.typeCode is 2 %}
-				{% if address.line1 %} {{ address.line1 }} <br> {% endif %}
-				{% if address.line2 %} {{ address.line2 }} <br> {% endif %}
-				{% if address.line3 %} {{ address.line3 }} <br> {% endif %}
-				{% if address.zipCode %} {{ address.zipCode }} {% endif %}
-				{% if address.city %} {{ address.city }} <br> {% endif %}
-				{% endif %}
-				{% endfor %}
-				{% endif %}
-			</div>
-		</div>
-	</div>
-
-	<div class="col-xs-12 col-sm-7 col-md-8 col-lg-9">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">Items <button id="enable" class="btn btn-sm btn-default">Edit</button></h3>
-			</div>
-			<div class="panel-body">
-				<div class="table-responsive">
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th>Description</th>
-								<th>Size</th>
-								<th>Finish</th>
-								<th>Notes</th>
-								<th>Qty</th>
-								<th>Unit</th>
-								<th>Price</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody id="items">
-
-							{% for item in items %}
-							<tr>
-								<td><a href="#" class="xedit" id="grade" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Grade">{{ item.legacy.description }}</a></td>
-								<td>
-									{# Because of legacy information I've had to account for the fact that#}
-
-											<a href="#" class="xedit" id="width" data-type="number" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Width">{{ item.width }}</a> x 
-											<a href="#" class="xedit" id="thickness" data-type="number" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Thickness">{{ item.thickness }}</a>
-								</td>
-								<td><a href="#" class="xedit" id="finish" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Finish">{{ item.fin.name }}</a></td>
-								<td><a href="#" class="xedit" id="lengths" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Lengths / Notes">{{ item.lengths }}</a></td>
-								<td><a href="#" class="xedit" id="qty" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Quantity">{{ item.qty }}</a></td>
-								<td><a href="#" class="xedit" id="unitPrice" data-type="select" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Pricing Method">{{ item.unit.name }}</a></td>
-								<td><a href="#" class="xedit" id="price" data-type="text" data-pk="{{ item.id }}" data-url="/quotes/edititem" data-title="Price">{{ item.unitPrice }}</a></td>
-								<td>
-									{{ link_to('quotes/deleteitem/' ~ item.id, 'Delete')}}
-									
-								</td>
-							</tr>
-							{% endfor %}
-							<tr>
-								{{ form('quotes/createitem', 'method': 'post') }}
-									<td hidden="true">{{ form.render('quoteId') }}</td>
-									<td>{{ form.render('grade') }}</td>
-									<td>{{ form.render('width') }} {{ form.render('thickness') }}</td>
-									<td>{{ form.render('finish') }} </td>
-									<td>{{ form.render('lengths') }} </td>
-									<td>{{ form.render('qty') }} </td>
-									<td>{{ form.render('priceMethod') }} </td>
-									<td>{{ form.render('price') }} </td>
-									<td>
-										<button type="submit" class="btn btn-primary">Save</button>
-									</td>
-								{{ end_form() }}
-							</tr>
-						</tbody>
-						<tfoot>
-							<tr>
-							</tr>
-						</tfoot>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="row collapse" id="help">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Shortcuts</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    These shortcuts are available for use when creating quotes
+                </p>
+                <dl class="dl-horizontal">
+                    <dt>Next Cell</dt>
+                    <dd><kbd>alt + arrow keys</kbd></dd>
+                    <dt>Move</dt>
+                    <dd><kbd>alt + shift + up/down</kbd></dd>
+                    <dt>Insert</dt>
+                    <dd><kbd>alt + enter</kbd></dd>
+                    <dt>Duplicate</dt>
+                    <dd><kbd>alt + d</kbd></dd>
+                    <dt>Delete</dt>
+                    <dd><kbd>alt + shift + backspace</kbd></dd>
+                </dl>
+                <p>
+                    Holding <code>shift</code> moves the newly inserted / duplicated line above the current one. <code>Move</code> and <code>Delete</code> only apply to unsaved lines.
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="row row-flex row-flex-wrap">
+    <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <div class="panel panel-primary flex-panel">
+            <div class="panel-heading">
+                <h3 class="panel-title">Quote Details
+                    <a class="pull-right text-info" data-target="#modal-ajax" href='{{ url('quotes/edit/' ~ quote.quoteId) }}' data-target="#modal-ajax"><i class="fa fa-pencil"></i> Edit</a>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <span class="quote-deets"><strong>Status: </strong></span>
+                <span class="label label-{{ quote.genericStatus.style }}">{{ quote.genericStatus.statusName }}</span>
+
+                <div class="clearfix"></div>
+
+                <span class="quote-deets"><strong>Attention: </strong></span>
+                <span class="block">{{ quote.attention }} {% if quote.customerContact is not empty %}{{ quote.customerContact.name }} <br>
+                    <a href="tel:{{ quote.customerContact.directDial|stripspace }}" class="tel-link">{{ quote.customerContact.directDial }}</a>{% endif %}</span>
+
+                    <div class="clearfix"></div>
+
+                    <span class="quote-deets"><strong>Reference:</strong></span>
+                    <a href="#" class="xedit" id="reference" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Reference">{{ quote.reference }}</a><br />
+
+                    <div class="clearfix"></div>
+
+                    <span class="quote-deets"><strong>Date:</strong></span>  <a href="#" class="xedit" id="date" data-type="date" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Date" data-placement="bottom">{{ quote.date }}</a><br>
+
+                    <div class="clearfix"></div>
+
+                    <span class="quote-deets"><strong>Rep:</strong></span>  <a href="#" class="xedit" id="rep" data-type="select" data-source="[ {% for user in users %}{value: {{user.id}}, text: '{{ user.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Sales Rep" data-value="{{ quote.rep.id }}">{{ quote.rep.name }}</a><br>
+
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="panel panel-success flex-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Quote Specifics</h3>
+                </div>
+                <div class="panel-body" id="specifics">
+                    <strong>Lead Time:</strong> 	<span class="pull-right"> <a href="#" class="xedit" id="leadTime" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Lead Time">{{ quote.leadTime }}</a> <br> </span>
+                    <div class="clearfix"></div>
+                    <strong>Validity:</strong> 	<span class="pull-right"> <a href="#" class="xedit" id="validity" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Vailidity">{{ quote.validity }}</a> days<br>  </span>
+                    <div class="clearfix"></div>
+                    <strong>Freight:</strong> 	<span class="pull-right"> $<a href="#" class="xedit" id="freight" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Freight">{{ quote.freight }}</a> <br> </span>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+            <div class="panel panel-info flex-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Notes</h3>
+                </div>
+                <div class="panel-body">
+                    <strong>Quote Notes:</strong><br>
+                    <a href="#" class="xedit" id="notes" data-type="textarea" data-mode="inline" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Public Notes">{{ quote.notes }}</a> <br>
+                    <strong>Private Notes:</strong><br>
+                    <a href="#" class="xedit" id="moreNotes" data-type="textarea" data-mode="inline" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Private Notes">{{ quote.moreNotes }}</a> <br>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-lg-12 hidden-sm hidden-xs">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Quote Items
+                        <button class="btn pull-right" type="button" data-toggle="collapse" data-target="#help" aria-expanded="false" aria-controls="help">
+                            Shortcuts
+                        </button>
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form action="/quotes/saveitems" method="POST" role="form" id="items">
+                        <table data-navigable-spy data-editable data-editable-spy class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Grade</th>
+                                    <th>Treatment</th>
+                                    <th>Dryness</th>
+                                    <th>Width</th>
+                                    <th>Thick</th>
+                                    <th>Finish</th>
+                                    <th>Notes</th>
+                                    <th>Qty</th>
+                                    <th>Unit</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {# Loop through the quote items #}
+
+                                {{ hidden_field('quoteId', 'value': quote.quoteId) }}
+
+                                {% for item in items %}
+                                <tr class="record">
+                                    <td>
+                                        {{ hidden_field('id[]', 'value': item.id) }}
+                                        {{ select_static('grade[]', grades, 'using': ['shortCode', 'name'], 'value': item.grade, 'class': 'data grade', 'data-live-search': 'true', 'data-container': 'body') }}
+                                    </td>
+                                    <td>{{ select_static('treatment[]', treatment, 'using': ['shortCode', 'shortCode'], 'value': item.treatment, 'class': 'data treatment' , 'data-live-search': 'true', 'data-container': 'body') }}</td>
+                                    <td>{{ select_static('dryness[]', dryness, 'using': ['shortCode', 'shortCode'], 'value': item.dryness, 'class': 'data dryness', 'data-live-search': 'true', 'data-container': 'body') }}</td>
+                                    <td>
+                                        {{ numeric_field('width[]', 'value': item.width, 'class': 'data width') }}
+                                    </td>
+                                    <td>
+                                        {{ numeric_field('thickness[]', 'value': item.thickness, 'class': 'data thickness') }}
+                                    </td>
+                                    <td>
+                                        {{ select_static('finish[]', finishes, 'using': ['id', 'name'], 'value': item.finish, 'class': 'data') }}
+                                    </td>
+                                    <td>
+                                        {{ text_field('lengths[]', 'value': item.lengths ) }}
+                                    </td>
+                                    <td>
+                                        {{ numeric_field('qty[]', 'value': item.qty, 'step': 'any', 'class': 'qty') }}
+                                    </td>
+                                    <td>
+                                        {{ select_static('priceMethod[]', priceMethod, 'using': ['id', 'name'], 'value': item.priceMethod, 'class': 'data priceMethod') }}
+                                    </td>
+                                    <td>
+                                        {{ numeric_field('unitPrice[]', 'value': item.price, 'step': 'any') }}
+                                    </td>
+                                    <td>
+                                        <a href="#" data-href="/quotes/deleteitem/{{ item.id }}" data-toggle="modal" data-target="#confirm-delete" tabindex="-1" class="text-danger delete"><i class="fa fa-times"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td>
+                                        {{ hidden_field('id[]') }}
+                                        {{ form.render('grade[]') }}
+                                    </td>
+                                    <td>{{ form.render('treatment[]') }}</td>
+                                    <td>{{ form.render('dryness[]') }}</td>
+                                    <td>
+                                        {{ numeric_field('width[]', 'placeholder': 'Width', 'class': 'data width') }}
+                                    </td>
+                                    <td>
+                                        {{ numeric_field('thickness[]', 'placeholder': 'Thickness', 'class': 'data thickness') }}
+                                    </td>
+                                    <td>
+                                        {{ select_static('finish[]', finishes, 'using': ['id', 'name'], 'class': 'data', 'useEmpty': true) }}
+                                    </td>
+                                </td>
+                                <td>
+                                    {{ text_field('lengths[]', 'placeholder': 'Notes / Lengths') }}
+                                </td>
+                                <td>
+                                    {{ numeric_field('qty[]', 'step': 'any', 'placeholder': 'Qty', 'class': 'qty') }}
+                                </td>
+                                <td>
+                                    {{ select_static('priceMethod[]', priceMethod, 'using': ['id', 'name'], 'class': 'data priceMethod', 'useEmpty': false) }}
+                                </td>
+                                <td>
+                                    {{ numeric_field('unitPrice[]', 'step': 'any', 'placeholder': 'Price') }}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Grade</th>
+                                <th>Treatment</th>
+                                <th>Dryness</th>
+                                <th>Width</th>
+                                <th>Thick</th>
+                                <th>Finish</th>
+                                <th>Notes</th>
+                                <th>Qty</th>
+                                <th>Unit</th>
+                                <th>Price</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Item summary</h3>
+            </div>
+            <div class="panel-body">
+                {% for item in quote.items %}
+                    <strong>{{ loop.index }}.</strong> {{ item.width }} x {{ item.thickness }} {{ item.grade }} {{ item.treatment }} {{ item.dryness }} {{ item.fin.name }} ${{ item.price }} {{ item.unit.name }}
+                    {% if item.lengths %}
+                        <br />
+                        <i>{{ item.lengths }}</i>
+                    {% endif  %}
+                    <hr />
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ partial('timeline') }}
+
+<style type="text/css">
+#rowToClone {
+  display: none;
+}
+
+#items td {
+  padding: 0;
+}
+
+.priceMethod {
+  min-width: 58px;
+}
+
+#items select, #items input {
+    width: 100%;
+    padding: 8px;
+}
+#items input[type='number'] {
+    max-width: 80px;
+}
+span.quote-deets {
+    width: 90px;
+    display: block;
+    float: left;
+}
+span.block {
+    display: inline-table;
+}
+select.data {
+    background: transparent;
+    border: 0;
+}
+.record:hover a.delete, .active a.delete {
+    visibility: visible;
+}
+
+a.delete {
+    visibility: hidden;
+}
+
+select.data.grade {
+    width: 170px;
+}
+select.data.treatment {
+    width: 72px;
+}
+select.data.dryness {
+    width: 54px;
+}
+</style>
+<script type="text/javascript">
+$(function() {
+
+    $('form#items').areYouSure( {'message':'Your quote details are not saved!'} );
+
+});
+</script>

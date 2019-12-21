@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <style type="text/css">
-	/* http://meyerweb.com/eric/tools/css/reset/ 
+	/* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
    */
@@ -13,8 +13,8 @@
    dl, dt, dd, ol, ul, li,
    fieldset, form, label, legend,
    table, caption, tbody, tfoot, thead, tr, th, td,
-   article, aside, canvas, details, embed, 
-   figure, figcaption, footer, header, hgroup, 
+   article, aside, canvas, details, embed,
+   figure, figcaption, footer, header, hgroup,
    menu, nav, output, ruby, section, summary,
    time, mark, audio, video {
     margin: 0;
@@ -23,134 +23,135 @@
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
-    font-family: 
- }
- /* HTML5 display-role reset for older browsers */
- article, aside, details, figcaption, figure, 
- footer, header, hgroup, menu, nav, section {
+    font-family:
+  }
+  /* HTML5 display-role reset for older browsers */
+  article, aside, details, figcaption, figure,
+  footer, header, hgroup, menu, nav, section {
     display: block;
- }
- body {
+  }
+  body {
     line-height: 1;
- }
- ol, ul {
+  }
+  ol, ul {
     list-style: none;
     margin: 5mm 0 5mm 0;
- }
- blockquote, q {
+  }
+  blockquote, q {
     quotes: none;
- }
- blockquote:before, blockquote:after,
- q:before, q:after {
+  }
+  blockquote:before, blockquote:after,
+  q:before, q:after {
     content: '';
     content: none;
- }
- table {
+  }
+  table {
     border-collapse: collapse;
     border-spacing: 0;
- }
+  }
 
- body {
+  body {
     font-family: Verdana, Geneva, sans-serif;
     font-style: normal;
     font-variant: normal;
     font-weight: 500;
     font-size: 3mm;
- }
+  }
 
-p {
-  font-size: 15mm;
-  color: #757578;
-}
+  p {
+    font-size: 15mm;
+    color: #757578;
+  }
 
- h1 {
+  h1 {
     font-size: 3em;
     color: #084727;
- }
- h2 {
+  }
+  h2 {
     font-size: 3.3em;
     color: #084727;
     float: left;
- }
- h3 {
+  }
+  h3 {
     font-size: 2.5em;
     color: #636366;
     line-height: 2.5em;
- }
- h4 {
+  }
+  h4 {
     font-size: 1.5em;
     letter-spacing: 0.05em;
     text-transform: uppercase;
     color: #231F20;
- }
- h5 {
+  }
+  h5 {
     font-size: 1em;
     color: #084727;
- }
- h6 {
+  }
+  h6 {
     font-size: 1em;
     color: #084727;
- }
- p {
+  }
+  p {
     font-size: 1em;
     margin: 5mm 0 5mm 0;
+  }
+
+  #client {
+    width: 46%;
+    float: left;
+    padding-right: 4%;
+  }
+
+  #supplier {
+    width: 50%;
+    float: left;
+  }
+
+  th {
+    min-height: 6mm;
+    background: #646466;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  table {
+   width: 100%;
  }
 
- #client {
-  width: 50%;
-  float: left;
-}
-
-#supplier {
-  width: 50%;
-  float: left;
-}
-
-th {
-  min-height: 6mm;
-  background: #646466;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-}
-
-table {
- width: 100%;
-}
-
-table, tr, td, th, tbody, thead, tfoot {
-    padding: 3mm;
-    font-size: 3.2mm;
+ table, tr, td, th, tbody, thead, tfoot {
+  padding: 3mm;
+  font-size: 3.2mm;
 }
 
 tr, tbody, thead, tfoot {
-    page-break-inside: avoid !important;
+  page-break-inside: avoid !important;
 }
 
 td.item {
-    text-align: center;
-    width: 4%;
+  text-align: center;
+  width: 4%;
 }
 
 span.deets {
-    padding-top: 2mm;
-    font-style: italic;
-    display: block;
+  padding-top: 2mm;
+  font-style: italic;
+  display: block;
 }
 
 td.description {
-    text-align: center;
-    width: 14%;
+  text-align: center;
+  width: 14%;
 }
 
 td.qty {
-    text-align: right;
-    width: 16%;
+  text-align: right;
+  width: 16%;
 }
 
 td.price {
-    text-align: right;
-    width: 16%;
+  text-align: right;
+  width: 16%;
 }
 
 tbody tr {
@@ -165,15 +166,15 @@ tbody tr:nth-child(2n) {
 }
 
 tbody tr:nth-last-child(1) {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 tfoot {
-   text-align: right;
-   color: white;
+ text-align: right;
+ color: white;
 }
 .page{
-   padding: 0 15mm 0 15mm;
+ padding: 0 15mm 0 15mm;
 }
 
 #parties {
@@ -181,28 +182,28 @@ tfoot {
 }
 
 td.item {
-    text-align: center;
-    width: 4%;
+  text-align: center;
+  width: 4%;
 }
 
 #parties p {
-    line-height: 2em;
+  line-height: 2em;
 }
 
 #parties p strong {
-    width: 30%;
-    display: block;
-    float: left;
-    clear: both;
+  width: 30%;
+  display: block;
+  float: left;
+  clear: both;
 }
 
 #client p, #supplier p {
-    font-size: 3.2mm;
+  font-size: 3.2mm;
 }
 
 #parties span {
-    clear: both;
-    display: block;
+  clear: both;
+  display: block;
 }
 
 #subheader {
@@ -220,19 +221,19 @@ td.item {
 }
 
 tr#freight {
-   background: #646466;
+ background: #646466;
 }
 
 tr#lead {
-   background: #0A462A;
+ background: #0A462A;
 }
 
 tr#validity {
-   background: #F9961F;
+ background: #F9961F;
 }
 
 strong {
-   font-weight: bold;
+ font-weight: bold;
 }
 
 p strong {
@@ -245,8 +246,11 @@ p strong {
 }
 
 span.rightalign {
-    width: 16%;
-    display: inline-block;
+  width: 16%;
+  display: inline-block;
+}
+span.page {
+  padding: 0;
 }
 
 </style>

@@ -6,6 +6,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     {{ get_title() }}</title>
 
+    <link rel="shortcut icon" href="/favicon.ico?v=2" type="image/x-icon" />
     <!-- CSS -->
     {{ assets.outputCss('header') }}
     <!-- JS -->
