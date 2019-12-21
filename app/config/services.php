@@ -1,18 +1,21 @@
 <?php
 
-use Phalcon\DI\FactoryDefault,
-	Phalcon\Mvc\View,
-	Phalcon\Crypt,
-	Phalcon\Mvc\Router,
-	Phalcon\Mvc\Dispatcher,
-	Phalcon\Mvc\Url as UrlResolver,
-	Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter,
-	Phalcon\Mvc\View\Engine\Volt as VoltEngine,
-	Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter,
-	Phalcon\Session\Adapter\Files as SessionAdapter,
-	Phalcon\Flash\Direct as Flash,
-	Phalcon\Flash\Session as FlashSession,
-	Phalcon\Events\Manager as EventsManager;
+use Phalcon\DI\FactoryDefault;
+use Phalcon\Mvc\View;
+use Phalcon\Crypt;
+use Phalcon\Mvc\Router;
+use Phalcon\Mvc\Dispatcher;
+use Phalcon\Mvc\Url as UrlResolver;
+use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
+use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
+use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
+use Phalcon\Session\Adapter\Files as SessionAdapter;
+use Phalcon\Cache\Frontend\Data as FrontendData;
+use Phalcon\Cache\Backend\Memcache as BackendMemcache;
+use Phalcon\Flash\Direct as Flash;
+use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Events\Manager as EventsManager;
+use App\Mail\Mail;
 
 
 use App\Auth\Auth,
@@ -24,6 +27,8 @@ use App\Auth\Auth,
  */
 $di = new FactoryDefault();
 
+// Store it in the Di container
+$di->set('config', $config);
 
 $di->set('router', function(){
 	return require __DIR__ . '/routes.php';
@@ -77,6 +82,12 @@ $di->set('flashSession', function () {
 $di->set('auth', function () {
     return new Auth();
 });
+/**
+ * Mail service uses Swift Mail
+ */
+$di->set('mail', function () {
+    return new Mail();
+});
 
 /**
  * Setting up the view component
@@ -104,12 +115,20 @@ $di->set('view', function() use ($config) {
 		    $compiler->addFilter('number', 'number_format');
 
 		    $compiler->addFilter('dump', 'print_r');
+		    $compiler->addFilter('array_sum', 'array_sum');
+		    $compiler->addFilter('get_object_vars', 'get_object_vars');
 		    $compiler->addFilter('positive', 'abs');
-
+            $compiler->addFilter('round', 'round');
+			$compiler->addFunction('number_format', 'number_format');
 			$compiler->addFunction('strtotime', 'strtotime');
-
+		    $compiler->addFilter('stripspace', function($resolvedArgs, $exprArgs){
+		        return 'str_replace(\' \',\'\','.$resolvedArgs.')';
+		    });
 		    $compiler->addFilter('timeAgo', function($resolvedArgs, $exprArgs){
 		        return '\Carbon\Carbon::createFromFormat("Y-m-d H:i:s", '.$resolvedArgs.')->diffForHumans()';
+		    });
+		    $compiler->addFilter('initials', function($resolvedArgs, $exprArgs){
+		    	return  'Elements::initials(' . $resolvedArgs . ');';
 		    });
 
 		    $compiler->addFilter('timeAgoDate', function($resolvedArgs, $exprArgs){
@@ -142,6 +161,32 @@ $di->set('db', function() use ($config) {
 $di->set('modelsMetadata', function() use ($config) {
 	return new MetaDataAdapter();
 });
+
+/**
+ * Model cache service
+ */
+$di->set(
+    'modelsCache',
+    function () {
+        // Cache data for one day (default setting)
+        $frontCache = new FrontendData(
+            [
+                'lifetime' => 86400,
+            ]
+        );
+
+        // Memcached connection settings
+        $cache = new BackendMemcache(
+            $frontCache,
+            [
+                'host' => 'localhost',
+                'port' => '11211',
+            ]
+        );
+
+        return $cache;
+    }
+);
 
 /**
  * Start the session the first time some component request the session service
