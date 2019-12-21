@@ -1,7 +1,7 @@
 <?php
 
 use Phalcon\Mvc\User\Component;
-
+use App\Models\ContactRecord;
 /**
  * Elements
  *
@@ -13,36 +13,59 @@ class Elements extends Component
     private $_privateMenu = array(
         'navbar-left' => array(
             'dashboard' => array(
+                'icon'  => 'activity',
                 'caption' => 'Dashboard',
                 'action' => ''
                 ),
             'customers' => array(
+                'icon'  => 'users',
                 'caption' => 'Companies',
                 'action' => '',
                 ),
             'quotes' => array(
+                'icon'  => 'file-text',
                 'caption' => 'Quotes',
                 'action' => '',
                 ),
             'orders' => array(
+                'icon'  => 'box',
                 'caption' => 'Orders',
                 'action' => '',
                 'children' => array (
-                    array('View Orders', ''),
-                    array('Gantt', 'gantt'),
-                    array('Import', 'import'),
+                    array('Orders', 'orders'),
+                    array('Freight Following', 'freight'),
+                )),
+            'kpi' => array(
+                'icon'  => 'truck',
+                'caption' => 'KPI\'s',
+                'action' => '',
+                'children' => array (
+                    array('Daily KPI\'s', 'kpi/'),
+                    array('Sales', 'kpi/dailysales'),
+                )),
+            'reports' => array(
+                'icon'  => 'bar-chart',
+                'caption' => 'Reports',
+                'action' => '',
+                'children' => array (
+                    array('Customers', 'reports/customers'),
+                    array('Monthly Sales', 'reports/sales'),
+                    array('Annual Sales', 'reports/annual'),
+                    array('Survey', 'reports/survey'),
                 )),
             ),
-        'navbar-right' => array(
+        'navbar-right faa-parent animated-hover' => array(
             'tasks' => array(
                 'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
                 'action' => ''
-                ),
+            ),
             '' => array(
-                'caption' => 'User',
+                'caption' => 'Account',
                 'action' => '',
                     'children'  => array(
                     array('Profile', 'profile'),
+                    array('Preferences', 'preferences'),
+                    array('CRM Settings', 'settings'),
                     array('Logout', 'logout'),
                     )
                 ),
@@ -68,35 +91,109 @@ class Elements extends Component
         );
 
     /**
+     * Construct BS4 menu
+     */
+    public function getMenu()
+    {
+        $user = $this->auth->getId();
+        $controllerName = $this->view->getControllerName();
+
+        foreach ($this->_privateMenu as $position => $menu) {
+            foreach ($menu as $controller => $option) {
+                $class = ($controller == $controllerName ? "active" : "");
+                if (isset($option['children'])) {
+                    echo "<li class='nav-item dropdown $class'>";
+                    echo '<a class="nav-link dropdown-toggle" href="#" id="' . $controller. 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                    echo $option['caption'];
+                    echo '</a>';
+
+                    echo '<div class="dropdown-menu" aria-labelledby="' . $controller . 'Dropdown">';
+                    foreach ($option['children'] as $key) {
+                        echo $this->tag->linkTo([
+                            $key['1'], 
+                            $key[0],
+                            'class' => 'dropdown-item'
+                        ]);
+                    }
+                    echo '</div>';
+                    echo '</li>';
+
+                } else {
+                    echo "<li class='nav-item $class'>";
+                    echo $this->tag->linkTo([
+                        $controller . '/' . $option['action'],
+                        $option['caption'],
+                        'class' => 'nav-link',
+                    ]);
+                    echo '</li>';
+                }
+
+            }
+        }
+    }
+
+    /**
      * Builds header menu with left and right items
      *
      * @return string
      */
     public function getPrivateMenu()
     {
-
+        $user = $this->auth->getId();
+        $contactRecords = new ContactRecord();
+        $query = $contactRecords->getOverdue($user);
+        $followUps = $query->count();
         $controllerName = $this->view->getControllerName();
         foreach ($this->_privateMenu as $position => $menu) {
             echo '<ul class="nav navbar-nav ', $position, '">';
             foreach ($menu as $controller => $option) {
-                if ($controllerName == $controller && isset($option['children'])) {
-                    echo '<li class="active dropdown">';
-                } elseif ($controllerName == $controller) {
-                    echo '<li class="active">';
-                } else {
-                    echo '<li>';
-                }
+
+                $class = "";
                 if (isset($option['children'])) {
-                    echo $this->tag->linkTo(array($controller . '/' . $option['action'], $option['caption'] . "<span class='caret'></span>", "class" => "dropdown-toggle", "data-toggle" => "dropdown", "role" => "button", "aria-haspopup" => "true", "aria-expanded" => "false"));
+                    $class = $class . "dropdown";
+                } 
+                if ($controllerName == $controller) {
+                    $class = $class . " active";
+                }
+                echo "<li class='$class'>";
+
+                if (isset($option['children'])) {
+                    echo $this->tag->linkTo(array(
+                        $controller . '/' . $option['action'], 
+                        $option['caption'] . "<span class='caret'></span>", 
+                        "class" => "dropdown-toggle", 
+                        "data-toggle" => "dropdown", 
+                        "role" => "button", 
+                        "aria-haspopup" => "true", 
+                        "aria-expanded" => "false"
+                    ));
+
                     echo '<ul class="dropdown-menu">';
                     foreach ($option['children'] as $key) {
                         echo "<li>";
-                        echo $this->tag->linkTo($controller . '/' . $key['1'], $key[0]);
+                        echo $this->tag->linkTo($key['1'], $key[0]);
                         echo "</li>";
                     }
                     echo '</ul>';
+
                 } else {
-                    echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
+                    if (isset($option['modal'])) {
+                        echo $this->tag->linkTo(array(
+                            $controller . '/' . $option['action'], 
+                            $option['caption'], 
+                            'data-target'  => '#modal-ajax', 
+                            'role' => 'button'
+                        ));
+                    } else {
+                        if ($controller == 'tasks' && $followUps > 0) {
+                            echo $this->tag->linkTo(
+                                $controller . '/' . $option['action'], 
+                                '<span><i class="fa fa-bell faa-ring animated"></i></span>&nbsp;<span class="badge badge-info">' . $followUps . '</span>'
+                            );
+                        } else {
+                            echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
+                        }
+                    }
                 }
                 echo '</li>';
             }
@@ -104,11 +201,6 @@ class Elements extends Component
         }
 
     }
-
-        // <li class="dropdown">
-        //   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown </a>
-        // </li>
-
 
     /**
      * Returns menu tabs
@@ -138,5 +230,16 @@ class Elements extends Component
         }
         echo '</ul>';
         echo '</div><!--/.nav-collapse -->';
+    }
+
+    public static function initials($words)
+    {
+        $words = explode(" ", $words);
+        $acronym = "";
+
+        foreach ($words as $w) {
+          $acronym .= $w[0];
+        }
+        return $acronym;
     }
 }

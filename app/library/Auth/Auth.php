@@ -26,13 +26,11 @@ class Auth extends Component
         // Check if the user exist
         $user = Users::findFirstByEmail($credentials['email']);
         if ($user == false) {
-            $this->registerUserThrottling(0);
             throw new Exception('Wrong email/password combination');
         }
 
         // Check the password
         if (!$this->security->checkHash($credentials['password'], $user->password)) {
-            $this->registerUserThrottling($user->id);
             throw new Exception('Wrong email/password combination');
         }
 
@@ -42,15 +40,15 @@ class Auth extends Component
         // Register the successful login
         $this->saveSuccessLogin($user);
 
-        // Check if the remember me was selected
-        if (isset($credentials['remember'])) {
-            $this->createRememberEnviroment($user);
-        }
+        $this->createRememberEnviroment($user);
 
         $this->session->set('auth-identity', array(
             'id' => $user->id,
             'name' => $user->name,
-            'profile' => $user->profile->name
+            'changePassword' => $user->mustChangePassword,
+            'profile' => $user->profilesId,
+            'dev' => $user->dev,
+            'uca' => $user->useUCA,
         ));
     }
 
@@ -65,46 +63,10 @@ class Auth extends Component
         $successLogin->usersId = $user->id;
         $successLogin->ipAddress = $this->request->getClientAddress();
         $successLogin->userAgent = $this->request->getUserAgent();
+        $successLogin->timestamp = date('Y-m-d H:i:s');
         if (!$successLogin->save()) {
             $messages = $successLogin->getMessages();
             throw new Exception($messages[0]);
-        }
-    }
-
-    /**
-     * Implements login throttling
-     * Reduces the effectiveness of brute force attacks
-     *
-     * @param int $userId
-     */
-    public function registerUserThrottling($userId)
-    {
-        $failedLogin = new FailedLogins();
-        $failedLogin->usersId = $userId;
-        $failedLogin->ipAddress = $this->request->getClientAddress();
-        $failedLogin->attempted = time();
-        $failedLogin->save();
-
-        $attempts = FailedLogins::count(array(
-            'ipAddress = ?0 AND attempted >= ?1',
-            'bind' => array(
-                $this->request->getClientAddress(),
-                time() - 3600 * 6
-            )
-        ));
-
-        switch ($attempts) {
-            case 1:
-            case 2:
-                // no delay
-                break;
-            case 3:
-            case 4:
-                sleep(2);
-                break;
-            default:
-                sleep(4);
-                break;
         }
     }
 
@@ -124,9 +86,9 @@ class Auth extends Component
         $remember->userAgent = $userAgent;
 
         if ($remember->save() != false) {
-            $expire = time() + 86400 * 8;
-            $this->cookies->set('RMU', $user->id, $expire);
-            $this->cookies->set('RMT', $token, $expire);
+            $expire = time() + (7*24*60*60);
+            $this->cookies->set('RMU', $user->id, $expire, '/', true, '', true);
+            $this->cookies->set('RMT', $token, $expire, '/', true, '', true);
         }
     }
 
@@ -145,7 +107,7 @@ class Auth extends Component
      *
      * @return Phalcon\Http\Response
      */
-    public function loginWithRememberMe()
+    public function loginWithRememberMe($noRedirect = false)
     {
         $userId = $this->cookies->get('RMU')->getValue();
         $cookieToken = $this->cookies->get('RMT')->getValue();
@@ -177,13 +139,19 @@ class Auth extends Component
                         $this->session->set('auth-identity', array(
                             'id' => $user->id,
                             'name' => $user->name,
-                            'profile' => $user->profile->name
+                            'changePassword' => $user->mustChangePassword,
+                            'profile' => $user->profilesId,
+                            'dev' => $user->dev,
+                            'uca' => $user->useUCA,
                         ));
 
                         // Register the successful login
                         $this->saveSuccessLogin($user);
-
-                        return $this->response->redirect('users');
+                        if ($noRedirect) {
+                            return false;
+                        } else {
+                            return $this->response->redirect("dashboard");
+                        }
                     }
                 }
             }
@@ -202,15 +170,15 @@ class Auth extends Component
      */
     public function checkUserFlags(Users $user)
     {
-        if ($user->active != 'Y') {
+        if ($user->active != '1') {
             throw new Exception('The user is inactive');
         }
 
-        if ($user->banned != 'N') {
+        if ($user->banned != '0') {
             throw new Exception('The user is banned');
         }
 
-        if ($user->suspended != 'N') {
+        if ($user->suspended != '0') {
             throw new Exception('The user is suspended');
         }
     }
@@ -252,11 +220,10 @@ class Auth extends Component
      */
     public function remove()
     {
-        if ($this->cookies->has('RMU')) {
+        try {
             $this->cookies->get('RMU')->delete();
-        }
-        if ($this->cookies->has('RMT')) {
             $this->cookies->get('RMT')->delete();
+        } catch (Exception $e) {
         }
 
         $this->session->remove('auth-identity');

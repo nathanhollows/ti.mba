@@ -15,58 +15,26 @@ class Mail extends Component
 
     protected $transport;
 
-    protected $amazonSes;
-
-    protected $directSmtp = false;
-
-    /**
-     * Send a raw e-mail via AmazonSES
-     *
-     * @param string $raw
-     */
-    private function amazonSESSend($raw)
-    {
-        if ($this->amazonSes == null) {
-            $this->amazonSes = new \AmazonSES(
-                $this->config->amazon->AWSAccessKeyId,
-                $this->config->amazon->AWSSecretKey
-            );
-            $this->amazonSes->disable_ssl_verification();
-        }
-
-        $response = $this->amazonSes->send_raw_email(array(
-            'Data' => base64_encode($raw)
-        ), array(
-            'curlopts' => array(
-                CURLOPT_SSL_VERIFYHOST => 0,
-                CURLOPT_SSL_VERIFYPEER => 0
-            )
-        ));
-
-        if (!$response->isOK()) {
-            throw new Exception('Error sending email from AWS SES: ' . $response->body->asXML());
-        }
-
-        return true;
-    }
+    protected $directSmtp = true;
 
     /**
      * Applies a template to be used in the e-mail
      *
-     * @param string $name
+     * @param string $template
      * @param array $params
      */
-    public function getTemplate($name, $params)
+    public function getTemplate($template, $params)
     {
-        $parameters = array_merge(array(
-            'publicUrl' => $this->config->application->publicUrl
-        ), $params);
+        $this->view->start();
+        $this->view->setTemplateBefore('none');
+        $this->view->setRenderLevel(View::LEVEL_LAYOUT);
+        foreach ($params as $key=> $value) {
+            $this->view->setVar($key, $value);
+        }
+        $this->view->render('email', $template, $params);
+        $this->view->finish();
+        return $this->view->getContent();
 
-        return $this->view->getRender('emailTemplates', $name, $parameters, function ($view) {
-            $view->setRenderLevel(View::LEVEL_LAYOUT);
-        });
-
-        return $view->getContent();
     }
 
     /**
@@ -74,16 +42,16 @@ class Mail extends Component
      *
      * @param array $to
      * @param string $subject
-     * @param string $name
+     * @param string $template
      * @param array $params
      */
-    public function send($to, $subject, $name, $params)
+    public function send($to, $subject, $template, $params)
     {
 
         // Settings
         $mailSettings = $this->config->mail;
 
-        $template = $this->getTemplate($name, $params);
+        $template = $this->getTemplate($template, $params);
 
         // Create the message
         $message = Message::newInstance()
@@ -111,7 +79,7 @@ class Mail extends Component
 
             return $mailer->send($message);
         } else {
-            return $this->amazonSESSend($message->toString());
+            return 'Error';
         }
     }
 }

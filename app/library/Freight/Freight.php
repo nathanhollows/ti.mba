@@ -11,65 +11,81 @@ class Freight extends component
 	{
 		$config = include __DIR__ . "/../../config/config.php";
 
+        // Check config file before attempting connection
 		if ($config->pbt->enable == false) {
+			$this->flashSession->error("PBT Connections are disabled. This can be changed in the config file");
 			return false;
 		}
 
 		if (!empty($config->pbt->ftpServer)) {
 			$ftp_server	= $config->pbt->ftpServer;
 		} else {
-			$this->flash->error("The PTB FTP server is not defined in the config. Please check this and try again.");
-			return true;
+			$this->flashSession->error("The PTB FTP server is not defined in the config. Please check this and try again.");
+			return false;
+		}
+
+		if (!empty($config->pbt->ftpDirectory)) {
+			$ftp_directory	= $config->pbt->ftpDirectory;
+		} else {
+			$this->flashSession->error("The PTB FTP directory is not defined in the config. Please check this and try again.");
+			return false;
 		}
 
 		if (!empty($config->pbt->ftpUserName)) {
 			$ftp_user_name	= $config->pbt->ftpUserName;
 		} else {
-			$this->flash->error("The PTB FTP username is not defined in the config. Please check this and try again.");
-			return true;
+			$this->flashSession->error("The PTB FTP username is not defined in the config. Please check this and try again.");
+			return false;
 		}
 
 		if (!empty($config->pbt->ftpPassword)) {
 			$ftp_user_pass	= $config->pbt->ftpPassword;
 		} else {
-			$this->flash->error("The PTB FTP username is not defined in the config. Please check this and try again.");
-			return true;
+			$this->flashSession->error("The PTB FTP username is not defined in the config. Please check this and try again.");
+			return false;
 		}
 
 		// set up basic connection
-		$conn_id = ftp_connect($ftp_server); 
+		$conn_id = ftp_connect($ftp_server);
 		if (!$conn_id) {
-			$this->flash->error("The FTP connection to PBT has failed. Please check the config file and try again.");
+            // Let's try this again. It often fails on the first attempt
+            $conn_id = ftp_connect($ftp_server);
+    		if (!$conn_id) {
+    			$this->flashSession->error("The FTP connection to PBT has failed. Please check the config file and try again.");
+    			return false;
+    		}
 		}
 
 		// login with username and password
-		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass); 
+		$login_result = ftp_login($conn_id, $ftp_user_name, $ftp_user_pass);
 
 		// check connection
 		if ((!$conn_id) || (!$login_result)) {
-			$this->flash->error("FTP connection has failed !");
+			$this->flashSession->error("FTP connection has failed !");
 			return true;
 		}
 
-		// try to change the directory to somedir
-		if (!ftp_chdir($conn_id, "ats")) {
-			$this->flash->error("Couldn't change directory");
-			return true;
-		}
+		ftp_pasv($conn_id, true);
 
-		// get contents of the current directory
+		ftp_chdir($conn_id, $ftp_directory);
+
 		$contents = ftp_nlist($conn_id, "");
 
+
 		// output $contents
-		//var_dump($contents);
+		echo "<pre>";
+		echo print_r($contents);
+		echo "</pre>";
+
 		if (empty($contents)) {
-			return true;
+			$this->flashSession->success("PBT files are up to date");
+			return false;
 		} else {
 			foreach ($contents as $file) {
-				$local_file = 'ftp/pbt/'.$file;
+				$local_file = "ftp/pbt/" . $file;
 				$server_file = $file;
-				$this->flash->notice("File " . $file . " downloaded. </br>");
 				ftp_get($conn_id, $local_file, $server_file, FTP_BINARY);
+				$this->flashSession->notice($file . " downloaded.");
 				ftp_delete($conn_id, $file);
 			}
 		}
@@ -87,8 +103,9 @@ class Freight extends component
 		$newDir = getcwd();
 		// read input file
 		$files = glob('*.txt');
+		$filesImported = 0;
 		foreach($files as $file) {
-
+			$filesImported ++;
 			$fp = fopen($file, "r");
 
 
@@ -121,7 +138,7 @@ class Freight extends component
 					$success = $import->save();
 					if (!$success) {
 						foreach ($import->getMessages() as $message) {
-							$this->flash->error($message->getMessage());
+							$this->flashSessionSession->error($message->getMessage());
 						}
 
 					}
