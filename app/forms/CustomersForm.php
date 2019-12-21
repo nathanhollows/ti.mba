@@ -6,7 +6,8 @@ use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\Hidden,
 	Phalcon\Forms\Element\Select,
 	Phalcon\Forms\Element\Submit,
-	Phalcon\Forms\Element\Text;
+	Phalcon\Forms\Element\Text,
+	Phalcon\Forms\Element\numeric;
 
 use App\Models\CustomerGroups,
 	App\Models\CustomerStatus,
@@ -32,7 +33,7 @@ class CustomersForm extends Form
 		} else {
 			$this->add(new Hidden("customerCode"));
 		}
-		
+
 
 		// Customer name
 		// Text field
@@ -42,14 +43,14 @@ class CustomersForm extends Form
 		$name->setAttributes(array(
 			'class'			=> 'form-control',
 			'placeholder'	=> 'Name',
-				'required'		=> 'true'
+			'required'		=> 'true'
 			)
 		);
 		$this->add($name);
 
 		// Customer phone
 		// Text field
-		$phone = new Text("customerPhone");
+		$phone = new Text("phone");
 		$phone->setLabel("Phone Number");
 		$phone->setFilters(array('striptags', 'string'));
 		$phone->setAttributes(array(
@@ -61,7 +62,7 @@ class CustomersForm extends Form
 
 		// Customer fax
 		// Text field
-		$fax = new Text("customerFax");
+		$fax = new Text("fax");
 		$fax->setLabel("Fax Number");
 		$fax->setFilters(array('striptags', 'string'));
 		$fax->setAttributes(array(
@@ -73,7 +74,7 @@ class CustomersForm extends Form
 
 		// Customer email
 		// Text field
-		$email = new Text("customerEmail");
+		$email = new Text("email");
 		$email->setLabel("Email");
 		$email->setFilters(array('striptags', 'string'));
 		$email->setAttributes(array(
@@ -94,11 +95,20 @@ class CustomersForm extends Form
 				'emptyTest'	=> '...',
 				'emptyValue'=> '',
 				'class'		=> 'form-control',
-				'required'		=> 'true'
 			)
 		);
 		$group->setLabel('Customer Group');
 		$this->add($group);
+
+		// Trip Day
+		// Numeric Field
+		$tripDay = new Numeric('tripDay',
+			array(
+				'class'		=> 'form-control',
+			)
+		);
+		$tripDay->setLabel('Trip Day');
+		$this->add($tripDay);
 
 		// Freight Area
 		// Select field
@@ -151,7 +161,7 @@ class CustomersForm extends Form
 		// Customer status
 		// Select field
 		$salesArea = new Select(
-			'salesArea',
+			'area',
 			SalesAreas::find(),
 			array(
 				'using'		=> array('id', 'name'),

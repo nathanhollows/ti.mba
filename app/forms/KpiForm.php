@@ -24,16 +24,7 @@ class KpiForm extends Form
 		));
 		$this->add($chargeout);
 
-		$sales = new Numeric('sales');
-		$sales->setLabel('Sales');
-		$sales->setAttributes(array(
-			'class'	=> 'form-control',
-			'required'	=> 'true',
-			'step'	=> 'any'
-		));
-		$this->add($sales);
-
-		$truck = new TextArea('truckTime');
+		$truck = new Text('truckTime');
 		$truck->setLabel('Truck Time');
 		$truck->setAttributes(array(
 			'class'	=> 'form-control',

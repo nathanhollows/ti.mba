@@ -50,7 +50,7 @@ class QuotesForm extends Form
 			$customerCode = $option["customerCode"];
 			$contactRestrict = array("customerCode = '$customerCode'");
 		} else {
-			$contactRestrict = array("order"	=> "name");
+			$contactRestrict = array("customerCode = ''");
 		}
 
 		$contact = new Select(
@@ -58,9 +58,9 @@ class QuotesForm extends Form
 			Contacts::find($contactRestrict),
 			array(
 				'using'	=> array('id', 'name'),
-				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class'	=> 'form-control selectpicker',
+				'emptyText'	=> 'Please select a customer',
+				'class'	=> 'form-control',
 				'data-live-search' => 'true',
 				)
 		);
@@ -112,7 +112,7 @@ class QuotesForm extends Form
 				'class'	=> 'form-control'
 				)
 			);
-		$salesAgent->setLabel("Sales Agent");	
+		$salesAgent->setLabel("Sales Agent");
 		$salesAgent->setDefault($auth->getId());
 		$this->add($salesAgent);
 
@@ -127,8 +127,8 @@ class QuotesForm extends Form
 				'class'	=> 'form-control'
 				)
 			);
-		$status->setLabel("Status");	
-		$status->setDefault('1');
+		$status->setLabel("Status");
+		$status->setDefault('2');
 		$this->add($status);
 
 		$submit = new Submit("Submit");

@@ -32,23 +32,22 @@ class ItemForm extends Form
 		$quoteId = new Hidden("quoteId");
 		$this->add($quoteId);
 
-		$legacy = new Select(
-			'grade',
-			QuoteCodes::find(),
+		$grade = new Select(
+			'grade[]',
+			Grade::find(array('conditions' => 'active = 1', 'order' => 'name ASC')),
 			array(
-				'using'	=> array('code', 'description'),
-				'required'	=> true,
+				'using'	=> array('shortCode', 'name'),
 				'useEmpty'	=> true,
 				'emptyText'	=> 'Grade',
-				'class'		=> 'form-control selectpicker',
+				'class'		=> 'data grade no-selectize data',
 				'data-live-search'	=> 'true',
 				'data-container'	=> 'body',
 			)
 		);
-		$this->add($legacy);
+		$this->add($grade);
 
 		// Numeric value for width
-		$width = new Numeric('width');
+		$width = new Numeric('width[]');
 		$width->setLabel('Width');
 		$width->setAttributes(array(
 			"class"	=> "form-control",
@@ -58,17 +57,17 @@ class ItemForm extends Form
 		$this->add($width);
 
 		// Numeric value for thickness
-		$thickness = new Numeric('thickness');
+		$thickness = new Numeric('thickness[]');
 		$thickness->setLabel("Thickness");
 		$thickness->setAttributes(array(
-			"class"	=> "form-control",
+			"class"	=> "data",
 			"step"	=> "1",
 			"placeholder"	=> "Thickness",
 		));
 		$this->add($thickness);
 
 		// Numeric value for quantity
-		$qty = new Numeric('qty');
+		$qty = new Numeric('qty[]');
 		$qty->setLabel("Qty");
 		$qty->setAttributes(array(
 			"class"	=> "form-control",
@@ -77,34 +76,16 @@ class ItemForm extends Form
 		));
 		$this->add($qty);
 
-		// // Select list containing all usable grades
-		// $grade = new Select(
-		// 	'grade',
-		// 	Grade::find(),
-		// 	array(
-		// 		'using' => array('id', 'name'),
-		// 		'required'	=> 'true',
-		// 		'useEmpty'	=> true,
-		// 		'class' => 'form-control',
-		// 		'data-container' => 'body',
-		// 		'emptyText'	=> 'Grade',
-		// 		'data-live-search' => 'true',
-		// 	)
-		// );
-		// $grade->setLabel("Grade");
-		// $this->add($grade);
-
 		// Select list containing all usable treatments
 		$treatment = new Select(
-			'treatment',
+			'treatment[]',
 			Treatment::find(),
 			array(
-				'using' => array('id', 'name'),
-				'required'	=> 'true',
+				'using' => array('shortCode', 'shortCode'),
 				'useEmpty'	=> true,
-				'class' => 'form-control',
+				'class' => 'data treatment no-selectize data',
 				'data-container' => 'body',
-				'emptyText'	=> 'Treatment',
+				'emptyText'	=> 'Treat...',
 				'data-live-search' => 'true',
 			)
 		);
@@ -113,15 +94,14 @@ class ItemForm extends Form
 
 		// Select list containing all usable drynesses
 		$dryness = new Select(
-			'dryness',
+			'dryness[]',
 			Dryness::find(),
 			array(
-				'using' => array('id', 'name'),
-				'required'	=> 'true',
+				'using' => array('shortCode', 'shortCode'),
 				'useEmpty'	=> true,
-				'class' => 'form-control',
+				'class' => 'data dryness no-selectize data',
 				'data-container' => 'body',
-				'emptyText'	=> 'Dryness',
+				'emptyText'	=> 'Dry...',
 				'data-live-search' => 'true',
 			)
 		);
@@ -129,13 +109,12 @@ class ItemForm extends Form
 		$this->add($dryness);
 
 		// Select list containing all usable finishes
-		$finish = new Select('finish',
+		$finish = new Select('finish[]',
 			Finish::find(),
 			array(
 				'using' => array('id', 'name'),
-				'required'	=> 'true',
 				'useEmpty'	=> true,
-				'class' => 'form-control selectpicker',
+				'class' => 'form-control no-selectize data',
 				'data-container' => 'body',
 				'emptyText'	=> 'Finish',
 				'data-live-search' => 'true',
@@ -146,7 +125,7 @@ class ItemForm extends Form
 		$this->add($finish);
 
 		// Simple numeric value for price
-		$price = new Numeric('price');
+		$price = new Numeric('price[]');
 		$price 	->setLabel("Price")
 				->setAttributes(array(
 					"class"		=> "form-control",
@@ -157,23 +136,22 @@ class ItemForm extends Form
 		$this->add($price);
 
 		$priceMethod = new Select(
-			'priceMethod',
+			'priceMethod[]',
 			PricingUnit::find(),
 			array(
 				'using'	=> array('id', 'name'),
-				'required'	=> 'true',
 				'useEmpty'	=> false,
-				'class'		=> 'form-control',
+				'class'		=> 'form-control no-selectize data',
 			)
 		);
 		$this->add($priceMethod);
 
 		$priceMethod = new Select('priceMethod');
 
-		$notes = new Text('lengths');
+		$notes = new Text('lengths[]');
 		$notes->setAttributes(
 			array(
-				'class'	=> 'form-control',
+				'class'	=> 'form-control no-selectize data',
 				'placeholder'	=> 'Notes',
 			)
 		);

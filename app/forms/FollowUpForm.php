@@ -23,23 +23,32 @@ class FollowUpForm extends Form
 	{
 		$id = new Hidden("id");
 		$this->add($id);
-		
+
+		if (isset($option["customerCode"])) {
+			$conditions = array(
+				"conditions"	=> "customerCode = ?1",
+				"bind"			=> array(1 => $option['customerCode']),
+			);
+            $readonly = true;
+            $class      = '';
+		} else {
+			$conditions = null;
+            $readonly   = false;
+            $class    = 'selectpicker';
+		}
+
 		$customer = new Select(
 			"customerCode",
-			Customers::find(
-				array(
-					"conditions"	=> "customerCode = ?1",
-					"bind"			=> array(1 => $option["customerCode"]),
-				)
-			),
+			Customers::find($conditions),
 			array(
 				'using'	=> array(
 					'customerCode',
 					'customerName',
 				),
-			'class'	=> 'form-control selectpicker',
-			'data-live-search' => 'true',
-			'useEmpty'	=> true
+				'class'	=> "form-control $class",
+				'data-live-search' => 'true',
+				'useEmpty'	=> true,
+                'readonly'  => $readonly,
 			)
 		);
 		$customer->setLabel("Customer");
@@ -47,12 +56,7 @@ class FollowUpForm extends Form
 
 		$contact = new Select(
 			"contact",
-			Contacts::find(
-				array(
-					"conditions"	=> "customerCode = ?1",
-					"bind"			=> array(1 => $option["customerCode"]),
-				)
-			),
+			Contacts::find($conditions),
 			array(
 				'using'	=> array(
 					'id',
@@ -61,6 +65,7 @@ class FollowUpForm extends Form
 			'class'	=> 'form-control selectpicker',
 			'data-live-search' => 'true',
 			'useEmpty'	=> true,
+            'emptyText' => 'Select a Contact...',
 			)
 		);
 		$contact->setLabel("Contact");
@@ -73,6 +78,14 @@ class FollowUpForm extends Form
 			));
 		$job->setLabel("Job");
 		$this->add($job);
+
+		$reference = new Text("reference");
+		$reference->setAttributes(array(
+			'class'		=> 'form-control',
+			'placeholder'	=> 'Reference',
+			));
+		$reference->setLabel("Reference");
+		$this->add($reference);
 
 		$details = new TextArea("details");
 		$details->setAttributes(array(
@@ -97,12 +110,19 @@ class FollowUpForm extends Form
 			));
 		$date->setLabel("Date");
 		$this->add($date);
-		
+
+        $recordDate = new Date('date');
+        $recordDate->setAttributes(array(
+            'required'      => 'true',
+            'class'		=> 'form-control'
+        ));
+        $this->add($recordDate);
+
 		$auth = new Auth();
 
 		$rep = new Select(
 			"user",
-			Users::find(),
+			Users::getActive(),
 			array(
 				'using'	=> array(
 					'id',

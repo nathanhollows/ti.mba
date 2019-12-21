@@ -40,12 +40,13 @@ class ContactsForm extends Form
 		$this->add($name);
 
 		$position = new Select(
-			'position',
+			'role',
 			ContactRoles::find(array("order" => "rank ASC")),
 			array(
 				'using'	=> array('id', 'name'),
 				'required'	=> 'true',
-				'class'	=> 'form-control'
+				'class'	=> 'form-control',
+				'useEmpty'	=> 'true',
 			)
 		);
 		$position->setLabel("Position");

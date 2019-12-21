@@ -29,10 +29,10 @@ class LoginForm extends Form
 
         $email->addValidators(array(
             new PresenceOf(array(
-                'message' => 'The e-mail is required'
+                'message' => 'E-mail address is required'
             )),
             new EmailValidate(array(
-                'message' => 'The e-mail is not valid'
+                'message' => 'That is not a valid email address'
             ))
         ));
 
@@ -57,7 +57,8 @@ class LoginForm extends Form
 
         // Remember
         $remember = new Check('remember', array(
-            'value' => 'yes'
+            'value' => 'yes',
+            'checked' => 'checked'
         ));
 
         $remember->setLabel('Remember me');
@@ -77,7 +78,7 @@ class LoginForm extends Form
         $this->add($csrf);
 
         $this->add(new Submit('Login', array(
-            'class' => 'btn btn-lg btn-primary btn-block'
+            'class' => 'btn btn-primary btn-block'
         )));
     }
 }
