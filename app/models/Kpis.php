@@ -34,5 +34,20 @@ class Kpis extends Model
 			)
 		);
 	}
-	
+
+	public static function ofMonthYear($date) {
+        $year = date("Y", strtotime($date));
+        $month = date("m", strtotime($date));
+		return parent::find(
+			array(
+				"MONTH(date) = ?2 AND YEAR(date) = ?1",
+				"order" => "date ASC",
+                "bind"  => array(
+                    1 => $year,
+                    2 => $month,
+                )
+			)
+		);
+	}
+
 }

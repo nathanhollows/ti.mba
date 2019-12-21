@@ -95,14 +95,27 @@ class ContactRecord extends Model
 	{
         $this->hasOne('user', 'App\Models\Users', 'id', array('alias'  => 'staff'));
 		$this->hasOne('contact', 'App\Models\Contacts', 'id', array('alias'  => 'person'));
-		$this->hasOne('contactType', 'App\Models\ContactType', 'id', array('alias'  => 'type'));
+        $this->hasOne('contactType', 'App\Models\ContactType', 'id', array('alias'  => 'type'));
+		$this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias'  => 'company'));
+		$this->hasOne('job', 'App\Models\Quotes', 'quoteId', array('alias'  => 'quote'));
 	}
 
     public function beforeCreate()
     {
         $this->date = date('Y-m-d H:i:s');
-        $auth = new Auth;
-        $this->user = $auth->getId();
+    }
+
+    public static function getOutstanding($user = null)
+    {
+        if (!$user) {
+            $auth = new Auth;
+            $user = $auth->getId();
+        }
+        return parent::find(array(
+            "conditions" => "user = ?1 AND completed is NULL AND followUpDate IS NOT NULL",
+            "bind"  => array(1 => $user),
+            "order" => "followUpDate ASC",
+        ));
     }
 
     public function getToday($user = null)
@@ -112,8 +125,9 @@ class ContactRecord extends Model
             $user = $auth->getId();
         }
         return parent::find(array(
-            "conditions" => "user = ?1 AND completed = 0 AND followUpDate = DATE(NOW())",
-            "bind"  => array(1 => $user)
+            "conditions" => "user = ?1 AND completed is NULL AND followUpDate = DATE(NOW())",
+            "bind"  => array(1 => $user),
+            "order" => "customerCode ASC",
         ));
     }
 
@@ -124,8 +138,25 @@ class ContactRecord extends Model
             $user = $auth->getId();
         }
         return parent::find(array(
-            "conditions" => "user = ?1 AND completed = 0 AND followUpDate < DATE(NOW())",
-            "bind"  => array(1 => $user)
+            "conditions" => "user = ?1 AND completed is NULL AND followUpDate < DATE(NOW())",
+            "bind"  => array(1 => $user),
+            "order" => "followUpDate ASC",
+        ));
+    }
+
+    public static function getOverdueTotal()
+    {
+        return parent::count(array(
+            "conditions" => "completed is NULL AND followUpDate <= DATE(NOW())"
+        ));
+    }
+
+    public static function getFutureByCustomer($customerCode)
+    {
+        return parent::find(array(
+            "conditions" => "customerCode = ?1 AND completed IS NULL",
+            "bind"  => array(1 => $customerCode),
+            "order" => 'followUpDate ASC'
         ));
     }
 
@@ -136,8 +167,9 @@ class ContactRecord extends Model
             $user = $auth->getId();
         }
         return parent::find(array(
-            "conditions" => "user = ?1 AND completed = 0 AND followUpDate > DATE(NOW())",
-            "bind"  => array(1 => $user)
+            "conditions" => "user = ?1 AND completed is NULL AND followUpDate > DATE(NOW())",
+            "bind"  => array(1 => $user),
+            "order" => "customerCode ASC",
         ));
     }
 
@@ -150,6 +182,15 @@ class ContactRecord extends Model
         } else {
             return false;
         }
-     }
+    }
+
+    public function isOverdue()
+    {
+        if ($this->followUpDate < date("Y-m-d") and is_null($this->completed)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }

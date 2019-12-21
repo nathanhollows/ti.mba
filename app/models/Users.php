@@ -65,6 +65,18 @@ class Users extends Model
     public $active;
 
     /**
+     *
+     * @var int
+     */
+    public $dev;
+
+    /**
+     *
+     * @var int
+     */
+    public $useUCA;
+
+    /**
      * Validations and business logic
      *
      * @return boolean
@@ -82,6 +94,14 @@ class Users extends Model
                 echo $message, '<br>';
             }
         }
+    }
+
+    public function initialize()
+    {
+        $this->hasMany('id', 'App\Models\Customers', 'manager', array('alias' => 'customers', 'params' => array('order' => 'rank ASC')));
+        $this->hasMany('id', 'App\Models\Quotes', 'user', array('alias' => 'quotes', 'params' => array('conditions' => "status <> 4", "order" => 'quoteId DESC')));
+        $this->hasMany('id', 'App\Models\Quotes', 'user', array('alias' => 'allquotes', 'params' => array("order" => 'quoteId DESC')));
+        $this->hasMany('id', 'App\Models\ContactRecord', 'user', array('alias' => 'history'));
     }
 
     /**
@@ -133,4 +153,14 @@ class Users extends Model
         ));
         return $results;
     }
+
+    public static function getActive()
+    {
+        $results = parent::find(array(
+            "conditions"   => "active = 1 AND suspended = 0 AND banned = 0 AND id != 10",
+            "order"       => "FIELD(name, 'Fax'), name ASC",
+        ));
+        return $results;
+    }
+
 }

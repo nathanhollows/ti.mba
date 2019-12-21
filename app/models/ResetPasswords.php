@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Mail\Mail;
+
 class ResetPasswords extends \Phalcon\Mvc\Model
 {
 
@@ -66,13 +68,10 @@ class ResetPasswords extends \Phalcon\Mvc\Model
      */
     public function afterCreate()
     {
-        $this->getDI()
-            ->getMail()
-            ->send(array(
-            $this->user->email => $this->user->name
-        ), "Reset your password", 'reset', array(
-            'resetUrl' => '/reset-password/' . $this->code . '/' . $this->user->email
-        ));
+        $resetUrl = '/reset-password/' . $this->code . '/' . $this->user->email;
+        $mail = new Mail;
+        $mail = new Mail();
+        $mail->send($this->user->email, "Reset your password", 'resetpassword', array('code' => $resetUrl));
     }
     public function initialize()
     {

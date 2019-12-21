@@ -78,7 +78,7 @@ class Contacts extends Model
      * Clear custom position on update
      * Contact role is required instead
      */
-    public function beforeUpdate() 
+    public function beforeUpdate()
     {
         $this->position = null;
     }
@@ -104,5 +104,14 @@ class Contacts extends Model
     {
         return 'contacts';
     }
+
+    public static function searchColumns($search)
+    {
+        $query = self::query();
+        $query->where('name LIKE :search: OR directDial LIKE :search:');
+        $query->orderBy('customerCode ASC');
+        $query->bind(['search' => '%' . $search . '%']);
+        return $query->execute();
+     }
 
 }

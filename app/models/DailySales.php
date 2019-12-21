@@ -50,7 +50,7 @@ class DailySales extends Model
     {
         $this->hasOne('rep', 'App\Models\Users', 'id', array('alias' => 'agent'));
     }
-    
+
     public static function sumWeek($date = null)
     {
         $results = parent::sum(
@@ -60,10 +60,10 @@ class DailySales extends Model
                 'bind'          => array(1 => $date),
             )
         );
-        return $results; 
+        return $results;
     }
 
-    public static function sumMonth($date = null) 
+    public static function sumMonth($date = null)
     {
         if (is_null($date))
         {
@@ -82,7 +82,7 @@ class DailySales extends Model
         return $results;
     }
 
-    public static function countMonth($date = null) 
+    public static function countMonth($date = null)
     {
         if (is_null($date))
         {

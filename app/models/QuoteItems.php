@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Phalcon\Mvc\Model;
 
+
 class QuoteItems extends Model
 {
 	public $id;
@@ -32,10 +33,16 @@ class QuoteItems extends Model
 
 	public function initialize()
 	{
-		$this->hasOne('priceUnit', 'App\Models\PricingUnit', 'id', array('alias'  => 'unit'));
-		// Layer of compatiblity for migration
-		$this->hasOne('grade', 'App\Models\QuoteCodes', 'code', array('alias'  => 'legacy'));
+		$this->hasOne('priceMethod', 'App\Models\PricingUnit', 'id', array('alias'  => 'unit'));
+		$this->hasOne('grade', 'App\Models\Grade', 'shortCode', array('alias'  => 'gra'));
+		$this->hasOne('dryness', 'App\Models\Dryness', 'shortCode', array('alias'  => 'dry'));
+		$this->hasOne('treatment', 'App\Models\Treatment', 'shortCode', array('alias'  => 'treat'));
 		$this->hasOne('finish', 'App\Models\Finish', 'id', array('alias'  => 'fin'));
+	}
+
+	public function beforeSave()
+	{
+		$this->lineValue = $this->price * $this->qty;
 	}
 
 }

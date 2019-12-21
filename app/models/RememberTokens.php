@@ -35,6 +35,12 @@ class RememberTokens extends \Phalcon\Mvc\Model
      */
     public $createdAt;
 
+    public function beforeValidationOnCreate()
+    {
+        // Timestamp the confrimation
+        $this->createdAt = time();
+    }
+
     /**
      * Allows to query a set of records that match the specified conditions
      *

@@ -4,24 +4,25 @@ namespace App\Models;
 
 use Phalcon\Mvc\Model;
 
-class GenericStatus extends Model
+class HotlistTypes extends Model
 {
 
-	/**
+    /**
      *
      * @var integer
      */
-	public $id;
+    public $id;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $statusName;
+    public $name;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $style;
+    public $description;
+
 }

@@ -81,7 +81,7 @@ class FollowUp extends Model
     public function getToday($user)
     {
         return parent::find(array(
-            "conditions" => "followUpUser = ?1 AND completed is Null AND followUpDate = DATE(NOW())",
+            "conditions" => "user = ?1 AND completed is Null AND followUpDate = DATE(NOW())",
             "bind"  => array(1 => $user)
         ));
     }
@@ -100,6 +100,17 @@ class FollowUp extends Model
             "conditions" => "followUpUser = ?1 AND completed is Null AND followUpDate > DATE(NOW())",
             "bind"  => array(1 => $user)
         ));
+    }
+
+    public function getOldest($count = 0, $user) {
+        return parent::find(
+            array(
+                "conditions"    => "followUpUser = ?1 AND completed is Null AND followUpDate > DATE(NOW())",
+                "order"         => "followUpDate ASC",
+                "limit"         => 10,
+                "bind"          => array(1 => $user),
+            )
+        );
     }
 
     public function complete()

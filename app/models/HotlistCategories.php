@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Phalcon\Mvc\Model;
 
-class OrderLocations extends Model
+class HotlistCategories extends Model
 {
 
     /**
@@ -27,19 +27,13 @@ class OrderLocations extends Model
 
     /**
      *
-     * @var int
+     * @var bool
      */
-    public $active;
-
-    /**
-     *
-     * @var string
-     */
-    public $customerCode;
+    public $system;
 
     public function initialize()
     {
-        $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
+        $this->hasMany('id', 'App\Models\HotlistQuotes', 'category', array('alias' => 'jobs', 'params' => array('conditions' => 'completed IS NULL')));
     }
 
 }

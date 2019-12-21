@@ -18,11 +18,19 @@ class SalesAreas extends \Phalcon\Mvc\Model
     public $name;
 
     /**
+     *
+     *
+     * @var integer
+     */
+    public $agent;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->hasMany('id', 'App\Models\Customers', 'salesArea', array('alias' => 'Customers'));
+        $this->hasMany('id', 'App\Models\Customers', 'salesArea', array('alias' => 'customers'));
+        $this->hasOne('agent', 'App\Models\Users', 'id', array('alias' => 'rep'));
     }
 
     /**
