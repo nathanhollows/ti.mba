@@ -8,9 +8,18 @@ use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
+use App\Auth\Auth;
 use App\Models\Quotes;
 use App\Models\QuoteItems;
 use App\Models\GenericStatus;
+use App\Models\Grade;
+use App\Models\Treatment;
+use App\Models\Users;
+use App\Models\Dryness;
+use App\Models\ContactRecord;
+use App\Models\Finish;
+use App\Models\QuoteVisits;
+use App\Models\PricingUnit;
 use App\Forms\quotes\QuotesForm;
 use App\Forms\quotes\ItemForm;
 use Knp\Snappy\Pdf;
@@ -24,15 +33,18 @@ class QuotesController extends ControllerBase
 		parent::initialize();
 	}
 
-	public function indexAction()
+	public function indexAction($status = null)
 	{
-
 		$this->tag->prependTitle('Search Quotes');
 		$this->view->pageSubtitle = "Search";
-		$this->flash->warning("Searching by Rep and Status do not currently work");
+        $this->view->users = Users::getActive();
 
 		$this->assets->collection('footer')
-		->addJs('js/datatables/quotes.js');
+	            // DataTables
+        	    ->addJs('js/datatables/jquery.dataTables.min.js')
+	            ->addJs('js/datatables/dataTables.bootstrap.min.js')
+            // View specific JS
+		    ->addJs('js/datatables/quotes.js?v=2.1');
 
 		$this->view->headerButton = \Phalcon\Tag::linkTo(array('quotes/new', 'New', 'class' => ' btn btn-default pull-right'));
 
@@ -42,10 +54,12 @@ class QuotesController extends ControllerBase
 	{
 		if ($this->request->isAjax()) {
 			$builder = $this->modelsManager->createBuilder()
-			->columns('quoteId, date, customerCode, reference, user, attention, status, quoteStatus.style, quoteStatus.name, rep.name AS salesRep')
-			->from('App\Models\Quotes')
-			->join('App\Models\GenericStatus', 'status = quoteStatus.id', 'quoteStatus', 'INNER')
-			->join('App\Models\Users', 'user = rep.id', 'rep', 'INNER');
+			->columns('quoteId, date, q.customerCode, b.customerName, reference, user, status, s.style, s.statusName, r.name, c.name as attention')
+			->addFrom('App\Models\Quotes', 'q')
+			->join('App\Models\GenericStatus', 's.id = status', 's')
+			->join('App\Models\Users', 'user = r.id', 'r')
+			->join('App\Models\Customers', 'q.customerCode = b.customerCode', 'b')
+			->leftJoin('App\Models\Contacts', 'c.id = contact', 'c');
 
 			if (isset($customerCode)) {
 				$builder->where("customerCode = '$customerCode'");
@@ -57,38 +71,9 @@ class QuotesController extends ControllerBase
 		};
 	}
 
-	public function getAction($quoteId)
-	{
-		$this->view->disable();
-		$quote = Quotes::findFirstByquoteId($quoteId);
-		$snappy = new Pdf('C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe');
-		// $snappy = new Pdf('xvfb-run -a /usr/bin/wkhtmltopdf');
-		$snappy->setOptions(
-			array(
-				'header-html'	=> 'http://dev/quotes/header',
-				'header-spacing'=> '10',
-				'footer-html'	=> 'http://dev/quotes/footer',
-				'footer-spacing'=> '10',
-				'margin-top'	=> '44',
-				'margin-bottom'	=> '20',
-				'margin-left'	=> '0',
-				'margin-right'	=> '0',
-				'page-size'		=> 'A4',
-				'disable-smart-shrinking'	=> true,
-				'dpi'			=> '720',
-				)
-			);
-		$response = new Response;
-		// Setting a header by its name
-		$response->setHeader("Content-Type", "application/pdf");
-		$response->setHeader("Content-Disposition", 'inline; filename="' . $quote->quoteId . ' ' . $quote->customer->customerName . '"');
-		$response->setContent($snappy->getOutput('dev/quote/' . $quote->webId ));
-		$response->send();
-	}
-
 	public function publicAction($quoteId = null)
 	{
-		$quote = Quotes::findFirstBywebId($quoteId);
+		$quote = Quotes::findFirstByquoteId($quoteId);
 		$items = QuoteItems::find("quoteId = $quote->quoteId");
 
 		if (!$quote) {
@@ -109,12 +94,29 @@ class QuotesController extends ControllerBase
 		$this->view->disable();
 
 		$quote = Quotes::findFirstByquoteId($quoteId);
-		if ($quote->sale == 1){
-			$quote->sale = 0;
-		} else {
-			$quote->sale = 1;
-		}
+		$quote->sale = 1;
+		$quote->status = 4;
 		$quote->update();
+
+		foreach ($quote->history as $record) {
+			$record->complete();
+		}
+
+		return $this->_redirectBack();
+	}
+
+	public function quotelostAction($quoteId)
+	{
+		$this->view->disable();
+
+		$quote = Quotes::findFirstByquoteId($quoteId);
+		$quote->sale = 0;
+		$quote->status = 4;
+		$quote->update();
+
+		foreach ($quote->history as $record) {
+			$record->complete();
+		}
 
 		return $this->_redirectBack();
 	}
@@ -122,7 +124,7 @@ class QuotesController extends ControllerBase
 	public function headerAction()
 	{
 		$this->view->setTemplateBefore("none");
-	}	
+	}
 
 	public function footerAction()
 	{
@@ -134,55 +136,102 @@ class QuotesController extends ControllerBase
 		$quote = Quotes::findFirstByquoteId($quoteId);
 		if (!$quote) {
 			// If the quote does not exist then spit out an error
-			$this->flash->error("That quote doesn't exist! Weird.");
-			$this->dispatcher->forward(array(
-				"controller"	=> "quotes",
-				"action"		=> ""
-				));
+			$this->flashSession->error("That quote doesn't exist! Weird.");
+			return $this->response->redirect('/quotes');
 		}
+
+        $auth = new Auth();
+        $visit = new QuoteVisits();
+        $visit->user = $auth->getId();
+        $visit->quoteId = $quote->quoteId;
+        $visit->save();
 
 		$item = new QuoteItems();
 		$item->quoteId = $quote->quoteId;
 		$this->view->form = new ItemForm($item);
 
-		$this->assets->collection('footer')
-			->addJs('js/quotes/view.js');
-
-		$this->tag->prependTitle('Quote');
+		$this->tag->prependTitle('Quote ' . $quote->quoteId . " " . $quote->reference );
 		$this->view->quote = $quote;
 		$items = QuoteItems::Find(array(
 			"conditions"	=> "quoteId = ?1",
 			"bind"			=> array(
 				1			=> $quoteId
-				)
-			));
-		if ($this->view->quote->sale == "1") {
+			)
+		));
+		if ($quote->sale == 1) {
 			$this->flash->notice("This quote has been turned into a sale");
 		}
 		$this->view->items = $items;
 
+		$quote->updateValue();
+
+		$this->view->history = ContactRecord::find(array(
+			'conditions'	=> "job = $quote->quoteId",
+		));
+
+		$this->view->pageSubtitle = $quote->reference;
 		$this->view->pageTitle = "Quote " . $quote->quoteId;
-		$this->view->pageSubtitle = $quote->customer->customerName;
+        $this->view->pageSubheader = (object) array(
+            '1' => array(
+                'icon' => 'usd',
+                'text' => number_format($quote->value, 0),
+            ),
+            '2' => array(
+                'icon' => 'user',
+                'text' => ($quote->customerContact ? $quote->customerContact->name : $quote->attention),
+                'link' => '/contacts/view/' . ($quote->customerContact ? $quote->customerContact->id : ''),
+            ),
+            '3' => array(
+                'icon' => 'building',
+                'text' => $quote->customer->customerName,
+                'link' => '/customers/view/' . $quote->customerCode,
+            ),
+            '4' => array(
+                'icon' => 'phone',
+                'text' => $quote->customer->phone,
+                'link' => 'tel:' . str_replace(' ','',$quote->customer->phone),
+                'link-class'=> 'tel-link'
+            ),
+        );
 		$this->view->headerButton = '
 		<!-- Split button -->
 		<div class="btn-group pull-right">
-		<button type="button" id="enable" class="btn btn-success">Edit Quote</button>
-			<a class="btn btn-default" data-target="#modal-ajax" href="/followup/?company=' . $quote->customerCode . '&job=' . $quote->quoteId . '" role="button"><i class="fa fa-icon fa-pencil"></i> Add Record</a>
+			<a class="btn btn-success" href="/quotes/turntosale/' . $quote->quoteId . '" role="button">Won</a>
+			<a class="btn btn-danger" href="/quotes/quotelost/' . $quote->quoteId . '" role="button">Lost</a>
+			<a class="btn btn-default" href="/quote/get/' . $quote->webId . '" target="_blank"><i class="fa fa-icon fa-download"></i> Get PDF</a>
 			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				<span class="caret"></span>
 				<span class="sr-only">Toggle Dropdown</span>
 			</button>
 			<ul class="dropdown-menu">
-				<li><a href="/quotes/get/' . $quote->quoteId . '" target="_blank">Get PDF</a></li>
-				<li><a href="/quotes/turntosale/' . $quote->quoteId . '">Toggle Sale</a></li>
-				<li><a data-target="#modal-ajax" href="/followup/remindme">Remind Me ...</a></li>
+				<li><a data-target="#modal-ajax" href="/followup/?company=' . $quote->customerCode . '&job=' . $quote->quoteId . '" role="button"> Add Record</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="/quotes/delete/' . $quote->quoteId . '">Delete</a></li>
+				<li><a href="#" data-href="/quotes/delete/' . $quote->quoteId . '" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
 			</ul>
 		</div>
 		';
+
+		$this->view->grades = Grade::find(array('order'	=> 'name ASC'));
+		$this->view->treatment = Treatment::find(array('order'	=> 'name'));
+		$this->view->dryness = Dryness::find(array('order'	=> 'name'));
+		$this->view->finishes = Finish::find(array('order'	=> 'name'));
+		$this->view->priceMethod = PricingUnit::find();
+		$this->view->users = Users::find();
+
+        $this->assets->collection('footer')
+            ->addJs('js/to-markdown.js', true)
+            ->addJs('js/bootstrap-markdown.js', true)
+            ->addJs('js/markdown.js', true)
+        	->addJs('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/js/standalone/selectize.min.js')
+        	->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery.AreYouSure/1.9.0/jquery.are-you-sure.min.js')
+            ->addJs('https://npmcdn.com/navigable-table@1.0.4/dist/navigable-table.js')
+        	->addJs('js/editable-table.js', true);
+        $this->assets->collection('header')
+            ->addCss('css/bootstrap-markdown.min.css', true)
+        	->addCss('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/css/selectize.bootstrap3.min.css')
+        	->addCss('https://npmcdn.com/editable-table/dist/editable-table.css');
 	}
-	
+
 	public function editAction($quoteId = null)
 	{
 		$this->view->ajax = false;
@@ -242,7 +291,7 @@ class QuotesController extends ControllerBase
 				'customerCode'	=> $this->request->getQuery('company')
 				)
 			);
-		}		
+		}
 
 		if (null !== ($this->request->getQuery('contact'))) {
 			$quote->assign(array(
@@ -267,8 +316,8 @@ class QuotesController extends ControllerBase
 
 		$quote = new Quotes();
 		$random = new Random();
-		$quote->webId = $random->uuid();
 		// Store and check for errors
+		$quote->webId = $random->uuid();
 		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'reference', 'notes', 'user', 'contact', 'status', 'moreNotes'));
 		if ($success) {
 			$this->flashSession->success("Quote created successfully!");
@@ -315,27 +364,40 @@ class QuotesController extends ControllerBase
 			$this->_redirectBack();
 		}
 
+        $response = new \Phalcon\Http\Response();
+
 		$quote = Quotes::findFirstByquoteId($this->request->getPost("pk"));
 		switch ($this->request->getPost('name')) {
 			case 'notes':
 				$quote->notes = $this->request->getPost('value');
 				break;
-			case 'moreNote':
-				$quote->moreNote = $this->request->getPost('value');
+			case 'moreNotes':
+				$quote->moreNotes = $this->request->getPost('value');
 				break;
 			case 'leadTime':
 				$quote->leadTime = $this->request->getPost('value');
 				break;
+			case 'rep':
+				$quote->user = $this->request->getPost('value');
+				break;
 			case 'validity':
 				$quote->validity = $this->request->getPost('value');
+				break;
+			case 'date':
+				$quote->date = $this->request->getPost('value');
+				break;
+			case 'reference':
+				$quote->reference = $this->request->getPost('value');
 				break;
 			case 'freight':
 				$quote->freight = $this->request->getPost('value');
 				break;
+			default :
+				$response->setStatusCode(404, "Field not found");
+				$response->send();
 		}
-		
-		$response = new \Phalcon\Http\Response();
-		if ($quote->save()) {
+
+		if ($quote->update()) {
 			$response->setStatusCode(200, "Update successful");
 		} else {
 			$response->setStatusCode(500, "Something went wrong");
@@ -422,7 +484,7 @@ class QuotesController extends ControllerBase
 				$item->unitPrice = $this->request->getPost('lengths');
 				break;
 		}
-		
+
 		$response = new \Phalcon\Http\Response();
 		if ($item->save()) {
 			$response->setStatusCode(200, "Update successful");
@@ -460,6 +522,63 @@ class QuotesController extends ControllerBase
 			$this->flashSession->warning('Something went wrong and this item could not be deleted');
 			$this->_redirectBack();
 		}
+	}
+
+	public function saveitemsAction()
+	{
+
+		$this->view->disable();
+
+		if (!$this->request->isPost()){
+			$this->_redirectBack();
+		}
+
+		$data = $this->request->getPost();
+
+		echo "<pre>";
+		echo print_r($data);
+		echo "</pre>";
+
+
+		// Let's sort through the posted array and update or save data
+		// Count the grade and loop through 1 less than the count
+		// This is done because the last line will always contain empty values due to the JS and form setup
+		$values = [];
+		for ($i = 0; $i < count($data['grade']) - 1; $i ++) {
+            $line = new QuoteItems();
+
+			if (!empty($data['id'][$i])) {
+                if(!in_array($data['id'][$i], $values)) {
+                    array_push($values, $data['id'][$i]);
+                    $line = QuoteItems::findFirstById($data['id'][$i]);
+                }
+			}
+
+			$line->quoteId			= $data['quoteId'];
+			$line->grade			= $data['grade'][$i];
+			$line->treatment		= $data['treatment'][$i];
+			$line->dryness			= $data['dryness'][$i];
+			$line->finish			= $data['finish'][$i];
+			$line->width			= $data['width'][$i];
+			$line->thickness		= $data['thickness'][$i];
+			$line->lengths			= $data['lengths'][$i];
+			$line->qty				= $data['qty'][$i];
+			$line->price			= $data['unitPrice'][$i];
+			$line->priceMethod		= $data['priceMethod'][$i];
+
+			$success = $line->save();
+
+			if (!$success) {
+				$this->flashSession->error('Sorry, the item could not be added');
+				foreach($item->getMessages() as $message) {
+					$this->flashSession->error($message->getMessage());
+				}
+			}
+
+		}
+
+		$this->_redirectBack();
+
 	}
 
 }

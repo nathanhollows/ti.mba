@@ -7,6 +7,7 @@ use App\Forms\ReminderForm;
 use App\Auth\Auth;
 use App\Models\FollowUp;
 use App\Models\ContactRecord;
+use Phalcon\Http\Response;
 
 class FollowupController extends ControllerBase
 {
@@ -33,7 +34,7 @@ class FollowupController extends ControllerBase
 			$options = array(
 				'customerCode' => $this->request->getQuery('company')
 			);
-		}		
+		}
 
 		if (null !== ($this->request->getQuery('contact'))) {
 			$followUp->assign(array(
@@ -53,7 +54,7 @@ class FollowupController extends ControllerBase
 
 	}
 
-	public function editAction($id) 
+	public function editAction($id)
 	{
 		if ($this->request->isAjax()) {
 			$this->view->setTemplateBefore('modal-form');
@@ -61,6 +62,7 @@ class FollowupController extends ControllerBase
 
 		$this->view->pageTitle = "Edit Contact Record";
 		$followUp = ContactRecord::findFirstById($id);
+		$this->view->details = $followUp;
 
 		$options = array(
 			"customerCode" => $followUp->customerCode,
@@ -70,6 +72,25 @@ class FollowupController extends ControllerBase
 		$this->view->form = new FollowUpForm($followUp, $options);
 		$this->view->record = $followUp;
 
+	}
+
+	public function deleteAction($id = null)
+	{
+		$this->view->disable();
+		$record = ContactRecord::findFirstById($id);
+
+		if (!$record) {
+			$this->flashSession->error('This record could not be found');
+			$this->_redirectBack();
+		}
+
+		if ($record->delete()) {
+			$this->flashSession->success('Record deleted');
+			$this->_redirectBack();
+		} else {
+			$this->flashSession->error('This record could not be deleted');
+			$this->_redirectBack();
+		}
 	}
 
 	public function remindMeAction()
@@ -87,11 +108,11 @@ class FollowupController extends ControllerBase
 				'customerCode'	=> $this->request->getQuery('company')
 				)
 			);
-		}		
+		}
 
 		if (null !== ($this->request->getQuery('contact'))) {
 			$followUp->assign(array(
-				'contact'	=> $this->request->getQuery('contact')
+				'contact'	=> $this->request->getQuery('contact'),
 				)
 			);
 		}
@@ -114,18 +135,25 @@ class FollowupController extends ControllerBase
 		// Create a new record
 		$contact = new ContactRecord();
 		// Populate the record with the posted data
-		$contact->customerCode = $this->request->getPost('customerCode');
-		$contact->contact = $this->request->getPost('contact');
-		$contact->job = $this->request->getPost('job');
-		$contact->details = $this->request->getPost('details');
-		$contact->contactType = $this->request->getPost('contactType');
-		$contact->user = $this->request->getPost('user');
-		$contact->contactType = $this->request->getPost('contactType');
-		$contact->completed = 1;
+		$contact->customerCode 		= $this->request->getPost('customerCode');
+		$contact->contact 			= $this->request->getPost('contact');
+		if (empty($this->request->getPost('contact'))) {
+			$contact->contact = null;
+		}
+		$contact->job 				= $this->request->getPost('job');
+		if (empty($this->request->getPost('job'))) {
+			$contact->job = null;
+		}
+		$contact->details 			= $this->request->getPost('details');
+		$contact->contactType 		= $this->request->getPost('contactType');
+		$contact->user 				= $this->request->getPost('user');
+		$contact->contactType 		= $this->request->getPost('contactType');
+		$contact->reference 		= $this->request->getPost('reference');
+		$contact->completed 		= date('Y-m-d H:i:s');
+
 		if ($this->request->getPost("remind")) {
 			$contact->followUpDate = $this->request->getPost("followUpDate");
-			$contact->followUpUser = $this->request->getPost("user");
-			$contact->completed = 0;
+			$contact->completed = NULL;
 		}
 		// Store and check for errors
 		$success = $contact->save();
@@ -152,7 +180,7 @@ class FollowupController extends ControllerBase
 		$auth = new Auth;
 
 		$followUp->user = $auth->getId();
-		
+
 		$success = $followUp->save($this->request->getPost(), array('followUpDate', 'followUpUser', 'notes'));
 		if ($success) {
 			$this->flashSession->success("Reminder set!");
@@ -182,8 +210,27 @@ class FollowupController extends ControllerBase
 		}
 
 		$history = ContactRecord::findFirstById($this->request->getPost('id'));
+
+		// If there is no reminder set, then mark this record as completed
+		if ($history->completed == null and !$this->request->getPost('remind')) {
+			$history->complete();
+		}
+
+		// If there is a reminder set the make sure this is recorded
+		if ($this->request->getPost('remind')) {
+			$history->completed = null;
+		}
+		$history->contact 			= $this->request->getPost('contact');
+		if (empty($this->request->getPost('contact'))) {
+			$history->contact = null;
+		}
+		$history->job 				= $this->request->getPost('job');
+		if (empty($this->request->getPost('job'))) {
+			$history->job = null;
+		}
+
         // Store and check for errors
-		$success = $history->save($this->request->getPost(), array('details', 'contact', 'job', 'company', 'date', 'user', 'contactType'));
+		$success = $history->save($this->request->getPost(), array('customerCode','details','reference', 'company', 'date', 'user', 'contactType','followUpDate'));
 		if ($success) {
 			$this->flash->success("Quote created successfully!");
 			return $this->_redirectBack();
@@ -199,13 +246,114 @@ class FollowupController extends ControllerBase
 	{
 		$this->view->disable();
 
-		$followUp = FollowUp::findFirstById($id);
+		$followUp = ContactRecord::findFirstById($id);
 		if (!$followUp) {
 			$this->flashSession->error("That task could not be found");
 			$this->_redirectBack();
 		}
 
-		$followUp->complete();
+		if ($followUp->complete()) {
+			$this->flashSession->success("Task completed");
+		}
+
 		$this->_redirectBack();
 	}
+
+    public function ajaxcompleteAction($id = null)
+    {
+        // Disable the view
+        $this->view->disable();
+        // Check if the request was made with AJAX
+        if(!$this->request->isAjax()){
+            $this->flashSession->error("Woops, something went wrong.");
+            return $this->_redirectBack();
+        }
+
+        if(!$id) {
+            $id = $this->request->getPost('pk');
+        }
+
+        // Find the first matching record
+        $record = ContactRecord::findFirstById($id);
+
+        $response = new Response();
+
+        if(!$record){
+            $response->setStatusCode(404, "Contact Record '". $id ."' not found");
+            return $response;
+        }
+
+        if($record->complete()) {
+            $response->setStatusCode(200, "Updated successfully");
+            return $response;
+        } else {
+            $response->setStatusCode(500, "Something went wrong");
+            return $response;
+        }
+
+    }
+
+    public function ajaxupdateAction()
+    {
+        if(!$this->request->isAjax()) {
+            $this->flashSession->error("Woops, something went wrong.");
+            return $this->_redirectBack();
+        }
+
+        $this->view->disable();
+
+        $response = new Response();
+
+        $record = ContactRecord::findFirstById($this->request->getPost('pk'));
+        if(!$record) {
+            $response->setStatusCode(404, 'Contact Record not found');
+            $response->send();
+            return true;
+        }
+
+        $record->details = $this->request->getPost('value');
+        $success = $record->save();
+        if($success){
+            $response->setStatusCode(200, 'Update successfully');
+            return $response;
+        } else {
+            $reponse->setStatusCode(501, 'Something went wrong');
+            return $response;
+        }
+
+        $response->setStatusCode(501, 'Something went wrong');
+        return $response;
+
+    }
+
+    public function newdateAction()
+    {
+        if(!$this->request->isAjax()) {
+            $this->flashSession->error("Woops, something went wrong.");
+            return $this->_redirectBack();
+        }
+
+        $this->view->disable();
+
+        $response = new Response();
+
+        $record = ContactRecord::findFirstById($this->request->getPost('pk'));
+        if(!$record) {
+            $response->setStatusCode(404, 'Contact Record not found');
+            return $response;
+        }
+
+        $record->followUpDate = date("Y-m-d", strtotime($this->request->getPost('value')));
+        $success = $record->save();
+        if($success){
+            $response->setStatusCode(200, 'Update successfully');
+            return $response;
+        } else {
+            $reponse->setStatusCode(501, 'Something went wrong');
+            return $response;
+        }
+
+        $response->setStatusCode(501, 'Something went wrong');
+        return $response;
+    }
 }

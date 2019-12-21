@@ -6,12 +6,16 @@ use DataTables\DataTable;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
+use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Customers;
 use App\Models\Addresses;
+use App\Models\Contacts;
 use App\Models\CustomerNotes;
+use App\Models\ContactRoles;
 use App\Models\ContactRecord;
 use App\Models\Quotes;
+use App\Models\Orders;
 use App\Forms\CustomersForm;
 
 class CustomersController extends ControllerBase
@@ -27,11 +31,11 @@ class CustomersController extends ControllerBase
      */
     public function indexAction()
     {
-        $this->view->pageSubtitle = "Search";
+        $this->view->pageSubtitle = "";
         $this->tag->prependTitle("Search Customers");
         if ($this->request->isAjax()) {
             $builder = $this->modelsManager->createBuilder()
-            ->columns('customerCode, customerName, customerFax, customerPhone, customerStatus, customerStatus.style, customerStatus.name')
+            ->columns('customerCode, customerName, fax, phone, customerStatus, customerStatus.style, customerStatus.name')
             ->from('App\Models\Customers')
             ->join('App\Models\CustomerStatus', 'customerStatus = customerStatus.id', 'customerStatus', 'INNER')
             ->orderBy('customerName');
@@ -42,7 +46,11 @@ class CustomersController extends ControllerBase
         };
 
         $this->assets->collection('footer')
-            ->addJs('js/datatables/companies.js');
+            // DataTables
+            ->addJs('//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
+            ->addJs('//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js')
+            // View specific JS
+            ->addJs('js/datatables/companies.js?v=2.1');
 
         $this->view->headerButton = \Phalcon\Tag::linkTo(array('customers/new', 'New', 'class' => ' btn btn-default pull-right'));
     }
@@ -70,7 +78,7 @@ class CustomersController extends ControllerBase
         if (!$customer) {
             $this->flashSession->error("Customer was not found");
 
-            return $this->response->redirect('customers');
+            return $this->response->redirect('customers/');
 
             $this->view->disable();
         }
@@ -83,14 +91,32 @@ class CustomersController extends ControllerBase
         $history = ContactRecord::find(array(
             "customerCode = '$customerCode'",
             'order'         => 'date DESC',
-            'limit'         => 8
+            'limit'         => '30',
             ));
         $this->view->history = $history;
+
+        $this->view->futureHistory = ContactRecord::getFutureByCustomer($customerCode);
 
         $notes = CustomerNotes::find(array(
             "customerCode = '$customerCode'",
             'order'         => 'date DESC',
             ));
+
+        $this->view->contacts = Contacts::find(array(
+            'conditions'    => 'customerCode = ?1',
+            'bind'          => array(1 => $customerCode),
+            'order'         => 'role ASC, name ASC',
+        ));
+
+        $roles = ContactRoles::find(array(
+            'order'     => 'name ASC'
+        ));
+        $rolesstr = "[";
+        foreach ($roles as $role) {
+            $rolesstr = $rolesstr . '{value: ' . $role->id . ', text: "' . $role->name .'"}, ';
+        }
+        $rolesstr = $rolesstr . "]";
+        $this->view->roles = $rolesstr;
 
         $this->view->customerCode = $customer->customerCode;
 
@@ -106,26 +132,83 @@ class CustomersController extends ControllerBase
             </button>
             <ul class="dropdown-menu">
                 <li><a href="/quotes/new/?company=' . $customer->customerCode . '">New Quote</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="/customers/delete/' . $customer->customerCode . '">Delete</a></li>
+                <li><a href="/customers/details/' . $customer->customerCode . '">Details Report</a></li>
+                <li><a href="/customers/history/' . $customer->customerCode . '">History Report</a></li>
             </ul>
         </div>
         ';
+        if($customer->rank) {
+            $badges[1] = array(
+                'text'  => "Rank $customer->rank",
+                'icon'  => (($customer->rank <= 10) ? 'trophy faa-tada animated' : 'star'),
+            );
+        }
+        if($customer->salesarea->rep) {
+            $badges[2] = array(
+                'text'  => $customer->salesarea->rep->name,
+                'icon'  => 'user',
+                'link'  => '/profile/view/'. $customer->salesarea->rep->id,
+            );
+        }
+        if(isset($badges)) {
+            $this->view->pageSubheader = $badges;
+        }
+
         \Phalcon\Tag::linkTo(array("followup/?company=" . $customerCode, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
 
         $addresses = Addresses::find("customerCode = '$customerCode'");
         $this->view->addresses = $addresses;
-        
+
         $this->view->pageTitle = '<i class="fa fa-building-o" aria-hidden="true"></i> ' . $customer->customerName;
         $this->view->pageSubtitle = $customer->customerCode;
         $this->tag->prependTitle($customer->customerName);
 
+        $this->view->orders = Orders::find(array(
+            'conditions'        => 'customerCode = ?1 AND complete = 0',
+            'bind'              => array(1 => $customerCode),
+        ));
+
+        $this->assets->collection('jquery')
+            ->addCss('css/bootstrap-markdown.min.css', true)
+            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/Shuffle/4.0.0/shuffle.min.js');
+
         $this->assets->collection('footer')
-            ->addJs('js/datatables/customerQuotes.js');
+            ->addJs('js/datatables/customerQuotes.js')
+            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js')
+            ->addJs('js/customers/customers.js')
+            ->addJs('js/to-markdown.js', true)
+            ->addJs('js/bootstrap-markdown.js', true)
+            ->addJs('js/markdown.js', true);
 
     }
 
-    public function reportAction($customerCode = null) 
+    public function getcontactsAction($customerCode)
+    {
+        $this->view->disable();
+
+        if (!$this->request->isAjax()) {
+            $this->flashSession->error("You shouldn't be there!");
+            return $this->_redirectBack();
+        }
+
+        $contacts = Contacts::find(array(
+            'columns'    => 'id, name',
+            'conditions' => 'customerCode = ?1',
+            'bind'       => array(1 => $customerCode),
+        ));
+        if (!$contacts) {
+            $response->setStatusCode(404,"No contacts found");
+            $response->send();
+            return true;
+        }
+
+            echo '<option value="">Select a Contact</option>';
+        foreach ($contacts as $contact) {
+            echo '<option value="' . $contact->id . '">' . $contact->name . '</option>';
+        }
+    }
+
+    public function detailsAction($customerCode = null)
     {
         if ($customerCode == NULL) {
             $this->_redirectBack();
@@ -141,6 +224,39 @@ class CustomersController extends ControllerBase
 
         $quotes = Quotes::findBycustomerCode($customerCode);
         $history = ContactRecord::findBycustomerCode($customerCode);
+
+        $this->view->customer = $customer;
+        $this->view->history = $history;
+        $this->view->quotes = $quotes;
+    }
+
+    public function historyAction($customerCode = null, $year = null, $month = null)
+    {
+        if ($customerCode == NULL) {
+            $this->_redirectBack();
+        }
+
+        $customer = Customers::findFirstBycustomerCode($customerCode);
+        if (!$customer) {
+            $this->flash->error("The customer could not be found");
+            return false;
+        } else {
+            $this->view->setTemplateBefore('none');
+        }
+
+        if (!ctype_digit($year)) {
+            $year = date("Y");
+        }
+
+        if (!ctype_digit($month)) {
+            $month = 01;
+        }
+
+        $startDate = date("Y-m-d", strtotime("$year-$month-01"));
+        echo $startDate;
+
+        $quotes     = $customer->quotesFrom($startDate);
+        $history    = $customer->historyFrom($startDate);
 
         $this->view->customer = $customer;
         $this->view->history = $history;
@@ -194,6 +310,8 @@ class CustomersController extends ControllerBase
      *
      */
 
+    // TODO Update customers without setting tripDay to 0
+
     public function updateAction()
     {
 
@@ -207,7 +325,8 @@ class CustomersController extends ControllerBase
 
         $customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
         // Store and check for errors
-        $success = $customer->save($this->request->getPost(), array('customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'customerGroup', 'salesArea', 'customerStatus'));
+
+        $success = $customer->save($this->request->getPost(), array('customerName', 'phone', 'tripDay', 'fax', 'email', 'freightArea', 'freightCarrier', 'area', 'customerStatus'));
         if ($success) {
             $this->flash->success("Quote created successfully!");
             return $this->_redirectBack();
@@ -252,12 +371,12 @@ class CustomersController extends ControllerBase
         $customer->customerEmail = $this->request->getPost("customerEmail");
         $customer->freightArea = $this->request->getPost("freightArea");
         $customer->freightCarrier = $this->request->getPost("freightCarrier");
-        $customer->salesArea = $this->request->getPost("salesArea");
+        $customer->area = $this->request->getPost("area");
         $customer->customerStatus = $this->request->getPost("customerStatus");
         $customer->defaultAddress = $this->request->getPost("defaultAddress");
         $customer->defaultContact = $this->request->getPost("defaultContact");
         $customer->customerGroup = $this->request->getPost("customerGroup");
-        
+
 
         if (!$customer->save()) {
 
@@ -317,4 +436,25 @@ class CustomersController extends ControllerBase
             ));
     }
 
+    public function detailreportAction($customerCode = null)
+    {
+        if ($customerCode == null) {
+            $this->flashSession->error('The customer code must be entered');
+            $this->_redirectBack();
+        }
+
+        $company = Customers::findFirstBycustomerCode($customerCode);
+
+        if (!$company) {
+            $this->flashSession->error('This is not a valid customer');
+            $this->_redirectBack();
+        }
+
+        $this->view->company = $company;
+
+        $this->view->setTemplateBefore('none');
+        $this->tag->prependTitle('Customer Details Report');
+    }
+
 }
+

@@ -5,13 +5,15 @@ namespace App\Controllers;
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use Phalcon\Mvc\Model\Resultset;
-use App\Models\CustomerOrders,
-    App\Models\Orders,
-    App\Models\ContactRecord,
-    App\Models\OrderItems;
+use Phalcon\Http\Response;
+use App\Models\CustomerOrders;
+use App\Models\Customers;
+use App\Models\Orders;
+use App\Models\OrderLocations;
+use App\Models\ContactRecord;
+use App\Models\OrderItems;
 use App\Forms\OrdersForm;
-include('../vendor/gantti/lib/gantti.php');
-use Gantti;
+
 class OrdersController extends ControllerBase
 {
     public function initialize()
@@ -29,45 +31,38 @@ class OrdersController extends ControllerBase
         $this->persistent->parameters = null;
         $this->view->headerButton = \Phalcon\Tag::linkTo(array('orders/import', 'Import', 'class' => ' btn btn-default pull-right'));
 
+        $date = date("Y-m-d", strtotime("Now - 1 MONTH"));
         $orders = Orders::find(
             array(
                 "complete = 0",
                 "order" => "orderNumber DESC"
-                )
-            );
-        $this->view->orders = $orders;
-
-        $this->view->scheduled = Orders::scheduled();
-
-        $this->assets->collection("footer")
-            ->addJs("//cdnjs.cloudflare.com/ajax/libs/Sortable/1.4.2/Sortable.min.js")
-            ->addJs("//cdnjs.cloudflare.com/ajax/libs/hideseek/0.7.1/jquery.hideseek.min.js");
-            
-    }
-
-    public function ganttAction()
-    {
-        $this->view->noHeader = true;
-
-        $orders = Orders::find(
-            array(
-                "complete = 0",
-                "hydration" => Resultset::HYDRATE_ARRAYS,
             )
         );
+        $this->view->orders = $orders;
 
-        $data = $orders;
+        $this->assets->collection("footer")
+            ->addJs("//cdnjs.cloudflare.com/ajax/libs/hideseek/0.7.1/jquery.hideseek.min.js");
 
+        $this->view->noHeader = true;
 
-        $gantti = new Gantti($data, array(
-          'title'      => 'Orders',
-          'cellwidth'  => 25,
-          'cellheight' => 35,
-          'start'   => 'date',
-          'end'     => 'eta'
+        $this->view->locationStats = Orders::count(array(
+            "complete = 0",
+            "group" => "location",
+            "order" => "rowcount DESC"
+        ));
+        $this->view->countLocations = Orders::countLocations();
+
+        $orderLocations = OrderLocations::find();
+        $locationArray = array();
+        foreach ($orderLocations as $location) {
+            $locationArray[$location->id] = $location->name;
+        };
+        $this->view->locations = $locationArray;
+
+        $this->view->customers = Customers::find(array(
+            "conditions"    => "customerStatus NOT IN (2,3)",
         ));
 
-        $this->view->gantt = $gantti;
     }
 
     /*
@@ -75,88 +70,19 @@ class OrdersController extends ControllerBase
      */
     public function importAction()
     {
-        if ($this->request->isPost()) {
-            $string = preg_replace('#\\n(?=[^"]*"[^"]*(?:"[^"]*"[^"]*)*$)#' , ' ', $this->request->getPost('orderDump'));
-            $splitOrders = explode(PHP_EOL, $string);
-            $i = 0;
-            foreach ($splitOrders as $key => $order) {
-                $orders[$i] = explode("\t", $order);
-                $i++;
-            }
-
-            $string = preg_replace('#\\n(?=[^"]*"[^"]*(?:"[^"]*"[^"]*)*$)#' , ' ', $this->request->getPost('itemDump'));
-            $splitItems = explode(PHP_EOL, $string);
-            $i = 0;
-            foreach ($splitItems as $key => $item) {
-                $items[$i] = explode("\t", $item);
-                $i++;
-            }
-            unset($orders[0]);
-
-            $allOrders = Orders::find(
-                array(
-                    'complete = 0',
-                    )
-                );
-            foreach ($allOrders as $key => $order) {
-                $order->complete = 1;
-                $order->save();
-            }
-
-            foreach ($orders as $key => $order) {
-                $record = new Orders();
-                $record->orderNumber = $order[0];
-                $record->customerRef = $order[1];
-                $newDateString = date_format(date_create_from_format('d/m/Y', $order[2]), 'Y-m-d');
-                $record->date = $newDateString;
-                $record->quoted = $order[4];
-                $record->complete = 0;
-                $record->description = $order[6];
-                $record->cancelled = $order[7];
-                if ($record->save() == false) {
-                    // $this->flash->error("The order import failed");
-                    foreach ($record->getMessages() as $message) {
-                        $this->flash->error($message . "\n");
-                    }
-                }
-            }
-
-            unset($items[0]);
-            foreach ($items as $key => $item) {
-                $record = new OrderItems();
-                $record->grade = $item[0];
-                $record->treatment = $item[1];
-                $record->dryness = $item[2];
-                $record->finish = $item[3];
-                $record->width = $item[4];
-                $record->thickness = $item[5];
-                $record->length = $item[6];
-                $record->dry = $item[7];
-                $record->customerCode = $item[8];
-                $record->orderNo = $item[9];
-                $record->itemNo = $item[10];
-                $record->requiredBy = $item[11];
-                $record->ordered = $item[12];
-                $record->sent = $item[13];
-                $record->outstanding = $item[14];
-                $record->unit = $item[15];
-                $record->despatch = $item[16];
-                $record->comments = $item[17];
-                $record->orderStock = $item[18];
-                $record->notes = $item[19];
-                $record->despatchNotes = $item[20];
-                $record->location = $item[21];
-                if ($record->save() == false) {
-                    $this->flash->error("The item import failed");
-                    // foreach ($record->getMessages() as $message) {
-                    //     $this->flash->error($message . "\n");
-                    // }
-                }
-            }
-
-            $this->view->itemDump = $items;
-            $this->view->orderDump = $orders;
+        // Runs the import script
+        // Connects to the database, fetches all outstanding orders and items and
+        // Inserts / Updates the database
+        // Requires the despatch planner to have been updated to get new items
+        exec('C:\xampp\htdocs\app\script\import_orders.py', $output, $return);
+        // Return will return non-zero upon an error
+        if (!$return) {
+            $this->flashSession->success("Orders updated successfully");
+        } else {
+            $this->flashSession->error("The orders could not be imported");
         }
+        $response = new Response();
+        return $response->redirect('orders');
     }
 
     /**
@@ -166,12 +92,13 @@ class OrdersController extends ControllerBase
      */
     public function viewAction($orderNumber)
     {
+        $this->view->setTemplateBefore('none');
         $order = Orders::findFirstByorderNumber($orderNumber);
         $this->view->order = $order;
         $this->view->pageTitle = "Order " .  $order->orderNumber;
         $this->view->pageSubtitle = $order->customer->customerName;
         $this->view->headerButton = \Phalcon\Tag::linkTo(array("followup/?company=" . $order->customerCode . "&job=" . $order->orderNumber, '<i class="fa fa-pencil"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
-       
+
         $history = ContactRecord::find(array(
             "job = '$order->orderNumber'",
             'order'         => 'date DESC',
@@ -179,6 +106,8 @@ class OrdersController extends ControllerBase
         ));
         $this->view->parser = new \cebe\markdown\Markdown();
         $this->view->history = $history;
+
+        $this->view->locations = OrderLocations::find(array('conditions' => 'active = 1'));
     }
 
     /**
@@ -207,7 +136,7 @@ class OrdersController extends ControllerBase
         $customer_order->quote = $this->request->getPost("quote");
         $customer_order->cancelled = $this->request->getPost("cancelled");
         $customer_order->freightCarrier = $this->request->getPost("freightCarrier");
-        
+
 
         if (!$customer_order->save()) {
             foreach ($customer_order->getMessages() as $message) {
@@ -266,7 +195,7 @@ class OrdersController extends ControllerBase
         $customer_order->quote = $this->request->getPost("quote");
         $customer_order->cancelled = $this->request->getPost("cancelled");
         $customer_order->freightCarrier = $this->request->getPost("freightCarrier");
-        
+
 
         if (!$customer_order->save()) {
 
@@ -293,7 +222,7 @@ class OrdersController extends ControllerBase
     /**
      * Action for editing orders
      *
-     * @param int 
+     * @param int
      */
     public function editAction($orderNumber = null)
     {
@@ -310,6 +239,8 @@ class OrdersController extends ControllerBase
         $order = Orders::findFirstByorderNumber($orderNumber);
         $this->view->order = $order;
         $this->view->form = new OrdersForm($order);
+
+        $this->view->pageTitle = "Order " . $order->orderNumber . " for " . \Phalcon\Tag::linkTo("customers/view/" . $order->customerCode, $order->customer->customerName);
     }
 
     /**
@@ -319,32 +250,65 @@ class OrdersController extends ControllerBase
 
     public function updateAction()
     {
-        echo "<pre>";
-        print_r($this->request->getPost());
-        echo "</pre>";
+        $this->view->disable();
+        $response = new Response();
 
-        $order = Orders::findFirstByorderNumber($this->request->getPost("orderNumber"));
-
-        // If the date is today then an ETA was most likely NOT added.
-        // Set to NULL if date is Today
-        if ($this->request->getPost("eta") == date("Y-m-d")) {
-            $date = null;
-        } else {
-            $date = $this->request->getPost($date);
+        if (!$this->request->isAjax() or !$this->request->isPost())
+        {
+            $this->flashSession->error('Nothing given to update');
+            return $this->_redirectBack();
         }
 
-        $order->eta = $date;
-        $success = $order->save($this->request->getPost(), array('location'));
+        $order = Orders::findFirstByorderNumber($this->request->getPost("pk"));
+        if (!$order) {
+            $response->setStatusCode(404, "Order not found");
+            $response->setContent('The order could not be found. Woops.');
+            $response->send();
+            return false;
+        }
+
+        switch ($this->request->getPost('name')) {
+            case 'eta':
+                $order->eta = date("Y-m-d", strtotime($this->request->getPost('value')));
+                break;
+
+            case 'notes':
+                $order->notes = $this->request->getPost('value');
+                break;
+
+            case 'followUp':
+                $order->toggleFollowUp();
+                break;
+
+            case 'scheduled':
+                $order->toggleScheduled();
+                break;
+
+            case 'completed':
+                $order->toggleCompleted();
+                break;
+
+            case 'location':
+                $order->location = $this->request->getPost('value');
+                break;
+
+            default:
+                $response->setStatusCode(400, "Malformed query");
+                $response->send();
+                break;
+        }
+
+        $success = $order->save();
 
         if ($success) {
-            $this->flashSession->success("Order updated");
-            $this->response->redirect('orders');
-            $this->view->disable;
+            $response->setStatusCode(200);
+            $response->setContent('null');
+            $response->send();
+            return true;
         } else {
-            $this->flash->error("Sorry, the order could not be updated");
-            foreach ($contact->getMessages() as $message) {
-                $this->flash->error($message->getMessage());
-            }
+            $response->setStatusCode(501, "This could not be updated");
+            $response->send();
+            return false;
         }
 
     }
@@ -357,7 +321,7 @@ class OrdersController extends ControllerBase
     public function deleteAction($orderNumber)
     {
 
-        $customer_order = CustomerOrders::findFirstByorderNumber($orderNumber);
+        $customer_order = Orders::findFirstByorderNumber($orderNumber);
         if (!$customer_order) {
             $this->flash->error("customer_order was not found");
 
@@ -379,12 +343,48 @@ class OrdersController extends ControllerBase
                 ));
         }
 
-        $this->flash->success("customer_order was deleted successfully");
+        $this->flash->success("Order was deleted successfully");
 
         return $this->dispatcher->forward(array(
             "controller" => "orders",
             "action" => "index"
             ));
+    }
+
+    public function customerAction($customerCode = null)
+    {
+        $this->view->setTemplateBefore('none');
+        if(!$this->request->isAjax()) {
+            $response = new Response();
+            return $response->redirect('orders');
+        }
+        if(is_null($customerCode)) {
+            $this->flash->error('Invalid URL');
+            return true;
+        }
+
+        $customer = Customers::findFirstByCustomerCode($customerCode);
+        if(!$customer){
+            $this->flash->error('Customer not found');
+            return true;
+        }
+        $this->view->customer = $customer;
+    }
+
+    public function outstandingAction()
+    {
+        $this->view->setTemplateBefore('none');
+        if(!$this->request->isAjax()) {
+            $response = new Response();
+            return $response->redirect('orders');
+        }
+
+        $this->view->orders = Orders::find(
+            array(
+                "complete = 0",
+                "order" => "orderNumber DESC"
+            )
+        );
     }
 
 }

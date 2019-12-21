@@ -34,6 +34,9 @@ class SessionController extends ControllerBase
      */
     public function registerAction()
     {
+        // Disabled registration
+        return $this->response->redirect("login");
+
         $this->tag->prependTitle('Register');
 
         $form = new SignUpForm();
@@ -49,10 +52,10 @@ class SessionController extends ControllerBase
                     'email' => $this->request->getPost('email'),
                     'password' => $this->security->hash($this->request->getPost('password')),
                     'profilesId' => 2,
-                    'banned'    => 'N',
-                    'suspended'    => 'N',
-                    'mustChangePassword'    => 'N',
-                    'active'    => 'N',
+                    'banned'    => '0',
+                    'suspended'    => '0',
+                    'mustChangePassword'    => '0',
+                    'active'    => '0',
                 ));
 
                 if ($user->save()) {
@@ -75,7 +78,7 @@ class SessionController extends ControllerBase
         if ($this->session->has('auth-identity')) {
             return $this->response->redirect('dashboard');
         }
-        
+
         $this->view->setTemplateBefore('auth');
 
         $this->tag->prependTitle('Login');
@@ -121,7 +124,9 @@ class SessionController extends ControllerBase
         $this->tag->prependTitle('Forgotton Password');
 
         $form = new ForgotPasswordForm();
+        $this->view->form = $form;
 
+        // If the user has submitted their email address
         if ($this->request->isPost()) {
 
             if ($form->isValid($this->request->getPost()) == false) {
@@ -147,8 +152,31 @@ class SessionController extends ControllerBase
                 }
             }
         }
+    }
 
-        $this->view->form = $form;
+    public function resetpasswordAction($token = null)
+    {
+        $this->tag->prependTitle('Reset Password');
+
+        $this->view->token = false;
+
+        if (!$token) {
+            $this->flash->error('Link is invalid');
+            return true;
+        }
+
+        $reset = ResetPasswords::findFirstBycode($token);
+
+        if (!$reset) {
+            $this->flash->error('Token is invalid or has expired');
+            return true;
+        }
+
+        $this->view->token = true;
+    }
+
+    private function updatepassword() {
+
     }
 
     /**
@@ -157,7 +185,6 @@ class SessionController extends ControllerBase
     public function logoutAction()
     {
         $this->auth->remove();
-
-        return $this->response->redirect('');
+        return $this->response->redirect('login');
     }
 }

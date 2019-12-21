@@ -7,6 +7,10 @@ use Phalcon\Mvc\Forms;
 use App\Models\Contacts;
 use App\Models\ContactRecord;
 use App\Forms\ContactsForm;
+use Phalcon\Security\Random;
+use \Phalcon\Http\Response;
+
+// TODO: Make URLS dynamic
 
 class ContactsController extends ControllerBase
 {
@@ -19,6 +23,9 @@ class ContactsController extends ControllerBase
 	public function indexAction()
 	{
 		$this->view->headerButton = \Phalcon\Tag::linkTo(array('contacts/new', 'New', 'class' => ' btn btn-default pull-right'));
+
+        $this->view->contacts = Contacts::find();
+
 	}
 
 	public function viewAction($id = null)
@@ -40,10 +47,20 @@ class ContactsController extends ControllerBase
             'limit'         => 8
         ));
         $this->view->history = $history;
-		
-        $this->view->headerButton = \Phalcon\Tag::linkTo(array("followup/?company=" . $contact->customerCode . "&contact=" . $id, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
 
-		$this->view->history = $history;
+        $this->view->headerButton = '
+        <!-- Split button -->
+        <div class="btn-group pull-right">
+            <a class="btn btn-default" data-target="#modal-ajax" href="/followup/?company=' . $contact->customerCode . '" role="button"><i class="fa fa-icon fa-pencil"></i> Add Record</a>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+            	<li><a href="#" data-href="/contacts/delete/' . $contact->id . '" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
+            </ul>
+        </div>
+        ';
 
 		$this->view->contact = $contact;
 
@@ -51,6 +68,19 @@ class ContactsController extends ControllerBase
 		$this->view->pageTitle = '<i class="fa fa-user" aria-hidden="true"></i> ' . $contact->name;
 		$this->tag->prependTitle($contact->name);
 		$this->view->pageSubtitle = " ";
+		$this->view->pageSubheader = array(
+            1 => array(
+                'text' => $contact->company->customerName,
+                'icon' => 'building',
+                'link' => '/customers/view/' . $contact->company->customerCode,
+            ),
+        );
+        $this->assets->collection('header')
+            ->addCss('css/bootstrap-markdown.min.css', true);
+        $this->assets->collection('footer')
+            ->addJs('js/to-markdown.js', true)
+            ->addJs('js/bootstrap-markdown.js', true)
+            ->addJs('js/markdown.js', true);
 	}
 
 	public function newAction($customerCode = null)
@@ -65,7 +95,7 @@ class ContactsController extends ControllerBase
 		$profile->assign(array(
 			'customerCode'	=> $customerCode
 		));
-		
+
 		$this->view->pageTitle = "Create new Contact";
 		$this->view->form = new ContactsForm($profile, array(
 			'edit' => true
@@ -105,9 +135,9 @@ class ContactsController extends ControllerBase
         }
 
         $contact = new Contacts();
-        $success = $contact->save($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial', 'position'));
+        $success = $contact->save($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial', 'role'));
 		if ($success) {
-			$this->response->redirect('contacts/view/' . $contact->id);
+			$this->response->redirect('customers/view/' . $contact->customerCode . '/#contacts');
 			$this->view->disable;
 		} else {
 			$this->flash->error("Sorry, the quote could not be saved");
@@ -131,7 +161,7 @@ class ContactsController extends ControllerBase
 
         $contact = Contacts::findFirstById($this->request->getPost('id'));
         // Store and check for errors
-        $success = $contact->save($this->request->getPost(), array('directDial', 'email', 'name', 'position', 'customerCode'));
+        $success = $contact->save($this->request->getPost(), array('directDial', 'email', 'name', 'role', 'customerCode'));
         if ($success) {
             $this->flash->success("Contact update successfully!");
             return $this->_redirectBack();
@@ -143,17 +173,60 @@ class ContactsController extends ControllerBase
         }
     }
 
+    public function ajaxupdateAction()
+	{
+		$this->view->disable();
+		if (!$this->request->isPost()){
+			$this->_redirectBack();
+		}
+
+        $response = new \Phalcon\Http\Response();
+
+		$contact = Contacts::findFirstById($this->request->getPost("pk"));
+        if (!$contact) {
+            $response->setStatusCode(404, "Contact not found");
+            $response->send();
+        }
+		switch ($this->request->getPost('name')) {
+			case 'name':
+				$contact->name = $this->request->getPost('value');
+				break;
+			case 'directDial':
+				$contact->directDial = $this->request->getPost('value');
+				break;
+			case 'email':
+				$contact->email = $this->request->getPost('value');
+				break;
+			case 'role':
+				$contact->role = $this->request->getPost('value');
+				break;
+			default :
+				$response->setStatusCode(404, "Field not found");
+				$response->send();
+		}
+
+		if ($contact->update()) {
+			$response->setStatusCode(200, "Update successful");
+		} else {
+			$response->setStatusCode(500, "Something went wrong");
+		}
+		$response->send();
+
+	}
+
 	public function deleteAction($id)
 	{
+
+        $response = new Response();
+
 		$contact = Contacts::findFirstById($id);
 		if (!$contact) {
 			$this->flash->error("Contact was not found");
 
-			return $this->dispatcher->forward(array(
-				"controller"	=> "contacts",
-				"action"		=> "index"
-			));
+			return $response->redirect("contacts/");
 		}
+
+		$customerCode = $contact->customerCode;
 
 		if (!$contact->delete()) {
 
@@ -161,17 +234,11 @@ class ContactsController extends ControllerBase
 				$this->flash->error($message);
 			}
 
-			return $this->dispatcher->forward(array(
-				"controller"	=> "contacts",
-				"action"		=> "index"
-			));
+            return $response->redirect("contacts/");
 		}
 
-		$this->flash->success("Contact was deleted successfully");
+		$this->flashSession->success("Contact was deleted successfully");
 
-		return $this->dispatcher->forward(array(
-			"controller"	=> "contacts",
-			"action"		=> "index"
-		));
+        return $response->redirect("customers/view/" . $customerCode . "/#contacts");
 	}
 }

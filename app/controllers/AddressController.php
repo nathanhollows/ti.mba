@@ -58,12 +58,12 @@ class AddressController extends ControllerBase
 
 		$address = new Addresses();
 		// Store and check for errors
-		$success = $address->save($this->request->getPost(), array('customerCode', 'type', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
+		$success = $address->save($this->request->getPost(), array('customerCode', 'typeCode', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
 		if ($success) {
 			return $this->_redirectBack();
 		} else {
-			$this->flash->error("Sorry, the quote could not be saved");
-			foreach ($contact->getMessages() as $message) {
+			$this->flash->error("Sorry, the address could not be saved");
+			foreach ($address->getMessages() as $message) {
 				$this->flash->error($message->getMessage());
 			}
 		}
@@ -85,7 +85,7 @@ class AddressController extends ControllerBase
         	return "No such address exists!";
         }
         // Store and check for errors
-        $success = $address->save($this->request->getPost(), array('customerCode', 'type', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
+        $success = $address->save($this->request->getPost(), array('customerCode', 'typeCode', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
         if ($success) {
             return $this->_redirectBack();
         } else {
