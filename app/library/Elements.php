@@ -10,23 +10,84 @@ use App\Models\ContactRecord;
 class Elements extends Component
 {
 
+    private $_leftNav = array(
+        'dashboard' => array(
+            'icon'  => 'activity',
+            'caption' => 'Dashboard',
+            'action' => ''
+        ),
+        'customers' => array(
+            'icon'  => 'users',
+            'caption' => 'Customers',
+            'action' => '',
+        ),
+        'quotes' => array(
+            'icon'  => 'file-text',
+            'caption' => 'Quotes',
+            'action' => '',
+        ),
+        'orders' => array(
+            'icon'  => 'box',
+            'caption' => 'Orders',
+            'action' => '',
+            'children' => array (
+                array('Orders', 'orders'),
+                array('Freight Following', 'freight'),
+            )),
+        'kpi' => array(
+            'icon'  => 'truck',
+            'caption' => 'KPI\'s',
+            'action' => '',
+            'children' => array (
+                array('Daily KPI\'s', 'kpi/'),
+                array('Sales', 'kpi/dailysales'),
+            )),
+        'reports' => array(
+            'icon'  => 'bar-chart',
+            'caption' => 'Reports',
+            'action' => '',
+            'children' => array (
+                array('Customers', 'reports/customers'),
+                array('Monthly Sales', 'reports/sales'),
+                array('Annual Sales', 'reports/annual'),
+                array('Survey', 'reports/survey'),
+            )),
+    );
+
+    private $_rightNav = array(
+        'tasks' => array(
+            'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
+            'action' => ''
+        ),
+        '' => array(
+            'caption' => 'Account',
+            'action' => '',
+            'children'  => array(
+                array('Profile', 'profile'),
+                array('Preferences', 'preferences'),
+                array('CRM Settings', 'settings'),
+                array('Logout', 'logout'),
+            )
+        )
+    );
+
     private $_privateMenu = array(
         'navbar-left' => array(
             'dashboard' => array(
                 'icon'  => 'activity',
                 'caption' => 'Dashboard',
                 'action' => ''
-                ),
+            ),
             'customers' => array(
                 'icon'  => 'users',
                 'caption' => 'Companies',
                 'action' => '',
-                ),
+            ),
             'quotes' => array(
                 'icon'  => 'file-text',
                 'caption' => 'Quotes',
                 'action' => '',
-                ),
+            ),
             'orders' => array(
                 'icon'  => 'box',
                 'caption' => 'Orders',
@@ -53,7 +114,7 @@ class Elements extends Component
                     array('Annual Sales', 'reports/annual'),
                     array('Survey', 'reports/survey'),
                 )),
-            ),
+        ),
         'navbar-right faa-parent animated-hover' => array(
             'tasks' => array(
                 'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
@@ -62,72 +123,87 @@ class Elements extends Component
             '' => array(
                 'caption' => 'Account',
                 'action' => '',
-                    'children'  => array(
+                'children'  => array(
                     array('Profile', 'profile'),
                     array('Preferences', 'preferences'),
                     array('CRM Settings', 'settings'),
                     array('Logout', 'logout'),
-                    )
-                ),
-            )
-        );
-
-    private $_publicMenu = array(
-        'Home' => array(
-            'controller' => 'index',
-            'action' => '',
-            'any' => true
+                )
             ),
-        'About' => array(
-            'controller' => 'about',
-            'action' => '',
-            'any' => true
-            ),
-        'Contact' => array(
-            'controller' => 'contact',
-            'action' => 'index',
-            'any' => true
-            ),
-        );
+        )
+    );
 
     /**
      * Construct BS4 menu
      */
-    public function getMenu()
+    public function getNavLeft()
     {
         $user = $this->auth->getId();
         $controllerName = $this->view->getControllerName();
 
-        foreach ($this->_privateMenu as $position => $menu) {
-            foreach ($menu as $controller => $option) {
-                $class = ($controller == $controllerName ? "active" : "");
-                if (isset($option['children'])) {
-                    echo "<li class='nav-item dropdown $class'>";
-                    echo '<a class="nav-link dropdown-toggle" href="#" id="' . $controller. 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-                    echo $option['caption'];
-                    echo '</a>';
+        foreach ($this->_leftNav as $controller => $option) {
+            $class = ($controller == $controllerName ? "active" : "");
+            if (isset($option['children'])) {
+                echo "<li class='nav-item dropdown $class'>";
+                echo '<a class="nav-link dropdown-toggle" href="#" id="' . $controller. 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                echo $option['caption'];
+                echo '</a>';
 
-                    echo '<div class="dropdown-menu" aria-labelledby="' . $controller . 'Dropdown">';
-                    foreach ($option['children'] as $key) {
-                        echo $this->tag->linkTo([
-                            $key['1'], 
-                            $key[0],
-                            'class' => 'dropdown-item'
-                        ]);
-                    }
-                    echo '</div>';
-                    echo '</li>';
-
-                } else {
-                    echo "<li class='nav-item $class'>";
+                echo '<div class="dropdown-menu" aria-labelledby="' . $controller . 'Dropdown">';
+                foreach ($option['children'] as $key) {
                     echo $this->tag->linkTo([
-                        $controller . '/' . $option['action'],
-                        $option['caption'],
-                        'class' => 'nav-link',
+                        $key['1'], 
+                        $key[0],
+                        'class' => 'dropdown-item'
                     ]);
-                    echo '</li>';
                 }
+                echo '</div>';
+                echo '</li>';
 
+            } else {
+                echo "<li class='nav-item $class'>";
+                echo $this->tag->linkTo([
+                    $controller . '/' . $option['action'],
+                    $option['caption'],
+                    'class' => 'nav-link',
+                ]);
+                echo '</li>';
+            }
+        }
+    }
+
+    public function getNavRight()
+    {
+        $user = $this->auth->getId();
+        $controllerName = $this->view->getControllerName();
+
+        foreach ($this->_rightNav as $controller => $option) {
+            $class = ($controller == $controllerName ? "active" : "");
+            if (isset($option['children'])) {
+                echo "<li class='nav-item dropdown $class'>";
+                echo '<a class="nav-link dropdown-toggle" href="#" id="' . $controller. 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                echo $option['caption'];
+                echo '</a>';
+
+                echo '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="' . $controller . 'Dropdown">';
+                foreach ($option['children'] as $key) {
+                    echo $this->tag->linkTo([
+                        $key['1'], 
+                        $key[0],
+                        'class' => 'dropdown-item'
+                    ]);
+                }
+                echo '</div>';
+                echo '</li>';
+
+            } else {
+                echo "<li class='nav-item $class'>";
+                echo $this->tag->linkTo([
+                    $controller . '/' . $option['action'],
+                    $option['caption'],
+                    'class' => 'nav-link',
+                ]);
+                echo '</li>';
             }
         }
     }
@@ -238,7 +314,7 @@ class Elements extends Component
         $acronym = "";
 
         foreach ($words as $w) {
-          $acronym .= $w[0];
+            $acronym .= $w[0];
         }
         return $acronym;
     }

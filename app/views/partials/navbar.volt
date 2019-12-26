@@ -1,6 +1,6 @@
 {# BS4 style nav bar #}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
     <a class="navbar-brand" href="{{ url('dashboard') }}">
     <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">
     {{ constant('SITE_TITLE') }}
@@ -9,13 +9,14 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-        {{ elements.getMenu() }}
+        {{ elements.getNavLeft() }}
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <ul class="navbar-nav">
+        {{ elements.getNavRight() }}
+    </ul>
   </div>
 </nav>
+
+<div class="container-fluid" style="margin-top: 4.5em;">
