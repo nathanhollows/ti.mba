@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=af30bfddb00cb994b392579c6bfbd68c)
- * Config saved to config.json and https://gist.github.com/af30bfddb00cb994b392579c6bfbd68c
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=ae6a4625583779247fd401fbc5e4aedd)
+ * Config saved to config.json and https://gist.github.com/ae6a4625583779247fd401fbc5e4aedd
  */
 if (typeof jQuery === 'undefined') {
   throw new Error('Bootstrap\'s JavaScript requires jQuery')
@@ -1523,7 +1523,7 @@ if (typeof jQuery === 'undefined') {
   })
 
 
-  // NOTE: POPOVER EXTENDS tooltip.js
+  // DONE:40 POPOVER EXTENDS tooltip.js
   // ================================
 
   Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
