@@ -2,4 +2,8 @@ app/cache/*
 vendor/*
 public/img/icons/*
 public/pdf/*
-.composer.lock
+public/font-awesome/*
+composer.lock
+*.swp
+app/script
+public/.well-known/
