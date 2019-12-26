@@ -94,7 +94,7 @@ class SessionController extends ControllerBase
                 }
             } else {
 
-                if ($form->isValid($this->request->getPost()) == false) {
+                if (!$form->isValid($this->request->getPost())) {
                     foreach ($form->getMessages() as $message) {
                         $this->flash->error($message);
                     }
@@ -102,8 +102,7 @@ class SessionController extends ControllerBase
 
                     $this->auth->check(array(
                         'email' => $this->request->getPost('email'),
-                        'password' => $this->request->getPost('password'),
-                        'remember' => $this->request->getPost('remember')
+                        'password' => $this->request->getPost('password')
                     ));
 
                     return $this->response->redirect('dashboard');
