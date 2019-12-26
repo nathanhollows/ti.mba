@@ -9,6 +9,21 @@
     <link rel="shortcut icon" href="/favicon.ico?m=1" type="image/x-icon" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+<style>
+.bg-dark {
+    background-color: 
+    #152b3e !important;
+}
+.bg-light {
+    background-color:
+    #f2f1eb !important;
+}
+.header.bg-dark {
+    background-color:
+    #1b354a !important;
+}
+</style>
+
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

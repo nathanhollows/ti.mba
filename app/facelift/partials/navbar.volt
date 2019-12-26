@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom mb-3">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
     <div class="container">
         <a class="navbar-brand" href="{{ url('dashboard') }}">
             <img src="/img/logo.svg" width="30" height="30" class="d-inline-block align-top" alt="">

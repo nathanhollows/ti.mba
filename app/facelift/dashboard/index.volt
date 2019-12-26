@@ -143,6 +143,7 @@
 
 <ul>
 	<li>Quote managing</li>
+	<li>KPI / Sales AJAX</li>
 	<li>Top customers</li>
 	<li>Email integration</li>
 	<li>File storage</li>
