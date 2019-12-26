@@ -1,0 +1,55 @@
+<?php
+return new \Phalcon\Config(array(
+	'database' => array(
+		// Describe how the app is to connect to the database
+		'adapter'     => 'Mysql',
+		'host'        => '',
+		'username'    => '',
+		'password'    => '',
+		'dbname'      => '',
+	),
+	'application' => array(
+		'cryptSalt'		=> '',
+
+		// Define the folders for various components
+		'controllersDir' => __DIR__ . '/../../app/controllers/',
+		'mobileControllersDir' => __DIR__ . '/../../app/controllers/mobile/',
+		'modelsDir'      => __DIR__ . '/../../app/models/',
+		'viewsDir'       => __DIR__ . '/../../app/views/',
+		'partialsDir'    => 'partials/', // Relative to viewDir
+		'layoutsDir'     => 'layouts/',  // Relative to viewDir
+		'formsDir'       => __DIR__ . '/../../app/forms/',
+		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
+		'libraryDir'     => __DIR__ . '/../../app/library/',
+		'cacheDir'       => __DIR__ . '/../../app/cache/',
+		// Set the root URI
+		'baseUri'        => '',
+		'publicUrl'      => '',
+		// Define the site title
+		'siteTitle'		 => 'Ti.mba',
+		// Define version number
+		'version'		 => '1.0',
+	),
+    'mail' => array(
+        'fromEmail'      => '',
+        'fromName'       => '',
+        'smtp'           => array(
+            'server'        => '',
+            'port'          => '',
+            // Accepts 'tls', 'ssl', 'none'
+            'security'      => 'tls',
+            'username'      => '',
+            'password'      => '',
+        ),
+    ),
+	'pbt' => array(
+		// Toggle PBT file downloads
+		'enable'		=> false,
+		'ftpServer'		=> 'ftp.pbt.com',
+		'ftpUserName'	=> '',
+		'ftpPassword'	=> '',
+		// Use value supplied by PBT
+		// Format as 'directory/'
+		'ftpDirectory'	=> ''
+	),
+));

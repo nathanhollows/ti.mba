@@ -27,6 +27,11 @@ use App\Auth\Auth,
  */
 $di = new FactoryDefault();
 
+// Ensure config.php has been set
+if (empty($config)) {
+	echo "Please create app/config/config.php. A template exists in that folder.";
+	die;
+}
 // Store it in the Di container
 $di->set('config', $config);
 
