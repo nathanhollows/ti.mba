@@ -42,6 +42,14 @@ class ControllerBase extends Controller
 
     public function initialize()
     {
+        if ($this->session->get('auth-identity')['dev']) {
+
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+
+            $this->view->setViewsDir('/var/www/html/app/facelift/');
+        }
         $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
         $this->tag->appendTitle(' | ' . SITE_TITLE);
         $this->assets->collection('header')
