@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col">
                         <div class="card-body">
-                            <h5 class="card-title">Month Sales</h5>
+                            <h5 class="card-title">Sales In</h5>
                             <p class="card-text">${{ monthsSales|number }}</p>
                             <div class="progress" style="height: 6px;">
                                 {% set percentage = (monthsSales / budget.budget * 100)|round %}
@@ -141,19 +141,28 @@
     </div>
 </div>
 
-<ul>
-	<li>Quote managing</li>
-	<li>KPI / Sales AJAX</li>
-	<li>Top customers</li>
-	<li>Email integration</li>
-	<li>File storage</li>
-	<li>Customers sale statistics</li>
-	<li>Customer satisfaction - survey?</li>
-	<li>Pipeline management</li>
-	<li>To do list</li>
-	<li>KPI Reports</li>
-	<li>Reports by Area / Customer / Salesman</li>
-</ul>
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<div class="card">
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item">
+						<strong>Dashboard</strong>: Better graphs in top part. Personalise with own metrics</li>
+					<li class="list-group-item">
+						<strong>Quote managing:</strong> Quickly manage quotes</li>
+					<li class="list-group-item"><strong>KPI / Sales AJAX</strong></li>
+					<li class="list-group-item"><strong>Top customers</strong> By region / rep</li>
+					<li class="list-group-item">Customer satisfaction - survey?</li>
+					<li class="list-group-item">Pipeline management</li>
+					<li class="list-group-item">To do list</li>
+					<li class="list-group-item">KPI Reports</li>
+					<li class="list-group-item">Reports by Area / Customer / Salesman</li>
+					<li class="list-group-item">Sales user group</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     var ctx = document.getElementById('myChart').getContext('2d');

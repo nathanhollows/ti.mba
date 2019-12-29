@@ -21,7 +21,7 @@
       <td>{{ link_to('customers/view/' ~ customer.customerCode, customer.customerName) }}</td>
       <td>{{ customer.salesArea.name }}</td>
       <td>{{ customer.tripDay }}</td>
-      <td>{{ customer.salesArea.rep.name }}</td>
+			<td>{% if customer.salesArea.rep %}{{ customer.salesArea.rep.name }}{% endif %}</td>
       <td>{{ customer.status.name }}</td>
   </tr>
   {% endfor %}

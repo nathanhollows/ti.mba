@@ -22,6 +22,9 @@
     background-color:
     #1b354a !important;
 }
+.feather {
+	width: 1rem;
+}
 </style>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

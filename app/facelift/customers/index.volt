@@ -22,7 +22,7 @@
     </div>
 </div>
 
-<div class="container bg-white py-3 mb-4 border shadow rounded">
+<div class="container bg-white py-3 mb-4 border shadow-sm rounded">
 <div class="table-responsive">
 	<table class="table table-striped table-hover dataTable" data-source="{{ url('customers/index') }}">
 		<thead>

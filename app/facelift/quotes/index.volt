@@ -25,11 +25,11 @@
 <div class="container-fluid py-2 border bg-white">
     <div id="filter-list">
         <div class="btn-group" role="group" aria-label="Filter My Quotes" id="filterlist-user">
-            <button type="button" class="btn btn-sm btn-secondary filter-user" data-user="Regan">My Quotes</button>
+					<button type="button" class="btn btn-sm btn-secondary filter-user" data-user="{{ auth.getName() }}">My Quotes</button>
             <button type="button" class="btn btn-sm btn-secondary filter-user" data-user="">All Quotes</button>
         </div>
         <div class="btn-group" role="group" aria-label="Filter out dead quotes" id="filterlist-status">
-            <button type="button" class="btn btn-sm btn-secondary filter-status" data-status="Dead">Active</button>
+            <button type="button" class="btn btn-sm btn-secondary filter-status" data-status="Warm">Active</button>
             <button type="button" class="btn btn-sm btn-secondary filter-status" data-status="">Dead</button>
         </div>
 
