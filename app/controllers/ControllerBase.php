@@ -42,7 +42,7 @@ class ControllerBase extends Controller
 
     public function initialize()
     {
-        if ($this->session->get('auth-identity')['dev']) {
+        if ($this->session->get('auth-identity')['dev'] || $this->request->hasQuery("facelift")) {
 
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
