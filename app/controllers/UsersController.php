@@ -80,6 +80,13 @@ class UsersController extends ControllerBase
         } else {
         	$user->banned = 0;
         }
+
+				if ($this->request->hasPost("newpw")) {
+					if ($this->request->getPost("newpw") == $this->request->getPost("newpw2")) {
+						$user->password = $this->security->hash($this->request->getPost('newpw'));
+					}
+				}
+
         $user->save();
 
         $this->flashSession->success("User successfully updated");
