@@ -28,7 +28,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col">
+		<div class="col col-lg-8">
 			<table class="table table-hover w-100 bg-white rounded border">
 				<thead>
 					<tr>
