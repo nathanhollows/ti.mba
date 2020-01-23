@@ -117,28 +117,31 @@ $di->set('view', function() use ($config) {
 
 		    $compiler = $volt->getCompiler();
 
-		    $compiler->addFilter('number', 'number_format');
+			$compiler->addFilter('number', 'number_format');
 
-		    $compiler->addFilter('dump', 'print_r');
-		    $compiler->addFilter('array_sum', 'array_sum');
-		    $compiler->addFilter('get_object_vars', 'get_object_vars');
-		    $compiler->addFilter('positive', 'abs');
-            $compiler->addFilter('round', 'round');
+			$compiler->addFilter('dump', 'print_r');
+			$compiler->addFilter('array_sum', 'array_sum');
+			$compiler->addFilter('get_object_vars', 'get_object_vars');
+			$compiler->addFilter('positive', 'abs');
+			$compiler->addFilter('round', 'round');
 			$compiler->addFunction('number_format', 'number_format');
 			$compiler->addFunction('strtotime', 'strtotime');
-		    $compiler->addFilter('stripspace', function($resolvedArgs, $exprArgs){
+			$compiler->addFilter('stripspace', function($resolvedArgs, $exprArgs){
 		        return 'str_replace(\' \',\'\','.$resolvedArgs.')';
-		    });
-		    $compiler->addFilter('timeAgo', function($resolvedArgs, $exprArgs){
+			});
+			$compiler->addFilter('timeAgo', function($resolvedArgs, $exprArgs){
 		        return '\Carbon\Carbon::createFromFormat("Y-m-d H:i:s", '.$resolvedArgs.')->diffForHumans()';
-		    });
-		    $compiler->addFilter('initials', function($resolvedArgs, $exprArgs){
+			});
+			$compiler->addFilter('money', function($resolvedArgs, $exprArgs){
+		        return '"$" . number_format('.$resolvedArgs.', 2)';
+			});
+			$compiler->addFilter('initials', function($resolvedArgs, $exprArgs){
 		    	return  'Elements::initials(' . $resolvedArgs . ');';
-		    });
+			});
 
-		    $compiler->addFilter('timeAgoDate', function($resolvedArgs, $exprArgs){
+			$compiler->addFilter('timeAgoDate', function($resolvedArgs, $exprArgs){
 		        return '\Carbon\Carbon::createFromFormat("Y-m-d", '.$resolvedArgs.')->diffForHumans()';
-		    });
+			});
 
 			return $volt;
 		},
