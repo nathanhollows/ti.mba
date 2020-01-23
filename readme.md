@@ -5,7 +5,7 @@ Ti.mba is a CRM package for the timber industry.
 <description>
 
 ## Version
-0.1.0
+1.0 (versioning hasn't been consistent, let's be real)
 
 <version>
 
@@ -18,19 +18,20 @@ Ti.mba is a CRM package for the timber industry.
 
 <instructions>
 
-## Authors
+## Author
 
 Nathan Hollows
 
-<authors>
+<author>
 
 ## Tech
 
 Ti.mba uses a number of open source projects to work properly:
 
 * [Phalcon 4+] - php framework that makes everything blazingly fast and easy
-* [Twitter Bootstrap] - great UI boilerplate for modern web apps
-* [jQuery] - duh
+* MariaDB
+* [Bootstrap 3/4]
+* [jQuery]
 
    [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
    [Phalcon 4+]: <https://phalconphp.com/en/>
@@ -40,7 +41,7 @@ Ti.mba uses a number of open source projects to work properly:
 
 ## License
 
-Copyright (C) 2019 Nathan Hollows
+Copyright (C) 2020 Nathan Hollows
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
