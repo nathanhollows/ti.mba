@@ -160,7 +160,7 @@ class Auth extends Component
         $this->cookies->get('RMU')->delete();
         $this->cookies->get('RMT')->delete();
 
-        return $this->response->redirect('session/login');
+        return $this->response->redirect('login');
     }
 
     /**
