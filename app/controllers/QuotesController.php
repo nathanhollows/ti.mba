@@ -304,6 +304,26 @@ class QuotesController extends ControllerBase
 		$this->view->form = new QuotesForm($quote);
 	}
 
+	public function manageAction() 
+	{
+		parent::initialize();
+		$this->tag->prependTitle("Manage Quotes");
+		$this->view->quotes = Quotes::find([
+			"conditions"	=> "user = ?1 AND status != 4",
+			"bind"				=> [
+				1 => $this->auth->getId(),
+			],
+		]);
+
+		$this->view->value = Quotes::sum([
+			"column"			=> "value",
+			"conditions"	=> "user = ?1 AND status != 4",
+			"bind"				=> [
+				1 => $this->auth->getId(),
+			],
+		]);
+	}
+
 	public function createAction()
 	{
 		if (!$this->request->isPost()) {

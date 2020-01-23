@@ -25,6 +25,11 @@ class Elements extends Component
             'icon'  => 'file-text',
             'caption' => 'Quotes',
             'action' => '',
+            'children' => array (
+                array('Manage', 'quotes/manage'),
+                array('Search', 'quotes/'),
+                array('New', 'quotes/new'),
+            ),
         ),
         'orders' => array(
             'icon'  => 'box',
