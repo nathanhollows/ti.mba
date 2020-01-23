@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Auth\Auth;
+use App\Models\Budgets;
 use App\Models\Users;
 use App\Models\ContactRecord;
 use App\Models\Quotes;
@@ -24,15 +25,15 @@ class ProfileController extends ControllerBase
             ->addJs('js/markdown.js', true);
 	}
 
-	public function indexAction()
+	public function indexAction($id = null)
 	{
+		$this->view->pick('profile/index');
 		if ($this->request->isAjax()) {
 			print_r($this->request->getPost());
 		}
 
 		$user = new Auth;
-		$id = $user->getId();
-
+		if (is_null($id)) $id = $user->getId();
 
 		$user = Users::findFirstByid($id);
 
@@ -40,6 +41,7 @@ class ProfileController extends ControllerBase
 		$this->view->pageTitle = $user->name;
 
 		$this->view->user = $user;
+		$this->view->budget = Budgets::current();
 
 		$this->view->history = ContactRecord::find(array(
 			'conditions'	=> 'user = ?1',
@@ -52,7 +54,7 @@ class ProfileController extends ControllerBase
 			'column'		=> 'value',
 			'conditions'	=> "rep = $id",
 			'group'			=> 'date',
-			'order'			=> 'sumatory DESC',
+			'order'			=> 'date DESC',
 			'limit'			=> '1',
 		));
 
@@ -113,7 +115,6 @@ class ProfileController extends ControllerBase
 			'bind'		=> [1 => $id ],
 		));
 
-
 		$this->view->sales = DailySales::sum(array(
 			'column'		=> 'value',
 			'conditions'	=> "rep = $id",
@@ -136,6 +137,7 @@ class ProfileController extends ControllerBase
 
 	public function viewAction($id = null)
 	{
+		return $this->indexAction($id);
 		if ($this->request->isAjax()) {
 			print_r($this->request->getPost());
 		}
