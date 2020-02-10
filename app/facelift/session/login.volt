@@ -9,6 +9,5 @@
     {{ form.render('email') }}
   <label for="inputPassword" class="sr-only">Password</label>
     {{ form.render('password') }}
-    {{ form.render('csrf', ['value': security.getToken()]) }}
     {{ form.render('Login') }}
 </form>
