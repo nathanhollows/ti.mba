@@ -1,3 +1,8 @@
+{% if kpis.getLast().chargeOut is defined %}
+{% set chargeOut = kpis.getLast().chargeOut %}
+{% else %}
+{% set chargeOut = 0 %}
+{% endif %}
 {% set dailybudget = budget.budget/budget.days %}
 <div class="header bg-dark pb-5 pt-4 text-light mt-n3">
 	<div class="container">
@@ -38,8 +43,8 @@
 						<div class="card-body">
 							<h5 class="card-title">Charge Out</h5>
 							{% if kpis is defined %}
-							<p class="card-text"> ${{ kpis.getLast().chargeOut|number }} </p>
-							{% set percentage = ( kpis.getLast().chargeOut / budget.budget * 100)|round %}
+							<p class="card-text"> ${{ chargeOut|number }} </p>
+							{% set percentage = ( chargeOut / budget.budget * 100)|round %}
 							<div class="progress" style="height: 6px;">
 								<div class="progress-bar bg-primary" style="width: {{ percentage }}%;" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>

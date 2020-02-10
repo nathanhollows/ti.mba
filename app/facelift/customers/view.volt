@@ -7,13 +7,13 @@
 			</div>
 			<div class="col text-right">
 				<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-					{{ linkTo(['followup/?company=' ~ customer.customerCode, 'Add Record', 'class': 'btn btn-primary']) }}
+					{{ linkTo(['followup/?company=' ~ customer.customerCode, 'Add Note', 'class': 'btn btn-primary']) }}
 					<div class="btn-group" role="group">
 						<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
 							{{ linkTo(['quotes/new/?company=' ~ customer.customerCode, 'New Quote', 'class': 'dropdown-item']) }}
-							{{ linkTo(['customers/details/' ~ customer.customerCode, 'Details Report', 'class': 'dropdown-item']) }}
-							{{ linkTo(['customers/history/' ~ customer.customerCode, 'History Report', 'class': 'dropdown-item']) }}
+							{{ linkTo(['customers/details/' ~ customer.customerCode, 'Print Contact List', 'class': 'dropdown-item']) }}
+							{{ linkTo(['customers/history/' ~ customer.customerCode, 'Print Contact Summary', 'class': 'dropdown-item']) }}
 						</div>
 					</div>
 				</div>
@@ -23,9 +23,10 @@
 	</div>
 </div>
 
+<div class="container">
 {{ flashSession.output() }}
 {{ content() }}
-<div class="col-xs-12 col-sm-12 col-md-4 col-lg-3">
+<div class="col">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="panel panel-default ">

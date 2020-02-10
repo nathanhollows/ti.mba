@@ -38,7 +38,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col">
-			<table class="table">
+			<table class="table bg-white rounded bordered mt-4 shadow-sm">
 				<thead>
 					<th>#</th>
 					<th>Date</th>
@@ -52,7 +52,7 @@
 					<tr>
 						<td>{{ linkTo(['quotes/view/' ~ quote.quoteId, quote.quoteId]) }}</td>
 						<td>{{ quote.date }}</td>
-						<td>{{ quote.customer.customerName }}</td>
+						<td>{{ linkTo(['customers/view/'~ quote.customer.customerCode, quote.customer.customerName]) }}</td>
 						<td>{{ quote.reference }}</td>
 						<td align="right">{{ quote.value|money }}</td>
 						<td>
