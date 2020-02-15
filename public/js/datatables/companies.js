@@ -20,7 +20,10 @@ $(document).ready(function() {
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 				$(nTd).html("<a href='view/"+oData.customerCode+"'>"+oData.customerCode+"</a>");
 			}},
-			{data: "customerName", searchable: true},
+			{data: "customerName", searchable: true,
+			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+				$(nTd).html("<a href='view/"+oData.customerCode+"'>"+oData.customerName+"</a>");
+			}},
 			{data: "phone", searchable: true,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 				$(nTd).html("<a href='tel:"+oData.phone+"' class='tel-link')>"+oData.phone+"</a>");
@@ -28,7 +31,7 @@ $(document).ready(function() {
 			{data: "fax", searchable: false, class: "hidden-xs"},
 			{data: "customerStatus", searchable: true, class: "hidden-xs",
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<span class='label label-"+oData.style+"'>"+oData.name+"</span>");
+				$(nTd).html("<span class='badge badge-"+oData.style+"'>"+oData.name+"</span>");
 			}},
 			],
 		});

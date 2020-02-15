@@ -35,4 +35,4 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
   </head>
-  <body class="bg-light">
+  <body class="mb-5 bg-light">

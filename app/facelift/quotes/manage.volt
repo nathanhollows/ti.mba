@@ -57,8 +57,8 @@
 						<td align="right">{{ quote.value|money }}</td>
 						<td>
 							<div class="btn-group" role="group" aria-label="Basic example">
-								<button type="button" class="btn btn-secondary btn-sm">Won</button>
-								<button type="button" class="btn btn-secondary btn-sm">Lost</button>
+								<a href="{{ url('quotes/turntosale/' ~ quote.quoteId ) }}" class="btn btn-secondary btn-sm">Won</a>
+								<a href="{{ url('quotes/quotelost/' ~ quote.quoteId ) }}" class="btn btn-secondary btn-sm">Lost</a>
 							</div>
 						</td>
 					</tr>

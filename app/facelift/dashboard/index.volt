@@ -13,8 +13,8 @@
 			</div>
 			<div class="col text-right">
 				<div class="btn-group" role="group" aria-label="Toggle Graph">
-					<button id="toggle-sales" type="button" data-active="true" onClick="toggleChart(this);" class="btn btn-sm btn-danger">Sales</button>
-					<button id="toggle-despatch" type="button" onClick="toggleChart(this);" class="btn btn-sm btn-secondary">Despatch</button>
+					<button id="toggle-sales" type="button" onClick="toggleChart(this);" class="btn btn-sm btn-danger" data-class="btn-danger" data-set="0">Sales</button>
+					<button id="toggle-despatch" type="button" onClick="toggleChart(this);" class="btn btn-sm btn-primary" data-class="btn-primary" data-set="1">Despatch</button>
 				</div>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 						<div class="card-body">
 							<h5 class="card-title">Daily Sales</h5>
 							<p class="card-text">${{ daySales|number }}</p>
-							{% set percentage = ( daySales / budget.budget * 100)|round %}
+							{% set percentage = ( daySales / dailybudget * 100)|round %}
 							<div class="progress" style="height: 6px;">
 								<div class="progress-bar bg-danger" style="width: {{ percentage }}%;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
@@ -84,6 +84,18 @@
 
 <div class="container">
 	<div class="row">
+		<div class="col">
+			<div class="alert alert-info shadow-sm" role="alert">
+				<h4 class="alert-heading">What am I looking at?</h4>
+				<p>I am testing out a redesign of the CRM on a handful of pages. The goal is something that looks better and is easier to use. This design will be up for today only so let me know what you think.</p>
+				<p>Whether it's a compliment or criticism please hit <strong>Give Feedback</strong> and let me know. I need your feedback to ensure things are working for you.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
 		<div class="col-12 col-sm-6">
 			<div class="card bg-white shadow-sm mb-4">
 				<div class="card-body">
@@ -94,7 +106,7 @@
 					<li class="list-group-item list-group-item-action">
 						{% for user in users %}
 						{% if user.id == item.rep %}
-						{{ user.name }}
+							{{ link_to('profile/view/' ~ user.id ~ '/', user.name, 'class': 'text-primary') }}
 						{% break %}
 						{% endif %}
 						{% endfor %}
@@ -114,7 +126,7 @@
 						{% set label = percent ~ '%' %}
 						{% endif %}
 						<div class="progress">
-							<div class="progress-bar" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
+							<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
 								{{ label }}
 								<span class="sr-only"></span>
 							</div>
@@ -127,11 +139,11 @@
 		<div class="col-12 col-sm-6">
 			<div class="card bg-white shadow-sm mb-4">
 				<div class="card-body">
-					<h5 class="card-title">Monthly Sales</h5>
+					<h5 class="card-title mb-0">Monthly Sales</h5>
 				</div>
 				<ul class="list-group list-group-flush">
 					{% for item in agentSales %}
-					<li class="list-group-item">
+					<li class="list-group-item list-group-item-action">
 						<span>
 							{% for user in users %}
 							{% if user.id == item.rep %}
@@ -150,7 +162,7 @@
 					<li class="list-group-item">
 						<div class="progress">
 							{% set percent = (monthsSales / budget.budget * 100)|round %}
-							<div class="progress-bar" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
+							<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
 								{{ percent }}%
 								<span class="sr-only"></span>
 							</div>
@@ -162,28 +174,6 @@
 	</div>
 </div>
 
-<div class="container">
-	<div class="row">
-		<div class="col">
-			<div class="card">
-				<ul class="list-group list-group-flush">
-					<li class="list-group-item">
-						<strong>Dashboard</strong>: Better graphs in top part. Personalise with own metrics</li>
-					<li class="list-group-item">
-						<strong>Quote managing:</strong> Quickly manage quotes</li>
-					<li class="list-group-item"><strong>KPI / Sales AJAX</strong></li>
-					<li class="list-group-item"><strong>Top customers</strong> By region / rep</li>
-					<li class="list-group-item">Customer satisfaction - survey?</li>
-					<li class="list-group-item">Pipeline management</li>
-					<li class="list-group-item">To do list</li>
-					<li class="list-group-item">KPI Reports</li>
-					<li class="list-group-item">Reports by Area / Customer / Salesman</li>
-					<li class="list-group-item">Sales user group</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	var ctx = document.getElementById('myChart').getContext('2d');
@@ -284,26 +274,15 @@ var myChart = new Chart(ctx, {
 function toggleChart(el) {
 	let sales = document.getElementById("toggle-sales");
 	let despatch = document.getElementById("toggle-despatch");
-	if (el === sales && !sales.hasAttribute("data-active")) {
-		sales.classList.remove("btn-secondary");
-		sales.classList.add("btn-danger");
-		sales.setAttribute("data-active", true);
-		despatch.classList.remove("btn-primary");
-		despatch.classList.add("btn-secondary");
-		despatch.removeAttribute("data-active");
-		myChart.data.datasets[0].hidden = false;
-		myChart.data.datasets[1].hidden = true;
-		myChart.update();
-	} else if (el === despatch && !despatch.hasAttribute("data-active")) {
-		sales.classList.add("btn-secondary");
-		sales.classList.remove("btn-danger");
-		sales.removeAttribute("data-active");
-		despatch.classList.add("btn-primary");
-		despatch.classList.remove("btn-secondary");
-		despatch.setAttribute("data-active", true);
-		myChart.data.datasets[1].hidden = false;
-		myChart.data.datasets[0].hidden = true;
-		myChart.update();
+	let set = el.attributes["data-set"].value;
+	if (el.classList.contains("btn-secondary")) {
+		el.classList.remove("btn-secondary");
+		el.classList.add(el.attributes["data-class"].value);
+	} else {
+		el.classList.add("btn-secondary");
+		el.classList.remove(el.attributes["data-class"].value);
 	}
+	myChart.data.datasets[set].hidden = !myChart.data.datasets[set].hidden;
+	myChart.update();
 }
 </script>
