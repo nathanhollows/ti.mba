@@ -24,6 +24,8 @@
 	</div>
 </div>
 
+{{ content() }}
+
 <div class="container mt-n3 mb-4">
 	<div class="row">
 		<div class="col">
@@ -77,18 +79,6 @@
 						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="container">
-	<div class="row">
-		<div class="col">
-			<div class="alert alert-info shadow-sm" role="alert">
-				<h4 class="alert-heading">What am I looking at?</h4>
-				<p>I am testing out a redesign of the CRM on a handful of pages. The goal is something that looks better and is easier to use. This design will be up for today only so let me know what you think.</p>
-				<p>Whether it's a compliment or criticism please hit <strong>Give Feedback</strong> and let me know. I need your feedback to ensure things are working for you.</p>
 			</div>
 		</div>
 	</div>

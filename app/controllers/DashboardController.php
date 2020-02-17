@@ -17,59 +17,59 @@ class DashboardController extends ControllerBase
 {
 	public function initialize()
 	{
-        $this->view->setTemplateBefore('private');
-        $this->tag->prependTitle('Dashboard');
-        parent::initialize();
+		$this->view->setTemplateBefore('private');
+		$this->tag->prependTitle('Dashboard');
+		parent::initialize();
 	}
 
-    public function indexAction()
-    {
-        $config = include __DIR__ . "/../config/config.php";
+	public function indexAction()
+	{
+		$config = include __DIR__ . "/../config/config.php";
 
-        $tasks = new ContactRecord;
-        $this->view->noHeader = true;
+		$tasks = new ContactRecord;
+		$this->view->noHeader = true;
 
-        $user = $this->session->get('auth-identity')['id'];
+		$user = $this->session->get('auth-identity')['id'];
 
-        $this->view->notes              = StickyNotes::current();
-        $this->view->budget             = Budgets::current();
-        $this->view->kpis               = Kpis::thisMonth();
-        $this->view->users              = Users::listUsers();
-        $this->view->monthsSales        = DailySales::sumMonth();
-        $this->view->daySales           = DailySales::sumDay(date("Y-m-d"));
-        $this->view->agentSales         = DailySales::getMonthByRep(date("Y-m-d"));
-        $this->view->daySalesByAgent    = DailySales::getDayByRep(date("Y-m-d"));
-        $this->view->quoteCount         = DailySales::countQuotesMonth(date("Y-m-d"));
-        $this->view->quoteSum           = DailySales::sumQuotesMonth(date("Y-m-d"));
-        $this->view->sales              = DailySales::dailySalesBetween(date("Y-m-01"), date("Y-m-t"));
-        $this->view->tasks              = $tasks->getOverdue();
+		$this->view->notes              = StickyNotes::current();
+		$this->view->budget             = Budgets::current();
+		$this->view->kpis               = Kpis::thisMonth();
+		$this->view->users              = Users::listUsers();
+		$this->view->monthsSales        = DailySales::sumMonth();
+		$this->view->daySales           = DailySales::sumDay(date("Y-m-d"));
+		$this->view->agentSales         = DailySales::getMonthByRep(date("Y-m-d"));
+		$this->view->daySalesByAgent    = DailySales::getDayByRep(date("Y-m-d"));
+		$this->view->quoteCount         = DailySales::countQuotesMonth(date("Y-m-d"));
+		$this->view->quoteSum           = DailySales::sumQuotesMonth(date("Y-m-d"));
+		$this->view->sales              = DailySales::dailySalesBetween(date("Y-m-01"), date("Y-m-t"));
+		$this->view->tasks              = $tasks->getOverdue();
 
-        $this->view->parser = new \cebe\markdown\Markdown();
+		$this->view->parser = new \cebe\markdown\Markdown();
 
-        $this->assets->collection('header')
-            ->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css');
+		$this->assets->collection('header')
+			->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css');
 
-        $this->assets->collection('footer')
-            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.bundle.min.js')
-            ->addJs('js/dashboard/charts.js');
+		$this->assets->collection('footer')
+			->addJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.bundle.min.js')
+			->addJs('js/dashboard/charts.js');
 
-        $this->view->quotes = new Quotes();
-    }
+		$this->view->quotes = new Quotes();
+	}
 
-    public function createstickyAction()
-    {
-        if(!$this->request->isPost())
-        {
-            $this->_redirectBack();
-        }
+	public function createstickyAction()
+	{
+		if(!$this->request->isPost())
+		{
+			$this->_redirectBack();
+		}
 
-        $note = new StickyNotes();
-        $note->title = $this->request->getPost('title');
-        $note->note = $this->request->getPost('note');
-        $note->expires = date("Y-m-d", strtotime($this->request->getPost('expires')));
-        $note->type = $this->request->getPost('type');
-        $success = $note->save();
-        if ($success) {
+		$note = new StickyNotes();
+		$note->title = $this->request->getPost('title');
+		$note->note = $this->request->getPost('note');
+		$note->expires = date("Y-m-d", strtotime($this->request->getPost('expires')));
+		$note->type = $this->request->getPost('type');
+		$success = $note->save();
+		if ($success) {
 			$this->response->redirect('dashboard');
 			$this->view->disable;
 		} else {
@@ -78,18 +78,18 @@ class DashboardController extends ControllerBase
 				$this->flash->error($message->getMessage());
 			}
 		}
-    }
+	}
 
-    public function deletenoteAction($id)
-    {
-        if(!$id)
-        {
-            $this->_redirectBack();
-        }
+	public function deletenoteAction($id)
+	{
+		if(!$id)
+		{
+			$this->_redirectBack();
+		}
 
-        $note = StickyNotes::findFirstById($id);
-        $success = $note->delete();
-        if ($success) {
+		$note = StickyNotes::findFirstById($id);
+		$success = $note->delete();
+		if ($success) {
 			$this->response->redirect('dashboard');
 			$this->view->disable;
 		} else {
@@ -98,20 +98,20 @@ class DashboardController extends ControllerBase
 				$this->flash->error($message->getMessage());
 			}
 		}
-    }
+	}
 
-		public function despatchAction()
-		{
-			$config = include __DIR__ . "/../config/config.php";
-			$this->view->noHeader = true;
+	public function despatchAction()
+	{
+		$config = include __DIR__ . "/../config/config.php";
+		$this->view->noHeader = true;
 
-	        $tasks = new ContactRecord;
+		$tasks = new ContactRecord;
 
-			$this->view->orderLocations = Orders::countLocations();
+		$this->view->orderLocations = Orders::countLocations();
 
-	        $user = $this->session->get('auth-identity')['id'];
-	        $this->view->notes              = StickyNotes::current();
-	        $this->view->parser = new \cebe\markdown\Markdown();
+		$user = $this->session->get('auth-identity')['id'];
+		$this->view->notes              = StickyNotes::current();
+		$this->view->parser = new \cebe\markdown\Markdown();
 
-		}
+	}
 }
