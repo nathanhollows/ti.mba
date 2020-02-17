@@ -60,8 +60,12 @@ class Elements extends Component
     );
 
     private $_rightNav = array(
+        'search' => array(
+            'caption' => '<img src="/img/icons/search.svg" style="filter: brightness(0) invert(0.7); margin: 0.2rem; width: 1.2rem;"></img>',
+            'action' => 'q'
+					),
         'tasks' => array(
-            'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
+            'caption' => '<img src="/img/icons/bell.svg" style="filter: brightness(0) invert(0.7); margin: 0.2rem; width: 1.2rem;"></img>',
             'action' => ''
         ),
         '' => array(

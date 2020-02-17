@@ -176,7 +176,7 @@ class Orders extends Model
         $query->where('customerCode LIKE :search:');
         $query->orWhere('customerRef LIKE :search:');
         $query->bind(['search' => '%' . $search . '%']);
-        $query->order('orderNumber ASC');
+        $query->orderBy('orderNumber ASC');
         return $query->execute();
      }
 

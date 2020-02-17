@@ -273,7 +273,7 @@ class Customers extends \Phalcon\Mvc\Model
         $query->where('customerName LIKE :search:');
         $query->orWhere('customerCode LIKE :search:');
         $query->bind(['search' => '%' . $search . '%']);
-        $query->order('customerName ASC');
+        $query->orderBy('customerName ASC');
         return $query->execute();
      }
 
