@@ -122,6 +122,8 @@ class Auth extends Component
 
                 $remember = RememberTokens::findFirst(array(
                     'usersId = ?0 AND token = ?1',
+										'order' => 'id DESC',
+										'limit' => '1',
                     'bind' => array(
                         $user->id,
                         $token
@@ -135,15 +137,14 @@ class Auth extends Component
                         // Check if the user was flagged
                         $this->checkUserFlags($user);
 
-                        // Register identity
-                        $this->session->set('auth-identity', array(
-                            'id' => $user->id,
-                            'name' => $user->name,
-                            'changePassword' => $user->mustChangePassword,
-                            'profile' => $user->profilesId,
-                            'dev' => $user->dev,
-                            'uca' => $user->useUCA,
-                        ));
+												$this->session->set('auth-identity', array(
+													'id' => $user->id,
+													'name' => $user->name,
+													'changePassword' => $user->mustChangePassword,
+													'profile' => $user->profilesId,
+													'dev' => $user->dev,
+													'uca' => $user->useUCA,
+												));
 
                         // Register the successful login
                         $this->saveSuccessLogin($user);
