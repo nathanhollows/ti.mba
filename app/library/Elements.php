@@ -60,10 +60,6 @@ class Elements extends Component
     );
 
     private $_rightNav = array(
-        'search' => array(
-            'caption' => '<img src="/img/icons/search.svg" style="filter: brightness(0) invert(0.7); margin: 0.2rem; width: 1.2rem;"></img>',
-            'action' => 'q'
-					),
         'tasks' => array(
             'caption' => '<img src="/img/icons/bell.svg" style="filter: brightness(0) invert(0.7); margin: 0.2rem; width: 1.2rem;"></img>',
             'action' => ''
@@ -185,8 +181,14 @@ class Elements extends Component
     {
         $user = $this->auth->getId();
         $controllerName = $this->view->getControllerName();
+				echo '<li class="nav-item">    <form style="height: 100%;" class="form-inline  my-2 my-lg-0" action="/search/q/" method="post" autocomplete="off">
+      <input type="search" placeholder="Search" aria-label="Search" name="query" style="background: #ffffff17;border: none;color: white;height: 100%;display: inline-block;padding: 0 2.3em 0 0.7em;width: 14.6vw;max-width: 13em;min-width: 8.9em;">
+      
+    <button type="submit" style="filter: brightness(1) invert(0.6);margin-left: -1.9em;" class="btn p-0 mr-3">
+<img src="/img/icons/search.svg" style="width: 1.4rem;">
+</button></form></li>';
 
-        foreach ($this->_rightNav as $controller => $option) {
+				foreach ($this->_rightNav as $controller => $option) {
             $class = ($controller == $controllerName ? "active" : "");
             if (isset($option['children'])) {
                 echo "<li class='nav-item dropdown $class'>";

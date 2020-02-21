@@ -33,6 +33,9 @@ class SearchController extends ControllerBase
         $this->view->noHeader = true;
         $this->view->noResults = false;
         $this->view->noTerm = false;
+				if (is_null($query) && $this->request->has("query")) {
+					$query = $this->request->getPost("query");
+				}
         if($query === null) {
             $this->view->noTerm = true;
             $this->view->noResults = true;

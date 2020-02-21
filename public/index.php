@@ -8,7 +8,7 @@ try {
 	 */
 	$config = include __DIR__ . "/../app/config/config.php";
 
-	define('SITE_TITLE', $config->application->siteTitle . " " . $config->application->version);
+	define('SITE_TITLE', $config->application->siteTitle);
 	define('BASE_DIR', dirname(__DIR__));
 	define('APP_DIR', BASE_DIR . '/app');
 
