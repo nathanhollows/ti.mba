@@ -6,68 +6,57 @@
 				<h4 class="header-title">Production KPI's</h4>
 			</div>
 			<div class="col text-right">
+				<nav aria-label="Page navigation example">
+					<ul class="pagination float-right">
+						<li class="page-item">
+							<a class="page-link" href="{{url('kpi/' ~ yesterday)}}" aria-label="Next">
+								<span aria-hidden="true">&laquo;</span>
+								<span class="sr-only">Next</span>
+							</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="{{ url("kpi") }}">Today</a></li>
+						<li class="page-item"><a class="page-link" href="#">Select Date</a></li>
+						<li class="page-item">
+							<a class="page-link" href="{{ url('kpi/' ~ tomorrow) }}" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+								<span class="sr-only">Next</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
 		</div>
 		<hr class="w-100">
+		{{ flashSession.output() }}
+		{{ content() }}
 	</div>
 </div>
 
-<ul class="pager">
-	<li>{{ link_to('kpi/' ~ yesterday, 'Previous') }}</li>
-	<li>{{ link_to('kpi/', 'Today') }}</li>
-    <li><a id="datebutton"><input type="text" name="" id="datepicker" class="form-control" value="{{ date('Y/m/d', strtotime(date)) }}" required="required" pattern="" title="" hidden="true" data-date-format='yyyy/mm/dd'><i class="fa fa-icon fa-calendar"></i> Select Date</a></li>
-	<li>{{ link_to('kpi/' ~ tomorrow, 'Next') }}</li>
-</ul>
+<div class="container">
+	<div class="row">
+		<div class="col">
 
-{{ flashSession.output() }}
+			<h2>{{ date( 'l dS M', strtotime(date) ) }}</h2>
 
-{{ content() }}
-<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-offset-3 col-lg-offset-3">
+			<form action="/kpi/save" method="POST" role="form">
 
-<h2>{{ date( 'l dS M', strtotime(date) ) }}</h2>
+				<div class="form-group">
+					{{ hidden_field('date', 'test', 'value': date ) }}
+					{% for element in form %}
+					{{ element.label() }}
+					{{ element.render() }}
+					{% endfor %}
+				</div>
 
-<form action="/kpi/save" method="POST" role="form">
-
-	<div class="form-group">
-	{{ hidden_field('date', 'test', 'value': date ) }}
-	{% for element in form %}
-		{{ element.label() }}
-		{{ element.render() }}
-	{% endfor %}
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</div>
 	</div>
-
-	<button type="submit" class="btn btn-primary">Submit</button>
-</form>
 </div>
-
-<style type="text/css">
-    .datepicker.datepicker-dropdown.dropdown-menu {
-        background: white;
-    }
-    input#datepicker {
-        height: 0px;
-        width: 0px;
-        padding: 0;
-        border: none;
-        visibility: hidden;
-        display: inline;
-        margin-top: 10px;
-    }
-</style>
-<script type="text/javascript">
-    $(function () {
-        $("#datepicker")
-            .datepicker({
-              dateFormat: "yy/mm/dd",
-              onSelect: function(dateText) {
-                $(this).change();
-              }
-            })
-            .change(function() {
-              window.location.href = "/kpi/" + this.value;
-            });
-            $('#datebutton').click(function() {
-                  $('#datepicker').datepicker('show');
-            });
-    });
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<script>
+	$('#datepicker').datepicker({
+		uiLibrary: 'bootstrap4'
+	});
 </script>

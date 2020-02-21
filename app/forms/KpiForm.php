@@ -16,7 +16,7 @@ class KpiForm extends Form
 	{
 
 		$chargeout = new Numeric('chargeOut');
-		$chargeout->setLabel('Charge Out');
+		$chargeout->setLabel('Charge Out (MTD)');
 		$chargeout->setAttributes(array(
 			'class'	=> 'form-control',
 			'required'	=> 'true',

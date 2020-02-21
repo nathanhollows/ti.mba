@@ -6,10 +6,23 @@
 				<h4 class="header-title">Daily Sales Log</h4>
 			</div>
 			<div class="col text-right">
-				<div class="btn-group" role="group" aria-label="Basic example">
-					{{ linkTo(['kpi/dailysales/' ~ yesterday, 'Yesterday', 'class':'btn btn-primary']) }}
-					{{ linkTo(['kpi/dailysales/', 'Today', 'class':'btn btn-primary']) }}
-					{{ linkTo(['kpi/dailysales/' ~ tomorrow, 'Tomorrow', 'class':'btn btn-primary']) }}
+				<nav aria-label="Page navigation example">
+					<ul class="pagination float-right">
+						<li class="page-item">
+							<a class="page-link" href="{{url('kpi/dailysales/' ~ yesterday)}}" aria-label="Next">
+								<span aria-hidden="true">&laquo;</span>
+								<span class="sr-only">Next</span>
+							</a>
+						</li>
+						<li class="page-item"><a class="page-link" href="{{ url("kpi/dailysales/") }}">Today</a></li>
+						<li class="page-item">
+							<a class="page-link" href="{{ url('kpi/dailysales/' ~ tomorrow) }}" aria-label="Next">
+								<span aria-hidden="true">&raquo;</span>
+								<span class="sr-only">Next</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
 				</div>
 			</div>
 		</div>
@@ -28,7 +41,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col col-lg-8">
+		<div class="col">
 			<table class="table table-hover w-100 bg-white rounded border">
 				<thead>
 					<tr>
@@ -185,8 +198,3 @@
 		
 	</div>
 </div>
-
-<style>
-.rep {
-	white-space: pre;
-}
