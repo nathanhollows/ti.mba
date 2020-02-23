@@ -28,8 +28,8 @@ $(document).ready(function() {
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 				$(nTd).html("<a href='tel:"+oData.phone+"' class='tel-link')>"+oData.phone+"</a>");
 			}},
-			{data: "fax", searchable: false, class: "hidden-xs"},
-			{data: "customerStatus", searchable: true, class: "hidden-xs",
+			{data: "fax", searchable: false, class: "hidden-xs d-none d-md-table-cell"},
+			{data: "customerStatus", searchable: true, class: "hidden-xs d-none d-md-table-cell",
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 				$(nTd).html("<span class='badge badge-"+oData.style+"'>"+oData.name+"</span>");
 			}},

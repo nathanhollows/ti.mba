@@ -29,21 +29,21 @@
 				<th>Code</th>
 				<th>Customer Name</th>
 				<th>Phone</th>
-				<th class="hidden-xs">Fax</th>
-				<th class="hidden-xs">Status</th>
+				<th>Fax</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
 		</tbody>
-		<thead>
+		<tfoot>
 			<tr>
 				<th>Code</th>
 				<th>Customer Name</th>
 				<th>Phone</th>
-				<th class="hidden-xs">Fax</th>
-				<th class="hidden-xs">Status</th>
+				<th>Fax</th>
+				<th>Status</th>
 			</tr>
-		</thead>
+		</tfoot>
 	</table>
 
 	<script src="https://ats.ti.mba/js/datatables/companies.js"></script>
