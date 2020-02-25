@@ -198,15 +198,11 @@ var myChart = new Chart(ctx, {
 					{% for item in kpis %}
 					{% if not loop.first and strtotime(item.date) - date is 172800%}0,{% endif %}
 					{% set date = strtotime(item.date) %}
-					{% if item.chargeOut - acc <= 0 %}
-					0,
-					{% else %}
+					{% if item.chargeOut - acc > 0 %}
 					{{ item.chargeOut - acc}},
 					{% endif %}
 					{% if item.chargeOut > 0 %}
 					{% set acc = item.chargeOut %}
-					{% else %}
-					{% set acc = 0 %}
 					{% endif %}
 					{% endfor %}
 				]},
