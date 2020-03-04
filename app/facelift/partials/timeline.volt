@@ -7,18 +7,21 @@
 			{% if line.job is defined %}
 			<h5 class="card-title">{{ line.type.name }} - {{ linkTo('quotes/view/' ~ line.job, line.reference) }}</h5>
 			{% else %}
-			<h5 class="card-title">{{ line.type.name }} - {{ line.reference }}</h5>
+			<h5 class="card-title">{{ line.type.name }} 
+				{% if line.reference is not null %}- {{ line.reference }}{% endif %}</h5>
 			{% endif %}
-			<h6 class="card-subtitle mb-2 text-muted">{{ line.staff.name }} - {{ date('d M Y', strtotime(line.date)) }}</h6>
 			{% if line.contact is not empty %}
 			<span class="float-right">{{ line.person.name }}</span>
 			{% endif %}
-			<p class="card-text">{{ parser.parse(line.details)|nl2br }}
-			{% if line.followUpNotes %} <br /> {{ line.followUpNotes }} {% endif %}</p>
-			Follow up: {{ date('d M Y', strtotime(line.followUpDate)) }}
-			<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right">Delete</a>
+			<p class="card-text">{{ parser.parse(line.details|nl2br)}}
+		</div>
+		<div class="card-footer">
+			{{ line.staff.name }} ~ {{ date('d M Y', strtotime(line.date)) }}
+			<img src="/img/icons/bell.svg" role="presentation" style="width:1em;">
+			{{ date('d M Y', strtotime(line.followUpDate)) }}
+			<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right confirm-delete">Delete</a>
 			<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3">Edit</a>
-			<a href="#" class="card-link float-right">Mark as Done</a>
+			<a href="#" class="card-link float-right">Done</a>
 		</div>
 	</div>
 	{% endfor %}
@@ -41,18 +44,18 @@
 					{% if line.job is defined %}
 					<h5 class="card-title">{{ line.type.name }} - {{ linkTo('quotes/view/' ~ line.job, line.reference) }}</h5>
 					{% else %}
-					<h5 class="card-title">{{ line.type.name }} - {{ line.reference }}</h5>
+					<h5 class="card-title">{{ line.type.name }} 
+						{% if line.reference is not null %} - {{ line.reference }}{% endif %}</h5>
 					{% endif %}
-					<h6 class="card-subtitle mb-2 text-muted">{{ line.staff.name }} - {{ date('d M Y', strtotime(line.date)) }}</h6>
 					{% if line.contact is not empty %}
 					<span class="float-right">{{ line.person.name }}</span>
 					{% endif %}
-					<p class="card-text">{{ parser.parse(line.details)|nl2br }}
-					{% if line.followUpNotes %} <br /> {{ line.followUpNotes }} {% endif %}</p>
-					{% if line.followUpDate %}Follow up: {{ date('d M Y', strtotime(line.followUpDate)) }}{% endif %}
-					<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right">Delete</a>
+					<p class="card-text">{{ parser.parse(line.details|nl2br)}}
+				</div>
+				<div class="card-footer">
+					{{ line.staff.name }} ~ {{ date('d M Y', strtotime(line.date)) }}
+					<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right confirm-delete">Delete</a>
 					<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3">Edit</a>
-					<a href="#" class="card-link float-right">Mark as Done</a>
 				</div>
 			</div>
 			{% endfor %}
@@ -67,7 +70,7 @@
 
 					<div class="timeline-icon bg-{{ line.type.style }}">
 						<i class="fa fa-icon fa-{{ line.type.icon }}"></i>
-					</div>
+					</div>class="card-link text-danger float-right"
 
 					<div class="timeline-label">
 						<div class="timeline-content">
