@@ -37,7 +37,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" id="feedbackButton" class="btn btn-primary" onClick="submitFeedback()">Send</button>
+				<button type="button" id="youDontNeedToDoThis" class="btn btn-primary" onClick="submitFeedback()">Send</button>
 			</div>
 		</div>
 	</div>
@@ -50,21 +50,25 @@
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4>Delete<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button></h4>
-			</div>
-			<div class="modal-body">
+<!-- Confirm delete modal -->
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="confirm-delete" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
 				You are about to delete this record. It cannot be undone. Are you sure?
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<a class="btn btn-danger btn-ok">Delete</a>
-			</div>
-		</div>
-	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
+				<a id="YouDontNeedToDoThis" class="btn btn-danger text-white" role="button">Delete</a>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -82,6 +86,11 @@
 				.prop('selected', false);
 		}, 1000);
 	}
+$( document ).on( "click", ".confirm-delete", function(e) {
+	e.preventDefault();
+	$("#YouDontNeedToDoThis").attr("href",$(this).attr("href"));
+  $('#confirm-delete').modal('show');
+});
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
