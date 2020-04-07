@@ -232,7 +232,6 @@ var myChart = new Chart(ctx, {
 			pointRadius: 0,
 			hoverRadius: 0,
 			data: [
-				{% set base = (monthbudget / days)|round %}
 				{% for item in sales %}
 				{{ item.sumatory }},
 				{% endfor %}
