@@ -34,7 +34,7 @@ class OrdersController extends ControllerBase
         $date = date("Y-m-d", strtotime("Now - 1 MONTH"));
         $orders = Orders::find(
             array(
-                "complete = 0",
+                "complete = 0 OR scheduled = 1",
                 "order" => "orderNumber DESC"
             )
         );
