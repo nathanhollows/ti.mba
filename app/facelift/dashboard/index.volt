@@ -3,50 +3,78 @@
 {% else %}
 {% set chargeOut = 0 %}
 {% endif %}
+{% if budget %}
 {% set dailybudget = budget.budget/budget.days %}
-<div class="header bg-dark pb-5 pt-4 text-light mt-n3">
+{% set days = budget.days %}
+{% else %}
+{% set days = 0 %}
+{% set dailybudget = 0 %}
+{% set monthbudget = 0 %}
+{% endif %}
+<div class="header py-3">
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
-				<h6 class="header-pretitle">Overview</h6>
-				<h4 class="header-title text-white">Dashboard</h4>
+				<h4 class="header-title">Dashboard</h4>
 			</div>
+			{#
 			<div class="col text-right">
 				<div class="btn-group" role="group" aria-label="Toggle Graph">
 					<button id="toggle-sales" type="button" onClick="toggleChart(this);" class="btn btn-sm btn-danger" data-class="btn-danger" data-set="0">Sales</button>
 					<button id="toggle-despatch" type="button" onClick="toggleChart(this);" class="btn btn-sm btn-primary" data-class="btn-primary" data-set="1">Despatch</button>
 				</div>
 			</div>
-		</div>
-		<div class="header-footer mt-3">
-			<canvas id="myChart" width="400" height="250"></canvas>
+			#}
 		</div>
 	</div>
 </div>
 
 {{ content() }}
 
-<div class="container mt-n3 mb-4">
+<div class="container mb-3">
 	<div class="row">
 		<div class="col">
 			<div class="card shadow-sm text-center">
 				<div class="row">
 					<div class="col">
-						<div class="card-body">
-							<h5 class="card-title">Month Sales</h5>
-							<p class="card-text">${{ monthsSales|number }}</p>
+							{% set salesDiff = (monthsSales - (dailybudget * sales|length)) %}
+							<div class="card-body" data-toggle="tooltip" data-placement="top" title="${{ salesDiff|number }} {% if salesDiff > 0 %}ahead{% else %}behind{% endif %}">
+							<span class="card-text">Month Sales</span>
+							<h5 class="card-title mt-2 mb-3" >${{ monthsSales|number }}
+							{% if salesDiff < 0 %}
+							<img src="/img/icons/trending-down.svg" class="feather">
+							{% else %}
+							<img src="/img/icons/trending-up.svg" class="feather">
+							{% endif %}
+							</h5>
 							<div class="progress" style="height: 6px;">
-								{% set percentage = (monthsSales / budget.budget * 100)|round %}
+								{% if monthbudget > 0 %}
+								{% set percentage = (monthsSales / monthbudget * 100)|round %}
+								{% else %}
+								{% set percentage = 0 %}
+								{% endif %}
 								<div class="progress-bar bg-danger" style="width: {{ percentage }}%;" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 						</div>
 					</div>
 					<div class="col">
-						<div class="card-body">
-							<h5 class="card-title">Charge Out</h5>
+						{% set chargeDiff = (chargeOut - (dailybudget * sales|length)) %}
+						<div class="card-body" data-toggle="tooltip" data-placement="top" title="${{ chargeDiff|abs|number }} {% if chargeDiff > 0 %}ahead{% else %}behind{% endif %}">
+							<span class="card-text">Charge Out</span>
 							{% if kpis is defined %}
-							<p class="card-text"> ${{ chargeOut|number }} </p>
-							{% set percentage = ( chargeOut / budget.budget * 100)|round %}
+							{% set chargeDiff = (chargeOut - (dailybudget * sales|length)) %}
+							<h5 class="card-title mt-2 mb-3" >${{ chargeOut|number }} 
+							{% if chargeDiff < 0 %}
+							<img src="/img/icons/trending-down.svg" class="feather">
+							{% else %}
+							<img src="/img/icons/trending-up.svg" class="feather">
+							{% endif %}
+							</h5>
+								{% if monthbudget > 0 %}
+								{% set percentage = ( chargeOut / monthbudget * 100)|round %}
+								{% else %}
+								{% set percentage = 0 %}
+								{% endif %}
 							<div class="progress" style="height: 6px;">
 								<div class="progress-bar bg-primary" style="width: {{ percentage }}%;" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
@@ -59,26 +87,40 @@
 						</div>
 					</div>
 					<div class="col">
-						<div class="card-body">
-							<h5 class="card-title">Daily Sales</h5>
-							<p class="card-text">${{ daySales|number }}</p>
-							{% set percentage = ( daySales / dailybudget * 100)|round %}
+						{% if dailybudget > 0 %}
+						{% set percentage = ( daySales / dailybudget * 100)|round %}
+						{% else %}
+						{% set percentage = 0 %}
+						{% endif %}
+						<div class="card-body" data-toggle="tooltip" data-placement="top" title="{{ percentage }}% for today">
+							<span class="card-text">Today's Sales</span>
+							<h5 class="card-title mt-2 mb-3" >${{ daySales|number }}</h5>
 							<div class="progress" style="height: 6px;">
 								<div class="progress-bar bg-danger" style="width: {{ percentage }}%;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
 							</div>
 						</div>
 					</div>
 					<div class="col">
-						<div class="card-body">
-							<h5 class="card-title">Budget</h5>
-							<p class="card-text">
+						<div class="card-body" data-toggle="tooltip" data-placement="top" title="{{ days }} days">
+							<span class="card-text">Budget</span>
+							<h5 class="card-title mt-1 mb-n1" >
 							${{ dailybudget|number }} / day
 							<br>
-							${{ budget.budget|number }}  / month
-							</p>
+							${{ monthbudget|number }}  / month
+							</h5>
 						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col">
+			<div class="card bg-dark shadow-sm mb-3 p-3">
+				<canvas id="myChart" width="400" height="250"></canvas>
 			</div>
 		</div>
 	</div>
@@ -108,12 +150,17 @@
 						<span class="float-right"> <strong>${{ daySales|number }} </strong></span>
 					</li>
 					<li class="list-group-item">
+						{% if dailybudget is not 0 %}
 						{% if daySales > dailybudget %}
 						{% set percent = 100 %}
 						{% set label = ((daySales/dailybudget*100)|number) ~ '%' %}
 						{% else %}
 						{% set percent = (daySales/dailybudget*100)|number %}
 						{% set label = percent ~ '%' %}
+						{% endif %}
+						{% else %}
+						{% set percent = 0 %}
+						{% set label = "" %}
 						{% endif %}
 						<div class="progress">
 							<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
@@ -151,7 +198,11 @@
 					</li>
 					<li class="list-group-item">
 						<div class="progress">
-							{% set percent = (monthsSales / budget.budget * 100)|round %}
+							{% if monthbudget is not 0 %}
+							{% set percent = (monthsSales / monthbudget * 100)|round %}
+							{% else %}
+							{% set percent = 0 %}
+							{% endif %}
 							<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ percent }}%;">
 								{{ percent }}%
 								<span class="sr-only"></span>
@@ -167,7 +218,7 @@
 <script type="text/javascript">
 	var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
-	type: 'line',
+	type: 'bar',
 	data: {
 		labels: [
 			{% for item in sales %}
@@ -176,12 +227,12 @@ var myChart = new Chart(ctx, {
 		],
 		datasets: [{
 			label: 'Sales $',
-			backgroundColor: "rgba(220, 53, 69, 0.0)",
+			backgroundColor: "#dc3545",
 			borderColor: "#dc3545",
 			pointRadius: 0,
 			hoverRadius: 0,
 			data: [
-				{% set base = (budget.budget / budget.days)|round %}
+				{% set base = (monthbudget / days)|round %}
 				{% for item in sales %}
 				{{ item.sumatory }},
 				{% endfor %}
@@ -189,7 +240,7 @@ var myChart = new Chart(ctx, {
 			{
 				label: 'Despatch $',
 				hidden: false,
-				backgroundColor: "rgba(0, 123, 255, 0.0)",
+				backgroundColor: "#007bff",
 				borderColor: "#007bff",
 				pointRadius: 0,
 				hoverRadius: 0,
@@ -208,6 +259,7 @@ var myChart = new Chart(ctx, {
 				]},
 		]},
 	options: {
+		cornerRadius: 20,
 		maintainAspectRatio: false,
 		response: true,
 		hover: {
@@ -241,6 +293,7 @@ var myChart = new Chart(ctx, {
 						return '$' + Math.round(value / 1000) + 'k ';
 					},
 					fontColor: "rgba(255, 255, 255, 0.6)",
+					beginAtZero: true,
 				}
 			}],
 		},
@@ -271,4 +324,9 @@ function toggleChart(el) {
 	myChart.data.datasets[set].hidden = !myChart.data.datasets[set].hidden;
 	myChart.update();
 }
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
 </script>
+<script type="text/javascript" charset="utf-8" src="/js/chart-round.js"></script>
