@@ -26,7 +26,7 @@ class Elements extends Component
             'caption' => 'Quotes',
             'action' => '',
             'children' => array (
-                array('Manage', 'quotes/manage'),
+                array('My Quotes', 'quotes/manage'),
                 array('Search', 'quotes/'),
                 array('New', 'quotes/new'),
             ),
@@ -37,7 +37,7 @@ class Elements extends Component
             'action' => '',
             'children' => array (
                 array('Orders', 'orders'),
-                array('Freight Following', 'freight'),
+                array('Freight Tracker', 'freight'),
             )),
         'kpi' => array(
             'icon'  => 'truck',
@@ -99,7 +99,7 @@ class Elements extends Component
                 'action' => '',
                 'children' => array (
                     array('Orders', 'orders'),
-                    array('Freight Following', 'freight'),
+                    array('Freight Tracker', 'freight?facelift'),
                 )),
             'kpi' => array(
                 'icon'  => 'truck',

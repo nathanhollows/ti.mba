@@ -1,7 +1,7 @@
 <div class="header py-3">
 	<div class="container">
 		<div class="row header-body">
-			<div class="col col-md-6 offset-md-3">
+			<div class="col col-md-6 offset-md-2">
 				<h6 class="header-pretitle">Tracker</h6>
 				<h4 class="header-title">Freight Tracker</h4>
 			</div>
@@ -14,8 +14,21 @@
 <div class="container">
 	{{ content() }}
 	<div class="row">
-		<div class="col col-md-6 offset-md-3">
+		<div class="col col-md-8 offset-md-2">
 			{{ flashSession.output() }}
+			<div class="alert alert-primary" role="alert">
+				This system shows all Mainfreight deliveries. They are tracked every half an hour and disappear after being delivered.
+				<br>
+				<br>
+				<ul>
+					<li>The links do a track and trace</li>
+					<li>Oldest despatches are the the top</li>
+					<li>This only tracks Mainfreight and Mainfreight Offsite</li>
+					<li>PBT can be added if required</li>
+					<li>Con Notes must be loaded in TimberSmart</li>
+					<li>Clicking the tick marks the line as delivered</li>
+				</ul>
+			</div>
 			<ul class="list-group">
 				{% set recent = false %}
 				{% set delayed = false %}
@@ -31,16 +44,13 @@
 				{% if strtotime(item.date) > strtotime('Today - 1 week') and recent is false %}
 				{% set recent = true %}
 			</ul>
-			<h4>Recent</h4>
 			<ul class="list-group">
 				{% endif %}
 				<li class="list-group-item" id="{{ item.docketNo }}">
 					{% if "Mainfreight" in item.carrier %}
-					<a href="https://www.mainfreight.com/Track/MSNZS/{{ item.carrierLabel }}" target="_blank" title="Track and Trace">{{ item.conNote }} <i 
-																																															 class="fa fa-icon fa-external-link"></i></a>
-					{% else %}
-					<a href="http://www.pbt.co.nz/nick/results.cfm?ticketNo={{ item.conNote }}" target="_blank" title="Track and Trace">{{ item.conNote }} <i 
-																																																 class="fa fa-icon fa-external-link"></i></a>
+					<a href="https://www.mainfreight.com/Track/MSNZS/{{ item.carrierLabel }}" target="_blank" title="Track and Trace">{{ item.conNote }}</a>
+					{% elseif  "PBT" in item.carrier %}
+					<a href="http://www.pbt.co.nz/nick/results.cfm?ticketNo={{ item.conNote }}" target="_blank" title="Track and Trace">{{ item.conNote }}</a>
 					{% endif %}
 					{% if item.order %}
 					{{ item.order.orderNumber }}
@@ -48,7 +58,7 @@
 					{{ item.order.customer.customerName }}
 					{% endif %}
 					{% endif %}
-					<span class="pull-right">
+					<span class="float-right">
 						{% if item.status %}
 						{% if item.red > 1 %}
 						<span class="badge badge-danger" title="Status has not changed in {{ item.red }} days">{{ item.status }}</span>
@@ -59,6 +69,7 @@
 						{% endif %}
 						{% endif %}
 						<span>{{ date("dS M", strtotime(item.date)) }}</span>
+						{#
 						{% if item.emailed is 1 %}
 						<a class="sent"><img src="{{ url('img/icons/mail.svg') }}"></img></a>
 						{% elseif "Mainfreight" in item.carrier %}
@@ -67,6 +78,7 @@
 						{% elseif "Peter" in item.carrier %}
 						<a class="mail" href="/freight/mail/pbt/{{ item.conNote }}" data-connote="{{ item.conNote }}" title="Email Customer Service"><img src="{{ url('img/icons/mail.svg') }}" class="feather"></img></a>
 						{% endif %}
+						#}
 						<a class="delivered" data-docket="{{ item.docketNo }}"><img src="{{ url('img/icons/check.svg') }}" class="feather"></img></a>
 					</span>
 				</li>
