@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\Query\Builder;
+use App\Models\OrdersCompleted;
 
 class Orders extends Model
 {
@@ -150,8 +151,15 @@ class Orders extends Model
 	public function toggleCompleted()
 	{
 		if ($this->complete < 1) {
+			$completed = new OrdersCompleted();
+			$completed->orderNumber = $this->orderNumber;
+			$completed->save();
 			$this->complete = 1;
 		} else {
+			$completed = OrdersCompleted::findFirst($this->orderNumber);
+			if ($completed) {
+				$completed->delete();
+			}
 			$this->complete = 0;
 		}
 		return true;
