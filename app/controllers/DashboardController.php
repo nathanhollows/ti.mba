@@ -20,6 +20,7 @@ class DashboardController extends ControllerBase
 		$this->view->setTemplateBefore('private');
 		$this->tag->prependTitle('Dashboard');
 		parent::initialize();
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
 	}
 
 	public function indexAction()
@@ -42,6 +43,12 @@ class DashboardController extends ControllerBase
 		$this->view->quoteCount         = DailySales::countQuotesMonth(date("Y-m-d"));
 		$this->view->quoteSum           = DailySales::sumQuotesMonth(date("Y-m-d"));
 		$this->view->sales              = DailySales::dailySalesBetween(date("Y-m-01"), date("Y-m-t"));
+		/** $this->view->sales = DailySales::sum([
+			'column'	=> 'value',
+			'group'	=> 'date',
+			'order'	=> 'date DESC',
+			'limit'	=> 31,
+		]); */
 		$this->view->tasks              = $tasks->getOverdue();
 
 		$this->view->parser = new \cebe\markdown\Markdown();

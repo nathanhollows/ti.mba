@@ -30,6 +30,11 @@
 </div>
 
 {{ content() }}
+{% if budget is 0 %}
+<div class="alert alert-primary" role="alert">
+  This is a primary alert—check it out!
+</div>
+{% endif %}
 
 <div class="container mb-3">
 	<div class="row">
@@ -104,9 +109,10 @@
 						<div class="card-body" data-toggle="tooltip" data-placement="top" title="{{ days }} days">
 							<span class="card-text">Budget</span>
 							<h5 class="card-title mt-1 mb-n1" >
-							${{ dailybudget|number }} / day
-							<br>
-							${{ monthbudget|number }}  / month
+								{# TODO: Make daily amount required #}
+								${{ dailybudget|number }} / daily
+								<br>
+								${{ monthbudget|number }}  / month
 							</h5>
 						</div>
 					</div>
@@ -119,7 +125,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col">
-			<div class="card bg-dark shadow-sm mb-3 p-3">
+			<div class="card bg-dark shadow mb-3 p-3">
 				<canvas id="myChart" width="400" height="250"></canvas>
 			</div>
 		</div>
