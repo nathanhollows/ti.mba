@@ -1,9 +1,7 @@
-</div>
-
 <button type="button" data-toggle="modal" data-target="#feedbackModal" style="position: fixed;right: 0;bottom: 0;margin: 1em; z-index: 4;" class="btn btn-danger shadow">Give Feedback</button>
 
-<!-- Modal -->
-<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Feedback Modal -->
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -44,12 +42,11 @@
 </div>
 
 <!-- AJAX modal for misc forms -->
-<div class="modal fade" id="modal-ajax">
-	<div class="modal-dialog">
-		<div class="modal-content">
-		</div>
+<div class="modal fade" id="modal-ajax" tabindex="-1" role="dialog" aria-labelled-by"modal-ajax" aria-hidden="true">
+	<div class="modal-dialog" role="document">
 	</div>
 </div>
+
 <!-- Confirm delete modal -->
 <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="confirm-delete" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -86,10 +83,21 @@
 				.prop('selected', false);
 		}, 1000);
 	}
+$("a.open-modal").click(function(ev) {
+	ev.preventDefault();
+	var target = $(this).attr("href");
+
+	$("#modal-ajax .modal-dialog").load(target, function() {
+		$("#modal-ajax").modal("show");
+	});
+});
 $( document ).on( "click", ".confirm-delete", function(e) {
 	e.preventDefault();
 	$("#YouDontNeedToDoThis").attr("href",$(this).attr("href"));
-  $('#confirm-delete').modal('show');
+	$('#confirm-delete').modal('show');
+});
+$(document).on("click", "#modal-save", function(e) {
+	$("#modal-ajax form").submit();
 });
 </script>
 
@@ -105,6 +113,9 @@ $( document ).on( "click", ".confirm-delete", function(e) {
 
 .show.dropdown .dropdown-toggle::after {
 	transform: translateY(3px);
+}
+#modal-ajax .modal-body .btn[type="submit"] {
+	display: none;
 }
 </style>
 </body>

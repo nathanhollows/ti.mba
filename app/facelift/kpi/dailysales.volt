@@ -65,7 +65,7 @@
 					<td>{{ sale.customerReference }}</td>
 					<td align="right">{{ sale.value|money }}</td>
 					<td>
-						<img src="{{ url('img/icons/delete.svg') }}" class="feather"></img>
+						<img src="{{ url('img/icons/x-circle.svg') }}" class="feather"></img>
 					</td>
 				</tr>
 				{% endfor %}

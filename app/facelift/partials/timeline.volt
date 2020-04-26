@@ -2,13 +2,13 @@
 {% if futureHistory is not empty %}
 <div class="timeline-centered">
 	{% for line in futureHistory %}
-	<div class="card mb-3 border-danger">
+	<div class="card mb-3 border-danger shadow-sm">
 		<div class="card-body">
 			{% if line.job is defined %}
-			<h5 class="card-title">{{ line.type.name }} - {{ linkTo('quotes/view/' ~ line.job, line.reference) }}</h5>
+			<strong class="card-title">{{ line.type.name }} - {{ linkTo('quotes/view/' ~ line.job, line.reference) }}</strong>
 			{% else %}
-			<h5 class="card-title">{{ line.type.name }} 
-				{% if line.reference is not null %}- {{ line.reference }}{% endif %}</h5>
+			<strong class="card-title">{{ line.type.name }} 
+				{% if line.reference is not null %}- {{ line.reference }}{% endif %}</strong>
 			{% endif %}
 			{% if line.contact is not empty %}
 			<span class="float-right">{{ line.person.name }}</span>
@@ -20,7 +20,7 @@
 			<img src="/img/icons/bell.svg" role="presentation" style="width:1em;">
 			{{ date('d M Y', strtotime(line.followUpDate)) }}
 			<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right confirm-delete">Delete</a>
-			<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3">Edit</a>
+			<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3 open-modal">Edit</a>
 			<a href="#" class="card-link float-right">Done</a>
 		</div>
 	</div>
@@ -36,16 +36,16 @@
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 		<div class="timeline-centered" id="thetimeline">
 			{% for line in history %}
-			{% if line.followUpDate %}
+			{% if line.completed is null %}
 			{% continue %}
 			{% endif %}
-			<div class="card mb-3">
+			<div class="card mb-3 shadow-sm border-0">
 				<div class="card-body">
 					{% if line.job is defined %}
-					<h5 class="card-title">{{ line.type.name }} - {{ linkTo('quotes/view/' ~ line.job, line.reference) }}</h5>
+					<strong class="card-title">{{ line.type.name }} - {{ linkTo('quotes/view/' ~ line.job, line.reference) }}</strong>
 					{% else %}
-					<h5 class="card-title">{{ line.type.name }} 
-						{% if line.reference is not null %} - {{ line.reference }}{% endif %}</h5>
+					<strong class="card-title">{{ line.type.name }} 
+						{% if line.reference is not null %} - {{ line.reference }}{% endif %}</strong>
 					{% endif %}
 					{% if line.contact is not empty %}
 					<span class="float-right">{{ line.person.name }}</span>
@@ -55,7 +55,7 @@
 				<div class="card-footer">
 					{{ line.staff.name }} ~ {{ date('d M Y', strtotime(line.date)) }}
 					<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right confirm-delete">Delete</a>
-					<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3">Edit</a>
+					<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3 open-modal">Edit</a>
 				</div>
 			</div>
 			{% endfor %}

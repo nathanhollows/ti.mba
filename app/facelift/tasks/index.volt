@@ -1,104 +1,115 @@
-{{ content() }}
+<div class="header py-3">
+	<div class="container">
+		<div class="row header-body">
+			<div class="col">
+				<h6 class="header-pretitle">Manage</h6>
+				<h4 class="header-title">Follow ups</h4>
+			</div>
+			<hr />
+		</div>
+	</div>
+</div>
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-7 ">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Follow Ups</h3>
-            </div>
-            <div class="panel-body">
-                <table class="table" id="tasks">
-                    <thead>
-                        <tr>
-                            <th>
-                                Customer
-                            </th>
-                            <th>
-                                Reference
-                            </th>
-                            <th>
-                                Status
-                            </th>
-                            <th>
-                                Type
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for task in overdue %}
-                        <tr data-id="{{ task.id }}">
-                            <td>
-                                {{ task.company.customerName }}
-                            </td>
-                            <td>
-                                <a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
-                            </td>
-                            <td>
-                                <span class="label label-danger">Overdue</span>
-                            </td>
-                            <td>
-                                <span class="label ">{{ task.type.name }}</span>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        {% for task in today %}
-                        <tr data-id="{{ task.id }}">
-                            <td>
-                                {{ task.company.customerName }}
-                            </td>
-                            <td>
-                                <a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
-                            </td>
-                            <td>
-                                <span class="label label-primary">Today</span>
-                            </td>
-                            <td>
-                                <span class="label ">{{ task.type.name }}</span>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                        {% for task in coming %}
-                        <tr data-id="{{ task.id }}">
-                            <td>
-                                {{ task.company.customerName }}
-                            </td>
-                            <td>
-                                <a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
-                            </td>
-                            <td>
-                                <span class="label">Later</span>
-                            </td>
-                            <td>
-                                <span class="label ">{{ task.type.name }}</span>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="contact-details">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Follow Up Details</h3>
-            </div>
-            <div class="panel-body">
-                <p>
-                    Click on a reference to get started.
-                </p>
-                <label for="dynamic_select">View a users follow ups</label>
-                <div class="form-group">
-                    <select id="dynamic_select" class="form-control">
-                        {% for user in users %}
-                        <option value="{{ static_url('/tasks/user/' ~ user.id) }}" {% if user.id === id %}selected="true"{% endif %}>{{  user.name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+<div class="container">
+	{{ content() }}
 
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-7 ">
+			<div class="card card-default">
+				<div class="card-body">
+					<table class="table" id="tasks">
+						<thead>
+							<tr>
+								<th>
+									Customer
+								</th>
+								<th>
+									Reference
+								</th>
+								<th>
+									Status
+								</th>
+								<th>
+									Type
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for task in overdue %}
+							<tr data-id="{{ task.id }}">
+								<td>
+									{{ task.company.customerName }}
+								</td>
+								<td>
+									<a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
+								</td>
+								<td>
+									<span class="label label-danger">Overdue</span>
+								</td>
+								<td>
+									<span class="label ">{{ task.type.name }}</span>
+								</td>
+							</tr>
+							{% endfor %}
+							{% for task in today %}
+							<tr data-id="{{ task.id }}">
+								<td>
+									{{ task.company.customerName }}
+								</td>
+								<td>
+									<a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
+								</td>
+								<td>
+									<span class="label label-primary">Today</span>
+								</td>
+								<td>
+									<span class="label ">{{ task.type.name }}</span>
+								</td>
+							</tr>
+							{% endfor %}
+							{% for task in coming %}
+							<tr data-id="{{ task.id }}">
+								<td>
+									{{ task.company.customerName }}
+								</td>
+								<td>
+									<a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
+								</td>
+								<td>
+									<span class="label">Later</span>
+								</td>
+								<td>
+									<span class="label ">{{ task.type.name }}</span>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5" id="contact-details">
+			<div class="card card-default">
+				<div class="card-heading">
+					<h3 class="card-title">Follow Up Details</h3>
+				</div>
+				<div class="card-body">
+					<p>
+					Click on a reference to get started.
+					</p>
+					<label for="dynamic_select">View a users follow ups</label>
+					<div class="form-group">
+						<select id="dynamic_select" class="form-control">
+							{% for user in users %}
+							<option value="{{ static_url('/tasks/user/' ~ user.id) }}" {% if user.id === id %}selected="true"{% endif %}>{{  user.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <script type="text/javascript">
 $(document).ready(function() {
