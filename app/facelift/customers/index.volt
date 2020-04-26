@@ -2,8 +2,7 @@
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
-				<h6 class="header-pretitle">Search</h6>
-				<h4 class="header-title">Customers</h4>
+				<h4 class="header-title">Search Customers</h4>
 			</div>
 			<div class="col text-right">
 				{{ linkTo(['customers/new', 'New Customer', 'class': 'btn btn-primary']) }}

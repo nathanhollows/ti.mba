@@ -1,10 +1,9 @@
 {{ content() }}
 
 <form action="{{ static_url('customers/update') }}" method="POST" role="form">
-	<div class="modal-body">
 		<div class="row">
 		{% for element in form %}
-			<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+			<div class="col-12 col-md-6">
 				<div class="form-group">
 					{{ element.label() }}
 					{{ element }}
@@ -12,6 +11,9 @@
 			</div>
 		{% endfor %}
 		</div>
-
-
-	</div>
+		<div class="row">
+			<div class="col">
+				<button class="btn btn-primary" type="submit">Save</button>
+			</div>
+		</div>
+</form>

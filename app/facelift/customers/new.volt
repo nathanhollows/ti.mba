@@ -2,8 +2,7 @@
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
-				<h6 class="header-pretitle">Create</h6>
-				<h4 class="header-title">Customer</h4>
+				<h4 class="header-title">New Customers</h4>
 			</div>
 			<div class="col text-right">
 			</div>

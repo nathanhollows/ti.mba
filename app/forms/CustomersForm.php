@@ -86,61 +86,61 @@ class CustomersForm extends Form
 
 		// Customer group
 		// Select field
-		$group = new Select(
-			'customerGroup',
-			CustomerGroups::find(),
-			array(
-				'using'		=> array('id', 'name'),
-				'useEmpty'	=> true,
-				'emptyTest'	=> '...',
-				'emptyValue'=> '',
-				'class'		=> 'form-control',
-			)
-		);
-		$group->setLabel('Customer Group');
-		$this->add($group);
+		// $group = new Select(
+			// 'customerGroup',
+			// CustomerGroups::find(),
+			// array(
+				// 'using'		=> array('id', 'name'),
+				// 'useEmpty'	=> true,
+				// 'emptyTest'	=> '...',
+				// 'emptyValue'=> '',
+				// 'class'		=> 'form-control',
+			// )
+		// );
+		// $group->setLabel('Customer Group');
+		// $this->add($group);
 
 		// Trip Day
 		// Numeric Field
-		$tripDay = new Numeric('tripDay',
-			array(
-				'class'		=> 'form-control',
-			)
-		);
-		$tripDay->setLabel('Trip Day');
-		$this->add($tripDay);
+		// $tripDay = new Numeric('tripDay',
+			// array(
+				// 'class'		=> 'form-control',
+			// )
+		// );
+		// $tripDay->setLabel('Trip Day');
+		// $this->add($tripDay);
 
 		// Freight Area
 		// Select field
-		$freightArea = new Select(
-			'freightArea',
-			FreightAreas::find(),
-			array(
-				'using'		=> array('id', 'name'),
-				'useEmpty'	=> true,
-				'emptyTest'	=> '...',
-				'emptyValue'=> '',
-				'class'		=> 'form-control'
-			)
-		);
-		$freightArea->setLabel('Freight Area');
-		$this->add($freightArea);
+		// $freightArea = new Select(
+			// 'freightArea',
+			// FreightAreas::find(),
+			// array(
+				// 'using'		=> array('id', 'name'),
+				// 'useEmpty'	=> true,
+				// 'emptyTest'	=> '...',
+				// 'emptyValue'=> '',
+				// 'class'		=> 'form-control'
+			// )
+		// );
+		// $freightArea->setLabel('Freight Area');
+		// $this->add($freightArea);
 
 		// Freight Carrier
 		// Select field
-		$freightCarrier = new Select(
-			'freightCarrier',
-			FreightCarriers::find(),
-			array(
-				'using'		=> array('id', 'name'),
-				'useEmpty'	=> true,
-				'emptyTest'	=> '...',
-				'emptyValue'=> '',
-				'class'		=> 'form-control'
-			)
-		);
-		$freightCarrier->setLabel('Freight Carrier');
-		$this->add($freightCarrier);
+		// $freightCarrier = new Select(
+			// 'freightCarrier',
+			// FreightCarriers::find(),
+			// array(
+				// 'using'		=> array('id', 'name'),
+				// 'useEmpty'	=> true,
+				// 'emptyTest'	=> '...',
+				// 'emptyValue'=> '',
+				// 'class'		=> 'form-control'
+			// )
+		// );
+		// $freightCarrier->setLabel('Freight Carrier');
+		// $this->add($freightCarrier);
 
 		// Customer status
 		// Select field

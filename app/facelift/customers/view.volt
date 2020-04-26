@@ -7,7 +7,7 @@
 			</div>
 			<div class="col text-right">
 				<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-					{{ linkTo(['followup/?company=' ~ customer.customerCode, 'Add Note', 'class': 'btn btn-primary']) }}
+					{{ linkTo(['followup/?company=' ~ customer.customerCode, 'Add Note', 'class': 'btn btn-primary open-modal']) }}
 					<div class="btn-group" role="group">
 						<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
@@ -35,14 +35,14 @@
 <div class="container">
 	<div class="row">
 		<div class="col-sm-12 col-lg-3 mb-3">
-			<div class="card mb-3">
+			<div class="card shadow-sm mb-3">
 				<div class="card-body">
 					<h5 class="card-title">Customer Info
-						<a class="float-right" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax">Edit</a>
+						<a class="float-right open-modal text-sm" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class="feather"></a>
 					</h5>
 				</div>
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item"><span class="title">Status</span> <span class="label label-{{ customer.status.style }} float-right">{{ customer.status.name }}</span></li>
+					<li class="list-group-item"><span class="title">Status</span> <span class="badge badge-{{ customer.status.style }} float-right">{{ customer.status.name }}</span></li>
 					<li class="list-group-item"><span class="title">Phone</span><a href="tel:{{ customer.phone|stripspace }}" class="tel-link float-right">{{ customer.phone }}</a></li>
 					<li class="list-group-item"><span class="title">Fax</span> 
 						<span class="float-right">{{ customer.fax }}</span>
@@ -59,16 +59,21 @@
 						<span class="float-right">{{ customer.salesarea.name }}</span>
 						{% endif %}
 					</li>
+					<li class="list-group-item"><span class="title">Rep</span>
+						{% if customer.salesarea is not empty %}
+						<span class="float-right">{{ customer.salesarea.rep.name }}</span>
+						{% endif %}
+					</li>
 				</ul>
 			</div>
 			{% if addresses %}
 			{# TODO: Show the header even if no addresses st yet #}
-			<div class="card">
+			<div class="card shadow-sm">
 				<div class="card-body">
 					<h5 class="card-title">Addresses</h5>
 					{% for address in addresses %}
 					<h6 class="card-subtitle mb-2 text-muted">{{ address.type.typeDescription }}</h6>
-					<a class="float-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
+					<a class="float-right text-info open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class='feather'></a>
 					<p class="card-text">
 					{% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
 					{% if address.line2 is not empty %} {{ address.line2 }} <br>{% endif %}
@@ -80,12 +85,12 @@
 					<a class="float-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
 					{#<a href="https://maps.google.com/?q={{ address.line1 ~ " " ~ address.city }}" class="float-right text-info" target="_blank"><i class="fa fa-icon fa-map-marker" class="float-right"></i> </a>#}
 					{% endfor %}
-					<a href="{{ url('address/new/' ~ customer.customerCode) }}" class="card-link">Add Address</a>
+					<a href="{{ url('address/new/' ~ customer.customerCode) }}" class="card-link open-modal">Add Address</a>
 				</div>
 			</div>
 			{% endif %}
 		</div>
-		<div class="col">
+		<div class="col-sm-12 col-lg-9">
 			<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 				<li class="nav-item">
 					<a class="nav-link active" id="pills-timeline-tab" data-toggle="pill" href="#pills-timeline" role="tab" aria-controls="pills-timeline" aria-selected="true">Timeline</a>
@@ -105,7 +110,7 @@
 					{{ partial('timeline') }}
 				</div>
 				<div class="tab-pane fade" id="pills-contacts" role="tabpanel" aria-labelledby="pills-contacts-tab">
-					<div class="card">
+					<div class="card shadow-sm">
 						<div class="card-body">
 							<h5 class="card-title mb-n1">Contacts</h5>
 						</div>
@@ -140,7 +145,7 @@
 					</div>
 				</div>
 				<div class="tab-pane fade" id="pills-quotes" role="tabpanel" aria-labelledby="pills-quotes-tab">
-					<table class="table table-striped table-hover">
+					<table class="table table-striped table-bordered bg-white shadow-sm">
 						<thead>
 							<tr>
 								<th> ID </th>
@@ -157,7 +162,7 @@
 								<td> {{ quote.reference }} </td>
 								<td> ${{ quote.value|number }} </td>
 								<td> {{ quote.rep.name }} </td>
-								<td> <span class="label label-{{ quote.genericStatus.style }}">{{ quote.genericStatus.statusName }}</span></td>
+								<td> <span class="badge badge-{{ quote.genericStatus.style }}">{{ quote.genericStatus.statusName }}</span></td>
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -165,7 +170,7 @@
 				</div>
 				<div class="tab-pane fade" id="pills-orders" role="tabpanel" aria-labelledby="pills-orders-tab">
 					{% for order in orders %}
-					<div class="card mb-3">
+					<div class="card shadow-sm mb-3">
 						<div class="card-body">
 							<h5 class="card-title">{{ order.customerRef }}</h5>
 							<h6 class="card-subtitle mb-2 text-muted">{{ order.orderNumber }}</h6>

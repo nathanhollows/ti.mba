@@ -266,10 +266,10 @@ class CustomersController extends ControllerBase
     public function editAction($customerCode = null)
     {
         if ($this->request->isAjax()) {
-            $this->view->setTemplateBefore('modal-form');
-        }
+					$this->view->setTemplateBefore('modal-form');
+				}
 
-        $this->view->pageTitle = "Edit";
+        $this->view->pageTitle = "Edit Customer Details";
 
         $customer = Customers::findFirstByCustomerCode($customerCode);
         $this->view->form = new CustomersForm($customer);
