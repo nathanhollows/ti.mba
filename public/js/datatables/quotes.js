@@ -33,10 +33,10 @@ $(document).ready(function() {
     });
     $('div.toolbar').html( $('div#filter-list').html() );
     $('div#filter-list').remove();
-    $('button.filter-user').on( 'click', function () {
+    $('.filter-user').on( 'click', function () {
         aTable.column( 4 ).search( $(this).data('user')  ).draw();
     } );
-    $('button.filter-status').on( 'click', function () {
+    $('.filter-status').on( 'click', function () {
         aTable.column( 6 ).search( $(this).data('status')  ).draw();
     } );
     $('div.dataTables_filter input').select();

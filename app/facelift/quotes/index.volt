@@ -37,7 +37,7 @@
 						<input type="radio" name="options" id="option1" autocomplete="off"> Active
 					</label>
 					<label class="filter-status btn btn-sm btn-outline-secondary" data-status="">
-						<input type="radio" name="options" id="option2" autocomplete="off"> Dead
+						<input type="radio" name="options" id="option2" autocomplete="off"> Active + Dead
 					</label>
 				</div>
     </div>
