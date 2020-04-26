@@ -24,19 +24,26 @@
 
 <div class="container-fluid py-2 border bg-white">
     <div id="filter-list">
-        <div class="btn-group" role="group" aria-label="Filter My Quotes" id="filterlist-user">
-					<button type="button" class="btn btn-sm btn-secondary filter-user" data-user="{{ auth.getName() }}">My Quotes</button>
-            <button type="button" class="btn btn-sm btn-secondary filter-user" data-user="">All Quotes</button>
-        </div>
-        <div class="btn-group" role="group" aria-label="Filter out dead quotes" id="filterlist-status">
-            <button type="button" class="btn btn-sm btn-secondary filter-status" data-status="Warm">Active</button>
-            <button type="button" class="btn btn-sm btn-secondary filter-status" data-status="">Dead</button>
-        </div>
-
+				<div class="btn-group btn-group-toggle" id="filterlist-status" data-toggle="buttons">
+					<label class="filter-user btn btn-sm btn-outline-secondary" data-user="{{ auth.getName() }}">
+						<input type="radio" name="options" id="option1" autocomplete="off"> My Quotes
+					</label>
+					<label class="filter-user btn btn-sm btn-outline-secondary" data-user="">
+						<input type="radio" name="options" id="option2" autocomplete="off"> All Quotes
+					</label>
+				</div>
+				<div class="btn-group btn-group-toggle" id="filterlist-status" data-toggle="buttons">
+					<label class="filter-status btn btn-sm btn-outline-secondary" data-status="Warm">
+						<input type="radio" name="options" id="option1" autocomplete="off"> Active
+					</label>
+					<label class="filter-status btn btn-sm btn-outline-secondary" data-status="">
+						<input type="radio" name="options" id="option2" autocomplete="off"> Dead
+					</label>
+				</div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover dataTable" data-source="{{ url('quotes/ajax/') }} ">
+    <div>
+        <table class="table table-bordered table-striped table-hover dataTable bg-white" data-source="{{ url('quotes/ajax/') }} ">
             <thead>
                 <tr>
                     <th>#</th>

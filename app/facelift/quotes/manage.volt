@@ -13,7 +13,7 @@
 </div>
 
 <div class="container">
-	<div class="card shadow-sm">
+	<div class="card shadow">
 		<div class="row">
 			<div class="col">
 				<div class="card-body">
@@ -38,14 +38,14 @@
 <div class="container">
 	<div class="row">
 		<div class="col">
-			<table class="table bg-white rounded bordered mt-4 shadow-sm">
+			<table class="table bg-white rounded bordered mt-4 shadow">
 				<thead>
 					<th>#</th>
 					<th>Date</th>
 					<th>Custumer</th>
 					<th>Reference</th>
 					<th>Value</th>
-					<th>Actions</th>
+					<th></th>
 				</thead>
 				<tbody>
 					{% for quote in quotes %}
@@ -57,8 +57,8 @@
 						<td align="right">{{ quote.value|money }}</td>
 						<td>
 							<div class="btn-group" role="group" aria-label="Basic example">
-								<a href="{{ url('quotes/turntosale/' ~ quote.quoteId ) }}" class="btn btn-secondary btn-sm">Won</a>
-								<a href="{{ url('quotes/quotelost/' ~ quote.quoteId ) }}" class="btn btn-secondary btn-sm">Lost</a>
+								<a href="{{ url('quotes/turntosale/' ~ quote.quoteId ) }}" class="btn btn-outline-success btn-sm">Won</a>
+								<a href="{{ url('quotes/quotelost/' ~ quote.quoteId ) }}" class="btn btn-outline-danger btn-sm">Lost</a>
 							</div>
 						</td>
 					</tr>

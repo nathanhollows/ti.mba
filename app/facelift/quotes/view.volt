@@ -237,10 +237,4 @@ select.data.dryness {
 	width: 54px;
 }
 	</style>
-	<script type="text/javascript">
-		$(function() {
-
-			$('form#items').areYouSure( {'message':'Your quote details are not saved!'} );
-
-		});
-	</script>
+	<script src="/js/editable-table.js"></script>
