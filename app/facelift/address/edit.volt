@@ -1,15 +1,17 @@
 {{ form("address/update", "method":"post", "autocomplete" : "off") }}
-    <div class="modal-body">
-        {{ content() }}
+	{{ content() }}
 
-
-        {% for element in form %}
-            <div class="form-group">
-                {{ element.label() }}
-                {{ element }}
-            </div>    
-        {% endfor %}
-
-
-    </div>
-    </div>
+	{% for element in form %}
+	<div class="form-group">
+		{% if element.getName() is not "id" %}
+			{{ element.label() }}
+		{% endif %}
+		{{ element }}
+	</div>    
+	{% endfor %}
+	<div class="row">
+		<div class="col">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</div>
+</form>
