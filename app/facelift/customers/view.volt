@@ -11,9 +11,9 @@
 					<div class="btn-group" role="group">
 						<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
-							{{ linkTo(['quotes/new/?company=' ~ customer.customerCode, 'New Quote', 'class': 'dropdown-item']) }}
-							{{ linkTo(['customers/details/' ~ customer.customerCode, 'Print Contact List', 'class': 'dropdown-item']) }}
-							{{ linkTo(['customers/history/' ~ customer.customerCode, 'Print Contact Summary', 'class': 'dropdown-item']) }}
+							{{ linkTo(['quotes/new/?company=' ~ customer.customerCode, 'Create New Quote', 'class': 'dropdown-item']) }}
+							{{ linkTo(['customers/details/' ~ customer.customerCode, 'Print Contacts List', 'class': 'dropdown-item']) }}
+							{{ linkTo(['customers/history/' ~ customer.customerCode, 'Print Contact Records', 'class': 'dropdown-item']) }}
 						</div>
 					</div>
 				</div>
@@ -37,11 +37,11 @@
 		<div class="col-sm-12 col-lg-3 mb-3">
 			<div class="card shadow-sm mb-3">
 				<div class="card-body">
-					<h5 class="card-title">Customer Info
+					<h5 class="card-title">Details
 						<a class="float-right open-modal text-sm" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class="feather"></a>
 					</h5>
 				</div>
-				<ul class="list-group list-group-flush">
+				<ul class="list-group list-group-flush mt-n4">
 					<li class="list-group-item"><span class="title">Status</span> <span class="badge badge-{{ customer.status.style }} float-right">{{ customer.status.name }}</span></li>
 					<li class="list-group-item"><span class="title">Phone</span><a href="tel:{{ customer.phone|stripspace }}" class="tel-link float-right">{{ customer.phone }}</a></li>
 					<li class="list-group-item"><span class="title">Fax</span> 
@@ -72,7 +72,7 @@
 				<div class="card-body">
 					<h5 class="card-title">Addresses</h5>
 					{% for address in addresses %}
-					<h6 class="card-subtitle mb-2 text-muted">{{ address.type.typeDescription }}</h6>
+					<h6 class="card-subtitle mb-1 mt-2 text-muted">{{ address.type.typeDescription }}</h6>
 					<a class="float-right text-info open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class='feather'></a>
 					<p class="card-text">
 					{% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
@@ -112,15 +112,14 @@
 				<div class="tab-pane fade" id="pills-contacts" role="tabpanel" aria-labelledby="pills-contacts-tab">
 					<div class="card shadow-sm">
 						<div class="card-body">
-							<h5 class="card-title mb-n1">Contacts</h5>
+							<h5 class="card-title mb-n1 d-inline-block">Contacts</h5>
+							<input id="contact-search" name="search" placeholder="Search..." type="text" data-list="#contacts-list" class="form-control w-25 float-right shadow-sm" autocomplete="off">
 						</div>
-						<ul class="list-group list-group-flush">
-							{% set role = "h" %}
+						{% set role = "h" %}
+						<ul class="list-group list-group-flush" id="contacts-list">
 							{% for contact in contacts %}
 							{% if contact.role is not role %}
-						</ul>
-						<h6 class="card-header font-weight-bold {% if loop.first %}border-top{% endif %}">{% if contact.job %}{{ contact.job.name }}{% else %}Misc{% endif %}</h6>
-						<ul class="list-group list-group-flush">
+						<li class="list-group-item bg-light font-weight-bold border-left-0 border-right-0 border-top-0 header">{% if contact.job %}{{ contact.job.name }}{% else %}Misc{% endif %}</li>
 							{% set role = contact.role %}
 							{% endif %}
 							<li class="list-group-item">
@@ -242,3 +241,14 @@
 	</div>
 </div>
 
+<script src="/js/hideseek.min.js"></script>
+<script>
+
+	$( document ).ready( function() {
+		$('#contact-search').hideseek({
+			throttle: 200,
+			headers: '.header',
+		});
+	});
+
+</script>

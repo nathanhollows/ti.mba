@@ -26,7 +26,6 @@ class CustomersForm extends Form
 			$element->setFilters(array('striptags', 'string'));
 			$element->setAttributes(array(
 				'class'			=> 'form-control',
-				'placeholder'	=> 'Customer Code',
 				'required'		=> 'true'
 				)
 			);
@@ -42,7 +41,6 @@ class CustomersForm extends Form
 		$name->setFilters(array('striptags', 'string'));
 		$name->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'Name',
 			'required'		=> 'true'
 			)
 		);
@@ -55,7 +53,6 @@ class CustomersForm extends Form
 		$phone->setFilters(array('striptags', 'string'));
 		$phone->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'Phone number',
 			)
 		);
 		$this->add($phone);
@@ -67,7 +64,6 @@ class CustomersForm extends Form
 		$fax->setFilters(array('striptags', 'string'));
 		$fax->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'Fax number',
 			)
 		);
 		$this->add($fax);
@@ -79,7 +75,6 @@ class CustomersForm extends Form
 		$email->setFilters(array('striptags', 'string'));
 		$email->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'Email',
 			)
 		);
 		$this->add($email);
@@ -149,12 +144,12 @@ class CustomersForm extends Form
 			CustomerStatus::find(),
 			array(
 				'using'		=> array('id', 'name'),
-				'useEmpty'	=> true,
-				'emptyValue'=> '',
 				'class'		=> 'form-control',
 				'required'		=> 'true'
 			)
 		);
+		$defaultStatus = CustomerStatus::findFirst("name = 'Normal'");
+		$status->setDefault($defaultStatus->id);
 		$status->setLabel('Customer Status');
 		$this->add($status);
 
@@ -165,12 +160,12 @@ class CustomersForm extends Form
 			SalesAreas::find(),
 			array(
 				'using'		=> array('id', 'name'),
-				'useEmpty'	=> true,
-				'emptyValue'=> '',
 				'class'		=> 'form-control'
 			)
 		);
-		$salesArea->setLabel('Sales Area');
+		$defaultArea = SalesAreas::findFirst("name = 'Not Specified'");
+		$salesArea->setDefault($defaultArea->id);
+		$salesArea->setLabel("Sales Area");
 		$this->add($salesArea);
 	}
 
