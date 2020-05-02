@@ -3,7 +3,7 @@
 {% else %}
 {% set chargeOut = 0 %}
 {% endif %}
-{% if budget %}
+{% if budget.budget is not 0 %}
 {% set dailybudget = budget.budget/budget.days %}
 {% set days = budget.days %}
 {% else %}
@@ -29,12 +29,14 @@
 	</div>
 </div>
 
-{{ content() }}
-{% if budget is 0 %}
-<div class="alert alert-primary" role="alert">
-  This is a primary alert—check it out!
+<div class="container">
+	{{ content() }}
+	{% if budget.budget is 0 %}
+	<div class="alert alert-primary" role="alert">
+		The budget for this month has not been set. This can be done in the {{link_to("reports/annual", "annual sales report")}}
+	</div>
+	{% endif %}
 </div>
-{% endif %}
 
 <div class="container mb-3">
 	<div class="row">
