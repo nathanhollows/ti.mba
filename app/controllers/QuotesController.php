@@ -35,6 +35,7 @@ class QuotesController extends ControllerBase
 
 	public function indexAction($status = null)
 	{
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
 		$this->tag->prependTitle('Search Quotes');
 		$this->view->pageSubtitle = "Search";
         $this->view->users = Users::getActive();
@@ -307,6 +308,7 @@ class QuotesController extends ControllerBase
 	public function manageAction() 
 	{
 		parent::initialize();
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
 		$this->tag->prependTitle("Manage Quotes");
 		$this->view->quotes = Quotes::find([
 			"conditions"	=> "user = ?1 AND status != 4",

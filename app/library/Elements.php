@@ -99,7 +99,7 @@ class Elements extends Component
                 'action' => '',
                 'children' => array (
                     array('Orders', 'orders'),
-                    array('Freight Tracker', 'freight?facelift'),
+                    array('Freight Tracker', 'freight'),
                 )),
             'kpi' => array(
                 'icon'  => 'truck',

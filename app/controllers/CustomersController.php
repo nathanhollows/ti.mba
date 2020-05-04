@@ -20,441 +20,443 @@ use App\Forms\CustomersForm;
 
 class CustomersController extends ControllerBase
 {
-    public function initialize()
-    {
-        $this->view->setTemplateBefore('private');
-        parent::initialize();
-    }
-
-    /**
-     * Index action
-     */
-    public function indexAction()
-    {
-        $this->view->pageSubtitle = "";
-        $this->tag->prependTitle("Search Customers");
-        if ($this->request->isAjax()) {
-            $builder = $this->modelsManager->createBuilder()
-            ->columns('customerCode, customerName, fax, phone, customerStatus, customerStatus.style, customerStatus.name')
-            ->from('App\Models\Customers')
-            ->join('App\Models\CustomerStatus', 'customerStatus = customerStatus.id', 'customerStatus', 'INNER')
-            ->orderBy('customerName');
-
-            $dataTables = new DataTable();
-            $dataTables->fromBuilder($builder)->sendResponse();
-            $this->persistent->parameters = null;
-        };
-
-        $this->assets->collection('footer')
-            // DataTables
-            ->addJs('//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
-            ->addJs('//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js')
-            // View specific JS
-            ->addJs('js/datatables/companies.js?v=2.1');
-
-        $this->view->headerButton = \Phalcon\Tag::linkTo(array('customers/new', 'New', 'class' => ' btn btn-default pull-right'));
-    }
-
-    /**
-     * Displays the creation form
-     */
-    public function newAction()
-    {
-        $this->tag->prependTitle("Create Customer");
-        $this->persistent->parameters = null;
-        $this->view->form = new CustomersForm;
-    }
-
-    /**
-     * Edits a customer
-     *
-     * @param string $customerCode
-     */
-    public function viewAction($customerCode)
-    {
-
-        $this->view->parser = new \cebe\markdown\Markdown();
-        $customer = Customers::findFirstBycustomerCode($customerCode);
-        if (!$customer) {
-            $this->flashSession->error("Customer was not found");
-
-            return $this->response->redirect('customers/');
-
-            $this->view->disable();
-        }
-
-        $quotes = Quotes::find(array(
-            "customerCode = '$customerCode'",
-            'order'         => 'quoteId DESC'));
-        $this->view->quotes = $quotes;
-
-        $history = ContactRecord::find(array(
-            "customerCode = '$customerCode'",
-            'order'         => 'date DESC',
-            'limit'         => '30',
-            ));
-        $this->view->history = $history;
-
-        $this->view->futureHistory = ContactRecord::getFutureByCustomer($customerCode);
-
-        $notes = CustomerNotes::find(array(
-            "customerCode = '$customerCode'",
-            'order'         => 'date DESC',
-            ));
-
-        $this->view->contacts = Contacts::find(array(
-            'conditions'    => 'customerCode = ?1',
-            'bind'          => array(1 => $customerCode),
-            'order'         => 'role ASC, name ASC',
-        ));
-
-        $roles = ContactRoles::find(array(
-            'order'     => 'name ASC'
-        ));
-        $rolesstr = "[";
-        foreach ($roles as $role) {
-            $rolesstr = $rolesstr . '{value: ' . $role->id . ', text: "' . $role->name .'"}, ';
-        }
-        $rolesstr = $rolesstr . "]";
-        $this->view->roles = $rolesstr;
-
-        $this->view->customerCode = $customer->customerCode;
-
-        $this->view->customer = $customer;
-        $this->view->notes = $notes;
-        $this->view->headerButton = '
-        <!-- Split button -->
-        <div class="btn-group pull-right">
-            <a class="btn btn-default" data-target="#modal-ajax" href="/followup/?company=' . $customer->customerCode . '" role="button"><i class="fa fa-icon fa-pencil"></i> Add Record</a>
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="caret"></span>
-                <span class="sr-only">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a href="/quotes/new/?company=' . $customer->customerCode . '">New Quote</a></li>
-                <li><a href="/customers/details/' . $customer->customerCode . '">Details Report</a></li>
-                <li><a href="/customers/history/' . $customer->customerCode . '">History Report</a></li>
-            </ul>
-        </div>
-        ';
-        if($customer->rank) {
-            $badges[1] = array(
-                'text'  => "Rank $customer->rank",
-                'icon'  => (($customer->rank <= 10) ? 'trophy faa-tada animated' : 'star'),
-            );
-        }
-        if($customer->salesarea->rep) {
-            $badges[2] = array(
-                'text'  => $customer->salesarea->rep->name,
-                'icon'  => 'user',
-                'link'  => '/profile/view/'. $customer->salesarea->rep->id,
-            );
-        }
-        if(isset($badges)) {
-            $this->view->pageSubheader = $badges;
-        }
-
-        \Phalcon\Tag::linkTo(array("followup/?company=" . $customerCode, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
-
-        $addresses = Addresses::find("customerCode = '$customerCode'");
-        $this->view->addresses = $addresses;
-
-        $this->view->pageTitle = '<i class="fa fa-building-o" aria-hidden="true"></i> ' . $customer->customerName;
-        $this->view->pageSubtitle = $customer->customerCode;
-        $this->tag->prependTitle($customer->customerName);
-
-        $this->view->orders = Orders::find(array(
-            'conditions'        => 'customerCode = ?1 AND complete = 0',
-            'bind'              => array(1 => $customerCode),
-        ));
-
-        $this->assets->collection('jquery')
-            ->addCss('css/bootstrap-markdown.min.css', true)
-            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/Shuffle/4.0.0/shuffle.min.js');
-
-        $this->assets->collection('footer')
-            ->addJs('js/datatables/customerQuotes.js')
-            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js')
-            ->addJs('js/customers/customers.js')
-            ->addJs('js/to-markdown.js', true)
-            ->addJs('js/bootstrap-markdown.js', true)
-            ->addJs('js/markdown.js', true);
-
-    }
-
-    public function getcontactsAction($customerCode)
-    {
-        $this->view->disable();
-
-        if (!$this->request->isAjax()) {
-            $this->flashSession->error("You shouldn't be there!");
-            return $this->_redirectBack();
-        }
-
-        $contacts = Contacts::find(array(
-            'columns'    => 'id, name',
-            'conditions' => 'customerCode = ?1',
-            'bind'       => array(1 => $customerCode),
-        ));
-        if (!$contacts) {
-            $response->setStatusCode(404,"No contacts found");
-            $response->send();
-            return true;
-        }
-
-            echo '<option value="">Select a Contact</option>';
-        foreach ($contacts as $contact) {
-            echo '<option value="' . $contact->id . '">' . $contact->name . '</option>';
-        }
-    }
-
-    public function detailsAction($customerCode = null)
-    {
-        if ($customerCode == NULL) {
-            $this->_redirectBack();
-        }
-
-        $customer = Customers::findFirstBycustomerCode($customerCode);
-        if (!$customer) {
-            $this->flash->error("The customer could not be found");
-            return false;
-        } else {
-            $this->view->setTemplateBefore('none');
-        }
-
-        $quotes = Quotes::findBycustomerCode($customerCode);
-        $history = ContactRecord::findBycustomerCode($customerCode);
-
-        $this->view->customer = $customer;
-        $this->view->history = $history;
-        $this->view->quotes = $quotes;
-    }
-
-    public function historyAction($customerCode = null, $year = null, $month = null)
-    {
-        if ($customerCode == NULL) {
-            $this->_redirectBack();
-        }
-
-        $customer = Customers::findFirstBycustomerCode($customerCode);
-        if (!$customer) {
-            $this->flash->error("The customer could not be found");
-            return false;
-        } else {
-            $this->view->setTemplateBefore('none');
-        }
-
-        if (!ctype_digit($year)) {
-            $year = date("Y");
-        }
-
-        if (!ctype_digit($month)) {
-            $month = 01;
-        }
-
-        $startDate = date("Y-m-d", strtotime("$year-$month-01"));
-        echo $startDate;
-
-        $quotes     = $customer->quotesFrom($startDate);
-        $history    = $customer->historyFrom($startDate);
-
-        $this->view->customer = $customer;
-        $this->view->history = $history;
-        $this->view->quotes = $quotes;
-    }
-
-    public function editAction($customerCode = null)
-    {
-        if ($this->request->isAjax()) {
-					$this->view->setTemplateBefore('modal-form');
-				}
-
-        $this->view->pageTitle = "Edit Customer Details";
-
-        $customer = Customers::findFirstByCustomerCode($customerCode);
-        $this->view->form = new CustomersForm($customer);
-
-    }
-
-    /**
-     * Creates a new customer
-     */
-    public function createAction()
-    {
-
-        // If the user has come accross this page by mistake then redirect to the customer index
-        if (!$this->request->isPost()) {
-            $this->response->redirect("customers/");
-        }
-
-        // Lets start by creating a new customers
-        $customer = new Customers();
-
-        // Lets populate that customer information uisng the posted data
-        // If the save doesn't work then redirect back to the previous form and flash the error messages
-        if (!$customer->save($this->request->getPost(), array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup'))) {
-            foreach ($customer->getMessages() as $message) {
-                $this->flashSession->error($message);
-            }
-
-            $this->_redirectBack();
-        } else {
-        // If the customer does save correctly then forward the user to the "View" of the new customer
-            $this->flashSession->success("Customer was created successfully");
-            $this->response->redirect("customers/view/" . $customer->customerCode );
-        }
-    }
-
-    /**
-     * Updates a customer record
-     *
-     */
-
-    // TODO Update customers without setting tripDay to 0
-
-    public function updateAction()
-    {
-
-        $this->view->disable;
-        if (!$this->request->isPost()) {
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "index"
-                ));
-        }
-
-        $customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
-        // Store and check for errors
-
-        $success = $customer->save($this->request->getPost(), array('customerName', 'phone', 'tripDay', 'fax', 'email', 'freightArea', 'freightCarrier', 'area', 'customerStatus'));
-        if ($success) {
-            $this->flash->success("Quote created successfully!");
-            return $this->_redirectBack();
-        } else {
-            $this->flash->error("Sorry, the quote could not be saved");
-            foreach ($contact->getMessages() as $message) {
-                $this->flash->error($message->getMessage());
-            }
-        }
-    }
-
-    /**
-     * Saves a customer edited
-     *
-     */
-    public function saveAction()
-    {
-
-        if (!$this->request->isPost()) {
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "index"
-                ));
-        }
-
-        $customerCode = $this->request->getPost("customerCode");
-
-        $customer = Customers::findFirstBycustomerCode($customerCode);
-        if (!$customer) {
-            $this->flash->error("customer does not exist " . $customerCode);
-
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "index"
-                ));
-        }
-
-        $customer->customerCode = $this->request->getPost("customerCode");
-        $customer->customerName = $this->request->getPost("customerName");
-        $customer->customerPhone = $this->request->getPost("customerPhone");
-        $customer->customerFax = $this->request->getPost("customerFax");
-        $customer->customerEmail = $this->request->getPost("customerEmail");
-        $customer->freightArea = $this->request->getPost("freightArea");
-        $customer->freightCarrier = $this->request->getPost("freightCarrier");
-        $customer->area = $this->request->getPost("area");
-        $customer->customerStatus = $this->request->getPost("customerStatus");
-        $customer->defaultAddress = $this->request->getPost("defaultAddress");
-        $customer->defaultContact = $this->request->getPost("defaultContact");
-        $customer->customerGroup = $this->request->getPost("customerGroup");
-
-
-        if (!$customer->save()) {
-
-            foreach ($customer->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "edit",
-                "params" => array($customer->customerCode)
-                ));
-        }
-
-        $this->flash->success("customer was updated successfully");
-
-        return $this->dispatcher->forward(array(
-            "controller" => "customers",
-            "action" => "index"
-            ));
-    }
-
-    /**
-     * Deletes a customer
-     *
-     * @param string $customerCode
-     */
-    public function deleteAction($customerCode)
-    {
-        $customer = Customers::findFirstBycustomerCode($customerCode);
-        if (!$customer) {
-            $this->flash->error("Customer was not found");
-
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "index"
-                ));
-        }
-
-        if (!$customer->delete()) {
-
-            foreach ($customer->getMessages() as $message) {
-                $this->flash->error($message);
-            }
-
-            return $this->dispatcher->forward(array(
-                "controller" => "customers",
-                "action" => "search"
-                ));
-        }
-
-        $this->flash->success("Customer was deleted successfully");
-
-        return $this->dispatcher->forward(array(
-            "controller" => "customers",
-            "action" => "index"
-            ));
-    }
-
-    public function detailreportAction($customerCode = null)
-    {
-        if ($customerCode == null) {
-            $this->flashSession->error('The customer code must be entered');
-            $this->_redirectBack();
-        }
-
-        $company = Customers::findFirstBycustomerCode($customerCode);
-
-        if (!$company) {
-            $this->flashSession->error('This is not a valid customer');
-            $this->_redirectBack();
-        }
-
-        $this->view->company = $company;
-
-        $this->view->setTemplateBefore('none');
-        $this->tag->prependTitle('Customer Details Report');
-    }
+	public function initialize()
+	{
+		$this->view->setTemplateBefore('private');
+		parent::initialize();
+	}
+
+	/**
+	 * Index action
+	 */
+	public function indexAction()
+	{
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
+		$this->view->pageSubtitle = "";
+		$this->tag->prependTitle("Search Customers");
+		if ($this->request->isAjax()) {
+			$builder = $this->modelsManager->createBuilder()
+				->columns('customerCode, customerName, fax, phone, customerStatus, customerStatus.style, customerStatus.name')
+				->from('App\Models\Customers')
+				->join('App\Models\CustomerStatus', 'customerStatus = customerStatus.id', 'customerStatus', 'INNER')
+				->orderBy('customerName');
+
+			$dataTables = new DataTable();
+			$dataTables->fromBuilder($builder)->sendResponse();
+			$this->persistent->parameters = null;
+		};
+
+		$this->assets->collection('footer')
+			// DataTables
+			->addJs('//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
+			->addJs('//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js')
+			// View specific JS
+			->addJs('js/datatables/companies.js?v=2.1');
+
+		$this->view->headerButton = \Phalcon\Tag::linkTo(array('customers/new', 'New', 'class' => ' btn btn-default pull-right'));
+	}
+
+	/**
+	 * Displays the creation form
+	 */
+	public function newAction()
+	{
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
+		$this->tag->prependTitle("Create Customer");
+		$this->persistent->parameters = null;
+		$this->view->form = new CustomersForm;
+	}
+
+	/**
+	 * Edits a customer
+	 *
+	 * @param string $customerCode
+	 */
+	public function viewAction($customerCode)
+	{
+
+		$this->view->parser = new \cebe\markdown\Markdown();
+		$customer = Customers::findFirstBycustomerCode($customerCode);
+		if (!$customer) {
+			$this->flashSession->error("Customer was not found");
+
+			return $this->response->redirect('customers/');
+
+			$this->view->disable();
+		}
+
+		$quotes = Quotes::find(array(
+			"customerCode = '$customerCode'",
+			'order'         => 'quoteId DESC'));
+		$this->view->quotes = $quotes;
+
+		$history = ContactRecord::find(array(
+			"customerCode = '$customerCode'",
+			'order'         => 'date DESC',
+			'limit'         => '30',
+		));
+		$this->view->history = $history;
+
+		$this->view->futureHistory = ContactRecord::getFutureByCustomer($customerCode);
+
+		$notes = CustomerNotes::find(array(
+			"customerCode = '$customerCode'",
+			'order'         => 'date DESC',
+		));
+
+		$this->view->contacts = Contacts::find(array(
+			'conditions'    => 'customerCode = ?1',
+			'bind'          => array(1 => $customerCode),
+			'order'         => 'role ASC, name ASC',
+		));
+
+		$roles = ContactRoles::find(array(
+			'order'     => 'name ASC'
+		));
+		$rolesstr = "[";
+		foreach ($roles as $role) {
+			$rolesstr = $rolesstr . '{value: ' . $role->id . ', text: "' . $role->name .'"}, ';
+		}
+		$rolesstr = $rolesstr . "]";
+		$this->view->roles = $rolesstr;
+
+		$this->view->customerCode = $customer->customerCode;
+
+		$this->view->customer = $customer;
+		$this->view->notes = $notes;
+		$this->view->headerButton = '
+				<!-- Split button -->
+				<div class="btn-group pull-right">
+						<a class="btn btn-default" data-target="#modal-ajax" href="/followup/?company=' . $customer->customerCode . '" role="button"><i class="fa fa-icon fa-pencil"></i> Add Record</a>
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="caret"></span>
+								<span class="sr-only">Toggle Dropdown</span>
+						</button>
+						<ul class="dropdown-menu">
+								<li><a href="/quotes/new/?company=' . $customer->customerCode . '">New Quote</a></li>
+								<li><a href="/customers/details/' . $customer->customerCode . '">Details Report</a></li>
+								<li><a href="/customers/history/' . $customer->customerCode . '">History Report</a></li>
+						</ul>
+				</div>
+				';
+		if($customer->rank) {
+			$badges[1] = array(
+				'text'  => "Rank $customer->rank",
+				'icon'  => (($customer->rank <= 10) ? 'trophy faa-tada animated' : 'star'),
+			);
+		}
+		if($customer->salesarea->rep) {
+			$badges[2] = array(
+				'text'  => $customer->salesarea->rep->name,
+				'icon'  => 'user',
+				'link'  => '/profile/view/'. $customer->salesarea->rep->id,
+			);
+		}
+		if(isset($badges)) {
+			$this->view->pageSubheader = $badges;
+		}
+
+		\Phalcon\Tag::linkTo(array("followup/?company=" . $customerCode, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
+
+		$addresses = Addresses::find("customerCode = '$customerCode'");
+		$this->view->addresses = $addresses;
+
+		$this->view->pageTitle = '<i class="fa fa-building-o" aria-hidden="true"></i> ' . $customer->customerName;
+		$this->view->pageSubtitle = $customer->customerCode;
+		$this->tag->prependTitle($customer->customerName);
+
+		$this->view->orders = Orders::find(array(
+			'conditions'        => 'customerCode = ?1 AND complete = 0',
+			'bind'              => array(1 => $customerCode),
+		));
+
+		$this->assets->collection('jquery')
+			->addCss('css/bootstrap-markdown.min.css', true)
+			->addJs('https://cdnjs.cloudflare.com/ajax/libs/Shuffle/4.0.0/shuffle.min.js');
+
+		$this->assets->collection('footer')
+			->addJs('js/datatables/customerQuotes.js')
+			->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js')
+			->addJs('js/customers/customers.js')
+			->addJs('js/to-markdown.js', true)
+			->addJs('js/bootstrap-markdown.js', true)
+			->addJs('js/markdown.js', true);
+
+	}
+
+	public function getcontactsAction($customerCode)
+	{
+		$this->view->disable();
+
+		if (!$this->request->isAjax()) {
+			$this->flashSession->error("You shouldn't be there!");
+			return $this->_redirectBack();
+		}
+
+		$contacts = Contacts::find(array(
+			'columns'    => 'id, name',
+			'conditions' => 'customerCode = ?1',
+			'bind'       => array(1 => $customerCode),
+		));
+		if (!$contacts) {
+			$response->setStatusCode(404,"No contacts found");
+			$response->send();
+			return true;
+		}
+
+		echo '<option value="">Select a Contact</option>';
+		foreach ($contacts as $contact) {
+			echo '<option value="' . $contact->id . '">' . $contact->name . '</option>';
+		}
+	}
+
+	public function detailsAction($customerCode = null)
+	{
+		if ($customerCode == NULL) {
+			$this->_redirectBack();
+		}
+
+		$customer = Customers::findFirstBycustomerCode($customerCode);
+		if (!$customer) {
+			$this->flash->error("The customer could not be found");
+			return false;
+		} else {
+			$this->view->setTemplateBefore('none');
+		}
+
+		$quotes = Quotes::findBycustomerCode($customerCode);
+		$history = ContactRecord::findBycustomerCode($customerCode);
+
+		$this->view->customer = $customer;
+		$this->view->history = $history;
+		$this->view->quotes = $quotes;
+	}
+
+	public function historyAction($customerCode = null, $year = null, $month = null)
+	{
+		if ($customerCode == NULL) {
+			$this->_redirectBack();
+		}
+
+		$customer = Customers::findFirstBycustomerCode($customerCode);
+		if (!$customer) {
+			$this->flash->error("The customer could not be found");
+			return false;
+		} else {
+			$this->view->setTemplateBefore('none');
+		}
+
+		if (!ctype_digit($year)) {
+			$year = date("Y");
+		}
+
+		if (!ctype_digit($month)) {
+			$month = 01;
+		}
+
+		$startDate = date("Y-m-d", strtotime("$year-$month-01"));
+		echo $startDate;
+
+		$quotes     = $customer->quotesFrom($startDate);
+		$history    = $customer->historyFrom($startDate);
+
+		$this->view->customer = $customer;
+		$this->view->history = $history;
+		$this->view->quotes = $quotes;
+	}
+
+	public function editAction($customerCode = null)
+	{
+		if ($this->request->isAjax()) {
+			$this->view->setTemplateBefore('modal-form');
+		}
+
+		$this->view->pageTitle = "Edit Customer Details";
+
+		$customer = Customers::findFirstByCustomerCode($customerCode);
+		$this->view->form = new CustomersForm($customer);
+
+	}
+
+	/**
+	 * Creates a new customer
+	 */
+	public function createAction()
+	{
+
+		// If the user has come accross this page by mistake then redirect to the customer index
+		if (!$this->request->isPost()) {
+			$this->response->redirect("customers/");
+		}
+
+		// Lets start by creating a new customers
+		$customer = new Customers();
+
+		// Lets populate that customer information uisng the posted data
+		// If the save doesn't work then redirect back to the previous form and flash the error messages
+		if (!$customer->save($this->request->getPost(), array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup'))) {
+			foreach ($customer->getMessages() as $message) {
+				$this->flashSession->error($message);
+			}
+
+			$this->_redirectBack();
+		} else {
+			// If the customer does save correctly then forward the user to the "View" of the new customer
+			$this->flashSession->success("Customer was created successfully");
+			$this->response->redirect("customers/view/" . $customer->customerCode );
+		}
+	}
+
+	/**
+	 * Updates a customer record
+	 *
+	 */
+
+	// TODO Update customers without setting tripDay to 0
+
+	public function updateAction()
+	{
+
+		$this->view->disable;
+		if (!$this->request->isPost()) {
+			return $this->dispatcher->forward(array(
+				"controller" => "customers",
+				"action" => "index"
+			));
+		}
+
+		$customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
+		// Store and check for errors
+
+		$success = $customer->save($this->request->getPost(), array('customerName', 'phone', 'tripDay', 'fax', 'email', 'freightArea', 'freightCarrier', 'area', 'customerStatus'));
+		if ($success) {
+			$this->flash->success("Quote created successfully!");
+			return $this->_redirectBack();
+		} else {
+			$this->flash->error("Sorry, the quote could not be saved");
+			foreach ($contact->getMessages() as $message) {
+				$this->flash->error($message->getMessage());
+			}
+		}
+	}
+
+	/**
+	 * Saves a customer edited
+	 *
+	 */
+	public function saveAction()
+	{
+
+		if (!$this->request->isPost()) {
+			return $this->dispatcher->forward(array(
+				"controller" => "customers",
+				"action" => "index"
+			));
+		}
+
+		$customerCode = $this->request->getPost("customerCode");
+
+		$customer = Customers::findFirstBycustomerCode($customerCode);
+		if (!$customer) {
+			$this->flash->error("customer does not exist " . $customerCode);
+
+			return $this->dispatcher->forward(array(
+				"controller" => "customers",
+				"action" => "index"
+			));
+		}
+
+		$customer->customerCode = $this->request->getPost("customerCode");
+		$customer->customerName = $this->request->getPost("customerName");
+		$customer->customerPhone = $this->request->getPost("customerPhone");
+		$customer->customerFax = $this->request->getPost("customerFax");
+		$customer->customerEmail = $this->request->getPost("customerEmail");
+		$customer->freightArea = $this->request->getPost("freightArea");
+		$customer->freightCarrier = $this->request->getPost("freightCarrier");
+		$customer->area = $this->request->getPost("area");
+		$customer->customerStatus = $this->request->getPost("customerStatus");
+		$customer->defaultAddress = $this->request->getPost("defaultAddress");
+		$customer->defaultContact = $this->request->getPost("defaultContact");
+		$customer->customerGroup = $this->request->getPost("customerGroup");
+
+
+		if (!$customer->save()) {
+
+			foreach ($customer->getMessages() as $message) {
+				$this->flash->error($message);
+			}
+
+			return $this->dispatcher->forward(array(
+				"controller" => "customers",
+				"action" => "edit",
+				"params" => array($customer->customerCode)
+			));
+		}
+
+		$this->flash->success("customer was updated successfully");
+
+		return $this->dispatcher->forward(array(
+			"controller" => "customers",
+			"action" => "index"
+		));
+	}
+
+	/**
+	 * Deletes a customer
+	 *
+	 * @param string $customerCode
+	 */
+	public function deleteAction($customerCode)
+	{
+		$customer = Customers::findFirstBycustomerCode($customerCode);
+		if (!$customer) {
+			$this->flash->error("Customer was not found");
+
+			return $this->dispatcher->forward(array(
+				"controller" => "customers",
+				"action" => "index"
+			));
+		}
+
+		if (!$customer->delete()) {
+
+			foreach ($customer->getMessages() as $message) {
+				$this->flash->error($message);
+			}
+
+			return $this->dispatcher->forward(array(
+				"controller" => "customers",
+				"action" => "search"
+			));
+		}
+
+		$this->flash->success("Customer was deleted successfully");
+
+		return $this->dispatcher->forward(array(
+			"controller" => "customers",
+			"action" => "index"
+		));
+	}
+
+	public function detailreportAction($customerCode = null)
+	{
+		if ($customerCode == null) {
+			$this->flashSession->error('The customer code must be entered');
+			$this->_redirectBack();
+		}
+
+		$company = Customers::findFirstBycustomerCode($customerCode);
+
+		if (!$company) {
+			$this->flashSession->error('This is not a valid customer');
+			$this->_redirectBack();
+		}
+
+		$this->view->company = $company;
+
+		$this->view->setTemplateBefore('none');
+		$this->tag->prependTitle('Customer Details Report');
+	}
 
 }
 
