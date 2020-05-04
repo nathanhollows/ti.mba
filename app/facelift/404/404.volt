@@ -6,10 +6,7 @@
             Sorry, but the page you are looking for was either not found or does not exist. <br/>
             Try refreshing the page or click the button below to go back to the Homepage.
             <div> <br>
-                <a class=" login-detail-panel-button btn" href="/">
-                        <i class="fa fa-arrow-left"></i>
-                        Go back to Homepage                        
-                    </a>
+                <a class="btn btn-primary text-white" onclick="event.preventDefault(); window.history.back()">Go Back</a>
             </div>
         </div>
     </div>
