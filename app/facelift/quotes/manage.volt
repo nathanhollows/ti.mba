@@ -6,7 +6,7 @@
 				<h4 class="header-title">Quotes</h4>
 			</div>
 			<div class="col text-right">
-				{{ linkTo(['quote/new/', 'New Quote', 'class': 'btn btn-primary']) }}
+				{{ linkTo(['quotes/new/', 'New Quote', 'class': 'btn btn-primary']) }}
 			</div>
 		</div>
 	</div>
