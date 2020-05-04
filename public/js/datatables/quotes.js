@@ -27,17 +27,19 @@ $(document).ready(function() {
             {data: "attention"},
             {data: "statusName", class: "hidden-xs",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<span class='label label-"+oData.style+"'>"+oData.statusName+"</span>");
+                    $(nTd).html("<span class='badge badge-"+oData.style+"'>"+oData.statusName+"</span>");
                 }},
         ]
     });
     $('div.toolbar').html( $('div#filter-list').html() );
     $('div#filter-list').remove();
     $('.filter-user').on( 'click', function () {
-        aTable.column( 4 ).search( $(this).data('user')  ).draw();
+			aTable.column( 4 ).search( $(this).data('user')  ).draw();
+			$('#filterlist-user').html($(this).html());
     } );
     $('.filter-status').on( 'click', function () {
-        aTable.column( 6 ).search( $(this).data('status')  ).draw();
+			aTable.column( 6 ).search( $(this).data('status')  ).draw();
+			$('#filterlist-status').html($(this).html());
     } );
     $('div.dataTables_filter input').select();
 
