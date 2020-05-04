@@ -5,7 +5,7 @@
 				<h4 class="header-title">Search Customers</h4>
 			</div>
 			<div class="col text-right">
-				{{ linkTo(['customers/new', 'New Customer', 'class': 'btn btn-primary']) }}
+				{{ linkTo(['customers/new', 'New', 'class': 'btn btn-primary']) }}
 			</div>
 			<hr />
 		</div>
