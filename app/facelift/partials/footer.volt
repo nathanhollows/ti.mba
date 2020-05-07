@@ -12,7 +12,7 @@
 			</div>
 			<div class="modal-body">
 				<form id="feedbackForm">
-					<p class="mb-4">I'm testing a redesign of the CRM (temporarily). Your feedback is important and will factor into the design.</p>
+					<p class="mb-4">Your feedback is appreciated and will help me get the CRM looking good and working better.</p>
 					<p>What is your opinion of this page?</p>
 					<div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
 						<label class="btn btn-light btn-lg">
@@ -29,7 +29,7 @@
 						</label>
 					</div>
 					<input type="hidden" name="uri" value="{{ router.getRewriteUri() }}"></input>
-					<label for="feedback-input" class="mt-4">Please write your feedback here</label>
+					<label for="feedback-input" class="mt-4">(Optional) Please write your feedback here</label>
 					<textarea id="feedback-input" name="feedback" class="form-control w-100"></textarea>
 				</form>
 			</div>
@@ -97,14 +97,22 @@ $( document ).on( "click", ".confirm-delete", function(e) {
 	$('#confirm-delete').modal('show');
 });
 $(document).on("click", "#modal-save", function(e) {
-	$("#modal-ajax form").submit();
+	var form = $("#modal-ajax form");
+	// Loop over them and prevent submission
+	var validation = Array.prototype.filter.call(form, function(form) {
+		if (form.checkValidity() === true) {
+			form.submit();
+		}
+		form.classList.add('was-validated');
+	});
 });
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/instant.page/3.0.0/instantpage.min.js"></script>
+<script type="text/javascript" src="/js/instantpage.min.js" type="module" defer></script>
+<script type="text/javascript" src="/js/useUCA.js"></script>
 
 <style>
 .dropdown-toggle::after {
