@@ -22,7 +22,7 @@ class CustomersForm extends Form
 	{
 		if (!isset($options['edit'])) {
 			$element = new Text("customerCode");
-			$this->add($element->setLabel("Customer Code"));
+			$this->add($element->setLabel("Code"));
 			$element->setFilters(array('striptags', 'string'));
 			$element->setAttributes(array(
 				'class'			=> 'form-control',
@@ -160,11 +160,13 @@ class CustomersForm extends Form
 			SalesAreas::find(),
 			array(
 				'using'		=> array('id', 'name'),
-				'class'		=> 'form-control'
+				'class'		=> 'form-control',
+				'useEmpty'	=> true,
+				'emptyTest'	=> '',
+				'emptyValue'=> '',
+				'required'		=> 'true',
 			)
 		);
-		$defaultArea = SalesAreas::findFirst("name = 'Not Specified'");
-		$salesArea->setDefault($defaultArea->id);
 		$salesArea->setLabel("Sales Area");
 		$this->add($salesArea);
 	}

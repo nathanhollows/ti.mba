@@ -7,7 +7,7 @@
 			</div>
 			<div class="col text-right">
 				<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-					{{ linkTo(['followup/?company=' ~ customer.customerCode, 'Add Note', 'class': 'btn btn-primary open-modal']) }}
+					{{ linkTo(['followup/?company=' ~ customer.customerCode ~ '&facelift', 'Add Note', 'class': 'btn btn-primary open-modal']) }}
 					<div class="btn-group" role="group">
 						<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
@@ -38,7 +38,7 @@
 			<div class="card shadow-sm mb-3">
 				<div class="card-body">
 					<h5 class="card-title">Details
-						<a class="float-right open-modal text-sm" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class="feather"></a>
+						<a class="float-right open-modal text-sm" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode ~ '&facelift') }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class="feather"></a>
 					</h5>
 				</div>
 				<ul class="list-group list-group-flush mt-n4">
@@ -60,9 +60,7 @@
 						{% endif %}
 					</li>
 					<li class="list-group-item"><span class="title">Rep</span>
-						{% if customer.salesarea is not empty %}
 						<span class="float-right">{{ customer.salesarea.rep.name }}</span>
-						{% endif %}
 					</li>
 				</ul>
 			</div>
@@ -73,7 +71,7 @@
 					<h5 class="card-title">Addresses</h5>
 					{% for address in addresses %}
 					<h6 class="card-subtitle mb-1 mt-2 text-muted">{{ address.type.typeDescription }}</h6>
-					<a class="float-right text-info open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class='feather'></a>
+					<a class="float-right text-info open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id ~ '&facelift') }}' data-target="#modal-ajax"><img src="/img/icons/edit-2.svg" class='feather'></a>
 					<p class="card-text">
 					{% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
 					{% if address.line2 is not empty %} {{ address.line2 }} <br>{% endif %}
@@ -82,10 +80,10 @@
 					{% if address.country is not "New Zealand" %}<br> {{ address.country }} {% endif %}
 					</p>
 					{#<a href="https://maps.google.com/?q={{ address.line1 ~ " " ~ address.city }}" class="float-right text-info" target="_blank"><i class="fa fa-icon fa-map-marker" class="float-right"></i> </a>#}
-					<a class="float-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
+					<a class="float-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id ~ '&facelift') }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
 					{#<a href="https://maps.google.com/?q={{ address.line1 ~ " " ~ address.city }}" class="float-right text-info" target="_blank"><i class="fa fa-icon fa-map-marker" class="float-right"></i> </a>#}
 					{% endfor %}
-					<a href="{{ url('address/new/' ~ customer.customerCode) }}" class="card-link open-modal">Add Address</a>
+					<a href="{{ url('address/new/' ~ customer.customerCode ~ '&facelift') }}" class="card-link open-modal">Add Address</a>
 				</div>
 			</div>
 			{% endif %}
@@ -113,29 +111,30 @@
 					<div class="card shadow-sm">
 						<div class="card-body">
 							<h5 class="card-title mb-n1 d-inline-block">Contacts</h5>
+							<a class="btn btn-sm btn-primary float-right ml-3 open-modal" href="/contacts/new/{{ customer.customerCode }}&facelift" role="button">{{ icon("plus") }} Add</a>
 							<input id="contact-search" name="search" placeholder="Search..." type="text" data-list="#contacts-list" class="form-control w-25 float-right shadow-sm" autocomplete="off">
 						</div>
 						{% set role = "h" %}
 						<ul class="list-group list-group-flush" id="contacts-list">
 							{% for contact in contacts %}
 							{% if contact.role is not role %}
-						<li class="list-group-item bg-light font-weight-bold border-left-0 border-right-0 border-top-0 header">{% if contact.job %}{{ contact.job.name }}{% else %}Misc{% endif %}</li>
+							<li class="list-group-item bg-light font-weight-bold border-left-0 border-right-0 border-top-0 header">{% if contact.job %}{{ contact.job.name }}{% else %}Misc{% endif %}</li>
 							{% set role = contact.role %}
 							{% endif %}
 							<li class="list-group-item">
 								<div class="row">
-									<div class="col">
+									<div class="col-xs-12 col-md-4">
 										<span class="xedit-toggle" data-name="name" data-type="text" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Name">
 											{{ contact.name }}
 										</span>
 										<span class="xedit-toggle xedit-hide float-right" data-name="role" data-type="select" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Role" data-value="{{ contact.role }}" data-source='{{ roles }}'></span>
 									</div>
-									<div class="col">
+									<div class="col-xs-12 col-md-3">
 										<a href="tel:{{ contact.directDial|stripspace }}" class="xedit-toggle tel-link" data-name="directDial" data-type="tel" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Direct Dial">{{ contact.directDial }}</a>
 									</div>
-									<div class="col">
+									<div class="col-xs-12 col-md-5">
 										<a href="mailto:{{ contact.email }}" class="xedit-toggle" data-name="email" data-type="text" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Email">{{ contact.email }}</a>
-										<a href="#" data-href="/contacts/delete/{{ contact.id }}" data-toggle="modal" data-target="#confirm-delete" tabindex="-1" class="text-danger delete float-right"><i class="fa fa-times"></i></a>
+										<a href="/contacts/delete/{{ contact.id }}" tabindex="-1" class="text-danger confirm-delete float-right">{{ icon("trash-2") }}</a>
 									</div>
 								</div>
 							</li>
@@ -243,12 +242,18 @@
 
 <script src="/js/hideseek.min.js"></script>
 <script>
-
 	$( document ).ready( function() {
 		$('#contact-search').hideseek({
 			throttle: 200,
 			headers: '.header',
 		});
 	});
-
 </script>
+<style>
+a.delete {
+	visibility: hidden;
+}
+li:hover a.delete {
+	visibility: visible;
+}
+</style>

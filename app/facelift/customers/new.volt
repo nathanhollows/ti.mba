@@ -26,14 +26,12 @@
 			<div class="form-group">
 				{{ form.label('customerName',['class': 'control-label']) }}
 				{{ form.render('customerName') }}
-				<small class="form-text text-muted">Required</small>
 			</div>
 		</div>
 		<div class="col">
 			<div class="form-group">
 				{{ form.label('customerCode',['class': 'control-label']) }}
 				{{ form.render('customerCode') }}
-				<small class="form-text text-muted">Required</small>
 			</div>
 		</div>
 	</div>

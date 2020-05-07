@@ -18,11 +18,11 @@ $(document).ready(function() {
 			columns: [
 			{data: "customerCode", searchable: true,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<a href='view/"+oData.customerCode+"'>"+oData.customerCode+"</a>");
+				$(nTd).html("<a href='view/"+oData.customerCode+"' data-instant>"+oData.customerCode+"</a>");
 			}},
 			{data: "customerName", searchable: true,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<a href='view/"+oData.customerCode+"'>"+oData.customerName+"</a>");
+				$(nTd).html("<a href='view/"+oData.customerCode+"' data-instant>"+oData.customerName+"</a>");
 			}},
 			{data: "phone", searchable: true,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {

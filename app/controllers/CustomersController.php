@@ -24,6 +24,7 @@ class CustomersController extends ControllerBase
 	{
 		$this->view->setTemplateBefore('private');
 		parent::initialize();
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
 	}
 
 	/**
@@ -31,8 +32,6 @@ class CustomersController extends ControllerBase
 	 */
 	public function indexAction()
 	{
-		$this->view->setViewsDir('/var/www/html/app/facelift/');
-		$this->view->pageSubtitle = "";
 		$this->tag->prependTitle("Search Customers");
 		if ($this->request->isAjax()) {
 			$builder = $this->modelsManager->createBuilder()
@@ -45,15 +44,6 @@ class CustomersController extends ControllerBase
 			$dataTables->fromBuilder($builder)->sendResponse();
 			$this->persistent->parameters = null;
 		};
-
-		$this->assets->collection('footer')
-			// DataTables
-			->addJs('//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
-			->addJs('//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js')
-			// View specific JS
-			->addJs('js/datatables/companies.js?v=2.1');
-
-		$this->view->headerButton = \Phalcon\Tag::linkTo(array('customers/new', 'New', 'class' => ' btn btn-default pull-right'));
 	}
 
 	/**
@@ -61,14 +51,13 @@ class CustomersController extends ControllerBase
 	 */
 	public function newAction()
 	{
-		$this->view->setViewsDir('/var/www/html/app/facelift/');
 		$this->tag->prependTitle("Create Customer");
 		$this->persistent->parameters = null;
 		$this->view->form = new CustomersForm;
 	}
 
 	/**
-	 * Edits a customer
+	 * View a customer
 	 *
 	 * @param string $customerCode
 	 */
@@ -79,10 +68,7 @@ class CustomersController extends ControllerBase
 		$customer = Customers::findFirstBycustomerCode($customerCode);
 		if (!$customer) {
 			$this->flashSession->error("Customer was not found");
-
 			return $this->response->redirect('customers/');
-
-			$this->view->disable();
 		}
 
 		$quotes = Quotes::find(array(
@@ -124,21 +110,6 @@ class CustomersController extends ControllerBase
 
 		$this->view->customer = $customer;
 		$this->view->notes = $notes;
-		$this->view->headerButton = '
-				<!-- Split button -->
-				<div class="btn-group pull-right">
-						<a class="btn btn-default" data-target="#modal-ajax" href="/followup/?company=' . $customer->customerCode . '" role="button"><i class="fa fa-icon fa-pencil"></i> Add Record</a>
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<span class="caret"></span>
-								<span class="sr-only">Toggle Dropdown</span>
-						</button>
-						<ul class="dropdown-menu">
-								<li><a href="/quotes/new/?company=' . $customer->customerCode . '">New Quote</a></li>
-								<li><a href="/customers/details/' . $customer->customerCode . '">Details Report</a></li>
-								<li><a href="/customers/history/' . $customer->customerCode . '">History Report</a></li>
-						</ul>
-				</div>
-				';
 		if($customer->rank) {
 			$badges[1] = array(
 				'text'  => "Rank $customer->rank",
@@ -152,35 +123,16 @@ class CustomersController extends ControllerBase
 				'link'  => '/profile/view/'. $customer->salesarea->rep->id,
 			);
 		}
-		if(isset($badges)) {
-			$this->view->pageSubheader = $badges;
-		}
-
-		\Phalcon\Tag::linkTo(array("followup/?company=" . $customerCode, '<i class="fa fa-plus"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
 
 		$addresses = Addresses::find("customerCode = '$customerCode'");
 		$this->view->addresses = $addresses;
 
-		$this->view->pageTitle = '<i class="fa fa-building-o" aria-hidden="true"></i> ' . $customer->customerName;
-		$this->view->pageSubtitle = $customer->customerCode;
 		$this->tag->prependTitle($customer->customerName);
 
 		$this->view->orders = Orders::find(array(
 			'conditions'        => 'customerCode = ?1 AND complete = 0',
 			'bind'              => array(1 => $customerCode),
 		));
-
-		$this->assets->collection('jquery')
-			->addCss('css/bootstrap-markdown.min.css', true)
-			->addJs('https://cdnjs.cloudflare.com/ajax/libs/Shuffle/4.0.0/shuffle.min.js');
-
-		$this->assets->collection('footer')
-			->addJs('js/datatables/customerQuotes.js')
-			->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js')
-			->addJs('js/customers/customers.js')
-			->addJs('js/to-markdown.js', true)
-			->addJs('js/bootstrap-markdown.js', true)
-			->addJs('js/markdown.js', true);
 
 	}
 
@@ -311,9 +263,6 @@ class CustomersController extends ControllerBase
 	 * Updates a customer record
 	 *
 	 */
-
-	// TODO Update customers without setting tripDay to 0
-
 	public function updateAction()
 	{
 
@@ -328,16 +277,16 @@ class CustomersController extends ControllerBase
 		$customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
 		// Store and check for errors
 
-		$success = $customer->save($this->request->getPost(), array('customerName', 'phone', 'tripDay', 'fax', 'email', 'freightArea', 'freightCarrier', 'area', 'customerStatus'));
+		$success = $customer->save($this->request->getPost(), array('customerName', 'phone', 'fax', 'email', 'area', 'customerStatus'));
 		if ($success) {
-			$this->flash->success("Quote created successfully!");
-			return $this->_redirectBack();
+			$this->flashSession->success("Successfully updated");
 		} else {
-			$this->flash->error("Sorry, the quote could not be saved");
+			$this->flashSession->error("Something went wrong");
 			foreach ($contact->getMessages() as $message) {
-				$this->flash->error($message->getMessage());
+				$this->flashSession->error($message->getMessage());
 			}
 		}
+		return $this->_redirectBack();
 	}
 
 	/**
@@ -358,7 +307,7 @@ class CustomersController extends ControllerBase
 
 		$customer = Customers::findFirstBycustomerCode($customerCode);
 		if (!$customer) {
-			$this->flash->error("customer does not exist " . $customerCode);
+			$this->flashSession->error("customer does not exist " . $customerCode);
 
 			return $this->dispatcher->forward(array(
 				"controller" => "customers",
@@ -393,7 +342,7 @@ class CustomersController extends ControllerBase
 			));
 		}
 
-		$this->flash->success("customer was updated successfully");
+		$this->flash->success("Customer was updated successfully");
 
 		return $this->dispatcher->forward(array(
 			"controller" => "customers",

@@ -177,7 +177,11 @@ class Customers extends \Phalcon\Mvc\Model
         $this->hasMany('customerCode', 'App\Models\Addresses', 'customerCode', array('alias'  => 'addresses'));
         $this->hasMany('customerCode', 'App\Models\Contacts', 'customerCode', array('alias' => 'contacts'));
         $this->hasMany('customerCode', 'App\Models\ContactRecord', 'customerCode', array('alias' => 'history'));
-        $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array('alias' => 'quotes', 'params' => array('order' => 'quoteId DESC')));
+				$this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
+					'alias' => 'quotes', 
+					'params' => array(
+						// Open quotes first, then closed
+						'order' => 'if (status < 4, 1, 2), quoteId DESC')));
         // Get all outstanding orders
         $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders', 'params' => array('conditions' => 'complete = 0')));
         // Get all orders from the last 3 months
