@@ -142,6 +142,9 @@ $di->set('view', function() use ($config) {
 			$compiler->addFilter('timeAgoDate', function($resolvedArgs, $exprArgs){
 		        return '\Carbon\Carbon::createFromFormat("Y-m-d", '.$resolvedArgs.')->diffForHumans()';
 			});
+			$compiler->addFunction('icon', function($resolvedArgs, $exprArgs) {
+				return 'file_get_contents("img/icons/' . trim($resolvedArgs,"'") . '.svg")';
+			});
 
 			return $volt;
 		},
