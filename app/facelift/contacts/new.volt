@@ -1,31 +1,23 @@
-{{ form("contacts/create", "method":"post", "autocomplete" : "off") }}
-    <div class="modal-body">
-        {{ content() }}
+{{ form("contacts/create", "method":"post", "autocomplete" : "off", "class": "needs-validation") }}
+	{{ content() }}
 
-        <div class="form-group">
-            {{ form.label('name') }}
-            {{ form.render('name') }}
-        </div>
+	{% for element in form %}
+	{% if element.getName() not in ["id", "customerCode"] %}
+	<div class="form-group">
+		{{ element.label() }}
+		{% if !element.getAttribute("required") %}
+		<small class="text-muted">Optional</small>
+		{% endif %}
+		{{ element }}
+	</div>
+	{% else %}
+	{{ element }}
+	{% endif %}
+	{% endfor %}
 
-        <div class="form-group">
-            {{ form.label('role') }}
-            {{ form.render('role') }}
-        </div>
-
-        <div class="form-group">
-            {{ form.label('customerCode') }}
-            {{ form.render('customerCode') }}
-        </div>
-
-        <div class="form-group">
-            {{ form.label('email') }}
-            {{ form.render('email') }}
-        </div>
-
-        <div class="form-group">
-            {{ form.label('directDial') }}
-            {{ form.render('directDial') }}
-        </div>
-
-    </div>
-    </div>
+	<div class="row">
+		<div class="col">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</div>
+</form>

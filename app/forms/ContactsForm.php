@@ -34,7 +34,6 @@ class ContactsForm extends Form
 		));
 		$name->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'Name',
 			'required'		=> 'true'
 		));
 		$this->add($name);
@@ -64,13 +63,13 @@ class ContactsForm extends Form
 			)
 		);
 		$customerCode->setLabel("Customer");
+		$customerCode = new Hidden('customerCode');
 		$this->add($customerCode);
 
 		$email = new Email("email");
 		$email->setLabel("Email Address");
 		$email->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'email@example.com',
 		));
 		$this->add($email);
 
@@ -78,7 +77,6 @@ class ContactsForm extends Form
 		$phone->setLabel("Phone");
 		$phone->setAttributes(array(
 			'class'			=> 'form-control',
-			'placeholder'	=> 'Direct Dial',
 		));
 		$this->add($phone);	
 	}

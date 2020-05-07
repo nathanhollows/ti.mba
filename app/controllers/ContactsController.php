@@ -140,10 +140,11 @@ class ContactsController extends ControllerBase
 			$this->response->redirect('customers/view/' . $contact->customerCode . '/#contacts');
 			$this->view->disable;
 		} else {
-			$this->flash->error("Sorry, the quote could not be saved");
+			$this->flashSession->error("Sorry, the contact could not be saved");
 			foreach ($contact->getMessages() as $message) {
-				$this->flash->error($message->getMessage());
+				$this->flashSession->error($message->getMessage());
 			}
+			$this->_redirectBack();
 		}
 
 	}
