@@ -21,18 +21,7 @@ class AddressForm extends Form
 		$id = new Hidden('id');
 		$this->add($id);
 
-		$customerCode = new Select(
-			'customerCode',
-			Customers::find(),
-			array(
-				'using' => array('customerCode', 'customerName'),
-				'required'	=> 'true',
-				'useEmpty'	=> true,
-				'class' => 'form-control selectpicker',
-				'data-live-search' => 'true',
-			)
-		);
-		$customerCode->setLabel("Customer");
+		$customerCode = new Hidden('customerCode');
 		$this->add($customerCode);
 
 		$type = new Select(
@@ -51,6 +40,7 @@ class AddressForm extends Form
 		$line1->setLabel('Line 1');
 		$line1->setAttributes(array(
 			"class"	=> "form-control",
+			"required" => "true",
 		));
 		$this->add($line1);
 
@@ -79,6 +69,7 @@ class AddressForm extends Form
 		$city->setLabel('City / Town');
 		$city->setAttributes(array(
 			"class"	=> "form-control",
+			"required" => "true",
 		));
 		$this->add($city);
 

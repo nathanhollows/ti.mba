@@ -1,10 +1,9 @@
 {{ form("address/create", "method":"post", "autocomplete" : "off") }}
 	{{ content() }}
 
-
 	{% for element in form %}
 	<div class="form-group">
-		{% if element.getName() is not "id" %}
+		{% if element.getName() not in ["id", "customerCode"] %}
 			{{ element.label() }}
 		{% endif %}
 		{{ element }}
