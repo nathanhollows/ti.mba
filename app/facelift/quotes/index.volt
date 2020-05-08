@@ -46,7 +46,9 @@
 				<a class="dropdown-item filter-status" data-status="Cold" href="#">Cold</a>
 				<a class="dropdown-item filter-status" data-status="Warm" href="#">Warm</a>
 				<a class="dropdown-item filter-status" data-status="Hot" href="#">Hot</a>
-				<a class="dropdown-item filter-status" data-status="Dead" href="#">Dead</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item filter-status" data-status="Won" href="#">Won</a>
+				<a class="dropdown-item filter-status" data-status="Lost" href="#">Lost</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item filter-status" data-status="" href="#">All Statuses</a>
 			</div>

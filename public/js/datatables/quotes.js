@@ -18,7 +18,7 @@ $(document).ready(function() {
         columns: [
             {data: "quoteId",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<a href='view/"+oData.quoteId+"'>"+oData.quoteId+"</a>");
+                    $(nTd).html("<a href='view/"+oData.quoteId+"' data-instant>"+oData.quoteId+"</a>");
                 }},
             {data: "date"},
             {data: "customerName"},

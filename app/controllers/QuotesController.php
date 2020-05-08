@@ -96,7 +96,7 @@ class QuotesController extends ControllerBase
 
 		$quote = Quotes::findFirstByquoteId($quoteId);
 		$quote->sale = 1;
-		$quote->status = 4;
+		$quote->status = 5;
 		$quote->update();
 
 		foreach ($quote->history as $record) {
@@ -315,6 +315,7 @@ class QuotesController extends ControllerBase
 			"bind"				=> [
 				1 => $this->auth->getId(),
 			],
+			"order"	=> "quoteId DESC",
 		]);
 
 		$this->view->value = Quotes::sum([
