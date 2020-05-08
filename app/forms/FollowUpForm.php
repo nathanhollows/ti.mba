@@ -24,34 +24,36 @@ class FollowUpForm extends Form
 		$id = new Hidden("id");
 		$this->add($id);
 
+		$conditions = [
+			"order"	=> "name",
+		];
 		if (isset($option["customerCode"])) {
+			$customer = new Hidden("customerCode");
+			$customer->setDefault($option["customerCode"]);
 			$conditions = array(
 				"conditions"	=> "customerCode = ?1",
 				"bind"			=> array(1 => $option['customerCode']),
+				"order"	=> "name",
 			);
-            $readonly = true;
-            $class      = '';
 		} else {
-			$conditions = null;
-            $readonly   = false;
-            $class    = 'selectpicker';
+			$customer = new Select(
+				"customerCode",
+				Customers::find([
+					"order"	=> "customerName",
+					"conditions" => "customerStatus IN (1,4)",
+				]),
+				array(
+					'using'	=> array(
+						'customerCode',
+						'customerName',
+					),
+					'class'	=> "form-control selectpicker",
+					'data-live-search' => 'true',
+					'useEmpty'	=> true,
+				)
+			);
+			$customer->setLabel("Customer");
 		}
-
-		$customer = new Select(
-			"customerCode",
-			Customers::find($conditions),
-			array(
-				'using'	=> array(
-					'customerCode',
-					'customerName',
-				),
-				'class'	=> "form-control $class",
-				'data-live-search' => 'true',
-				'useEmpty'	=> true,
-                'readonly'  => $readonly,
-			)
-		);
-		$customer->setLabel("Customer");
 		$this->add($customer);
 
 		$contact = new Select(
@@ -65,13 +67,13 @@ class FollowUpForm extends Form
 			'class'	=> 'form-control selectpicker',
 			'data-live-search' => 'true',
 			'useEmpty'	=> true,
-            'emptyText' => 'Select a Contact...',
+			'emptyText' => 'Select a Contact...',
 			)
 		);
 		$contact->setLabel("Contact");
 		$this->add($contact);
 
-		$job = new Text("job");
+		$job = new Hidden("job");
 		$job->setAttributes(array(
 			'class'		=> 'form-control',
 			'placeholder'	=> 'Quote Number',
@@ -82,27 +84,26 @@ class FollowUpForm extends Form
 		$reference = new Text("reference");
 		$reference->setAttributes(array(
 			'class'		=> 'form-control',
-			'placeholder'	=> 'Reference',
 			));
-		$reference->setLabel("Reference");
+		$reference->setLabel("Title");
 		$this->add($reference);
 
 		$details = new TextArea("details");
 		$details->setAttributes(array(
-			'class'		=> 'form-control markdown-edit',
-			'data-provide'=>'markdown-editable',
+			'required'	=>"true",
+			'class'		=> 'form-control',
 			'autofocus'	=> 'true',
-			'data-iconlibrary'=>'fa',
+			'rows' => '4',
 			));
 		$details->setLabel("Details");
 		$this->add($details);
 
-		$theDate = date('Y-m-d');
+		$theDate = date('Y-m-d', strtotime("+1 weeks"));
 		if (isset($option["followUpDate"])) {
 			$theDate = $option["followUpDate"];
 		}
 
-		$date = new Text("followUpDate");
+		$date = new Date("followUpDate");
 		$date->setAttributes(array(
 			'value'		=> $theDate,
 			'required'	=> 'true',
@@ -111,28 +112,18 @@ class FollowUpForm extends Form
 		$date->setLabel("Date");
 		$this->add($date);
 
-        $recordDate = new Date('date');
-        $recordDate->setAttributes(array(
-            'required'      => 'true',
-            'class'		=> 'form-control'
-        ));
-        $this->add($recordDate);
+		$recordDate = new Date('recordDate');
+		$recordDate->setAttributes(array(
+			'value'		=> date("Y-m-d"),
+			'required'      => 'true',
+			'class'		=> 'form-control'
+		));
+		$recordDate->setDefault($entity->date);
+		$this->add($recordDate);
 
 		$auth = new Auth();
 
-		$rep = new Select(
-			"user",
-			Users::getActive(),
-			array(
-				'using'	=> array(
-					'id',
-					'name'
-				),
-			"required"	=> "true",
-			"class"		=> "form-control",
-			)
-		);
-		$rep->setLabel("Sales Rep");
+		$rep = new Hidden("user");
 		$rep->setDefault($auth->getId());
 		$this->add($rep);
 

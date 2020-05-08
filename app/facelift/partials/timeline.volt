@@ -2,6 +2,21 @@
 {% if futureHistory is not empty %}
 <div class="timeline-centered">
 	{% for line in futureHistory %}
+	{% if line.type.name is "Quote Made" %}
+	<p class="px-3 py-3 d-block">
+	<strong>
+		Quote {{ linkTo('quotes/view/' ~ line.job, line.reference) }} 
+		{% if line.quote %}
+		<span class="badge badge-{{ line.quote.genericStatus.style }}">{{ line.quote.genericStatus.statusName }}</span>
+		{% endif %}
+		made by {{ line.staff.name }} 
+	</strong>
+	<span class="float-right">
+		{{ date('d M Y', strtotime(line.date)) }}
+	</span>
+	</p>
+	{% continue %}
+	{% endif %}
 	<div class="card mb-3 border-danger shadow-sm">
 		<div class="card-body">
 			{% if line.job is defined %}
@@ -20,8 +35,8 @@
 			<img src="/img/icons/bell.svg" role="presentation" style="width:1em;">
 			{{ date('d M Y', strtotime(line.followUpDate)) }}
 			<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right confirm-delete">Delete</a>
-			<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3 open-modal">Edit</a>
-			<a href="#" class="card-link float-right">Done</a>
+			<a href="{{ url('followup/edit/' ~ line.id ~ '?facelift') }}" class="card-link float-right mr-3 open-modal">Edit</a>
+			<a href="{{ url('followup/complete/' ~ line.id) }}" class="card-link float-right">Done</a>
 		</div>
 	</div>
 	{% endfor %}
@@ -30,13 +45,26 @@
 
 <div class="row">
 
-	{# Show the filters #}
 	{% if history|length is not 0 %}
-
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="col">
 		<div class="timeline-centered" id="thetimeline">
 			{% for line in history %}
 			{% if line.completed is null %}
+			{% continue %}
+			{% endif %}
+			{% if line.type.name is "Quote Made" %}
+			<p class="px-3 py-3 d-block">
+			<strong>
+				Quote {{ linkTo('quotes/view/' ~ line.job, line.reference) }} 
+				{% if line.quote %}
+				<span class="badge badge-{{ line.quote.genericStatus.style }}">{{ line.quote.genericStatus.statusName }}</span>
+				{% endif %}
+				made by {{ line.staff.name }} 
+			</strong>
+			<span class="float-right">
+				{{ date('d M Y', strtotime(line.date)) }}
+			</span>
+			</p>
 			{% continue %}
 			{% endif %}
 			<div class="card mb-3 shadow-sm border-0">
@@ -50,19 +78,19 @@
 					{% if line.contact is not empty %}
 					<span class="float-right">{{ line.person.name }}</span>
 					{% endif %}
-					<p class="card-text">{{ parser.parse(line.details|nl2br)}}
+					<p class="card-text">{{ parser.parse(line.details|striptags) }}
 				</div>
 				<div class="card-footer">
 					{{ line.staff.name }} ~ {{ date('d M Y', strtotime(line.date)) }}
 					<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right confirm-delete">Delete</a>
-					<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3 open-modal">Edit</a>
+					<a href="{{ url('followup/edit/' ~ line.id ~ '?facelift') }}" class="card-link float-right mr-3 open-modal">Edit</a>
 				</div>
 			</div>
 			{% endfor %}
 		</div>
 	</div>
 	{% else %}
-	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+	<div class="col">
 		<div class="timeline-centered" id="thetimeline">
 			<article class="timeline-entry" data-groups='["all", "{{ line.type.id }}"]'>
 

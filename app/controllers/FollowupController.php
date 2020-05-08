@@ -144,7 +144,9 @@ class FollowupController extends ControllerBase
 		if (empty($this->request->getPost('job'))) {
 			$contact->job = null;
 		}
+
 		$contact->details 			= $this->request->getPost('details');
+		$contact->date 			= $this->request->getPost('recordDate');
 		$contact->contactType 		= $this->request->getPost('contactType');
 		$contact->user 				= $this->request->getPost('user');
 		$contact->contactType 		= $this->request->getPost('contactType');
@@ -213,7 +215,7 @@ class FollowupController extends ControllerBase
 
 		// If there is no reminder set, then mark this record as completed
 		if ($history->completed == null and !$this->request->getPost('remind')) {
-			$history->complete();
+			$history->completed = date("Y-m-d H:i:s");
 		}
 
 		// If there is a reminder set the make sure this is recorded
@@ -252,7 +254,8 @@ class FollowupController extends ControllerBase
 			$this->_redirectBack();
 		}
 
-		if ($followUp->complete()) {
+		$followUp->completed = date("Y-m-d H:i:s");
+		if ($followUp->save()) {
 			$this->flashSession->success("Task completed");
 		}
 
@@ -283,7 +286,8 @@ class FollowupController extends ControllerBase
             return $response;
         }
 
-        if($record->complete()) {
+				$record->completed = date("Y-m-d H:i:s");
+        if($record->save()) {
             $response->setStatusCode(200, "Updated successfully");
             return $response;
         } else {

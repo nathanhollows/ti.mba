@@ -115,7 +115,7 @@ class FollowUp extends Model
 
     public function complete()
     {
-        $this->completed = date('Y-m-d H:i:s');
+			$this->completed = date("Y-m-d H:i:s");
         $success = $this->save();
         if ($success) {
             return true;
