@@ -18,6 +18,7 @@ class OrdersController extends ControllerBase
 {
     public function initialize()
     {
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->view->setTemplateBefore('private');
         $this->tag->prependTitle('Orders');
         parent::initialize();
@@ -59,10 +60,7 @@ class OrdersController extends ControllerBase
         };
         $this->view->locations = $locationArray;
 
-        $this->view->customers = Customers::find(array(
-            "conditions"    => "customerStatus NOT IN (2,3)",
-        ));
-
+        $this->view->customers = Customers::getActive();
     }
 
     /*
@@ -269,7 +267,11 @@ class OrdersController extends ControllerBase
 
         switch ($this->request->getPost('name')) {
             case 'eta':
-                $order->eta = date("Y-m-d", strtotime($this->request->getPost('value')));
+				if ($this->request->getPost('value') == "") {
+					$order->eta = null;
+				} else {
+					$order->eta = date("Y-m-d", strtotime($this->request->getPost('value')));
+				}
                 break;
 
             case 'notes':
@@ -386,5 +388,4 @@ class OrdersController extends ControllerBase
             )
         );
     }
-
 }

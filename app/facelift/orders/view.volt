@@ -1,43 +1,48 @@
 <div class="card shadow">
-	<div class="card-header bg-white">
-		<strong>Order {{ order.orderNumber }}</strong>
+	<div class="card-header">
+		<strong class="pt-2 pb-1 d-inline-block">Order {{ order.orderNumber }}</strong>
 		<span class="float-right">
-			<button type="button" data-order="{{ order.orderNumber }}" data-name="followUp" class="toggle-status btn btn-sm btn-{% if order.followUp is 1 %}warning{% else %}outline-secondary{% endif %}">Follow Up</button>
-			<button type="button" data-order="{{ order.orderNumber }}" data-name="scheduled" class="toggle-status btn btn-sm btn-{% if order.complete is 0 and order.scheduled is 1 %}success{% else %}outline-secondary{% endif %}">Scheduled</button>
-			<button type="button" data-order="{{ order.orderNumber }}" data-name="completed" class="toggle-status btn btn-sm btn-{% if order.complete is 1 %}danger{% else %}outline-secondary{% endif %}">Complete</button>
+			<button type="button" data-order="{{ order.orderNumber }}" data-style="warning" data-name="followUp" class="toggle-status btn btn-sm btn-{% if order.followUp is 1 %}warning{% else %}outline-secondary{% endif %} mt-1">Follow Up</button>
+			<button type="button" data-order="{{ order.orderNumber }}" data-style="success" data-name="scheduled" class="toggle-status btn btn-sm btn-{% if order.scheduled is 1 %}success{% else %}outline-secondary{% endif %} mt-1">Scheduled</button>
+			<button type="button" data-order="{{ order.orderNumber }}" data-style="danger" data-name="completed" class="toggle-status btn btn-sm btn-{% if order.complete is 1 %}danger{% else %}outline-secondary{% endif %} mt-1">Complete</button>
 		</span>
 	</div>
+	{% if not order.customer %}
+	<div class="alert alert-info m-0 border-bottom rounded-0 text-center" role="alert">
+		{{ linkTo(["customers/new", "Create new customer for " ~ order.customerCode ~ "?", "class": "alert-link"]) }}
+	</div>
+	{% endif %}
 	{% if order.followUp %}
 	<div class="alert alert-warning m-0 border-bottom rounded-0" role="alert">
 		{{ order.followUpReason }}
 	</div>
 	{% endif %}
 	<div class="card-body">
-		<p>{% if order.customer %}
-		<strong>{{ link_to('customers/view/' ~ order.customerCode|lower , order.customer.customerName) }}</strong>
-		{% endif %}
-		<br>
-		<strong>Reference: </strong> 
-		<span class="float-right">{{ order.customerRef }}</span>
-		<br>
-		<strong>Rep: </strong> 
-		<span class="float-right">{{ order.rep }}</span>
-		<br>
-		<strong>Date: </strong> 
-		<span class="float-right">{{ order.date }}</span>
-		<br>
-		<strong>ETA: </strong> 
-		<span class="float-right">{{ order.eta }}</span>
-		<br>
-		<strong>Location: </strong> 
-		<span class="float-right">{% if order.location %}{{ order.whereabouts.name }}{% endif %}</span>
-		<br>
-		<strong>Order Notes: </strong> {{ order.description }}
-		<br>
-		<strong>Despatcher Notes: </strong> {{ order.notes }}
-		<br>
-		</p>
-	</div>
+		<dl class="row">
+			{% if order.customer %}
+			<dt class="text-right col-4">Customer</dt>
+			<dd class="col-8">
+			<strong>{{ link_to('customers/view/' ~ order.customerCode|lower , order.customer.customerName) }}</strong>
+			</dd>
+			{% endif %}
+			<dt class="text-right col-4">Reference</dt>
+			<dd class="col-8">{{ order.customerRef }}</dd>
+			<dt class="text-right col-4">Rep</dt>
+			<dd class="col-8">
+			{{ order.rep }}
+			</dd>
+			<dt class="text-right col-4">Date</dt>
+			<dd class="col-8">{{ date("dS M", strtotime(order.date)) }}</dd>
+			<dt class="text-right col-4">ETA</dt>
+			<dd class="col-8"><a href="#" id="eta" data-type="date" data-pk="{{ order.orderNumber }}" data-url="/orders/update/" data-title="ETA" data-placement="bottom" class="xedit" accesskey="t">{{ order.eta }}</a>
+			{% if order.eta %} - about {{ order.eta|timeAgoDate }}{% endif %}</dd>
+			<dt class="text-right col-4">Location</dt>
+			<dd class="col-8"><a href="#" id="location" data-type="select" data-source="[ {% for location in locations %}{value: {{ location.id }}, text: '{{ location.name }}'},{% endfor %} ]" data-pk="{{ order.orderNumber }}" data-value="{{ order.location }}" data-url="/orders/update/" data-title="Location" class="xedit" data-placement="bottom" data-autoclose="true" accesskey="l">{% if order.location %}{{ order.whereabouts.name }}{% endif %}</a></dd>
+			<dt class="text-right col-4">Notes</dt>
+			<dd class="col-8">{{ order.description }}</dd>
+			<dt class="text-right col-4">Dispatcher Notes</dt>
+			<dd class="col-8"><a href="#" id="notes" data-type="textarea" data-pk="{{ order.orderNumber }}" data-url="/orders/update/" data-title="Notes" data-mode="inline" class="xedit" style="white-space: pre-line;" accesskey="n">{{ order.notes }}</a></dd>
+		</dl></div>
 	<ul class="list-group list-group-flush border-top">
 		{% for item in order.items %}
 		<li class="list-group-item {% if item.complete is 1 %}complete{% endif %}">
