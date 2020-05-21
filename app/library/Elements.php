@@ -55,7 +55,7 @@ class Elements extends Component
 				array('Customers', 'reports/customers'),
 				array('Monthly Sales', 'reports/sales'),
 				array('Annual Sales', 'reports/annual'),
-				array('Survey', 'reports/survey'),
+				array('Regional Sales', 'customers/regions'),
 			)),
 	);
 

@@ -15,7 +15,9 @@ use App\Models\CustomerNotes;
 use App\Models\ContactRoles;
 use App\Models\ContactRecord;
 use App\Models\Quotes;
+use App\Models\SalesAreas;
 use App\Models\Orders;
+use App\Models\Users;
 use App\Forms\CustomersForm;
 
 class CustomersController extends ControllerBase
@@ -78,12 +80,10 @@ class CustomersController extends ControllerBase
 
 		$history = ContactRecord::find(array(
 			"customerCode = '$customerCode'",
-			'order'         => 'date DESC',
+			'order'         => 'completed IS NULL DESC, date DESC',
 			'limit'         => '30',
 		));
 		$this->view->history = $history;
-
-		$this->view->futureHistory = ContactRecord::getFutureByCustomer($customerCode);
 
 		$notes = CustomerNotes::find(array(
 			"customerCode = '$customerCode'",
@@ -407,5 +407,35 @@ class CustomersController extends ControllerBase
 		$this->tag->prependTitle('Customer Details Report');
 	}
 
+	public function regionsAction($year = null) {
+		$this->tag->prependTitle("Regions");
+
+		if (is_null($year)) {
+			if (date("m") > 4) {
+				$date = date("Y-04-01");
+			} else {
+				$date = date("Y-04-01", strtotime("now - 1 year"));
+			}
+		} else {
+			$date = date("$year-04-01");
+		}
+
+		$this->view->year = date("Y", strtotime($date));
+		$this->view->date = $date;
+
+		$this->view->users = Users::find();
+	}
+
+	public function regionAction($nicename = null) {
+		$region = SalesAreas::findFirstByNicename($nicename);
+		if (!$region) {
+			return $this->dispatcher->forward(array(
+				"controller" => "error",
+				"action" => "show404"
+			));
+		}
+		$this->tag->prependTitle($region->name);
+		$this->view->region = $region;
+	}
 }
 
