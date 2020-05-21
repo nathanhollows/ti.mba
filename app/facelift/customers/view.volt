@@ -56,7 +56,7 @@
 					{% endif %}
 					<li class="list-group-item"><span class="title">Sales Area</span>
 						{% if customer.salesarea is not empty %}
-						<span class="float-right">{{ customer.salesarea.name }}</span>
+						<span class="float-right">{{ linkTo("customers/region/" ~ customer.salesarea.nicename, customer.salesarea.name ) }}</span>
 						{% endif %}
 					</li>
 					<li class="list-group-item"><span class="title">Rep</span>
@@ -111,7 +111,10 @@
 					<div class="card shadow-sm">
 						<div class="card-body">
 							<h5 class="card-title mb-n1 d-inline-block">Contacts</h5>
-							<a class="btn btn-sm btn-primary float-right ml-3 open-modal" href="/contacts/new/{{ customer.customerCode }}&facelift" role="button">{{ icon("plus") }} Add</a>
+							<div class="btn-group float-right ml-3">
+							<button id="unlock-contacts" class="btn btn-sm btn-secondary">{{ icon("edit-2") }} Edit List</button>
+							<a class="btn btn-sm btn-primary open-modal" href="/contacts/new/{{ customer.customerCode }}&facelift" role="button">{{ icon("plus") }} Add</a>
+							</div>
 							<input id="contact-search" name="search" placeholder="Search..." type="text" data-list="#contacts-list" class="form-control w-25 float-right shadow-sm" autocomplete="off">
 						</div>
 						{% set role = "h" %}
@@ -124,16 +127,16 @@
 							<li class="list-group-item">
 								<div class="row">
 									<div class="col-xs-12 col-md-4">
-										<span class="xedit-toggle" data-name="name" data-type="text" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Name">
+										<span class="xedit-toggle" data-name="name" data-type="text" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-placement="auto" data-title="Name">
 											{{ contact.name }}
 										</span>
-										<span class="xedit-toggle xedit-hide float-right" data-name="role" data-type="select" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Role" data-value="{{ contact.role }}" data-source='{{ roles }}'></span>
+										<span class="xedit-toggle xedit-hide float-right" data-name="role" data-type="select" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-placement="auto" data-title="Role" data-value="{{ contact.role }}" data-source='{{ roles }}'></span>
 									</div>
 									<div class="col-xs-12 col-md-3">
-										<a href="tel:{{ contact.directDial|stripspace }}" class="xedit-toggle tel-link" data-name="directDial" data-type="tel" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Direct Dial">{{ contact.directDial }}</a>
+										<a href="tel:{{ contact.directDial|stripspace }}" class="xedit-toggle tel-link" data-name="directDial" data-type="tel" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-placement="auto" data-title="Direct Dial">{{ contact.directDial }}</a>
 									</div>
 									<div class="col-xs-12 col-md-5">
-										<a href="mailto:{{ contact.email }}" class="xedit-toggle" data-name="email" data-type="text" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-title="Email">{{ contact.email }}</a>
+										<a href="mailto:{{ contact.email }}" class="xedit-toggle" data-name="email" data-type="text" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-placement="auto" data-title="Email">{{ contact.email }}</a>
 										<a href="/contacts/delete/{{ contact.id }}" tabindex="-1" class="text-danger confirm-delete float-right">{{ icon("trash-2") }}</a>
 									</div>
 								</div>
@@ -246,6 +249,11 @@
 		$('#contact-search').hideseek({
 			throttle: 200,
 			headers: '.header',
+		});
+		$.fn.editable.defaults.mode = 'popup';
+		$('.xedit-toggle').editable('toggleDisabled');
+		$('#unlock-contacts').click(function() {
+			$('.xedit-toggle').editable('toggleDisabled');
 		});
 	});
 </script>
