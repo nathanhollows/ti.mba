@@ -2,8 +2,9 @@
 	<div class="container">
 		<div class="row header-body">
 			<div class="col col-md-6 offset-md-2">
-				<h6 class="header-pretitle">Tracker</h6>
-				<h4 class="header-title">Freight Tracker</h4>
+				<h4 class="header-title">Mainfreight Tracker</h4>
+				<h6 class="pre-header">Last checked {{outstanding[0].statusLastChanged|timeAgo}}</h6>
+				{{ outstanding[0].statusLastChanged }}
 			</div>
 			<div class="col text-right">
 			</div>
@@ -16,37 +17,15 @@
 	<div class="row">
 		<div class="col col-md-8 offset-md-2">
 			{{ flashSession.output() }}
-			<div class="alert alert-primary" role="alert">
-				This system shows all Mainfreight deliveries. They are tracked every half an hour and disappear after being delivered.
-				<br>
-				<br>
-				<ul>
-					<li>The links do a track and trace</li>
-					<li>Oldest despatches are the the top</li>
-					<li>This only tracks Mainfreight and Mainfreight Offsite</li>
-					<li>PBT can be added if required</li>
-					<li>Con Notes must be loaded in TimberSmart</li>
-					<li>Clicking the tick marks the line as delivered</li>
-				</ul>
-			</div>
+			{% set delayed = true %}
 			<ul class="list-group">
-				{% set recent = false %}
-				{% set delayed = false %}
-
 				{% for item in outstanding %}
 
-				{% if strtotime(item.date) < strtotime('Today - 1 Week') and delayed is false %}
-			 {% set delayed = true %}
-			</ul>
-			<ul class="list-group">
+				{% if delayed and strtotime(item.date) > strtotime('Today - 1 Week') %}
+				{% set delayed = false %}
 				{% endif %}
 
-				{% if strtotime(item.date) > strtotime('Today - 1 week') and recent is false %}
-				{% set recent = true %}
-			</ul>
-			<ul class="list-group">
-				{% endif %}
-				<li class="list-group-item" id="{{ item.docketNo }}">
+				<li class="list-group-item {% if delayed %}list-group-item-danger{% endif %}" id="{{ item.docketNo }}">
 					{% if "Mainfreight" in item.carrier %}
 					<a href="https://www.mainfreight.com/Track/MSNZS/{{ item.carrierLabel }}" target="_blank" title="Track and Trace">{{ item.conNote }}</a>
 					{% elseif  "PBT" in item.carrier %}
@@ -59,10 +38,11 @@
 					{% endif %}
 					{% endif %}
 					<span class="float-right">
+						{% if delayed %}
+						<span class="badge badge-danger">{{ ((strtotime(date("Y-m-d")) - strtotime(item.date)) / (60 * 60 * 24))|round }} days</span>
+						{% endif %}
 						{% if item.status %}
-						{% if item.red > 1 %}
-						<span class="badge badge-danger" title="Status has not changed in {{ item.red }} days">{{ item.status }}</span>
-						{% elseif "Received" in item.status %}
+						{% if "Received" in item.status %}
 						<span class="badge badge-secondary" title="Consignment not loaded into Mainchain">{{ item.status }}</span>
 						{% else %}
 						<span class="badge badge-info" title="Picked up an in transit">{{ item.status }}</span>
@@ -79,7 +59,7 @@
 						<a class="mail" href="/freight/mail/pbt/{{ item.conNote }}" data-connote="{{ item.conNote }}" title="Email Customer Service"><img src="{{ url('img/icons/mail.svg') }}" class="feather"></img></a>
 						{% endif %}
 						#}
-						<a class="delivered" data-docket="{{ item.docketNo }}"><img src="{{ url('img/icons/check.svg') }}" class="feather"></img></a>
+						<a class="delivered text-primary" title="Mark as delivered" data-docket="{{ item.docketNo }}"><img src="/img/icons/check.svg" class="feather"></img></a>
 					</span>
 				</li>
 				{% endfor %}
@@ -133,7 +113,7 @@
 </script>
 <style media="screen">
 a {
-	cursor: hand;
+	cursor: pointer;
 }
 a.sent {
 	cursor: not-allowed;
