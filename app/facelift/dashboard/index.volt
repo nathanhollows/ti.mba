@@ -1,41 +1,42 @@
 {% if kpis.getLast().chargeOut is defined %}
-{% set chargeOut = kpis.getLast().chargeOut %}
+	{% set chargeOut = kpis.getLast().chargeOut %}
 {% else %}
-{% set chargeOut = 0 %}
+	{% set chargeOut = 0 %}
 {% endif %}
+
 {% if budget.budget is not 0 %}
-{% set dailybudget = budget.budget/budget.days %}
-{% set days = budget.days %}
+	{% set dailybudget = budget.budget/budget.days %}
+	{% set days = budget.days %}
+	{% set monthbudget = budget.budget %}
 {% else %}
-{% set days = 0 %}
-{% set dailybudget = 0 %}
-{% set monthbudget = 0 %}
+	{% set days = 0 %}
+	{% set dailybudget = 0 %}
+	{% set monthbudget = 0 %}
 {% endif %}
+
 <div class="header py-3">
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
 				<h4 class="header-title">Dashboard</h4>
 			</div>
-			{#
 			<div class="col text-right">
-				<div class="btn-group" role="group" aria-label="Toggle Graph">
-					<button id="toggle-sales" type="button" onClick="toggleChart(this);" class="btn btn-sm btn-danger" data-class="btn-danger" data-set="0">Sales</button>
-					<button id="toggle-despatch" type="button" onClick="toggleChart(this);" class="btn btn-sm btn-primary" data-class="btn-primary" data-set="1">Despatch</button>
-				</div>
 			</div>
-			#}
 		</div>
 	</div>
 </div>
 
 <div class="container">
-	{{ content() }}
-	{% if budget.budget is 0 %}
-	<div class="alert alert-primary" role="alert">
-		The budget for this month has not been set. This can be done in the {{link_to("reports/annual", "annual sales report")}}
+	<div class="row">
+		<div class="col">
+			{{ content() }}
+			{% if budget.budget is 0 %}
+			<div class="alert alert-danger" role="alert">
+				The budget for this month has not been set. This can be done in the {{link_to("reports/annual", "annual sales report", "class": "alert-link")}}
+			</div>
+			{% endif %}
+		</div>
 	</div>
-	{% endif %}
 </div>
 
 <div class="container mb-3">
@@ -127,6 +128,10 @@
 <div class="container">
 	<div class="row">
 		<div class="col">
+				<div id="legend" aria-label="Toggle Graph">
+					<a id="toggle-sales" onClick="toggleChart(this);"  data-set="0">Sales</a>
+					<a id="toggle-despatch" onClick="toggleChart(this);" data-set="1">Despatch</a>
+				</div>
 			<div class="card bg-dark shadow mb-3 p-3">
 				<canvas id="myChart" width="400" height="250"></canvas>
 			</div>
@@ -321,12 +326,10 @@ function toggleChart(el) {
 	let sales = document.getElementById("toggle-sales");
 	let despatch = document.getElementById("toggle-despatch");
 	let set = el.attributes["data-set"].value;
-	if (el.classList.contains("btn-secondary")) {
-		el.classList.remove("btn-secondary");
-		el.classList.add(el.attributes["data-class"].value);
+	if (el.classList.contains("toggled-off")) {
+		el.classList.remove("toggled-off");
 	} else {
-		el.classList.add("btn-secondary");
-		el.classList.remove(el.attributes["data-class"].value);
+		el.classList.add("toggled-off");
 	}
 	myChart.data.datasets[set].hidden = !myChart.data.datasets[set].hidden;
 	myChart.update();
@@ -337,3 +340,37 @@ $(function () {
 })
 </script>
 <script type="text/javascript" charset="utf-8" src="/js/chart-round.js"></script>
+<style>
+#legend {
+	cursor: pointer;
+	position: absolute;
+	top: 1em;
+	right: 2em;
+	z-index: 1;
+	display: inline-flex;
+	flex-direction: column;
+	background: #152b3e69;
+}
+.toggled-off {
+	opacity: 0.5;
+}
+#toggle-sales, #toggle-despatch {
+	font-weight: bold;
+	color: #f2f1eb;
+    transition: all 0.4s ease;
+}
+#toggle-sales::before, #toggle-despatch::before {
+    content: " ";
+    width: 0.6em;
+    height: 0.6em;
+    display: inline-block;
+    border-radius: 100%;
+    margin: 0.1em 0.3em;
+}
+#toggle-sales::before {
+    background: red;
+}
+#toggle-despatch::before {
+    background: #007bff;
+}
+</style>
