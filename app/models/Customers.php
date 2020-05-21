@@ -243,6 +243,13 @@ class Customers extends \Phalcon\Mvc\Model
         $history->save();
     }
 
+	public static function getActive() 
+	{
+		return parent::find([
+			"customerStatus NOT IN (2,3)"
+		]);
+	}
+
     public function quotesFrom($date)
     {
         return Quotes::find(array(
