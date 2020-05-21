@@ -106,6 +106,10 @@ $(document).on("click", "#modal-save", function(e) {
 		form.classList.add('was-validated');
 	});
 });
+$(document).ready(function() {
+	$.fn.editable.defaults.mode = 'inline';
+	$('#username').editable();
+});
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -113,6 +117,8 @@ $(document).on("click", "#modal-save", function(e) {
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
 <script type="text/javascript" src="/js/instantpage.min.js" type="module" defer></script>
 <script type="text/javascript" src="/js/useUCA.js"></script>
+<script type="text/javascript" src="/js/bootstrap-editable.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
 <style>
 .dropdown-toggle::after {

@@ -9,6 +9,8 @@
     <link rel="shortcut icon" href="/favicon.ico?m=1" type="image/x-icon" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap-editable.css"/>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 <style>
 .bg-dark {
     background-color: 
@@ -25,6 +27,31 @@
 .feather {
 	width: 1rem;
 }
+
+/* Timeline Stytling */
+
+pre {
+    font-size: 87.5%;
+    color: #212529;
+    border-left: 0.3rem solid #f2f1eb;
+}
+#thetimeline .card p, #thetimeline .card code {
+    font-size: 87.5%;
+}
+li:hover .confirm-delete {
+    visibility: visible;
+}
+li .confirm-delete {
+    visibility: hidden;
+}
+
+/* Tables */
+.table .thead-dark th {
+    color: #fff;
+    background-color: #2a3e4f;
+    border-color: #152b3e;
+}
+
 </style>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -35,4 +62,4 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
   </head>
-  <body class="mb-5 bg-light">
+  <body class="mb-5 bg-light" data-instant-whitelist>
