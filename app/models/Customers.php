@@ -200,17 +200,6 @@ class Customers extends \Phalcon\Mvc\Model
 
 
     /**
-     * Allows to query a set of records that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return Customers[]
-     */
-    public static function find($parameters = null)
-    {
-        return parent::find($parameters);
-    }
-
-    /**
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters

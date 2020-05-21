@@ -83,28 +83,6 @@ class Contacts extends Model
         $this->position = null;
     }
 
-    /**
-     * Allows to query a set of records that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return Contacts[]
-     */
-    public static function find($parameters = null)
-    {
-        return parent::find($parameters);
-    }
-
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'contacts';
-    }
-
     public static function searchColumns($search)
     {
         $query = self::query();
