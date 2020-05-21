@@ -61,6 +61,14 @@ class Quotes extends Model {
 
 	}
 
+	public function beforeCreate() 
+	{
+		if (is_null($this->status)) {
+			$this->status = 2;
+		}
+
+	}
+
 	public function beforeDelete() {
 		$this->getitems()->delete();
 		$this->gethistory()->delete();
