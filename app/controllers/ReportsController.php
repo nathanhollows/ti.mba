@@ -40,6 +40,7 @@ class ReportsController extends ControllerBase
 
     public function annualAction($year = null, $month = null)
     {
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
         if (date('m')<4) {
             $year = ($year) ? $year : date("Y")-1 ;
         } else {

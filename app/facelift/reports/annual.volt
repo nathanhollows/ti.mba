@@ -4,22 +4,42 @@
     The `total` variable is then reset for the next loop
     Other variables are defined for calculating the percentages for the year, for example
 #}
-{{ content() }}
-<div class="row no-print">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="btn-group">
-        <a href="/reports/annual/{{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}" class="btn btn-info"><i class="fa fa-arrow-left"></i> {{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}</a>
-        <a href="/reports/annual/{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}}" class="btn btn-info">{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}} <i class="fa fa-arrow-right"></i></a>
-        </div>
-        <div class="btn-group pull-right">
-            <button type="button" class="btn btn-default" onclick="window.print();">
-                <i class="fa fa-icon fa-print"></i>
-                Print
-            </button>
-        </div>
-    </div>
+
+<div class="header py-3 no-print">
+	<div class="container">
+		<div class="row header-body">
+			<div class="col">
+				<h4 class="header-title">Annual Sales Report</h4>
+			</div>
+			<div class="col text-right">
+				<div class="btn-group">
+					<a href="/reports/annual/{{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}" class="btn btn-info">{{ icon("arrow-left") }} {{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}</a>
+					<a href="/reports/annual/{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}}" class="btn btn-info">{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}} {{ icon("arrow-right") }}</a>
+				</div>
+				<div class="btn-group pull-right">
+					<button type="button" class="btn btn-primary" onclick="window.print();">
+						{{ icon("printer") }}
+						Print
+					</button>
+				</div>
+			</div>
+			</ hr>
+		</div>
+	</div>
 </div>
-<table class="table table-hover table-condensed table-responsive table-striped" id="report">
+
+<div class="container no-print">
+	<div class="row">
+		<div class="col">
+			{{ content() }}
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid">
+<div class="row">
+<div class="col">
+<table class="table table-hover table-sm shadow-sm bg-white w-100 table-striped" id="report">
     <thead>
         <th style="text-align: left">
             Sales Report {{ date("Y", strtotime(start ~ " + 1 YEAR")) }}
@@ -168,16 +188,15 @@
                 Sales Out
             </td>
             {% set salesYTD = [] %}
-            {% for i in salesOut %}
-                <td>${{ i.salesOut|number }}</td>
-                {% set total += i.salesOut %}
-                {% set salesYTD[loop.index] = i.salesOut %}
-            {% endfor %}
-            {% if salesOut|length != 12 %}
-                {% for i in 1..12 - salesOut|length %}
+            {% for i in 0..11 %}
+				{% if salesOut[i] is defined %}
+					<td>${{ salesOut[i].salesOut|number }}</td>
+					{% set total += salesOut[i].salesOut %}
+					{% set salesYTD[loop.index] = salesOut[i].salesOut %}
+				{% else %}
                     <td class="null-value">-</td>
-                {% endfor %}
-            {% endif %}
+				{% endif %}
+            {% endfor %}
             <td>
                 <b>${{ total|number }}</b>
             </td>
@@ -192,8 +211,8 @@
                 {% set YTD = YTD + k %}
                 <td>${{ YTD|number }}</td>
             {% endfor %}
-            {% if orderCount|length != 12 %}
-                {% for i in 1..12 - orderCount|length %}
+            {% if salesOut|length != 12 %}
+                {% for i in 1..12 - salesOut|length %}
                     <td class="null-value">-</td>
                 {% endfor %}
             {% endif %}
@@ -256,16 +275,15 @@
 
         <tr>
             <td>Quotes Won</td>
-            {% for i in quotesWon %}
-                <td>{{ i.count }}</td>
-                {% set quotes[loop.index]['won'] = i.count %}
-                {% set total += i.count %}
-            {% endfor %}
-            {% if quotes|length != 12 %}
-                {% for i in 1..12 - quotesWon|length %}
+			{% for i in 0..11 %}
+				{% if quotesWon[i] is defined %}
+				<td>{{ quotesWon[i].count }}</td>
+                {% set quotes[loop.index]['won'] = quotesWon[i].count %}
+                {% set total += quotesWon[i].count %}
+				{% else %}
                     <td class="null-value">-</td>
-                {% endfor %}
-            {% endif %}
+					{% endif %}
+			{% endfor %}
             <td>
                 <b>{{ total|number }}</b>
             </td>
@@ -273,23 +291,17 @@
 
         <tr>
             <td>Percentage Won</td>
-            {% for i in quotes %}
-                <td>
-                    {% if i['won'] is not defined %}
-                        <td class="null-value">-</td>
-                        {% break %}
-                    {% endif %}
-                    {% if i['presented'] is not defined %}
-                        <td class="null-value">-</td>
-                        {% break %}
-                    {% endif %}
-                    {{ (i['won'] / i['presented'] * 100)|number }}%</td>
-            {% endfor %}
-            {% if quotes|length != 12 %}
-                {% for i in 0..(10 - quotes|length) %}
-                    <td class="null-value">-</td>
-                {% endfor %}
-            {% endif %}
+			{% for i in 1..12 %}
+				{% if quotes[i]['won'] is not defined %}
+					<td class="null-value">-</td>
+					{% continue %}
+				{% endif %}
+				{% if quotes[i]['presented'] is not defined %}
+					<td class="null-value">-</td>
+					{% continue %}
+				{% endif %}
+				<td>{{ (quotes[i]['won'] / quotes[i]['presented'] * 100)|number }}%</td>
+			{% endfor %}
             <td>
                 {% if total1 is not 0 %}
                 <b>{{ (total / total1 * 100)|number }}%</b>
@@ -362,7 +374,7 @@
                     {% set monthcounter = 1 %}
                 {% endif %}
                 {% if i[monthcounter] is defined %}
-                    <td>${{ i[monthcounter]}}</td>
+                    <td>${{ i[monthcounter]|number }}</td>
                     {% set total += i[monthcounter] %}
                 {% else %}
                     <td class="null-value">-</td>
@@ -377,16 +389,17 @@
 
     </tbody>
 </table>
+</div>
+</div>
+</div>
+<div class="no-print">
 
 <style>
-table:hover .editable-click, li:hover a.editable-click, li:hover a.editable-click:hover {
-    background: #fff9b9;
-    border-bottom: 1px dashed #f6bb42;
-    margin-bottom: -1px;
+#report {
+	font-size: 0.9em;
 }
-table .xedit {
-    color: #434A54;
-    border: none;
+.table-sm td, .table-sm th {
+    padding: 0.4rem 0.3em;
 }
 #report tr td:nth-child(1n+2) {
     text-align: right;
@@ -406,23 +419,8 @@ table .xedit {
 #report th {
     text-align: right;
 }
-.table-hover>tbody>tr:hover {
-    background-color: #e2e2e2;
-}
 .datepicker.datepicker-dropdown.dropdown-menu {
     background: white;
-}
-input#datepicker {
-    height: 0px;
-    width: 0px;
-    padding: 0;
-    border: none;
-    visibility: hidden;
-    display: inline;
-    margin-top: 10px;
-}
-#report {
-    font-size: 14px;
 }
 @media print {
     @page {
@@ -449,6 +447,17 @@ input#datepicker {
     }
     .xedit {
         background: none;
-        border-bottom: none;    }
+        border-bottom: none;    
+	}
+	.editable-click, a.editable-click, a.editable-click:hover {
+		color: inherit;
+		border: none;
+	}
 }
 </style>
+
+<script>
+	$(document).ready(function() {
+        $('.xedit').editable();
+    });
+</script>
