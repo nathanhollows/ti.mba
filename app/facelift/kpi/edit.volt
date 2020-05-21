@@ -2,22 +2,20 @@
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
-				<h6 class="header-pretitle">Record</h6>
 				<h4 class="header-title">Production KPI's</h4>
 			</div>
 			<div class="col text-right">
 				<nav aria-label="Page navigation example">
 					<ul class="pagination float-right">
 						<li class="page-item">
-							<a class="page-link" href="{{url('kpi/' ~ yesterday)}}" aria-label="Next">
+							<a class="page-link" href="{{url('kpi/' ~ prev)}}" aria-label="Next">
 								<span aria-hidden="true">&laquo;</span>
 								<span class="sr-only">Next</span>
 							</a>
 						</li>
 						<li class="page-item"><a class="page-link" href="{{ url("kpi") }}">Today</a></li>
-						<li class="page-item"><a class="page-link" href="#">Select Date</a></li>
 						<li class="page-item">
-							<a class="page-link" href="{{ url('kpi/' ~ tomorrow) }}" aria-label="Next">
+							<a class="page-link" href="{{ url('kpi/' ~ next) }}" aria-label="Next">
 								<span aria-hidden="true">&raquo;</span>
 								<span class="sr-only">Next</span>
 							</a>

@@ -17,6 +17,7 @@ class KpiController extends ControllerBase
 
 	public function initialize()
 	{
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->view->setTemplateBefore('private');
         parent::initialize();
     }
@@ -24,11 +25,22 @@ class KpiController extends ControllerBase
     public function indexAction()
     {
         $this->tag->prependTitle('Daily KPI\'s');
-        $this->response->redirect('kpi/' . date('Y/m/d'));
+		$this->dispatcher->forward([
+			'controller'	=> 'kpi',
+			'action'		=> 'edit',
+		]);
     }
 
-    public function editAction($year, $month, $day)
+	/**
+	 * Daily KPI action
+	 */
+    public function editAction($year = null, $month = null, $day = null)
     {
+        if (!$year || !$month || !$day) {
+			$year = date('Y');
+			$month = date('m');
+			$day = date('d');
+        }
         // Set the title
     	$this->tag->prependTitle('Daily KPI\'s');
         // Check if URL is correctly formed date
@@ -54,8 +66,17 @@ class KpiController extends ControllerBase
 			$this->view->today = true;
 		}
 
-        $this->view->tomorrow = date('Y/m/d', strtotime($date . "+1 days"));
-        $this->view->yesterday = date('Y/m/d', strtotime($date . "-1 days"));
+		$next = strtotime($date . " +1 days");
+		while (date('N', $next) > 5) {
+			$next += 60 * 60 * 24;
+		}
+		$prev = strtotime($date . " -1 days");
+		while (date('N', $prev) > 5) {
+			$prev -= 60 * 60 * 24;
+		}
+
+        $this->view->next = date('Y/m/d', $next);
+        $this->view->prev = date('Y/m/d', $prev);
 
         $calendar = Calendar::findFirst("calendarDate = '$date'");
 
@@ -97,10 +118,15 @@ class KpiController extends ControllerBase
 
     }
 
+	/**
+	 * Daily sales action
+	 */
     public function dailysalesAction($year = null, $month = null, $day = null)
     {
         if (!$year || !$month || !$day) {
-            $this->response->redirect('kpi/dailysales/' . date('Y/m/d'));
+			$year = date('Y');
+			$month = date('m');
+			$day = date('d');
         }
 
         $this->tag->prependTitle('Daily Sales');
@@ -120,8 +146,17 @@ class KpiController extends ControllerBase
         $records = DailySales::findByDate($date);
         $this->view->records = $records;
 
-        $this->view->tomorrow = date('Y/m/d', strtotime($date . "+1 days"));
-        $this->view->yesterday = date('Y/m/d', strtotime($date . "-1 days"));
+		$next = strtotime($date . " +1 days");
+		while (date('N', $next) > 5) {
+			$next += 60 * 60 * 24;
+		}
+		$prev = strtotime($date . " -1 days");
+		while (date('N', $prev) > 5) {
+			$prev -= 60 * 60 * 24;
+		}
+        $this->view->next = date("Y/m/d",$next);
+        $this->view->prev = date("Y/m/d",$prev);
+		$this->view->current = $date;
         $calendar = Calendar::findFirst("calendarDate = '$date'");
 
         $this->assets->collection('footer')
