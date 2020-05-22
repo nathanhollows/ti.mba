@@ -167,7 +167,10 @@ class QuotesController extends ControllerBase
 		$quote->updateValue();
 
 		$this->view->history = ContactRecord::find(array(
-			'conditions'	=> "job = $quote->quoteId",
+			'conditions'	=> "job = :quote:",
+			'bind' => [
+				'quote'	=> $quote->quoteId,
+			],
 		));
 
 		$this->view->pageSubtitle = $quote->reference;
@@ -217,7 +220,7 @@ class QuotesController extends ControllerBase
 		$this->view->dryness = Dryness::find(array('order'	=> 'name'));
 		$this->view->finishes = Finish::find(array('order'	=> 'name'));
 		$this->view->priceMethod = PricingUnit::find();
-		$this->view->users = Users::find();
+		$this->view->users = Users::getActive();
 
         $this->assets->collection('footer')
             ->addJs('js/to-markdown.js', true)
@@ -276,6 +279,7 @@ class QuotesController extends ControllerBase
 
 	public function newAction($customerCode = null)
 	{
+		$this->view->setViewsDir('/var/www/html/app/facelift/');
 		$this->view->ajax = false;
 
 		if ($this->request->isAjax()) {
@@ -341,7 +345,7 @@ class QuotesController extends ControllerBase
 		$random = new Random();
 		// Store and check for errors
 		$quote->webId = $random->uuid();
-		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'reference', 'notes', 'user', 'contact', 'status', 'moreNotes'));
+		$success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'reference', 'notes', 'user', 'contact', 'moreNotes'));
 		if ($success) {
 			$this->flashSession->success("Quote created successfully!");
 			return $this->response->redirect("quotes/view/" . $quote->quoteId);

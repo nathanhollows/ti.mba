@@ -84,7 +84,7 @@ class ProfileController extends ControllerBase
 		$this->view->topYear = $builder
 			->columns(array('topValue' => 'SUM(value)', 'year' => 'YEAR(date)'))
 			->addFrom('App\Models\DailySales', 's')
-            ->join('App\Models\Calendar', 'c.calendarDate = s.date', 'c')
+			->join('App\Models\Calendar', 'c.calendarDate = s.date', 'c')
 			->where("rep = $id")
 			->groupBy(array('c.financialYear'))
 			->orderBy('topValue DESC')
@@ -217,7 +217,7 @@ class ProfileController extends ControllerBase
 		$this->view->topYear = $builder
 			->columns(array('topValue' => 'SUM(value)', 'year' => 'YEAR(date)'))
 			->addFrom('App\Models\DailySales', 's')
-            ->join('App\Models\Calendar', 'c.calendarDate = s.date', 'c')
+			->join('App\Models\Calendar', 'c.calendarDate = s.date', 'c')
 			->where("rep = $id")
 			->groupBy(array('c.financialYear'))
 			->orderBy('topValue DESC')

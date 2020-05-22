@@ -3,8 +3,7 @@
 		<div class="row header-body">
 			<div class="col col-md-6 offset-md-2">
 				<h4 class="header-title">Mainfreight Tracker</h4>
-				<h6 class="pre-header">Last checked {{outstanding[0].statusLastChanged|timeAgo}}</h6>
-				{{ outstanding[0].statusLastChanged }}
+				<h6 class="pre-header">Checked every half hour</div>
 			</div>
 			<div class="col text-right">
 			</div>

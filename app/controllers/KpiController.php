@@ -78,11 +78,6 @@ class KpiController extends ControllerBase
         $this->view->next = date('Y/m/d', $next);
         $this->view->prev = date('Y/m/d', $prev);
 
-        $calendar = Calendar::findFirst("calendarDate = '$date'");
-
-        if (!$calendar->isWorkDay()) {
-            $this->flash->warning("This is not a working day");
-        }
     }
 
     public function saveAction()
@@ -157,7 +152,6 @@ class KpiController extends ControllerBase
         $this->view->next = date("Y/m/d",$next);
         $this->view->prev = date("Y/m/d",$prev);
 		$this->view->current = $date;
-        $calendar = Calendar::findFirst("calendarDate = '$date'");
 
         $this->assets->collection('footer')
             ->addJs('/js/editable-table.js');
