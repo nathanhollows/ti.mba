@@ -12,19 +12,19 @@ use App\Models\SalesBudget;
 use App\Models\SurveyResults;
 use App\Models\Budgets;
 use Phalcon\Mvc\Model\Query\Builder;
+use Phalcon\Mvc\Model\Query;
 
 class ReportsController extends ControllerBase
 {
-
-	public function initialize()
-	{
+    public function initialize()
+    {
         $this->view->setTemplateBefore('private');
         parent::initialize();
-	}
+    }
 
     public function indexAction()
     {
-    	$this->tag->prependTitle('Reports');
+        $this->tag->prependTitle('Reports');
     }
 
     public function customersAction()
@@ -40,7 +40,7 @@ class ReportsController extends ControllerBase
 
     public function annualAction($year = null, $month = null)
     {
-		$this->view->setViewsDir('/var/www/html/app/facelift/');
+        $this->view->setViewsDir('/var/www/html/app/facelift/');
         if (date('m')<4) {
             $year = ($year) ? $year : date("Y")-1 ;
         } else {
@@ -58,13 +58,13 @@ class ReportsController extends ControllerBase
         $this->view->pageSubtitle = date('M Y', strtotime($start)) . ' - ' . date('M Y', strtotime($end));
 
         $builder = new Builder();
-		$budget = $builder
+        $budget = $builder
             ->betweenWhere('date', $start, $end)
-			->from('App\Models\Budgets')
+            ->from('App\Models\Budgets')
             ->orderBy('date')
-			->limit(12)
-			->getQuery()
-			->execute();
+            ->limit(12)
+            ->getQuery()
+            ->execute();
 
         $running = [];
         foreach ($budget as $key => $value) {
@@ -75,55 +75,67 @@ class ReportsController extends ControllerBase
         $this->view->budget = $running;
 
         $builder = new Builder();
-		$this->view->orderCount = $builder
-			->columns(array('count' => 'COUNT(value)', 'month' => 'MONTH(date)', 'average' => 'AVG(value)', 'sumatory' => 'SUM(value)', 'year' => 'YEAR(date)'))
+        $this->view->orderCount = $builder
+            ->columns(array('count' => 'COUNT(value)', 'month' => 'MONTH(date)', 'average' => 'AVG(value)', 'sumatory' => 'SUM(value)', 'year' => 'YEAR(date)'))
             ->betweenWhere('date', $start, $end)
-			->from('App\Models\DailySales')
+            ->from('App\Models\DailySales')
             ->groupBy('year, month')
-			->limit(12)
-			->getQuery()
-			->execute();
+            ->limit(12)
+            ->getQuery()
+            ->execute();
 
         $builder = new Builder();
-		$this->view->salesOut = $builder
-			->columns(array('salesOut' => 'MAX(chargeOut)', 'month' => 'MONTH(date)', 'year' => 'YEAR(date)'))
+        $this->view->salesOut = $builder
+            ->columns(array('salesOut' => 'MAX(chargeOut)', 'month' => 'MONTH(date)', 'year' => 'YEAR(date)'))
             ->betweenWhere('date', $start, $end)
-			->from('App\Models\Kpis')
+            ->from('App\Models\Kpis')
             ->groupBy('month')
             ->orderBy('year, month')
-			->limit(12)
-			->getQuery()
-			->execute();
+            ->limit(12)
+            ->getQuery()
+            ->execute();
+
+        $query = new Query(
+            "SELECT c.month, c.year, (
+				SELECT count(*)
+				FROM App\Models\Quotes
+				WHERE month(date) = c.month 
+				AND year(date) = c.year
+			) as count
+			FROM App\Models\Calendar c
+			WHERE financialYear = :year:
+			GROUP BY c.month, c.year
+			ORDER BY c.year, c.month",
+            $this->di
+        );
+        $this->view->quotesPresented = $query->execute(["year" => date("Y", strtotime($end))]);
+
+        $query = new Query(
+            "SELECT c.month, c.year, (
+				SELECT count(*)
+				FROM App\Models\Quotes
+				WHERE month(date) = c.month 
+				AND year(date) = c.year
+				AND status = 5
+			) as count
+			FROM App\Models\Calendar c
+			WHERE financialYear = :year:
+			GROUP BY c.month, c.year
+			ORDER BY c.year, c.month",
+            $this->di
+        );
+        $this->view->quotesWon = $query->execute(["year" => date("Y", strtotime($end))]);
 
         $builder = new Builder();
-		$this->view->quotesPresented = $builder
-			->columns(array('count' => 'COUNT(webId)', 'month' => 'MONTH(date)', 'year' => 'YEAR(date)'))
-            ->betweenWhere('date', $start, $end)
-			->from('App\Models\Quotes')
-            ->groupBy('year, month')
-			->getQuery()
-			->execute();
-
-        $builder = new Builder();
-		$this->view->quotesWon = $builder
-			->columns(array('count' => 'COUNT(id)', 'month' => 'MONTH(date)', 'year' => 'YEAR(date)'))
-            ->where('quoted = 1')
-            ->betweenWhere('date', $start, $end)
-			->from('App\Models\DailySales')
-            ->groupBy('year, month')
-			->getQuery()
-			->execute();
-
-        $builder = new Builder();
-		$sales = $builder
+        $sales = $builder
             ->from('App\Models\DailySales')
             ->leftJoin('App\Models\Users', 'rep = users.id', 'users')
-			->columns(array('sumatory' => 'SUM(value)', 'month' => 'MONTH(date)', 'year' => 'YEAR(date)', 'users.name'))
+            ->columns(array('sumatory' => 'SUM(value)', 'month' => 'MONTH(date)', 'year' => 'YEAR(date)', 'users.name'))
             ->betweenWhere('date', $start, $end)
             ->groupBy('name, month')
             ->orderBy('FIELD(name,"fax")')
-			->getQuery()
-			->execute();
+            ->getQuery()
+            ->execute();
 
         $running = [];
         foreach ($sales as $key => $i) {
@@ -158,7 +170,7 @@ class ReportsController extends ControllerBase
             ));
         }
 
-        if (count($this->view->customers) == 0 ) {
+        if (count($this->view->customers) == 0) {
             $this->flashSession->error('No customers were selected');
             return $this->_redirectBack();
         }
@@ -190,7 +202,7 @@ class ReportsController extends ControllerBase
             ));
         }
 
-        if (count($this->view->customers) == 0 ) {
+        if (count($this->view->customers) == 0) {
             $this->flashSession->error('No customers were selected');
             return $this->_redirectBack();
         }
@@ -224,7 +236,7 @@ class ReportsController extends ControllerBase
             ));
         }
 
-        if (count($this->view->customers) == 0 ) {
+        if (count($this->view->customers) == 0) {
             $this->flashSession->error('No customers were selected');
             return $this->_redirectBack();
         }
@@ -246,7 +258,7 @@ class ReportsController extends ControllerBase
 
         $this->view->headerButton = '
             <button type="button" class="btn btn-info" id="datebutton">
-                <input type="text" name="" id="datepicker" class="form-control" value="' . date("Y/m", $startTime ). '" required="required" pattern="" title="" hidden="true">
+                <input type="text" name="" id="datepicker" class="form-control" value="' . date("Y/m", $startTime). '" required="required" pattern="" title="" hidden="true">
                 <i class="fa fa-icon fa-calendar"></i>
                 Select Month ...
             </button>
@@ -256,8 +268,8 @@ class ReportsController extends ControllerBase
 
         // Loop between timestamps, 24 hours at a time
         $weeks = array();
-        for ( $i = $startTime; $i <= $endTime; $i = $i + 86400 ) {
-            array_push($weeks, date('W', $i ));
+        for ($i = $startTime; $i <= $endTime; $i = $i + 86400) {
+            array_push($weeks, date('W', $i));
         }
 
         $start = date("Y-m-d", $startTime);
@@ -296,9 +308,8 @@ class ReportsController extends ControllerBase
         ));
 
         $new_array = array();
-        foreach($weeklySales as $row)
-        {
-             $new_array[$row['week']][$row['rep']] = array('value' => $row->sumatory, 'rep' => $row->rep, 'count' => $row->count);
+        foreach ($weeklySales as $row) {
+            $new_array[$row['week']][$row['rep']] = array('value' => $row->sumatory, 'rep' => $row->rep, 'count' => $row->count);
         }
 
         $this->view->users = Users::find();
@@ -319,12 +330,10 @@ class ReportsController extends ControllerBase
         $this->assets->collection('footer')
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.bundle.min.js')
             ->addJs('js/dashboard/charts.js');
-
     }
 
     public function salesteamAction()
     {
-
         $this->tag->prependTitle('Sales Team Report');
         $this->view->pageTitle = 'Sales Team Report';
         $this->view->pageSubtitle = ' ';
@@ -371,7 +380,6 @@ class ReportsController extends ControllerBase
                 'date'  => date('Y-m-d', strtotime("now - 1 month")),
             ),
         ));
-
     }
 
     public function surveyAction()
@@ -412,7 +420,5 @@ class ReportsController extends ControllerBase
 
     public function topcustomersAction()
     {
-
     }
-
 }

@@ -9,23 +9,21 @@ use App\Models\Contacts;
 
 class SurveyController extends ControllerBase
 {
-
-	public function initialize()
-	{
+    public function initialize()
+    {
         parent::initialize();
-	}
+    }
 
     public function indexAction($name = null)
     {
-    	$this->tag->prependTitle('ATS Survey ' . date('Y'));
+        $this->tag->prependTitle('ATS Survey ' . date('Y'));
 
         $contact = Contacts::findFirstBywebId($name);
         if (!$contact) {
             $response = new Response();
             return $response->redirect('survey/error');
         }
-        if (SurveyResults::findFirstByContact($contact->id))
-        {
+        if (SurveyResults::findFirstByContact($contact->id)) {
             $response = new \Phalcon\Http\Response();
             return $response->redirect('survey/thankyou');
         }
@@ -54,8 +52,7 @@ class SurveyController extends ControllerBase
     public function submitAction()
     {
         $response = new \Phalcon\Http\Response();
-        if($this->request->isPost())
-        {
+        if ($this->request->isPost()) {
             $result = new SurveyResults();
             $success = $result->save($this->request->getPost());
             if (!$success) {
@@ -67,7 +64,6 @@ class SurveyController extends ControllerBase
         } else {
             return $response->redirect('survey/error');
         }
-
     }
 
     public function thankyouAction()

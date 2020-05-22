@@ -14,127 +14,130 @@ use App\Models\ContactRecord;
  *
  */
 
-class BoardController extends ControllerBase {
+class BoardController extends ControllerBase
+{
+    public function initialize()
+    {
+        $this->view->setTemplateBefore('none');
+        parent::initialize();
+    }
 
-	public function initialize() {
-		$this->view->setTemplateBefore('none');
-		parent::initialize();
-	}
+    // Action to generate TV dashboard view
+    public function fb61dfafcfa450b9d19065817ce3ccdAction($year = null, $month = null, $day = null)
+    {
+        if (!$year || !$month || !$day) {
+            $year = date("Y");
+            $month = date("m");
+            $day = date("d");
+        }
 
-	// Action to generate TV dashboard view
-	public function fb61dfafcfa450b9d19065817ce3ccdAction($year = null, $month = null, $day = null) {
+        $this->view->month = Kpis::thisMonth();
 
-		if (!$year || !$month || !$day) {
-			$year = date("Y");
-			$month = date("m");
-			$day = date("d");
-		}
+        $dateRaw = strtotime("$year-$month-$day");
+        $date = date('Y-m-d', $dateRaw);
 
-		$this->view->month = Kpis::thisMonth();
+        $this->view->date = $date;
 
-		$dateRaw = strtotime("$year-$month-$day");
-		$date = date('Y-m-d', $dateRaw);
+        $data = Kpis::findFirstByDate($date);
+        if (!$data) {
+            $data = Kpis::find(array('order' => 'date ASC'));
+            $data = $data->getLast();
+        }
 
-		$this->view->date = $date;
+        $this->view->data = $data;
+        $salesDate = $data->date;
+        $this->view->daySales = DailySales::sumDay($salesDate);
+        $this->view->sales = DailySales::dailySalesBetween(date("Y-m-01", strtotime($salesDate)), $salesDate);
+        $this->view->totalSales = DailySales::sumSalesBetween(date("Y-m-01", strtotime($salesDate)), $salesDate);
+        $this->view->kpis = Kpis::ofMonthYear($salesDate);
+        $this->view->budget = Budgets::getDate($salesDate);
 
-		$data = Kpis::findFirstByDate($date);
-		if (!$data) {
-			$data = Kpis::find(array('order' => 'date ASC'));
-			$data = $data->getLast();
-		}
+        $this->assets->collection('header')
+            ->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css');
 
-		$this->view->data = $data;
-		$salesDate = $data->date;
-		$this->view->daySales = DailySales::sumDay($salesDate);
-		$this->view->sales = DailySales::dailySalesBetween(date("Y-m-01", strtotime($salesDate)), $salesDate);
-		$this->view->totalSales = DailySales::sumSalesBetween(date("Y-m-01", strtotime($salesDate)), $salesDate);
-		$this->view->kpis = Kpis::ofMonthYear($salesDate);
-		$this->view->budget = Budgets::getDate($salesDate);
+        $this->assets->collection('dashfooter')
+            ->addJs('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js');
+    }
 
-		$this->assets->collection('header')
-			->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css');
+    public function e0af2c77ed42f2a825526e04e9abdbAction()
+    {
+        $date = strtotime("NOW - 1 MONTH");
 
-		$this->assets->collection('dashfooter')
-			->addJs('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js');
+        $onsite = Kpis::sum(array(
+            "column" => "onsiteDispatch",
+            "conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
+            "bind" => [
+                1 => $date,
+            ],
+        ));
+        $this->view->onsite = $onsite;
 
-	}
+        $offsite = Kpis::sum(array(
+            "column" => "offsiteDispatch",
+            "conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
+            "bind" => [
+                1 => $date,
+            ],
+        ));
+        $this->view->offsite = $offsite;
 
-	public function e0af2c77ed42f2a825526e04e9abdbAction() {
-		$date = strtotime("NOW - 1 MONTH");
+        $ordersSent = Kpis::sum(array(
+            "column" => "ordersSent",
+            "conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
+            "bind" => [
+                1 => $date,
+            ],
+        ));
+        $this->view->ordersSent = $ordersSent;
 
-		$onsite = Kpis::sum(array(
-			"column" => "onsiteDispatch",
-			"conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
-			"bind" => [
-				1 => $date,
-			],
-		));
-		$this->view->onsite = $onsite;
+        $chargeOut = Kpis::maximum(array(
+            "column" => "chargeOut",
+            "conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
+            "bind" => [
+                1 => $date,
+            ],
+        ));
+        $this->view->chargeOut = $chargeOut;
 
-		$offsite = Kpis::sum(array(
-			"column" => "offsiteDispatch",
-			"conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
-			"bind" => [
-				1 => $date,
-			],
-		));
-		$this->view->offsite = $offsite;
+        $prevChargeOut = Kpis::maximum(array(
+            "column" => "chargeOut",
+            "conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW()) - 1",
+            "bind" => [
+                1 => $date,
+            ],
+        ));
+        $this->view->prevChargeOut = $prevChargeOut;
 
-		$ordersSent = Kpis::sum(array(
-			"column" => "ordersSent",
-			"conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
-			"bind" => [
-				1 => $date,
-			],
-		));
-		$this->view->ordersSent = $ordersSent;
+        $biggestSale = DailySales::maximum(array(
+            "column" => "value",
+            "conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
+        ));
+        $biggestSale = DailySales::findFirst(array(
+            "conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW()) AND value = ?1",
+            "bind" => [
+                1 => $biggestSale,
+            ],
+        ));
+        $this->view->biggestSale = $biggestSale;
 
-		$chargeOut = Kpis::maximum(array(
-			"column" => "chargeOut",
-			"conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
-			"bind" => [
-				1 => $date,
-			],
-		));
-		$this->view->chargeOut = $chargeOut;
-
-		$prevChargeOut = Kpis::maximum(array(
-			"column" => "chargeOut",
-			"conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW()) - 1",
-			"bind" => [
-				1 => $date,
-			],
-		));
-		$this->view->prevChargeOut = $prevChargeOut;
-
-		$biggestSale = DailySales::maximum(array(
-			"column" => "value",
-			"conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW())",
-		));
-		$biggestSale = DailySales::findFirst(array(
-			"conditions" => "MONTH(date) = MONTH(NOW()) -1 AND YEAR(date) = YEAR(NOW()) AND value = ?1",
-			"bind" => [
-				1 => $biggestSale,
-			],
-		));
-		$this->view->biggestSale = $biggestSale;
-
-		$this->view->budget = Budgets::getDate($date);
-	}
+        $this->view->budget = Budgets::getDate($date);
+    }
 
     /**
      * Dashboard for ATS, Architectural and VidaSpace
      */
-	public function multiAction() {
-		$this->view->atsBudget = Budgets::current();
-		$this->view->atsSales = DailySales::sumDay(date("Y-m-d"));
+    public function multiAction()
+    {
+        $this->view->atsBudget = Budgets::current();
+        $this->view->atsSales = DailySales::sumDay(date("Y-m-d"));
         $this->view->atsLeads = ContactRecord::getOverdueTotal();
     }
 
     /**
      * Mobile Dashboard for ATS, Architectural and VidaSpace
      */
-    public function mobileAction() {
+    public function mobileAction()
+    {
         $budget = Budgets::current();
         $this->view->data = self::getData(0);
     }
@@ -143,17 +146,18 @@ class BoardController extends ControllerBase {
      * Calculates current KPI's and percentages of goals
      * @return JSON
      */
-    public function refreshAction() {
+    public function refreshAction()
+    {
         $this->view->disable();
 
         $this->response->setContentType('application/json', 'UTF-8');
 
         $data = self::getData($this->request->getPost('atsLeads'));
 
-		$this->response->setContent(json_encode($data));
+        $this->response->setContent(json_encode($data));
 
-		return $this->response->send();
-	}
+        return $this->response->send();
+    }
 
     /**
      * Fetches data for dashboards
@@ -200,5 +204,4 @@ class BoardController extends ControllerBase {
             return $value;
         }
     }
-
 }

@@ -10,10 +10,9 @@ use Phalcon\Http\Response;
  */
 class ErrorController extends ControllerBase
 {
-
     public function initialize()
     {
-			$this->view->setViewsDir('/var/www/html/app/facelift/');
+        $this->view->setViewsDir('/var/www/html/app/facelift/');
         $auth = new Auth;
 
         if ($auth->getId()) {
@@ -46,5 +45,4 @@ class ErrorController extends ControllerBase
     {
         $this->tag->prependTitle('Woops!');
     }
-
 }

@@ -57,6 +57,5 @@ class StockController extends ControllerBase
         $this->assets->collection('footer')
             ->addJs('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js', false)
             ->addJs('https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js');
-
     }
 }

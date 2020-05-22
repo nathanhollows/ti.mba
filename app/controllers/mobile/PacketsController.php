@@ -15,7 +15,6 @@ class PacketsController extends ControllerBase
     {
         $this->tag->prependTitle('Packet');
         $this->view->pageTitle = "Scheduled Orders";
-
     }
 
     public function viewAction($packetNumber = null)

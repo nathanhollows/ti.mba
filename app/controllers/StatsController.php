@@ -6,15 +6,14 @@ use Phalcon\Tag;
 
 class StatsController extends ControllerBase
 {
-
-	public function initialize()
-	{
+    public function initialize()
+    {
         $this->view->setTemplateBefore('private');
         parent::initialize();
-	}
+    }
 
     public function indexAction()
     {
-    	$this->tag->prependTitle('About');
+        $this->tag->prependTitle('About');
     }
 }

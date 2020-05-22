@@ -15,7 +15,6 @@ class PacketsControllers extends ControllerBase
     /** I'm not sure what this should do yet */
     public function indexAction()
     {
-
     }
 
     /**
@@ -24,7 +23,6 @@ class PacketsControllers extends ControllerBase
      */
     public function viewAction($packet = null)
     {
-
         $packet = Packets::findFirst([
             'conditions'    => 'packetNumber = ?1',
             'bind'          => [

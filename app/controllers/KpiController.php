@@ -14,10 +14,9 @@ use App\Forms\DailySalesForm;
 
 class KpiController extends ControllerBase
 {
-
-	public function initialize()
-	{
-		$this->view->setViewsDir('/var/www/html/app/facelift/');
+    public function initialize()
+    {
+        $this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->view->setTemplateBefore('private');
         parent::initialize();
     }
@@ -25,24 +24,24 @@ class KpiController extends ControllerBase
     public function indexAction()
     {
         $this->tag->prependTitle('Daily KPI\'s');
-		$this->dispatcher->forward([
-			'controller'	=> 'kpi',
-			'action'		=> 'edit',
-		]);
+        $this->dispatcher->forward([
+            'controller'	=> 'kpi',
+            'action'		=> 'edit',
+        ]);
     }
 
-	/**
-	 * Daily KPI action
-	 */
+    /**
+     * Daily KPI action
+     */
     public function editAction($year = null, $month = null, $day = null)
     {
         if (!$year || !$month || !$day) {
-			$year = date('Y');
-			$month = date('m');
-			$day = date('d');
+            $year = date('Y');
+            $month = date('m');
+            $day = date('d');
         }
         // Set the title
-    	$this->tag->prependTitle('Daily KPI\'s');
+        $this->tag->prependTitle('Daily KPI\'s');
         // Check if URL is correctly formed date
         if (checkdate($month, $day, $year)) {
             $dateRaw = strtotime("$year-$month-$day");
@@ -61,23 +60,22 @@ class KpiController extends ControllerBase
         $this->view->form = $form;
         $this->view->date = $dateSql;
 
-		$this->view->today = false;
-		if (date('Y-m-d') === $dateSql) {
-			$this->view->today = true;
-		}
+        $this->view->today = false;
+        if (date('Y-m-d') === $dateSql) {
+            $this->view->today = true;
+        }
 
-		$next = strtotime($date . " +1 days");
-		while (date('N', $next) > 5) {
-			$next += 60 * 60 * 24;
-		}
-		$prev = strtotime($date . " -1 days");
-		while (date('N', $prev) > 5) {
-			$prev -= 60 * 60 * 24;
-		}
+        $next = strtotime($date . " +1 days");
+        while (date('N', $next) > 5) {
+            $next += 60 * 60 * 24;
+        }
+        $prev = strtotime($date . " -1 days");
+        while (date('N', $prev) > 5) {
+            $prev -= 60 * 60 * 24;
+        }
 
         $this->view->next = date('Y/m/d', $next);
         $this->view->prev = date('Y/m/d', $prev);
-
     }
 
     public function saveAction()
@@ -110,23 +108,22 @@ class KpiController extends ControllerBase
             }
             return $this->_redirectBack();
         }
-
     }
 
-	/**
-	 * Daily sales action
-	 */
+    /**
+     * Daily sales action
+     */
     public function dailysalesAction($year = null, $month = null, $day = null)
     {
         if (!$year || !$month || !$day) {
-			$year = date('Y');
-			$month = date('m');
-			$day = date('d');
+            $year = date('Y');
+            $month = date('m');
+            $day = date('d');
         }
 
         $this->tag->prependTitle('Daily Sales');
 
-        $date = (date("Y-m-d",strtotime("$year-$month-$day")));
+        $date = (date("Y-m-d", strtotime("$year-$month-$day")));
 
         $this->view->users = Users::getActive();
 
@@ -141,17 +138,17 @@ class KpiController extends ControllerBase
         $records = DailySales::findByDate($date);
         $this->view->records = $records;
 
-		$next = strtotime($date . " +1 days");
-		while (date('N', $next) > 5) {
-			$next += 60 * 60 * 24;
-		}
-		$prev = strtotime($date . " -1 days");
-		while (date('N', $prev) > 5) {
-			$prev -= 60 * 60 * 24;
-		}
-        $this->view->next = date("Y/m/d",$next);
-        $this->view->prev = date("Y/m/d",$prev);
-		$this->view->current = $date;
+        $next = strtotime($date . " +1 days");
+        while (date('N', $next) > 5) {
+            $next += 60 * 60 * 24;
+        }
+        $prev = strtotime($date . " -1 days");
+        while (date('N', $prev) > 5) {
+            $prev -= 60 * 60 * 24;
+        }
+        $this->view->next = date("Y/m/d", $next);
+        $this->view->prev = date("Y/m/d", $prev);
+        $this->view->current = $date;
 
         $this->assets->collection('footer')
             ->addJs('/js/editable-table.js');
@@ -165,13 +162,11 @@ class KpiController extends ControllerBase
 
         $budget = Budgets::getDate($date);
         $this->view->budget = $budget;
-
     }
 
     // TODO Check timestamp of sales to stop data overwriting
     public function savesalesAction()
     {
-
         $this->view->disable();
 
         if (!$this->request->getPost()) {
@@ -187,17 +182,16 @@ class KpiController extends ControllerBase
         $i = 0;
         $len = count($data['quoted']);
 
-        while($i < $len) {
-
+        while ($i < $len) {
             if (isset($data['quoted'][$i])) {
                 // Set unchecked to checked
-                if ($data['quoted'][$i] == 0 and @$data['quoted'][$i + 1] == 1 ) {
+                if ($data['quoted'][$i] == 0 and @$data['quoted'][$i + 1] == 1) {
                     $data['quoted'][$i] = 1;
                     unset($data['quoted'][$i + 1]);
                 }
 
                 // Set unchecked to checked
-                 else if ($data['quoted'][$i] == 10 and @$data['quoted'][$i + 1] == 0 ) {
+                elseif ($data['quoted'][$i] == 10 and @$data['quoted'][$i + 1] == 0) {
                     $data['quoted'][$i] = 0;
                     unset($data['quoted'][$i + 1]);
                 }
@@ -213,9 +207,7 @@ class KpiController extends ControllerBase
         $len = count($data['rep']);
 
         // Loop through each request
-        for ($i = 0; $i < count($data['amount'], COUNT_RECURSIVE) - 1; $i++)
-        {
-
+        for ($i = 0; $i < count($data['amount'], COUNT_RECURSIVE) - 1; $i++) {
             if (empty($data['id'][$i])) {
                 $entry = new DailySales;
                 $entry->timestamp = date('Y-m-d H:i:s');
@@ -225,7 +217,7 @@ class KpiController extends ControllerBase
             }
 
             $entry->date                    = $data['date'];
-            $entry->week                    = date("W",strtotime($data['date']));
+            $entry->week                    = date("W", strtotime($data['date']));
             $entry->rep                     = $data['rep'][$i];
             $entry->quoted                  = $data['quoted'][$i];
             $entry->customerReference       = $data['customerReference'][$i];
@@ -244,7 +236,6 @@ class KpiController extends ControllerBase
         }
 
         $this->_redirectBack();
-
     }
 
     public function deletesaleAction($id)
@@ -269,6 +260,5 @@ class KpiController extends ControllerBase
         }
 
         $this->_redirectBack();
-
     }
 }

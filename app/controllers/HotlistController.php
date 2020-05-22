@@ -13,18 +13,16 @@ use Phalcon\Http\Response;
 
 class HotlistController extends ControllerBase
 {
-
     public function initialize()
     {
         // Set the default view
         $this->view->setTemplateBefore('private');
         parent::initialize();
-
     }
 
     public function indexAction()
     {
-        if($this->request->isPost()){
+        if ($this->request->isPost()) {
             $response = new Response();
             return $response->redirect("hotlist");
         }
@@ -68,7 +66,7 @@ class HotlistController extends ControllerBase
 
     public function listAction()
     {
-        if($this->request->isPost()){
+        if ($this->request->isPost()) {
             $response = new Response();
             return $response->redirect("hotlist");
         }
@@ -108,13 +106,11 @@ class HotlistController extends ControllerBase
 
     public function newAction($customerCode = null)
     {
-        if ($this->request->isAjax())
-        {
+        if ($this->request->isAjax()) {
             $this->view->setTemplateBefore('modal-form');
         }
 
         $this->view->pageTitle = "Add a Lead";
-
     }
 
     public function createAction()
@@ -134,7 +130,6 @@ class HotlistController extends ControllerBase
         } else {
             return $this->response->redirect('hotlist');
         }
-
     }
 
     public function viewAction($quote)
@@ -154,7 +149,7 @@ class HotlistController extends ControllerBase
     {
         $this->view->disable();
 
-        if(!$this->request->isAjax()) {
+        if (!$this->request->isAjax()) {
             return $this->_redirectBack();
         }
 
@@ -169,7 +164,7 @@ class HotlistController extends ControllerBase
                 $response->setStatusCode(501, "Something went wrong");
             }
         } else {
-                $response->setStatusCode(404, "Quote Not Found");
+            $response->setStatusCode(404, "Quote Not Found");
         }
         return $response;
     }
@@ -178,7 +173,7 @@ class HotlistController extends ControllerBase
     {
         $this->view->disable();
 
-        if(!$this->request->isAjax()) {
+        if (!$this->request->isAjax()) {
             return $this->_redirectBack();
         }
 
@@ -194,7 +189,7 @@ class HotlistController extends ControllerBase
                 $response->setStatusCode(501, "Something went wrong");
             }
         } else {
-                $response->setStatusCode(404, "Quote Not Found");
+            $response->setStatusCode(404, "Quote Not Found");
         }
         return $response;
     }
@@ -203,7 +198,7 @@ class HotlistController extends ControllerBase
     {
         $this->view->disable();
 
-        if(!$this->request->isAjax()) {
+        if (!$this->request->isAjax()) {
             return $this->_redirectBack();
         }
 
@@ -219,7 +214,7 @@ class HotlistController extends ControllerBase
                 $response->setStatusCode(501, "Something went wrong");
             }
         } else {
-                $response->setStatusCode(404, "Quote Not Found");
+            $response->setStatusCode(404, "Quote Not Found");
         }
         return $response;
     }
@@ -228,7 +223,7 @@ class HotlistController extends ControllerBase
     {
         $this->view->disable();
 
-        if(!$this->request->isAjax()) {
+        if (!$this->request->isAjax()) {
             return $this->_redirectBack();
         }
 
@@ -247,7 +242,7 @@ class HotlistController extends ControllerBase
 
     public function updateAction()
     {
-        if(!$this->request->isAjax()){
+        if (!$this->request->isAjax()) {
             return $this->_redirectBack();
         }
 
@@ -255,7 +250,7 @@ class HotlistController extends ControllerBase
 
         $id = $this->request->getPost('pk');
         $job = HotlistQuotes::findFirstById($id);
-        if(!$job){
+        if (!$job) {
             $response->setStatusCode(404, "Job not found");
         } else {
             $value = $this->request->getPost('value');
@@ -286,8 +281,8 @@ class HotlistController extends ControllerBase
                     return $response;
                     break;
             }
-            if($job->update()){
-               $response->setStatusCode(200, "Successfully Updated");
+            if ($job->update()) {
+                $response->setStatusCode(200, "Successfully Updated");
             } else {
                 $response->setStatusCode(400, "Something went wrong!");
                 $content = "";
@@ -299,5 +294,4 @@ class HotlistController extends ControllerBase
         }
         return $response;
     }
-
 }

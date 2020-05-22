@@ -18,7 +18,7 @@ class OrdersController extends ControllerBase
 {
     public function initialize()
     {
-		$this->view->setViewsDir('/var/www/html/app/facelift/');
+        $this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->view->setTemplateBefore('private');
         $this->tag->prependTitle('Orders');
         parent::initialize();
@@ -113,7 +113,6 @@ class OrdersController extends ControllerBase
      */
     public function createAction()
     {
-
         if (!$this->request->isPost()) {
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
@@ -153,7 +152,6 @@ class OrdersController extends ControllerBase
             "controller" => "orders",
             "action" => "index"
             ));
-
     }
 
     /**
@@ -162,7 +160,6 @@ class OrdersController extends ControllerBase
      */
     public function saveAction()
     {
-
         if (!$this->request->isPost()) {
             return $this->dispatcher->forward(array(
                 "controller" => "orders",
@@ -196,7 +193,6 @@ class OrdersController extends ControllerBase
 
 
         if (!$customer_order->save()) {
-
             foreach ($customer_order->getMessages() as $message) {
                 $this->flash->error($message);
             }
@@ -214,7 +210,6 @@ class OrdersController extends ControllerBase
             "controller" => "orders",
             "action" => "index"
             ));
-
     }
 
     /**
@@ -224,7 +219,6 @@ class OrdersController extends ControllerBase
      */
     public function editAction($orderNumber = null)
     {
-
         if ($this->request->isAjax()) {
             $this->view->setTemplateBefore("modal-form");
         }
@@ -251,8 +245,7 @@ class OrdersController extends ControllerBase
         $this->view->disable();
         $response = new Response();
 
-        if (!$this->request->isAjax() or !$this->request->isPost())
-        {
+        if (!$this->request->isAjax() or !$this->request->isPost()) {
             $this->flashSession->error('Nothing given to update');
             return $this->_redirectBack();
         }
@@ -267,11 +260,11 @@ class OrdersController extends ControllerBase
 
         switch ($this->request->getPost('name')) {
             case 'eta':
-				if ($this->request->getPost('value') == "") {
-					$order->eta = null;
-				} else {
-					$order->eta = date("Y-m-d", strtotime($this->request->getPost('value')));
-				}
+                if ($this->request->getPost('value') == "") {
+                    $order->eta = null;
+                } else {
+                    $order->eta = date("Y-m-d", strtotime($this->request->getPost('value')));
+                }
                 break;
 
             case 'notes':
@@ -312,7 +305,6 @@ class OrdersController extends ControllerBase
             $response->send();
             return false;
         }
-
     }
 
     /**
@@ -322,7 +314,6 @@ class OrdersController extends ControllerBase
      */
     public function deleteAction($orderNumber)
     {
-
         $customer_order = Orders::findFirstByorderNumber($orderNumber);
         if (!$customer_order) {
             $this->flash->error("customer_order was not found");
@@ -334,7 +325,6 @@ class OrdersController extends ControllerBase
         }
 
         if (!$customer_order->delete()) {
-
             foreach ($customer_order->getMessages() as $message) {
                 $this->flash->error($message);
             }
@@ -356,17 +346,17 @@ class OrdersController extends ControllerBase
     public function customerAction($customerCode = null)
     {
         $this->view->setTemplateBefore('none');
-        if(!$this->request->isAjax()) {
+        if (!$this->request->isAjax()) {
             $response = new Response();
             return $response->redirect('orders');
         }
-        if(is_null($customerCode)) {
+        if (is_null($customerCode)) {
             $this->flash->error('Invalid URL');
             return true;
         }
 
         $customer = Customers::findFirstByCustomerCode($customerCode);
-        if(!$customer){
+        if (!$customer) {
             $this->flash->error('Customer not found');
             return true;
         }
@@ -376,7 +366,7 @@ class OrdersController extends ControllerBase
     public function outstandingAction()
     {
         $this->view->setTemplateBefore('none');
-        if(!$this->request->isAjax()) {
+        if (!$this->request->isAjax()) {
             $response = new Response();
             return $response->redirect('orders');
         }

@@ -11,7 +11,6 @@ use App\Auth\Exception as AuthException;
 use App\Models\Users;
 use App\Models\ResetPasswords;
 
-
 class SessionController extends ControllerBase
 {
 
@@ -26,7 +25,6 @@ class SessionController extends ControllerBase
 
     public function indexAction()
     {
-
     }
 
     /**
@@ -42,9 +40,7 @@ class SessionController extends ControllerBase
         $form = new SignUpForm();
 
         if ($this->request->isPost()) {
-
             if ($form->isValid($this->request->getPost()) != false) {
-
                 $user = new Users();
 
                 $user->assign(array(
@@ -86,20 +82,16 @@ class SessionController extends ControllerBase
         $form = new LoginForm();
 
         try {
-
             if (!$this->request->isPost()) {
-
                 if ($this->auth->hasRememberMe()) {
                     return $this->auth->loginWithRememberMe();
                 }
             } else {
-
                 if (!$form->isValid($this->request->getPost())) {
                     foreach ($form->getMessages() as $message) {
                         $this->flash->error($message);
                     }
                 } else {
-
                     $this->auth->check(array(
                         'email' => $this->request->getPost('email'),
                         'password' => $this->request->getPost('password')
@@ -127,18 +119,15 @@ class SessionController extends ControllerBase
 
         // If the user has submitted their email address
         if ($this->request->isPost()) {
-
             if ($form->isValid($this->request->getPost()) == false) {
                 foreach ($form->getMessages() as $message) {
                     $this->flash->error($message);
                 }
             } else {
-
                 $user = Users::findFirstByemail($this->request->getPost('Email'));
                 if (!$user) {
                     $this->flash->success('There is no account associated to this email');
                 } else {
-
                     $resetPassword = new ResetPasswords();
                     $resetPassword->usersId = $user->id;
                     if ($resetPassword->save()) {
@@ -174,8 +163,8 @@ class SessionController extends ControllerBase
         $this->view->token = true;
     }
 
-    private function updatepassword() {
-
+    private function updatepassword()
+    {
     }
 
     /**

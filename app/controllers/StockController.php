@@ -14,7 +14,6 @@ use App\Models\PacketTallies;
 
 class StockController extends ControllerBase
 {
-
     public function initialize()
     {
         $this->view->setTemplateBefore('private');
@@ -59,5 +58,4 @@ class StockController extends ControllerBase
         $this->view->pageTitle = $packet->packetNumber;
         $this->view->pageSubtitle = "<span class='label label-info'>FSC 100%</span>";
     }
-
 }

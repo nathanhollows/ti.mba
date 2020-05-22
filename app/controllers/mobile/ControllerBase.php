@@ -33,7 +33,6 @@ class ControllerBase extends Controller
 
             // If there is no identity available the user is redirected to index/index
             if (!is_array($identity)) {
-
                 if ($this->auth->hasRememberMe()) {
                     $this->auth->loginWithRememberMe($noRedirect = true);
                 } else {
@@ -45,7 +44,6 @@ class ControllerBase extends Controller
 
     public function initialize()
     {
-
         $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
         $this->tag->appendTitle(' | ' . SITE_TITLE);
 
@@ -57,7 +55,6 @@ class ControllerBase extends Controller
         $this->assets->collection('footer')
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', false)
             ->addJs('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js', false);
-
     }
 
     /**
@@ -69,8 +66,8 @@ class ControllerBase extends Controller
         $this->view->setViewsDir($this->view->getViewsDir() . 'mobile/');
     }
 
-    protected function _redirectBack() {
+    protected function _redirectBack()
+    {
         return $this->response->redirect($this->request->getServer('HTTP_REFERER'));
     }
-
 }

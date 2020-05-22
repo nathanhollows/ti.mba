@@ -14,34 +14,33 @@ use \Phalcon\Http\Response;
 
 class ContactsController extends ControllerBase
 {
-	public function initialize()
-	{
-		$this->view->setTemplateBefore('private');
-		parent::initialize();
-	}
+    public function initialize()
+    {
+        $this->view->setTemplateBefore('private');
+        parent::initialize();
+    }
 
-	public function indexAction()
-	{
-		$this->view->headerButton = \Phalcon\Tag::linkTo(array('contacts/new', 'New', 'class' => ' btn btn-default pull-right'));
+    public function indexAction()
+    {
+        $this->view->headerButton = \Phalcon\Tag::linkTo(array('contacts/new', 'New', 'class' => ' btn btn-default pull-right'));
 
         $this->view->contacts = Contacts::find();
+    }
 
-	}
+    public function viewAction($id = null)
+    {
+        $this->view->parser = new \cebe\markdown\Markdown();
+        $contact = Contacts::findFirst("id = '$id'");
 
-	public function viewAction($id = null)
-	{
-		$this->view->parser = new \cebe\markdown\Markdown();
-		$contact = Contacts::findFirst("id = '$id'");
+        if (!$contact) {
+            $this->flash->error("Woops! There is no contact with that ID");
+            return $this->dispatcher->forward(array(
+                "controller"	=> "contacts",
+                "action"		=> ""
+            ));
+        }
 
-		if (!$contact) {
-			$this->flash->error("Woops! There is no contact with that ID");
-			return $this->dispatcher->forward(array(
-				"controller"	=> "contacts",
-				"action"		=> ""
-			));
-		}
-
-		$history = ContactRecord::find(array(
+        $history = ContactRecord::find(array(
             "contact = '$id'",
             'order'         => 'id DESC',
             'limit'         => 8
@@ -62,13 +61,13 @@ class ContactsController extends ControllerBase
         </div>
         ';
 
-		$this->view->contact = $contact;
+        $this->view->contact = $contact;
 
-		// Set page titles
-		$this->view->pageTitle = '<i class="fa fa-user" aria-hidden="true"></i> ' . $contact->name;
-		$this->tag->prependTitle($contact->name);
-		$this->view->pageSubtitle = " ";
-		$this->view->pageSubheader = array(
+        // Set page titles
+        $this->view->pageTitle = '<i class="fa fa-user" aria-hidden="true"></i> ' . $contact->name;
+        $this->tag->prependTitle($contact->name);
+        $this->view->pageSubtitle = " ";
+        $this->view->pageSubheader = array(
             1 => array(
                 'text' => $contact->company->customerName,
                 'icon' => 'building',
@@ -81,52 +80,52 @@ class ContactsController extends ControllerBase
             ->addJs('js/to-markdown.js', true)
             ->addJs('js/bootstrap-markdown.js', true)
             ->addJs('js/markdown.js', true);
-	}
+    }
 
-	public function newAction($customerCode = null)
-	{
-		if ($this->request->isAjax()) {
-			$this->view->setTemplateBefore('modal-form');
-		}
+    public function newAction($customerCode = null)
+    {
+        if ($this->request->isAjax()) {
+            $this->view->setTemplateBefore('modal-form');
+        }
 
-		$this->tag->prependTitle("Create a Contact");
+        $this->tag->prependTitle("Create a Contact");
 
-		$profile = new Contacts();
-		$profile->assign(array(
-			'customerCode'	=> $customerCode
-		));
+        $profile = new Contacts();
+        $profile->assign(array(
+            'customerCode'	=> $customerCode
+        ));
 
-		$this->view->pageTitle = "Create new Contact";
-		$this->view->form = new ContactsForm($profile, array(
-			'edit' => true
-		));
-	}
+        $this->view->pageTitle = "Create new Contact";
+        $this->view->form = new ContactsForm($profile, array(
+            'edit' => true
+        ));
+    }
 
-	public function editAction($id = null)
-	{
-		if ($this->request->isAjax()) {
-			$this->view->setTemplateBefore('modal-form');
-		}
+    public function editAction($id = null)
+    {
+        if ($this->request->isAjax()) {
+            $this->view->setTemplateBefore('modal-form');
+        }
 
-		if (!isset($id)) {
-			$this->flash->error("Malformed URL");
+        if (!isset($id)) {
+            $this->flash->error("Malformed URL");
             return $this->dispatcher->forward(array(
                 "controller" => "contacts",
                 "action" => "index"
             ));
-		}
+        }
 
 
-		$this->view->pageTitle = 'Edit';
+        $this->view->pageTitle = 'Edit';
 
-		$contact = Contacts::findFirstById($id);
+        $contact = Contacts::findFirstById($id);
 
-		$form = new ContactsForm($contact);
-		$this->view->form = $form;
-	}
+        $form = new ContactsForm($contact);
+        $this->view->form = $form;
+    }
 
-	public function createAction()
-	{
+    public function createAction()
+    {
         if (!$this->request->isPost()) {
             return $this->dispatcher->forward(array(
                 "controller" => "customers",
@@ -136,22 +135,20 @@ class ContactsController extends ControllerBase
 
         $contact = new Contacts();
         $success = $contact->save($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial', 'role'));
-		if ($success) {
-			$this->response->redirect('customers/view/' . $contact->customerCode . '/#contacts');
-			$this->view->disable;
-		} else {
-			$this->flashSession->error("Sorry, the contact could not be saved");
-			foreach ($contact->getMessages() as $message) {
-				$this->flashSession->error($message->getMessage());
-			}
-			$this->_redirectBack();
-		}
-
-	}
+        if ($success) {
+            $this->response->redirect('customers/view/' . $contact->customerCode . '/#contacts');
+            $this->view->disable;
+        } else {
+            $this->flashSession->error("Sorry, the contact could not be saved");
+            foreach ($contact->getMessages() as $message) {
+                $this->flashSession->error($message->getMessage());
+            }
+            $this->_redirectBack();
+        }
+    }
 
     public function updateAction()
     {
-
         $this->view->disable;
         if (!$this->request->isPost()) {
             return $this->dispatcher->forward(array(
@@ -175,71 +172,68 @@ class ContactsController extends ControllerBase
     }
 
     public function ajaxupdateAction()
-	{
-		$this->view->disable();
-		if (!$this->request->isPost()){
-			$this->_redirectBack();
-		}
+    {
+        $this->view->disable();
+        if (!$this->request->isPost()) {
+            $this->_redirectBack();
+        }
 
         $response = new \Phalcon\Http\Response();
 
-		$contact = Contacts::findFirstById($this->request->getPost("pk"));
+        $contact = Contacts::findFirstById($this->request->getPost("pk"));
         if (!$contact) {
             $response->setStatusCode(404, "Contact not found");
             $response->send();
         }
-		switch ($this->request->getPost('name')) {
-			case 'name':
-				$contact->name = $this->request->getPost('value');
-				break;
-			case 'directDial':
-				$contact->directDial = $this->request->getPost('value');
-				break;
-			case 'email':
-				$contact->email = $this->request->getPost('value');
-				break;
-			case 'role':
-				$contact->role = $this->request->getPost('value');
-				break;
-			default :
-				$response->setStatusCode(404, "Field not found");
-				$response->send();
-		}
+        switch ($this->request->getPost('name')) {
+            case 'name':
+                $contact->name = $this->request->getPost('value');
+                break;
+            case 'directDial':
+                $contact->directDial = $this->request->getPost('value');
+                break;
+            case 'email':
+                $contact->email = $this->request->getPost('value');
+                break;
+            case 'role':
+                $contact->role = $this->request->getPost('value');
+                break;
+            default:
+                $response->setStatusCode(404, "Field not found");
+                $response->send();
+        }
 
-		if ($contact->update()) {
-			$response->setStatusCode(200, "Update successful");
-		} else {
-			$response->setStatusCode(500, "Something went wrong");
-		}
-		$response->send();
+        if ($contact->update()) {
+            $response->setStatusCode(200, "Update successful");
+        } else {
+            $response->setStatusCode(500, "Something went wrong");
+        }
+        $response->send();
+    }
 
-	}
-
-	public function deleteAction($id)
-	{
-
+    public function deleteAction($id)
+    {
         $response = new Response();
 
-		$contact = Contacts::findFirstById($id);
-		if (!$contact) {
-			$this->flash->error("Contact was not found");
-
-			return $response->redirect("contacts/");
-		}
-
-		$customerCode = $contact->customerCode;
-
-		if (!$contact->delete()) {
-
-			foreach ($contact->getMessages() as $message) {
-				$this->flash->error($message);
-			}
+        $contact = Contacts::findFirstById($id);
+        if (!$contact) {
+            $this->flash->error("Contact was not found");
 
             return $response->redirect("contacts/");
-		}
+        }
 
-		$this->flashSession->success("Contact was deleted successfully");
+        $customerCode = $contact->customerCode;
+
+        if (!$contact->delete()) {
+            foreach ($contact->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $response->redirect("contacts/");
+        }
+
+        $this->flashSession->success("Contact was deleted successfully");
 
         return $response->redirect("customers/view/" . $customerCode . "/#contacts");
-	}
+    }
 }

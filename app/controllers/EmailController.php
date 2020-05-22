@@ -4,10 +4,8 @@ namespace App\Controllers;
 
 class EmailController extends ControllerBase
 {
-
-	public function initialize()
-	{
+    public function initialize()
+    {
         parent::initialize();
-	}
-
+    }
 }
