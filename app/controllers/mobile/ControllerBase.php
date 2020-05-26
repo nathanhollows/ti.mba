@@ -3,7 +3,7 @@ namespace App\Controllers\Mobile;
 
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
-use App\Auth;
+use App\Plugins\Auth;
 
 /**
  * ControllerBase

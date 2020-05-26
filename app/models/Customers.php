@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 use App\Models\ContactRecord;
 
 use Phalcon\Mvc\Model\Relation;

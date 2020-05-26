@@ -8,7 +8,7 @@ use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
 use Phalcon\Paginator\Adapter\Model as Paginator;
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 use App\Models\Quotes;
 use App\Models\QuoteItems;
 use App\Models\GenericStatus;

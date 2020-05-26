@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Forms\FollowUpForm;
 use App\Forms\ReminderForm;
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 use App\Models\FollowUp;
 use App\Models\ContactRecord;
 use Phalcon\Http\Response;

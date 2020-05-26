@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Forms\UsersForm;
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 use App\Models\Users;
 
 class PreferencesController extends ControllerBase

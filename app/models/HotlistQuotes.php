@@ -5,7 +5,7 @@ namespace App\Models;
 use Phalcon\Mvc\Model;
 use App\Models\HotlistFollowing;
 use App\Models\HotlistDiscussion;
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 
 class HotlistQuotes extends Model
 {

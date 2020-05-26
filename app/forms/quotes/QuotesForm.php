@@ -12,7 +12,7 @@ use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Submit;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\PresenceOf;
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 use App\Models\Users;
 use App\Models\Customers;
 use App\Models\Contacts;

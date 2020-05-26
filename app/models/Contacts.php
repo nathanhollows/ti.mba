@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Phalcon\Mvc\Model;
 use App\Models\ContactRecord;
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 
 class Contacts extends Model
 {

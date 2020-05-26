@@ -7,7 +7,7 @@ use Phalcon\Tag;
 use App\Forms\LoginForm;
 use App\Forms\SignUpForm;
 use App\Forms\ForgotPasswordForm;
-use App\Auth\Exception as AuthException;
+use App\Plugins\Auth\Exception as AuthException;
 use App\Models\Users;
 use App\Models\ResetPasswords;
 

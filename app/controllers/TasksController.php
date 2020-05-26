@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 use App\Models\ContactRecord;
 use App\Models\Users;
 

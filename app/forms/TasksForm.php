@@ -9,7 +9,7 @@ use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\Submit,
 	Phalcon\Forms\Element\TextArea,
 	App\Models\Users,
-	App\Auth\Auth;
+	App\Plugins\Auth\Auth;
 
 class TasksForm extends Form
 {

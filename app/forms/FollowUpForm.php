@@ -10,7 +10,7 @@ use Phalcon\Forms\Form,
 	Phalcon\Forms\Element\Hidden,
 	Phalcon\Forms\Element\Submit;
 
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 
 use App\Models\Customers,
 	App\Models\Contacts,

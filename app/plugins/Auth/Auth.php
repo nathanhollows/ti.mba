@@ -8,7 +8,7 @@ use App\Models\SuccessLogins;
 use App\Models\FailedLogins;
 
 /**
- * App\Auth\Auth
+ * App\Plugins\Auth\Auth
  * Manages Authentication/Identity Management in App
  */
 class Auth extends Injectable
