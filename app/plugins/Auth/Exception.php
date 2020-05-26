@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth;
+namespace App\Plugins\Auth;
 
 class Exception extends \Exception
 {

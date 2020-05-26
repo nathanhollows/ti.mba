@@ -1,5 +1,5 @@
 <?php
-namespace App\Mail;
+namespace App\Plugins\Mail;
 
 use Phalcon\Di\Injectable;
 use Swift_Message as Message;

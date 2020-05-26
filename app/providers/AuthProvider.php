@@ -5,7 +5,7 @@ namespace App\Providers;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 
 class AuthProvider implements ServiceProviderInterface
 {

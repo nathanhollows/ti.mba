@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Auth\Auth;
+use App\Plugins\Auth\Auth;
 use Phalcon\Http\Response;
 
 /**

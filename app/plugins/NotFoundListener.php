@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Plugins;
 
 use Phalcon\Logger;
 use Phalcon\Di\Injectable;

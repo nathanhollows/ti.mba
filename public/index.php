@@ -2,14 +2,20 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-use App\Application as Application;
+use App\Timba as Application;
 
 $rootPath = dirname(__DIR__);
 
 try {
 
+	/**
+	 * Load in composer
+	 */
 	require_once((__DIR__) . '/../vendor/autoload.php');
 
+	/**
+	 * Read in config
+	 */
 	$config = include __DIR__ . "/../app/config/config.php";
 
 	define('SITE_TITLE', $config->application->siteTitle);

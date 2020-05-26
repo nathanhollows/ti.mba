@@ -5,7 +5,7 @@ namespace App\Providers;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use App\Elements;
+use App\Plugins\Elements;
 
 class ElementsProvider implements ServiceProviderInterface
 {

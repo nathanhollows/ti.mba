@@ -5,8 +5,8 @@ namespace App\Providers;
 
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use App\Application;
-use App\Acl\Acl;
+use App\Timba;
+use App\Plugins\Acl\Acl;
 
 class AclProvider implements ServiceProviderInterface
 {
@@ -15,7 +15,7 @@ class AclProvider implements ServiceProviderInterface
 
     public function register(DiInterface $di): void
     {
-        $application = $di->getShared(Application::APPLICATION_PROVIDER);
+        $application = $di->getShared(Timba::APPLICATION_PROVIDER);
 
         $rootPath = $application->getRootPath();
 

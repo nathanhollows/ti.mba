@@ -1,5 +1,5 @@
 <?php
-namespace App\Auth;
+namespace App\Plugins\Auth;
 
 use Phalcon\Di\Injectable;
 use App\Models\Users;

@@ -6,7 +6,7 @@ namespace App\Providers;
 use Phalcon\Config;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
-use App\Application;
+use App\Timba;
 
 class ConfigProvider implements ServiceProviderInterface
 {
@@ -15,7 +15,7 @@ class ConfigProvider implements ServiceProviderInterface
 
     public function register(DiInterface $di): void
     {
-        $application = $di->getShared(Application::APPLICATION_PROVIDER);
+        $application = $di->getShared(Timba::APPLICATION_PROVIDER);
 
         $rootPath = $application->getRootPath();
 

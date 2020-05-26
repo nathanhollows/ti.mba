@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Plugins\Mail;
 
 class Exception extends \Exception
 {

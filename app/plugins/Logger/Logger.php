@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Freight;
+namespace App\Plugins\Freight;
 
 use Phalcon\Di\Injectable;
 use App\Models\ActivityLog;

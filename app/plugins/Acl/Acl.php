@@ -1,5 +1,5 @@
 <?php
-namespace App\Acl;
+namespace App\Plugins\Acl;
 
 use Phalcon\Di\Injectable;
 use Phalcon\Acl\Adapter\Memory as AclMemory;

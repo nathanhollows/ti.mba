@@ -7,7 +7,7 @@ use Exception;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Mvc\Router;
-use App\Application;
+use App\Timba;
 
 class RouterProvider implements ServiceProviderInterface
 {
@@ -16,7 +16,7 @@ class RouterProvider implements ServiceProviderInterface
 
     public function register(DiInterface $di): void
     {
-        $application = $di->getShared(Application::APPLICATION_PROVIDER);
+        $application = $di->getShared(Timba::APPLICATION_PROVIDER);
 
         $basePath = $application->getRootPath();
 

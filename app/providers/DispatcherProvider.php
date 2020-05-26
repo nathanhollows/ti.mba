@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Plugins\NotFoundListener;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
 use Phalcon\Events\Event;
@@ -21,7 +22,7 @@ class DispatcherProvider implements ServiceProviderInterface
 			$eventsManager = new EventsManager();
 			$eventsManager->attach(
 				'dispatch:beforeException',
-				new \App\NotFoundListener(),
+				new NotFoundListener(),
 				200
 			);
 			$dispatcher->setEventsManager($eventsManager);

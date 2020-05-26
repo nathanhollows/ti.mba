@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Plugins;
 
 use Phalcon\Di\Injectable;
 use App\Models\ContactRecord;
