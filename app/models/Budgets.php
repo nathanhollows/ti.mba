@@ -37,17 +37,20 @@ class Budgets extends Model
      */
     public $budget;
 
-    public static function current()
-    {
-        $budget = parent::findFirst(array(
-            'conditions'    => 'year = ?1 AND month = ?2',
-            'bind'          => array(
-                1 => date('Y'),
-                2 => date('m'),
-            )
-        ));
-        return $budget;
-    }
+	public static function current()
+	{
+		$budget = parent::findFirst(array(
+			'conditions'    => 'year = ?1 AND month = ?2',
+			'bind'          => array(
+				1 => date('Y'),
+				2 => date('m'),
+			),
+			'cache' => [
+				'key' => 'this-month-budget',
+			],
+		));
+		return $budget;
+	}
 
     public static function getDate($date = null)
     {

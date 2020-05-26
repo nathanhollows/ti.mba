@@ -153,7 +153,7 @@ class FollowupController extends ControllerBase
         $contact->details 			= $this->request->getPost('details');
         $contact->date 			= $this->request->getPost('recordDate');
         $contact->contactType 		= $this->request->getPost('contactType');
-        $contact->user 				= $this->request->getPost('user');
+		$contact->user = $this->auth->getId();
         $contact->contactType 		= $this->request->getPost('contactType');
         $contact->reference 		= $this->request->getPost('reference');
         $contact->completed 		= date('Y-m-d H:i:s');
@@ -162,10 +162,8 @@ class FollowupController extends ControllerBase
             $contact->followUpDate = $this->request->getPost("followUpDate");
             $contact->completed = null;
         }
-        // Store and check for errors
-        $success = $contact->save();
-        if ($success) {
-            $this->flashSession->success("Contact history saved!");
+        if ($contact->save()) {
+            $this->flashSession->success("Contact record saved!");
             return $this->_redirectBack();
         } else {
             $this->flashSession->error("Sorry, the record could not be saved");
@@ -188,8 +186,8 @@ class FollowupController extends ControllerBase
 
         $followUp->user = $auth->getId();
 
-        $success = $followUp->save($this->request->getPost(), array('followUpDate', 'followUpUser', 'notes'));
-        if ($success) {
+        $followUp->assign($this->request->getPost(), array('followUpDate', 'followUpUser', 'notes'));
+        if ($followUp->save()) {
             $this->flashSession->success("Reminder set!");
             return $this->_redirectBack();
         } else {
@@ -203,11 +201,6 @@ class FollowupController extends ControllerBase
 
     public function updateAction()
     {
-        // echo "<pre>";
-        // echo print_r($this->request->getPost());
-        // echo "</pre>";
-        // return false;
-
         $this->view->disable;
         if (!$this->request->isPost()) {
             return $this->dispatcher->forward(array(
@@ -216,33 +209,32 @@ class FollowupController extends ControllerBase
                 ));
         }
 
-        $history = ContactRecord::findFirstById($this->request->getPost('id'));
+        $record = ContactRecord::findFirstById($this->request->getPost('id'));
 
-        // If there is no reminder set, then mark this record as completed
-        if ($history->completed == null and !$this->request->getPost('remind')) {
-            $history->completed = date("Y-m-d H:i:s");
+        if ($record->completed == null and !$this->request->getPost('remind')) {
+            $record->completed = date("Y-m-d H:i:s");
         }
 
         // If there is a reminder set the make sure this is recorded
         if ($this->request->getPost('remind')) {
-            $history->completed = null;
+            $record->completed = null;
         }
-        $history->contact 			= $this->request->getPost('contact');
+        $record->contact 			= $this->request->getPost('contact');
         if (empty($this->request->getPost('contact'))) {
-            $history->contact = null;
+            $record->contact = null;
         }
-        $history->job 				= $this->request->getPost('job');
+        $record->job 				= $this->request->getPost('job');
         if (empty($this->request->getPost('job'))) {
-            $history->job = null;
+            $record->job = null;
         }
 
         // Store and check for errors
-        $success = $history->save($this->request->getPost(), array('customerCode','details','reference', 'company', 'date', 'user', 'contactType','followUpDate'));
-        if ($success) {
-            $this->flash->success("Quote created successfully!");
+        $record->assign($this->request->getPost(), array('customerCode','details','reference', 'company', 'date', 'user', 'contactType','followUpDate'));
+        if ($record->update()) {
+            $this->flashSession->success("Contact record updated");
             return $this->_redirectBack();
         } else {
-            $this->flash->error("Sorry, the quote could not be saved");
+            $this->flash->error("Sorry, the contact record could not be updated");
             foreach ($contact->getMessages() as $message) {
                 $this->flash->error($message->getMessage());
             }

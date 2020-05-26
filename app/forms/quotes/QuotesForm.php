@@ -46,20 +46,20 @@ class QuotesForm extends Form
 		$customerCode->setLabel("Customer");
 		$this->add($customerCode);
 
-		if (isset($option["customerCode"])) {
-			$customerCode = $option["customerCode"];
-			$contactRestrict = array("customerCode = '$customerCode'");
+		if (isset($entity)) {
+			$customerCode = $entity->customerCode;
+			$params = array("customerCode = '$customerCode'");
 		} else {
-			$contactRestrict = array("customerCode = ''");
+			$params = array("customerCode = ''");
 		}
 
 		$contact = new Select(
 			'contact',
-			Contacts::find($contactRestrict),
+			Contacts::find($params),
 			array(
 				'using'	=> array('id', 'name'),
 				'useEmpty'	=> true,
-				'emptyText'	=> 'Please select a customer',
+				'emptyText'	=> 'Select a customer',
 				'class'	=> 'form-control',
 				'data-live-search' => 'true',
 				)
@@ -72,7 +72,7 @@ class QuotesForm extends Form
 			'required'	=> 'true',
 			'class'		=> 'form-control'
 			));
-		$reference->setLabel("Our Reference");
+		$reference->setLabel("Reference");
 		$this->add($reference);
 
 		$date = new Date("date");
@@ -81,7 +81,7 @@ class QuotesForm extends Form
 			'class'		=> 'form-control'
 			));
 		$date->setLabel("Date");
-		$date->setDefault(date('Y-m-d'));
+		$date->setDefault(date('d/m/Y'));
 		$this->add($date);
 
 		$notes = new TextArea("notes");
@@ -103,7 +103,7 @@ class QuotesForm extends Form
 		$auth = new Auth;
 		$salesAgent = new Select(
 			"user",
-			Users::find(),
+			Users::getActive(),
 			array(
 				'using'	=> array(
 					'id',
@@ -133,7 +133,7 @@ class QuotesForm extends Form
 
 		$submit = new Submit("Submit");
 		$submit->setAttributes(array(
-			'class'	=> 'btn btn-primary',
+			'class'	=> 'btn btn-primary shadow',
 			));
 		$this->add($submit);
 	}

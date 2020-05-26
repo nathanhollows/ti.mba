@@ -2,10 +2,10 @@
 
 namespace App\Freight;
 
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 use App\Models\PbtConsignments;
 
-class Freight extends component
+class Freight extends Injectable
 {
 	public function downloadPBT()
 	{

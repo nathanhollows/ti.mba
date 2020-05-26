@@ -3,10 +3,16 @@
 		<div class="row header-body">
 			<div class="col">
 				<h6 class="header-pretitle">Quote {{ quote.quoteId }}</h6>
-				<h4 class="header-title">{{ quote.reference }}</h4>
+				<h4 class="header-title">
+					<a href="#" class="xedit" id="reference" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-mode="inline" data-title="Reference">{{ quote.reference }}</a><br />
+				</h4>
 			</div>
 			<div class="col text-right">
-				{{ linkTo(['quote/get/' ~ quote.webId, 'Get PDF', 'class': 'btn btn-primary']) }}
+				<div class="btn-group shadow">
+					{{ linkTo(["quote/won", "Won",  "class": "btn btn-success btn-sm "]) }}
+					{{ linkTo(["quote/lost", "Lost",  "class": "btn btn-secondary btn-sm "]) }}
+				</div>
+				{{ linkTo(['quote/get/' ~ quote.webId, 'Get PDF', 'class': 'btn btn-primary shadow']) }}
 			</div>
 			<hr class="w-100"/>
 		</div>
@@ -21,22 +27,28 @@
 			<h5>Overview</h5>
 			<dl>
 				<dt>Status</dt>
-				<dd>{{ quote.genericStatus.statusName }}</dd>
+				<dd><span class="badge badge-{{ quote.genericStatus.style }}">{{ quote.genericStatus.statusName }}</span></dd>
 				<dt>Attention</dt>
 				<dd>{% if quote.customerContact is not empty %}{{ quote.customerContact.name }} {% endif %}</dd>
 				<dt>Rep</dt>
-				<dd>{{ quote.rep.name }}</dd>
+				<dd><a href="#" class="xedit" id="rep" data-mode="inline" data-type="select" data-source="[ {% for user in users %}{value: {{user.id}}, text: '{{ user.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Sales Rep" data-value="{{ quote.rep.id }}">{{ quote.rep.name }}</a></dd>
 			</dl>
 		</div>
 
 		<div class="col pt-4">
 			<dl>
+				<dt>Lead time<dt>
+				<dd>
+				<a href="#" class="xedit" data-mode="inline" id="leadTime" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Lead Time">{{ quote.leadTime }}</a>
+				</dd>
 				<dt>Date</dt>
-				<dd>{{ quote.date }}</dd>
+				<dd>
+				<a href="#" class="xedit" data-mode="inline" id="date" data-type="date" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Date" data-placement="bottom">{{ quote.date }}</a>
+</dd>
 				<dt>Validity Period</dt>
-				<dd>{{ quote.validity }} days</dd>
+				<dd><a href="#" class="xedit" data-mode="inline"  id="validity" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Vailidity">{{ quote.validity }}</a> days</dd>
 				<dt>Freight</dt>
-				<dd>${{ quote.freight }}</dd>
+				<dd>$<a href="#" class="xedit" data-mode="inline" id="freight" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Freight">{{ quote.freight }}</a></dd>
 			</dl>
 		</div>
 
@@ -54,7 +66,7 @@
 
 <div class="container-fluid bg-white border-top border-bottom shadow py-3 my-3 d-none d-lg-block">
 	<div class="row">
-		<div class="col-md-12 col-lg-12">
+		<div class="col">
 			<form action="/quotes/saveitems" method="POST" role="form" id="items">
 				<table data-navigable-spy data-editable data-editable-spy class="table table-hover">
 					<thead>
@@ -78,10 +90,10 @@
 						<tr class="record">
 							<td>
 								{{ hidden_field('id[]', 'value': item.id) }}
-								{{ select_static('grade[]', grades, 'using': ['shortCode', 'name'], 'value': item.grade, 'class': 'data grade', 'data-live-search': 'true', 'data-container': 'body') }}
+								{{ select_static(['grade[]', grades, 'using': ['shortCode', 'name'], 'value': item.grade, 'class': 'data grade', 'data-live-search': 'true', 'data-container': 'body']) }}
 							</td>
-							<td>{{ select_static('treatment[]', treatment, 'using': ['shortCode', 'shortCode'], 'value': item.treatment, 'class': 'data treatment' , 'data-live-search': 'true', 'data-container': 'body') }}</td>
-							<td>{{ select_static('dryness[]', dryness, 'using': ['shortCode', 'shortCode'], 'value': item.dryness, 'class': 'data dryness', 'data-live-search': 'true', 'data-container': 'body') }}</td>
+							<td>{{ select_static(['treatment[]', treatment, 'using': ['shortCode', 'shortCode'], 'value': item.treatment, 'class': 'data treatment' , 'data-live-search': 'true', 'data-container': 'body']) }}</td>
+							<td>{{ select_static(['dryness[]', dryness, 'using': ['shortCode', 'shortCode'], 'value': item.dryness, 'class': 'data dryness', 'data-live-search': 'true', 'data-container': 'body']) }}</td>
 							<td>
 								{{ numeric_field('width[]', 'value': item.width, 'class': 'data width') }}
 							</td>
@@ -89,16 +101,16 @@
 								{{ numeric_field('thickness[]', 'value': item.thickness, 'class': 'data thickness') }}
 							</td>
 							<td>
-								{{ select_static('finish[]', finishes, 'using': ['id', 'name'], 'value': item.finish, 'class': 'data') }}
+								{{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'value': item.finish, 'class': 'data']) }}
 							</td>
 							<td>
-								{{ text_field('lengths[]', 'value': item.lengths ) }}
+								{{ text_field('lengths[]', 'value': item.lengths) }}
 							</td>
 							<td>
 								{{ numeric_field('qty[]', 'value': item.qty, 'step': 'any', 'class': 'qty') }}
 							</td>
 							<td>
-								{{ select_static('priceMethod[]', priceMethod, 'using': ['id', 'name'], 'value': item.priceMethod, 'class': 'data priceMethod') }}
+								{{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'value': item.priceMethod, 'class': 'data priceMethod']) }}
 							</td>
 							<td>
 								{{ numeric_field('unitPrice[]', 'value': item.price, 'step': 'any') }}
@@ -122,7 +134,7 @@
 								{{ numeric_field('thickness[]', 'placeholder': 'Thickness', 'class': 'data thickness') }}
 							</td>
 							<td>
-								{{ select_static('finish[]', finishes, 'using': ['id', 'name'], 'class': 'data', 'useEmpty': true) }}
+								{{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'class': 'data', 'useEmpty': true]) }}
 							</td>
 							</td>
 							<td>
@@ -132,7 +144,7 @@
 								{{ numeric_field('qty[]', 'step': 'any', 'placeholder': 'Qty', 'class': 'qty') }}
 							</td>
 							<td>
-								{{ select_static('priceMethod[]', priceMethod, 'using': ['id', 'name'], 'class': 'data priceMethod', 'useEmpty': false) }}
+								{{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'class': 'data priceMethod', 'useEmpty': false]) }}
 							</td>
 							<td>
 								{{ numeric_field('unitPrice[]', 'step': 'any', 'placeholder': 'Price') }}
@@ -154,30 +166,31 @@
 						</tr>
 					</tfoot>
 				</table>
-				<button type="submit" class="btn btn-primary">Update</button>
+				<button type="submit" class="btn btn-primary shadow float-right">Update</button>
 			</form>
 		</div>
 	</div>
 </div>
 
-<div class="container d-md-none">
+<div class="container d-block d-lg-none">
 	<div class="row">
-		<hr class="w-100"/>
 		<div class="col">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Item summary</h3>
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Item Summary</h5>
 				</div>
-				<div class="panel-body">
+				<ul class="list-group list-group-flush">
 					{% for item in quote.items %}
-					<strong>{{ loop.index }}.</strong> {{ item.width }} x {{ item.thickness }} {{ item.grade }} {{ item.treatment }} {{ item.dryness }} {{ item.fin.name }} ${{ item.price }} {{ item.unit.name }}
-					{% if item.lengths %}
-					<br />
-					<i>{{ item.lengths }}</i>
-					{% endif  %}
-					<hr />
+					<li class="list-group-item">
+						<strong>{{ loop.index }}.</strong> {{ item.width }} x {{ item.thickness }} {{ item.grade }} {{ item.treatment }} {{ item.dryness }} {{ item.fin.name }} 
+						<span class="float-right">${{ item.price }} {{ item.unit.name }}</span>
+						{% if item.lengths %}
+						<br />
+						<i>{{ item.lengths }}</i>
+						{% endif  %}
+					</li>
 					{% endfor %}
-				</div>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -238,3 +251,8 @@ select.data.dryness {
 }
 	</style>
 	<script src="/js/editable-table.js"></script>
+	<script>
+		$( document ).ready( function() {
+			$('.xedit').editable();
+		});
+	</script>

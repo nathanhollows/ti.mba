@@ -1,7 +1,7 @@
 <?php
 namespace App\Acl;
 
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 use Phalcon\Acl\Adapter\Memory as AclMemory;
 use Phalcon\Acl\Role as AclRole;
 use Phalcon\Acl\Resource as AclResource;
@@ -10,7 +10,7 @@ use App\Models\Profiles;
 /**
  * App\Acl\Acl
  */
-class Acl extends Component
+class Acl extends Injectable
 {
 
     /**

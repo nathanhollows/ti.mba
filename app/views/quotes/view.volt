@@ -131,10 +131,10 @@
                                 <tr class="record">
                                     <td>
                                         {{ hidden_field('id[]', 'value': item.id) }}
-                                        {{ select_static('grade[]', grades, 'using': ['shortCode', 'name'], 'value': item.grade, 'class': 'data grade', 'data-live-search': 'true', 'data-container': 'body') }}
+                                        {{ select_static(['grade[]', grades, 'using': ['shortCode', 'name'], 'value': item.grade, 'class': 'data grade', 'data-live-search': 'true', 'data-container': 'body']) }}
                                     </td>
-                                    <td>{{ select_static('treatment[]', treatment, 'using': ['shortCode', 'shortCode'], 'value': item.treatment, 'class': 'data treatment' , 'data-live-search': 'true', 'data-container': 'body') }}</td>
-                                    <td>{{ select_static('dryness[]', dryness, 'using': ['shortCode', 'shortCode'], 'value': item.dryness, 'class': 'data dryness', 'data-live-search': 'true', 'data-container': 'body') }}</td>
+                                    <td>{{ select_static(['treatment[]', treatment, 'using': ['shortCode', 'shortCode'], 'value': item.treatment, 'class': 'data treatment' , 'data-live-search': 'true', 'data-container': 'body']) }}</td>
+                                    <td>{{ select_static(['dryness[]', dryness, 'using': ['shortCode', 'shortCode'], 'value': item.dryness, 'class': 'data dryness', 'data-live-search': 'true', 'data-container': 'body']) }}</td>
                                     <td>
                                         {{ numeric_field('width[]', 'value': item.width, 'class': 'data width') }}
                                     </td>
@@ -142,7 +142,7 @@
                                         {{ numeric_field('thickness[]', 'value': item.thickness, 'class': 'data thickness') }}
                                     </td>
                                     <td>
-                                        {{ select_static('finish[]', finishes, 'using': ['id', 'name'], 'value': item.finish, 'class': 'data') }}
+                                        {{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'value': item.finish, 'class': 'data']) }}
                                     </td>
                                     <td>
                                         {{ text_field('lengths[]', 'value': item.lengths ) }}
@@ -151,7 +151,7 @@
                                         {{ numeric_field('qty[]', 'value': item.qty, 'step': 'any', 'class': 'qty') }}
                                     </td>
                                     <td>
-                                        {{ select_static('priceMethod[]', priceMethod, 'using': ['id', 'name'], 'value': item.priceMethod, 'class': 'data priceMethod') }}
+                                        {{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'value': item.priceMethod, 'class': 'data priceMethod']) }}
                                     </td>
                                     <td>
                                         {{ numeric_field('unitPrice[]', 'value': item.price, 'step': 'any') }}
@@ -175,7 +175,7 @@
                                         {{ numeric_field('thickness[]', 'placeholder': 'Thickness', 'class': 'data thickness') }}
                                     </td>
                                     <td>
-                                        {{ select_static('finish[]', finishes, 'using': ['id', 'name'], 'class': 'data', 'useEmpty': true) }}
+                                        {{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'class': 'data', 'useEmpty': true]) }}
                                     </td>
                                 </td>
                                 <td>
@@ -185,7 +185,7 @@
                                     {{ numeric_field('qty[]', 'step': 'any', 'placeholder': 'Qty', 'class': 'qty') }}
                                 </td>
                                 <td>
-                                    {{ select_static('priceMethod[]', priceMethod, 'using': ['id', 'name'], 'class': 'data priceMethod', 'useEmpty': false) }}
+                                    {{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'class': 'data priceMethod', 'useEmpty': false]) }}
                                 </td>
                                 <td>
                                     {{ numeric_field('unitPrice[]', 'step': 'any', 'placeholder': 'Price') }}

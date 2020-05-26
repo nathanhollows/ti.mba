@@ -90,11 +90,13 @@ class KpiController extends ControllerBase
         $kpi = Kpis::findFirstByDate($this->request->getPost('date'));
         if ($kpi) {
             // If the date HAS been saved the update the data
-            $success = $kpi->update($this->request->getPost(), array('chargeOut', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
+            $kpi->assign($this->request->getPost(), array('chargeOut', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
+			$success = $kpi->update();
         } else {
             // If the data has NOT yet been been saved then submit a new record
             $kpi = new Kpis();
-            $success = $kpi->save($this->request->getPost(), array('date','chargeOut', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
+            $kpi->assign($this->request->getPost(), array('date','chargeOut', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
+			$success = $kpi->save();
         }
 
         // Check success and print results

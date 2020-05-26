@@ -52,4 +52,11 @@ return new \Phalcon\Config(array(
 		// Format as 'directory/'
 		'ftpDirectory'	=> ''
 	),
+	'logger'      => [
+        'path'     => '/../../var/logs/',
+        'format'   => '%date% [%type%] %message%',
+        'date'     => 'D j H:i:s',
+        'logLevel' => Logger::DEBUG,
+        'filename' => 'application.log',
+    ],
 ));

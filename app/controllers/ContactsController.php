@@ -134,8 +134,8 @@ class ContactsController extends ControllerBase
         }
 
         $contact = new Contacts();
-        $success = $contact->save($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial', 'role'));
-        if ($success) {
+        $contact->assign($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial', 'role'));
+        if ($contact->save()) {
             $this->response->redirect('customers/view/' . $contact->customerCode . '/#contacts');
             $this->view->disable;
         } else {
@@ -159,8 +159,8 @@ class ContactsController extends ControllerBase
 
         $contact = Contacts::findFirstById($this->request->getPost('id'));
         // Store and check for errors
-        $success = $contact->save($this->request->getPost(), array('directDial', 'email', 'name', 'role', 'customerCode'));
-        if ($success) {
+        $contact->assign($this->request->getPost(), array('directDial', 'email', 'name', 'role', 'customerCode'));
+        if ($contact->update()) {
             $this->flash->success("Contact update successfully!");
             return $this->_redirectBack();
         } else {

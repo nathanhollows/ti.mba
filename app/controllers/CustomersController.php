@@ -24,8 +24,7 @@ class CustomersController extends ControllerBase
 {
     public function initialize()
     {
-        $this->view->setTemplateBefore('private');
-        parent::initialize();
+        $this->view->setTemplateBefore('private'); parent::initialize();
         $this->view->setViewsDir('/var/www/html/app/facelift/');
     }
 
@@ -44,7 +43,6 @@ class CustomersController extends ControllerBase
 
             $dataTables = new DataTable();
             $dataTables->fromBuilder($builder)->sendResponse();
-            $this->persistent->parameters = null;
         };
     }
 
@@ -232,18 +230,15 @@ class CustomersController extends ControllerBase
      */
     public function createAction()
     {
-
-        // If the user has come accross this page by mistake then redirect to the customer index
         if (!$this->request->isPost()) {
-            $this->response->redirect("customers/");
+            return $this->response->redirect("customers/");
         }
 
-        // Lets start by creating a new customers
         $customer = new Customers();
-
-        // Lets populate that customer information uisng the posted data
-        // If the save doesn't work then redirect back to the previous form and flash the error messages
-        if (!$customer->save($this->request->getPost(), array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup'))) {
+		$customer->assign(
+			$this->request->getPost(), 
+			array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup'));
+        if (!$customer->save()) {
             foreach ($customer->getMessages() as $message) {
                 $this->flashSession->error($message);
             }
@@ -273,8 +268,8 @@ class CustomersController extends ControllerBase
         $customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
         // Store and check for errors
 
-        $success = $customer->save($this->request->getPost(), array('customerName', 'phone', 'fax', 'email', 'area', 'customerStatus'));
-        if ($success) {
+        $customer->assign($this->request->getPost(), array('customerName', 'phone', 'fax', 'email', 'area', 'customerStatus'));
+        if ($customer->update()) {
             $this->flashSession->success("Successfully updated");
         } else {
             $this->flashSession->error("Something went wrong");

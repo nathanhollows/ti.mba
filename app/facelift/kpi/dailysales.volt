@@ -66,7 +66,7 @@
 								<td>
 									{{ hidden_field('id[]', 'value': item.id) }}
 									{{ hidden_field('timestamp[]', 'value': item.timestamp) }}
-									{{ select_static('rep[]', users, 'using': ['id', 'name'], 'value': item.rep, 'class': 'data') }}
+									{{ select_static(['rep[]', users, 'using': ['id', 'name'], 'value': item.rep, 'class': 'data']) }}
 								</td>
 								<td>
 									{{ check_field('quoted[]','value': '0', 'hidden': 'true', 'checked': 'true') }}

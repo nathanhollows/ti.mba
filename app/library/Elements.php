@@ -1,13 +1,15 @@
 <?php
 
-use Phalcon\Mvc\User\Component;
+namespace App;
+
+use Phalcon\Di\Injectable;
 use App\Models\ContactRecord;
 /**
  * Elements
  *
  * Helps to build UI elements for the application
  */
-class Elements extends Component
+class Elements extends Injectable
 {
 
 	private $_leftNav = array(

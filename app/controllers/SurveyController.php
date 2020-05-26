@@ -54,8 +54,8 @@ class SurveyController extends ControllerBase
         $response = new \Phalcon\Http\Response();
         if ($this->request->isPost()) {
             $result = new SurveyResults();
-            $success = $result->save($this->request->getPost());
-            if (!$success) {
+            $result->assign($this->request->getPost());
+            if (!$result->save()) {
                 return $response->redirect('survey/error');
             } else {
                 $response = new \Phalcon\Http\Response();

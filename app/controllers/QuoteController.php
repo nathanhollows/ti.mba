@@ -12,7 +12,6 @@ class QuoteController extends ControllerBase
 {
     public function getAction($webId)
     {
-        $this->view->disable();
         $quote = Quotes::findFirstBywebId($webId);
         // $snappy = new Pdf('C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe');
         $snappy = new Pdf('xvfb-run -a /usr/bin/wkhtmltopdf');
@@ -20,7 +19,6 @@ class QuoteController extends ControllerBase
             array(
                 // 'header-html'	=> 'http://ats.ti.mba/quote/header',
                 // 'header-spacing'=> '10',
-                'footer-html'	=> $this->url->get('quote/footer'),
                 'footer-spacing'=> '10',
                 // 'margin-top'	=> '44',
                 'margin-top'	=> '0',
@@ -36,8 +34,11 @@ class QuoteController extends ControllerBase
         // Setting a header by its name
         $response->setHeader("Content-Type", "application/pdf");
         $response->setHeader("Content-Disposition", 'inline; filename="' . $quote->quoteId . ' ' . $quote->customer->customerName . '.pdf"');
-        $response->setContent($snappy->getOutput($this->url->get('quote/public/') . $quote->webId));
-        $response->send();
+		$url = $this->config->application->publicUrl
+			. $this->url->get('quote/public/')
+			. $quote->webId;
+        $response->setContent($snappy->getOutput($url));
+        return $response->send();
     }
 
     public function publicAction($webId = null)

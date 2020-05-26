@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {{ get_title() }}
+    {{ renderTitle() }}
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.0.0-beta.2/lux/bootstrap.min.css" rel="stylesheet" integrity="sha384-CF64UnUzxV691sOmqagn+TQJmesKn1fgsYmlIPqYB5nm0m32jYo3LiX1BcrbuESZ" crossorigin="anonymous">

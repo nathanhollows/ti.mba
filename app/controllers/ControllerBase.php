@@ -48,6 +48,9 @@ class ControllerBase extends Controller
 
             $this->view->setViewsDir('/var/www/html/app/facelift/');
         }
+
+		$this->view->elements = $this->elements;
+
         $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
         $this->tag->appendTitle(' | ' . SITE_TITLE);
         $this->assets->collection('header')

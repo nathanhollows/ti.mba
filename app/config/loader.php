@@ -13,18 +13,7 @@ $loader->registerNamespaces(
 		'App\Controllers\Mobile'	=> $config->application->mobileControllersDir,
 		'App\Models' 		        => $config->application->modelsDir,
 		'App\Forms' 		        => $config->application->formsDir,
+		'App\Providers'		        => $config->application->providersDir,
 		'App' 				        => $config->application->libraryDir,
 	)
 )->register();
-
-// Register some classes
-$loader->registerClasses(
-    array(
-        'Elements'		=> __DIR__ . '/../library/Elements.php'
-    )
-)->register();
-
-
-// Register composer autoloader
-require_once((__DIR__) . '/../../vendor/autoload.php');
-$elements = new Elements();

@@ -129,7 +129,10 @@ class Users extends Model
     public static function listUsers()
     {
         $results = parent::find(array(
-            "columns"   => "id,name",
+			"columns"   => "id,name",
+			"cache"		=> [
+				"key"	=> "list-users",
+			],
         ));
         return $results;
     }
@@ -139,6 +142,9 @@ class Users extends Model
         $results = parent::find(array(
             "conditions"   => "active = 1 AND suspended = 0 AND banned = 0 AND id != 10",
             "order"       => "FIELD(name, 'Fax'), name ASC",
+			"cache"		=> [
+				"key"	=> "active-users",
+			],
         ));
         return $results;
     }

@@ -35,7 +35,6 @@ class QuotesController extends ControllerBase
 
     public function indexAction($status = null)
     {
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->tag->prependTitle('Search Quotes');
         $this->view->pageSubtitle = "Search";
         $this->view->users = Users::getActive();
@@ -132,6 +131,7 @@ class QuotesController extends ControllerBase
 
     public function viewAction($quoteId = null)
     {
+        $this->view->setViewsDir('/var/www/html/app/views/');
         $quote = Quotes::findFirstByquoteId($quoteId);
         if (!$quote) {
             // If the quote does not exist then spit out an error
@@ -277,7 +277,6 @@ class QuotesController extends ControllerBase
 
     public function newAction($customerCode = null)
     {
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->view->ajax = false;
 
         if ($this->request->isAjax()) {
@@ -305,6 +304,11 @@ class QuotesController extends ControllerBase
             );
         }
 
+		$quote->assign([
+			'date'	=> date("Y-m-d"),
+			'user'	=> $this->auth->getId(),
+		]);
+
         $this->tag->prependTitle('New Quote');
         $this->view->form = new QuotesForm($quote);
     }
@@ -312,7 +316,6 @@ class QuotesController extends ControllerBase
     public function manageAction()
     {
         parent::initialize();
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->tag->prependTitle("Manage Quotes");
         $this->view->quotes = Quotes::find([
             "conditions"	=> "user = ?1 AND status != 4",
@@ -346,8 +349,8 @@ class QuotesController extends ControllerBase
         $random = new Random();
         // Store and check for errors
         $quote->webId = $random->uuid();
-        $success = $quote->save($this->request->getPost(), array('date', 'customerCode', 'reference', 'notes', 'user', 'contact', 'moreNotes'));
-        if ($success) {
+        $quote->assign($this->request->getPost(), array('date', 'customerCode', 'reference', 'notes', 'user', 'contact', 'moreNotes'));
+        if ($quote->save()) {
             $this->flashSession->success("Quote created successfully!");
             return $this->response->redirect("quotes/view/" . $quote->quoteId);
         } else {
@@ -375,8 +378,8 @@ class QuotesController extends ControllerBase
 
         $quote = Quotes::findFirstByquoteId($this->request->getPost('quoteId'));
         // Store and check for errors
-        $success = $quote->update($this->request->getPost(), array('customerCode', 'contact', 'reference', 'date', 'notes', 'moreNotes', 'user', 'status'));
-        if ($success) {
+        $quote->assign($this->request->getPost(), array('customerCode', 'contact', 'reference', 'date', 'notes', 'moreNotes', 'user', 'status'));
+        if ($quote->update()) {
             $this->flash->success('Quote updated successfully');
             return $this->_redirectBack();
         } else {

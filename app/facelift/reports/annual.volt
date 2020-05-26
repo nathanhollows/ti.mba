@@ -42,7 +42,7 @@
 <table class="table table-hover table-sm shadow-sm bg-white w-100 table-striped" id="report">
     <thead>
         <th style="text-align: left">
-            Sales Report {{ date("Y", strtotime(start ~ " + 1 YEAR")) }}
+			Sales Report Apr {{ date ("Y", strtotime(start)) }} - Mar {{ date("Y", strtotime(start ~ " + 1 YEAR")) }}
         </th>
         {% for i in 1..12 %}
             <th>{{ date('M', strtotime( start ~ ' + ' ~ loop.index0 ~ ' MONTHS')) }}</th>
@@ -255,57 +255,50 @@
 
         <tr>
             <td>Quotes Presented</td>
-            {% set quotes = [] %}
             {% for i in quotesPresented %}
+			{% if i.year == date("Y") and i.month > date("m") 
+				or i.year > date("Y") %}
+					<td>-</td>
+					{% continue %}
+				{% endif %}
                 <td>{{ i.count }}</td>
-                {% set quotes[loop.index]['presented'] = i.count %}
                 {% set total += i.count %}
             {% endfor %}
-            {% if quotes|length != 12 %}
-                {% for i in 1..12 - quotesPresented|length %}
-                    <td class="null-value">-</td>
-                {% endfor %}
-            {% endif %}
             <td>
                 <b>{{ total|number }}</b>
             </td>
-            {% set total1 = total %}
+            {% set presented = total %}
             {% set total = 0 %}
         </tr>
 
         <tr>
             <td>Quotes Won</td>
-			{% for i in 0..11 %}
-				{% if quotesWon[i] is defined %}
-				<td>{{ quotesWon[i].count }}</td>
-                {% set quotes[loop.index]['won'] = quotesWon[i].count %}
-                {% set total += quotesWon[i].count %}
-				{% else %}
-                    <td class="null-value">-</td>
-					{% endif %}
+			{% for i in quotesWon %}
+				{% if i.year == date("Y") and i.month > date("m") 
+					or i.year > date("Y") %}
+					<td>-</td>
+					{% continue %}
+				{% endif %}
+				<td>{{ i.count }}</td>
+				{% set total += i.count%}
 			{% endfor %}
             <td>
                 <b>{{ total|number }}</b>
+				{% set won = total %}
             </td>
         </tr>
 
         <tr>
             <td>Percentage Won</td>
-			{% for i in 1..12 %}
-				{% if quotes[i]['won'] is not defined %}
+			{% for i in 0..11 %}
+				{% if quotesPresented[i].count == 0 or quotesWon[i].count == 0 %}
 					<td class="null-value">-</td>
-					{% continue %}
+				{% else %}
+					<td>{{ (quotesWon[i].count / quotesPresented[i].count * 100)|number }}%</td>
 				{% endif %}
-				{% if quotes[i]['presented'] is not defined %}
-					<td class="null-value">-</td>
-					{% continue %}
-				{% endif %}
-				<td>{{ (quotes[i]['won'] / quotes[i]['presented'] * 100)|number }}%</td>
 			{% endfor %}
             <td>
-                {% if total1 is not 0 %}
-                <b>{{ (total / total1 * 100)|number }}%</b>
-                {% endif %}
+                <b>{{ (won / presented * 100)|number }}%</b>
             </td>
             {% set total = 0 %}
         </tr>

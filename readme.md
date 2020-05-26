@@ -5,7 +5,7 @@ Ti.mba is a CRM package for the timber industry.
 <description>
 
 ## Version
-1.0 (versioning hasn't been consistent, let's be real)
+2.0 (versioning hasn't been consistent, let's be real)
 
 <version>
 
@@ -28,7 +28,7 @@ Nathan Hollows
 
 Ti.mba uses a number of open source projects to work properly:
 
-* [Phalcon 4+] - php framework that makes everything blazingly fast and easy
+* [Phalcon 4+]
 * MariaDB
 * [Bootstrap 3/4]
 * [jQuery]

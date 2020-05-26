@@ -1,7 +1,7 @@
 <?php
 namespace App\Auth;
 
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 use App\Models\Users;
 use App\Models\RememberTokens;
 use App\Models\SuccessLogins;
@@ -11,7 +11,7 @@ use App\Models\FailedLogins;
  * App\Auth\Auth
  * Manages Authentication/Identity Management in App
  */
-class Auth extends Component
+class Auth extends Injectable
 {
 
     /**
@@ -193,6 +193,16 @@ class Auth extends Component
     {
         return $this->session->get('auth-identity');
     }
+
+	/**
+	 * Returns if the user is currently logged in
+	 *
+	 * @return boolean
+	 */
+	public function isLoggedIn() 
+	{
+		return $this->session->has('auth-identity');
+	}
 
     /**
      * Returns the current users id

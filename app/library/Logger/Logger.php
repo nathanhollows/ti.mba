@@ -2,11 +2,11 @@
 
 namespace App\Freight;
 
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 use App\Models\ActivityLog;
 use App\Auth\Auth;
 
-class Logger extends component
+class Logger extends Injectable
 {
 	public function activity($activityType = null)
 	{

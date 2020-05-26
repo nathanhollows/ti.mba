@@ -18,6 +18,7 @@ class ReportsController extends ControllerBase
 {
     public function initialize()
     {
+        $this->view->setViewsDir('/var/www/html/app/views/');
         $this->view->setTemplateBefore('private');
         parent::initialize();
     }

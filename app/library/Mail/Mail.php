@@ -1,7 +1,7 @@
 <?php
 namespace App\Mail;
 
-use Phalcon\Mvc\User\Component;
+use Phalcon\Di\Injectable;
 use Swift_Message as Message;
 use Swift_SmtpTransport as Smtp;
 use Phalcon\Mvc\View;
@@ -10,7 +10,7 @@ use Phalcon\Mvc\View;
  * App\Mail\Mail
  * Sends e-mails based on pre-defined templates
  */
-class Mail extends Component
+class Mail extends Injectable
 {
 
     protected $transport;

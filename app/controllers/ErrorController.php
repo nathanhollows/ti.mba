@@ -36,9 +36,25 @@ class ErrorController extends ControllerBase
         $this->view->noHeader = true;
         $this->tag->prependTitle('Error 404');
         $this->response->setStatusCode(404, 'Not Found');
-        $this->view->pick('404/404');
+        $this->view->pick('error/404');
         $this->view->pageTitle = " ";
         $this->view->pageSubtitle = " ";
+    }
+
+    public function panicAction()
+    {
+        if ($this->request->isAjax()) {
+            $this->view->setTemplateBefore('none');
+            $response = new Response();
+            $response->setStatusCode(501, 'Server error');
+            $response->setContent('Server error');
+            $response->send();
+            return true;
+        }
+        $this->view->noHeader = true;
+        $this->tag->prependTitle('Error | ');
+        $this->response->setStatusCode(500, 'Server error');
+        $this->view->pick('error/panic');
     }
 
     public function permissionDeniedAction()

@@ -26,11 +26,16 @@ class Kpis extends Model
 
 	public $ordersSent;
 
+
 	public static function thisMonth() {
 		return parent::find(
 			array(
 				"MONTH(date) = MONTH(NOW()) AND YEAR(date) = YEAR(NOW())",
-				"order" => "date ASC"
+				"order" => "date ASC",
+				"cache"	=> [
+					"key"	=> "months-kpis",
+					"lifetime"	=> 500,
+				],
 			)
 		);
 	}

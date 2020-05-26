@@ -20,45 +20,26 @@ class DashboardController extends ControllerBase
         $this->view->setTemplateBefore('private');
         $this->tag->prependTitle('Dashboard');
         parent::initialize();
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
     }
 
     public function indexAction()
     {
-        $config = include __DIR__ . "/../config/config.php";
 
         $tasks = new ContactRecord;
         $this->view->noHeader = true;
 
         $user = $this->session->get('auth-identity')['id'];
 
-        $this->view->notes              = StickyNotes::current();
-        $this->view->budget             = Budgets::current();
-        $this->view->kpis               = Kpis::thisMonth();
-        $this->view->users              = Users::listUsers();
-        $this->view->monthsSales        = DailySales::sumMonth();
-        $this->view->daySales           = DailySales::sumDay(date("Y-m-d"));
-        $this->view->agentSales         = DailySales::getMonthByRep(date("Y-m-d"));
-        $this->view->daySalesByAgent    = DailySales::getDayByRep(date("Y-m-d"));
-        $this->view->quoteCount         = DailySales::countQuotesMonth(date("Y-m-d"));
-        $this->view->quoteSum           = DailySales::sumQuotesMonth(date("Y-m-d"));
-        $this->view->sales              = DailySales::dailySalesBetween(date("Y-m-01"), date("Y-m-t"));
-        /** $this->view->sales = DailySales::sum([
-            'column'	=> 'value',
-            'group'	=> 'date',
-            'order'	=> 'date DESC',
-            'limit'	=> 31,
-        ]); */
-        $this->view->tasks              = $tasks->getOverdue();
+		$this->view->budget = Budgets::current();
+		$this->view->kpis = Kpis::thisMonth();
+        $this->view->users = Users::listUsers();
+        $this->view->monthsSales = DailySales::sumMonth();
+        $this->view->daySales = DailySales::sumDay(date("Y-m-d"));
+        $this->view->agentSales = DailySales::getMonthByRep(date("Y-m-d"));
+        $this->view->daySalesByAgent = DailySales::getDayByRep(date("Y-m-d"));
+        $this->view->sales = DailySales::dailySalesBetween(date("Y-m-01"), date("Y-m-t"));
 
         $this->view->parser = new \cebe\markdown\Markdown();
-
-        $this->assets->collection('header')
-            ->addCss('//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css');
-
-        $this->assets->collection('footer')
-            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.2/Chart.bundle.min.js')
-            ->addJs('js/dashboard/charts.js');
 
         $this->view->quotes = new Quotes();
     }
@@ -107,8 +88,6 @@ class DashboardController extends ControllerBase
 
     public function despatchAction()
     {
-        $config = include __DIR__ . "/../config/config.php";
-        $this->view->noHeader = true;
 
         $tasks = new ContactRecord;
 

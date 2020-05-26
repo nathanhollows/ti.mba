@@ -28,7 +28,7 @@
 							<img src="{{ url('/img/icons/smile.svg') }}"></img>
 						</label>
 					</div>
-					<input type="hidden" name="uri" value="{{ router.getRewriteUri() }}"></input>
+					<input type="hidden" name="uri" value="<?php echo $_SERVER['REQUEST_URI'] ?>"></input>
 					<label for="feedback-input" class="mt-4">(Optional) Please write your feedback here</label>
 					<textarea id="feedback-input" name="feedback" class="form-control w-100"></textarea>
 				</form>
@@ -89,6 +89,8 @@ $("a.open-modal").click(function(ev) {
 
 	$("#modal-ajax .modal-dialog").load(target, function() {
 		$("#modal-ajax").modal("show");
+		$('.selectpicker').selectpicker({
+		});
 	});
 });
 $( document ).on( "click", ".confirm-delete", function(e) {

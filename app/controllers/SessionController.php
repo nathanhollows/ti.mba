@@ -21,6 +21,7 @@ class SessionController extends ControllerBase
     {
         parent::initialize();
         $this->view->setTemplateBefore('auth');
+        $this->view->setViewsDir('/var/www/html/app/facelift/');
     }
 
     public function indexAction()

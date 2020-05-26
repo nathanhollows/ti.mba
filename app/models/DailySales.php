@@ -51,15 +51,24 @@ class DailySales extends Model
         $this->hasOne('rep', 'App\Models\Users', 'id', array('alias' => 'agent'));
     }
 
+	public function afterSave()
+	{
+		$date = date("Y-m-d", strtotime($this->date));
+		$this->di->get('modelsCache')->deleteMultiple([
+			"week-sales-{$date}", "month-sales-{$date}",
+		]);
+	}
+
     public static function sumWeek($date = null)
     {
-        $results = parent::sum(
-            array(
-                'column'        => 'value',
-                'conditions'    => 'WEEK(date) = WEEK(?1) AND YEAR(date) = YEAR(?1)',
-                'bind'          => array(1 => $date),
-            )
-        );
+        $results = parent::sum([
+			'column'        => 'value',
+			'conditions'    => 'WEEK(date) = WEEK(?1) AND YEAR(date) = YEAR(?1)',
+			'bind'          => array(1 => $date),
+			"cache"			=> [
+				"key"	=> "week-sales-$date",
+			],
+			]);
         return $results;
     }
 
@@ -72,13 +81,14 @@ class DailySales extends Model
             $date = date("Y-m-d", strtotime($date));
         }
 
-        $results = parent::sum(
-            array(
-                'column' => 'value',
-                'conditions'  => 'MONTH(date) = MONTH(?1) AND YEAR(date) = YEAR(?1)',
-                'bind'  => array(1 => $date),
-            )
-        );
+		$results = parent::sum([
+			'column' => 'value',
+			'conditions'  => 'MONTH(date) = MONTH(?1) AND YEAR(date) = YEAR(?1)',
+			'bind'  => array(1 => $date),
+			"cache"			=> [
+				"key"	=> "month-sales-$date",
+			],
+		]);
         return $results;
     }
 

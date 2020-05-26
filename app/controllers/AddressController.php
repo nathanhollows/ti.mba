@@ -12,6 +12,7 @@ class AddressController extends ControllerBase
     {
         // Set the default view
         $this->view->setTemplateBefore('private');
+        $this->view->setViewsDir('/var/www/html/app/facelift/');
         parent::initialize();
     }
 
@@ -55,8 +56,8 @@ class AddressController extends ControllerBase
 
         $address = new Addresses();
         // Store and check for errors
-        $success = $address->save($this->request->getPost(), array('customerCode', 'typeCode', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
-        if ($success) {
+        $address->assign($this->request->getPost(), array('customerCode', 'typeCode', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
+        if ($address->save()) {
             return $this->_redirectBack();
         } else {
             $this->flash->error("Sorry, the address could not be saved");
@@ -81,8 +82,8 @@ class AddressController extends ControllerBase
             return "No such address exists!";
         }
         // Store and check for errors
-        $success = $address->save($this->request->getPost(), array('customerCode', 'typeCode', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
-        if ($success) {
+        $address->assign($this->request->getPost(), array('typeCode', 'line1', 'line2', 'line3', 'suburb', 'zipCode', 'city', 'country'));
+        if ($address->update()) {
             return $this->_redirectBack();
         } else {
             foreach ($contact->getMessages() as $message) {

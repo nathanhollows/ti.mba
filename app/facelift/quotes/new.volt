@@ -1,69 +1,106 @@
-{{ content() }}
-
-
-{{ form("quotes/create", "method":"post", "autocomplete" : "off") }}
-<div class="modal-body">
- 	{% if ajax is false %}
-<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
-	{% endif %}
-	<div class="form-group">
-		<label>Customer</label>
-		{{ form.render('customerCode') }}
-	</div>
-	<div class="form-group">
-		<label>Contact</label>
-		{{ form.render('contact') }}
-	</div>
-	<div class="form-group">
-		<label>Reference</label>
-		{{ form.render('reference') }}
-	</div>
-	<div class="form-group">
-		<label>Date</label>
-		{{ form.render('date') }}
-	</div>
-	<div class="form-group">
-		<label>Notes</label>
-		{{ form.render('notes') }}
-	</div>
-	<div class="form-group">
-		<label>Private Notes</label>
-		{{ form.render('moreNotes') }}
-	</div>
-	<div class="form-group">
-		<label>Sales Rep</label>
-		{{ form.render('user') }}
-	</div>
-	<div class="form-group">
-		<label>Status</label>
-		{{ form.render('status') }}
-	</div>
- 	{% if ajax is false %}
-		<div class="form-group">
-			{{ form.render('Submit') }}
+<div class="header py-3">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2">
+				<div class="row header-body">
+					<div class="col">
+						<h4 class="header-title">New Quote</h4>
+					</div>
+					<div class="col text-right">
+					</div>
+					<hr class="w-100"/>
+				</div>
+			</div>
 		</div>
-		</div>
-	{% endif %}
-</form>
-
+	</div>
 </div>
 
+<div class="container">
+	{{ content() }}
+	{{ flashSession.output() }}
+	<div class="row">
+		<div class="col-lg-8 offset-lg-2">
+			<div class="row">
+				<div class="col">
+					{{ form("quotes/create", "method":"post", "autocomplete" : "off") }}
+					<div class="form-group">
+						{{ form.label('customerCode') }}
+						{{ form.render('customerCode') }}
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group">
+						{{ form.label('contact') }}
+						{{ form.render('contact') }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group">
+						{{ form.label('reference') }}
+						{{ form.render('reference') }}
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group">
+						{{ form.label('date') }}
+						{{ form.render('date') }}
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group">
+						{{ form.label('user') }}
+						{{ form.render('user') }}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group">
+						{{ form.label('notes') }}
+						{{ form.render('notes') }}
+					</div>
+					<div class="form-group">
+						{{ form.label('moreNotes') }}
+						{{ form.render('moreNotes') }}
+					</div>
+					{% if ajax is false %}
+					<div class="form-group">
+						{{ form.render('Submit') }}
+					</div>
+				</div>
+				{% endif %}
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#customerCode').change(function () {
-        var customerCode = $(this).find("option:selected").val();
-        if(customerCode){
-            $.ajax({
-                type:'POST',
-                url:'/customers/getcontacts/'+customerCode,
-                data: null,
-                success:function(html){
-                	$('#contact').selectpicker('destroy');
-                    $('#contact').html(html);
-                	$('#contact').selectpicker();
-                }
-            });
-        }
-    });
-});
+	$(document).ready(function(){
+		$('#customerCode').change(function () {
+			var customerCode = $(this).find("option:selected").val();
+			if(customerCode){
+				$.ajax({
+					type:'POST',
+					url:'/customers/getcontacts/'+customerCode,
+					data: null,
+					success:function(html){
+						$('#contact').selectpicker('destroy');
+						$('#contact').html(html);
+						$('#contact').selectpicker();
+					}
+				});
+			}
+		});
+	});
 </script>
+
+<style>
+.bootstrap-select .dropdown-toggle {
+	border: 1px solid #ced4da;
+	background: white;
+}
+</style>
