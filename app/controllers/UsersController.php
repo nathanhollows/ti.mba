@@ -28,10 +28,12 @@ class UsersController extends ControllerBase
     public function editAction($userId)
     {
         $user = Users::findFirstByid($userId);
+        $form = new UsersForm($user);
+
+        $this->view->form = $form;
         $this->view->user = $user;
-        $this->view->form = new UsersForm($user);
+
         $this->tag->prependTitle('Editing '. $user->name);
-        $this->view->pageTitle = "Editing " . $user->name;
 
         if (!$user) {
             $this->flashSession->error("That user could not be found");
