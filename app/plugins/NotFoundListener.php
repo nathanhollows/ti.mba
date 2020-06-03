@@ -6,7 +6,7 @@ use Phalcon\Logger;
 use Phalcon\Di\Injectable;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
-use MyApp\Auth\Adapters\AbstractAdapter;
+use App\Auth\Adapters\AbstractAdapter;
 
 /**
  * Class NotFoundListener

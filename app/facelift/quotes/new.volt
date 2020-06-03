@@ -88,9 +88,8 @@
 					url:'/customers/getcontacts/'+customerCode,
 					data: null,
 					success:function(html){
-						$('#contact').selectpicker('destroy');
+						$('#contact').empty();
 						$('#contact').html(html);
-						$('#contact').selectpicker();
 					}
 				});
 			}

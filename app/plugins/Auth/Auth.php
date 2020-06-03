@@ -50,6 +50,7 @@ class Auth extends Injectable
             'dev' => $user->dev,
             'uca' => $user->useUCA,
         ));
+
     }
 
     /**

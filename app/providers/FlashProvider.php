@@ -10,14 +10,14 @@ use Phalcon\Flash\Direct as Flash;
 
 class FlashProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'flash';
 
     public function register(DiInterface $di): void
     {
         $di->set($this->providerName, function () {
-            $flash = new Flash();
+            $flash = new Flash(null);
             $flash->setImplicitFlush(false);
+            $flash->setAutoEscape(false);
             $flash->setCssClasses([
                 'error'   => 'alert alert-danger',
                 'success' => 'alert alert-success',
