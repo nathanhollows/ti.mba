@@ -75,5 +75,4 @@ class HotlistQuotes extends Model
             "where"     => "completed IS NOT NULL",
         ));
     }
-
 }

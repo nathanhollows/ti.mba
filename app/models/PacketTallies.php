@@ -28,5 +28,4 @@ class PacketTallies extends Model
     {
         $this->hasOne('packetNumber', 'App\Models\Packets', 'packetNumber', array('alias'  => 'packet'));
     }
-
 }

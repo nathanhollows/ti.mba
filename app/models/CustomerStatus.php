@@ -59,5 +59,4 @@ class CustomerStatus extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
-
 }

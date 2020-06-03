@@ -6,9 +6,9 @@ use Phalcon\Mvc\Model;
 
 class ContactRoles extends Model
 {
-	public $id;
+    public $id;
 
-	public $rank;
+    public $rank;
 
-	public $name;
+    public $name;
 }

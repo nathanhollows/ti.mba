@@ -12,20 +12,19 @@ use Phalcon\Mvc\Dispatcher;
 
 class DispatcherProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'dispatcher';
 
     public function register(DiInterface $di): void
     {
         $di->set($this->providerName, function () {
             $dispatcher = new Dispatcher();
-			$eventsManager = new EventsManager();
-			$eventsManager->attach(
-				'dispatch:beforeException',
-				new NotFoundListener(),
-				200
-			);
-			$dispatcher->setEventsManager($eventsManager);
+            $eventsManager = new EventsManager();
+            $eventsManager->attach(
+                'dispatch:beforeException',
+                new NotFoundListener(),
+                200
+            );
+            $dispatcher->setEventsManager($eventsManager);
             $dispatcher->setDefaultNamespace('App\Controllers');
 
             return $dispatcher;

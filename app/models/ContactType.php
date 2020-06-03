@@ -8,11 +8,11 @@ class ContactType extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-	public $id;
+    public $id;
 
     /**
      *
      * @var string
      */
-	public $name;
+    public $name;
 }

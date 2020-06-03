@@ -14,7 +14,6 @@ use Phalcon\Validation\Validator\Identical;
 
 class LoginForm extends Form
 {
-
     public function initialize()
     {
         // Email
@@ -66,14 +65,14 @@ class LoginForm extends Form
         $this->add($remember);
 
         // CSRF
-				// $csrf = new Hidden('csrf');
-				// $csrf->addValidator(new Identical(array(
-					// 'value' => $this->security->getSessionToken(),
-					// 'message' => 'CSRF validation failed'
-				// )));
+        // $csrf = new Hidden('csrf');
+        // $csrf->addValidator(new Identical(array(
+        // 'value' => $this->security->getSessionToken(),
+        // 'message' => 'CSRF validation failed'
+        // )));
 
-				// $csrf->clear();
-				// $this->add($csrf);
+        // $csrf->clear();
+        // $this->add($csrf);
 
         $this->add(new Submit('Login', array(
             'class' => 'btn btn-primary btn-block'

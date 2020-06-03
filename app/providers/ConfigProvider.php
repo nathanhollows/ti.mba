@@ -10,7 +10,6 @@ use App\Timba;
 
 class ConfigProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'config';
 
     public function register(DiInterface $di): void

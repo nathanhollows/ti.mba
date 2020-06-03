@@ -35,5 +35,4 @@ class HotlistCategories extends Model
     {
         $this->hasMany('id', 'App\Models\HotlistQuotes', 'category', array('alias' => 'jobs', 'params' => array('conditions' => 'completed IS NULL')));
     }
-
 }

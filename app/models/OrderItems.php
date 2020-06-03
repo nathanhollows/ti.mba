@@ -7,63 +7,61 @@ use Phalcon\Mvc\Model\Manager;
 
 class OrderItems extends Model
 {
-	public $grade;
+    public $grade;
 
-	public $teatment;
+    public $teatment;
 
-	public $dryness;
+    public $dryness;
 
-	public $finish;
+    public $finish;
 
-	public $width;
+    public $width;
 
-	public $thickness;
+    public $thickness;
 
-	public $length;
+    public $length;
 
-	public $dry;
+    public $dry;
 
-	public $customerCode;
+    public $customerCode;
 
-	public $orderNo;
+    public $orderNo;
 
-	public $itemNo;
+    public $itemNo;
 
-	public $requiredBy;
+    public $requiredBy;
 
-	public $ordered;
+    public $ordered;
 
-	public $sent;
+    public $sent;
 
-	public $outstanding;
+    public $outstanding;
 
-	public $unit;
+    public $unit;
 
-	public $despatch;
+    public $despatch;
 
-	public $comments;
+    public $comments;
 
-	public $orderStock;
+    public $orderStock;
 
-	public $notes;
+    public $notes;
 
-	public $despatchNotes;
+    public $despatchNotes;
 
-	public $location;
+    public $location;
 
-	public function initialize()
-	{
-
-		if ($despatch = -1) {
-			$despatch = false;
-		}
+    public function initialize()
+    {
+        if ($despatch = -1) {
+            $despatch = false;
+        }
         $this->hasMany(array('orderNo', 'itemNo'), 'App\Models\OrderTallies', array('orderNumber', 'itemNumber'), array('alias' => 'tallies'));
         $this->hasOne('grade', 'App\Models\Grade', 'shortCode', ['alias' => 'Grade']);
         $this->hasOne('treatment', 'App\Models\Treatment', 'shortCode', ['alias' => 'Treatment']);
         $this->hasOne('dryness', 'App\Models\Dryness', 'shortCode', ['alias' => 'Dryness']);
         $this->hasOne('finish', 'App\Models\Finish', 'shortCode', ['alias' => 'Finish']);
-
-	}
+    }
 
     public static function scheduled()
     {
@@ -77,5 +75,4 @@ class OrderItems extends Model
             )
         );
     }
-
 }

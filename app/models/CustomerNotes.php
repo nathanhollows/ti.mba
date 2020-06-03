@@ -24,11 +24,11 @@ class CustomerNotes extends Model
      */
     public $note;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $date;
+    public $date;
 
     /**
      *
@@ -38,7 +38,7 @@ class CustomerNotes extends Model
 
     public function initialize()
     {
-    	$this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode');
-    	$this->hasOne('user', 'App\Models\Users', 'id');
+        $this->belongsTo('customerCode', 'App\Models\Customers', 'customerCode');
+        $this->hasOne('user', 'App\Models\Users', 'id');
     }
 }

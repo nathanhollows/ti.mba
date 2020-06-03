@@ -177,11 +177,11 @@ class Customers extends \Phalcon\Mvc\Model
         $this->hasMany('customerCode', 'App\Models\Addresses', 'customerCode', array('alias'  => 'addresses'));
         $this->hasMany('customerCode', 'App\Models\Contacts', 'customerCode', array('alias' => 'contacts'));
         $this->hasMany('customerCode', 'App\Models\ContactRecord', 'customerCode', array('alias' => 'history'));
-				$this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
-					'alias' => 'quotes', 
-					'params' => array(
-						// Open quotes first, then closed
-						'order' => 'if (status < 4, 1, 2), quoteId DESC')));
+        $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
+                    'alias' => 'quotes',
+                    'params' => array(
+                        // Open quotes first, then closed
+                        'order' => 'if (status < 4, 1, 2), quoteId DESC')));
         // Get all outstanding orders
         $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders', 'params' => array('conditions' => 'complete = 0')));
         // Get all orders from the last 3 months
@@ -192,8 +192,7 @@ class Customers extends \Phalcon\Mvc\Model
 
     public function beforeSave()
     {
-        if ($this->tripDay == 0)
-        {
+        if ($this->tripDay == 0) {
             $this->tripDay = null;
         }
     }
@@ -232,12 +231,12 @@ class Customers extends \Phalcon\Mvc\Model
         $history->save();
     }
 
-	public static function getActive() 
-	{
-		return parent::find([
-			"customerStatus NOT IN (2,3)"
-		]);
-	}
+    public static function getActive()
+    {
+        return parent::find([
+            "customerStatus NOT IN (2,3)"
+        ]);
+    }
 
     public function quotesFrom($date)
     {
@@ -275,6 +274,5 @@ class Customers extends \Phalcon\Mvc\Model
         $query->bind(['search' => '%' . $search . '%']);
         $query->orderBy('customerName ASC');
         return $query->execute();
-     }
-
+    }
 }

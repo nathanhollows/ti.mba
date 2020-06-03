@@ -9,7 +9,6 @@ use Phalcon\Mvc\Model\Metadata\Stream as MetaDataAdapter;
 
 class ModelsMetadataProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'modelsMetadata';
 
     public function register(DiInterface $di): void

@@ -12,7 +12,6 @@ use Phalcon\Mvc\View;
  */
 class Mail extends Injectable
 {
-
     protected $transport;
 
     protected $directSmtp = true;
@@ -34,7 +33,6 @@ class Mail extends Injectable
         $this->view->render('email', $template, $params);
         $this->view->finish();
         return $this->view->getContent();
-
     }
 
     /**
@@ -63,7 +61,6 @@ class Mail extends Injectable
             ->setBody($template, 'text/html');
 
         if ($this->directSmtp) {
-
             if (!$this->transport) {
                 $this->transport = Smtp::newInstance(
                     $mailSettings->smtp->server,

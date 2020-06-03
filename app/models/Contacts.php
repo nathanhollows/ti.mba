@@ -90,6 +90,5 @@ class Contacts extends Model
         $query->orderBy('customerCode ASC');
         $query->bind(['search' => '%' . $search . '%']);
         return $query->execute();
-     }
-
+    }
 }

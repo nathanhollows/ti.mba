@@ -35,5 +35,4 @@ class HotlistDiscussion extends Model
     {
         $this->hasOne('user', 'App\Models\Users', 'id');
     }
-
 }

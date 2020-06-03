@@ -69,9 +69,9 @@ class Dockets extends Model
         );
     }
 
-    public function markDelivered() {
+    public function markDelivered()
+    {
         $this->delivered = 1;
         $this->update();
     }
-
 }

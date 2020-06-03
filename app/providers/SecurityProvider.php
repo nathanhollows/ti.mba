@@ -9,7 +9,6 @@ use Phalcon\Security;
 
 class SecurityProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'security';
 
     public function register(DiInterface $di): void

@@ -6,15 +6,13 @@ use Phalcon\Mvc\Model;
 
 class QuoteCodes extends Model
 {
-	public $code;
+    public $code;
 
-	public $description;
+    public $description;
 
-	public $grade;
+    public $grade;
 
-	public $treatment;
+    public $treatment;
 
-	public $dryness;
-
-	
+    public $dryness;
 }

@@ -79,5 +79,4 @@ class ResetPasswords extends \Phalcon\Mvc\Model
             'alias' => 'user'
         ));
     }
-
 }

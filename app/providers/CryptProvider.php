@@ -9,12 +9,10 @@ use Phalcon\Di\ServiceProviderInterface;
 
 class CryptProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'crypt';
 
     public function register(DiInterface $di): void
     {
-
         $cryptSalt = $di->getShared('config')->path('application.cryptSalt');
 
         $di->set($this->providerName, function () use ($cryptSalt) {

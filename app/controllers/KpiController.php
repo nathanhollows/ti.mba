@@ -91,12 +91,12 @@ class KpiController extends ControllerBase
         if ($kpi) {
             // If the date HAS been saved the update the data
             $kpi->assign($this->request->getPost(), array('chargeOut', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
-			$success = $kpi->update();
+            $success = $kpi->update();
         } else {
             // If the data has NOT yet been been saved then submit a new record
             $kpi = new Kpis();
             $kpi->assign($this->request->getPost(), array('date','chargeOut', 'truckTime', 'onsiteDispatch', 'offsiteDispatch', 'ordersSent'));
-			$success = $kpi->save();
+            $success = $kpi->save();
         }
 
         // Check success and print results

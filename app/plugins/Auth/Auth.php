@@ -50,7 +50,6 @@ class Auth extends Injectable
             'dev' => $user->dev,
             'uca' => $user->useUCA,
         ));
-
     }
 
     /**
@@ -115,16 +114,14 @@ class Auth extends Injectable
 
         $user = Users::findFirstById($userId);
         if ($user) {
-
             $userAgent = $this->request->getUserAgent();
             $token = md5($user->email . $user->password . $userAgent);
 
             if ($cookieToken == $token) {
-
                 $remember = RememberTokens::findFirst(array(
                     'usersId = ?0 AND token = ?1',
-										'order' => 'id DESC',
-										'limit' => '1',
+                                        'order' => 'id DESC',
+                                        'limit' => '1',
                     'bind' => array(
                         $user->id,
                         $token
@@ -138,14 +135,14 @@ class Auth extends Injectable
                         // Check if the user was flagged
                         $this->checkUserFlags($user);
 
-												$this->session->set('auth-identity', array(
-													'id' => $user->id,
-													'name' => $user->name,
-													'changePassword' => $user->mustChangePassword,
-													'profile' => $user->profilesId,
-													'dev' => $user->dev,
-													'uca' => $user->useUCA,
-												));
+                        $this->session->set('auth-identity', array(
+                                                    'id' => $user->id,
+                                                    'name' => $user->name,
+                                                    'changePassword' => $user->mustChangePassword,
+                                                    'profile' => $user->profilesId,
+                                                    'dev' => $user->dev,
+                                                    'uca' => $user->useUCA,
+                                                ));
 
                         // Register the successful login
                         $this->saveSuccessLogin($user);
@@ -195,15 +192,15 @@ class Auth extends Injectable
         return $this->session->get('auth-identity');
     }
 
-	/**
-	 * Returns if the user is currently logged in
-	 *
-	 * @return boolean
-	 */
-	public function isLoggedIn() 
-	{
-		return $this->session->has('auth-identity');
-	}
+    /**
+     * Returns if the user is currently logged in
+     *
+     * @return boolean
+     */
+    public function isLoggedIn()
+    {
+        return $this->session->has('auth-identity');
+    }
 
     /**
      * Returns the current users id
@@ -271,7 +268,6 @@ class Auth extends Injectable
     {
         $identity = $this->session->get('auth-identity');
         if (isset($identity['id'])) {
-
             $user = Users::findFirstById($identity['id']);
             if ($user == false) {
                 throw new Exception('The user does not exist');

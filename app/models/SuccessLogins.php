@@ -27,7 +27,7 @@ class SuccessLogins extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $userAgent; 
+    public $userAgent;
 
     /**
      *
@@ -45,5 +45,4 @@ class SuccessLogins extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
-
 }

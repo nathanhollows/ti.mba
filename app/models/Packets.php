@@ -6,11 +6,11 @@ use Phalcon\Mvc\Model;
 
 class Packets extends Model
 {
-	/**
+    /**
      *
      * @var string
      */
-	public $packetNumber;
+    public $packetNumber;
 
     /**
      * createdId
@@ -36,11 +36,11 @@ class Packets extends Model
      */
     public $order_no;
 
-	/**
+    /**
      *
      * @var boolean
      */
-	public $current;
+    public $current;
 
     /**
      * Set relationships for the model
@@ -64,5 +64,4 @@ class Packets extends Model
             'conditions'    => 'current = 1'
         ]);
     }
-
 }

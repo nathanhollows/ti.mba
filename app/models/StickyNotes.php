@@ -42,7 +42,6 @@ class StickyNotes extends Model
      */
     public function initialize()
     {
-
     }
 
     public static function current()
@@ -52,5 +51,4 @@ class StickyNotes extends Model
             'order'         => 'id DESC',
         ));
     }
-
 }

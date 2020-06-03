@@ -18,7 +18,6 @@ class AssetsProvider implements ServiceProviderInterface
         $assetManager = new Manager();
 
         $di->setShared($this->providerName, function () use ($assetManager) {
-
             $assetManager->collection('css');
 
             $assetManager->collection('js');

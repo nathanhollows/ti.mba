@@ -20,7 +20,6 @@ class DailySalesForm extends Form
      */
     public function initialize($entity = null, $options = array())
     {
-
         $id = new Hidden('id[]');
         $this->add($id);
 
@@ -39,7 +38,7 @@ class DailySalesForm extends Form
         );
         $this->add($rep);
 
-        $quoted = new Check('quoted[]',array('value' => 1));
+        $quoted = new Check('quoted[]', array('value' => 1));
         $this->add($quoted);
 
         $useDate = date('Y-m-d');
@@ -63,6 +62,5 @@ class DailySalesForm extends Form
             "step"  => "any",
         ));
         $this->add($amount);
-
     }
 }

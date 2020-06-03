@@ -7,40 +7,39 @@ use Phalcon\Mvc\Model\Validator\Uniqueness;
 
 class PbtConsignments extends Model
 {
+    public $customerConsignment;
 
-	public $customerConsignment;
+    public $pbtConsignmentNote;
 
-	public $pbtConsignmentNote;
+    public $numberOfItems;
 
-	public $numberOfItems;
+    public $weight;
 
-	public $weight;
+    public $pickupDate;
 
-	public $pickupDate;
+    public $podDate;
 
-	public $podDate;
+    public $podTime;
 
-	public $podTime;
+    public $deliveryBy;
 
-	public $deliveryBy;
+    public $podSignature;
 
-	public $podSignature;
+    public $deliveryCourier;
 
-	public $deliveryCourier;
+    public $ticketNo;
 
-	public $ticketNo;
+    public $cost;
 
-	public $cost;
+    public $runsheet;
 
-	public $runsheet;
+    public $accountNo;
 
-	public $accountNo;
-
-	public $volume;
+    public $volume;
 
     public static function averageLast($date = null)
     {
-        if(is_null($date)) {
+        if (is_null($date)) {
             return false;
         }
 
@@ -54,7 +53,5 @@ class PbtConsignments extends Model
                 ),
             )
         );
-
     }
-
 }

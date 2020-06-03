@@ -100,5 +100,4 @@ class PacketHistory extends Model
         $this->hasOne('dryness', 'App\Models\Dryness', 'id', array('alias'  => 'dryness'));
         $this->hasOne('finish', 'App\Models\Finish', 'id', array('alias'  => 'finish'));
     }
-
 }

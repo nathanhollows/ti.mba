@@ -6,15 +6,15 @@ use Phalcon\Mvc\Model;
 
 class PricingUnit extends Model
 {
-	/**
+    /**
      *
      * @var integer
      */
-	public $id;
+    public $id;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $name;
+    public $name;
 }

@@ -34,9 +34,9 @@ class QuoteController extends ControllerBase
         // Setting a header by its name
         $response->setHeader("Content-Type", "application/pdf");
         $response->setHeader("Content-Disposition", 'inline; filename="' . $quote->quoteId . ' ' . $quote->customer->customerName . '.pdf"');
-		$url = $this->config->application->publicUrl
-			. $this->url->get('quote/public/')
-			. $quote->webId;
+        $url = $this->config->application->publicUrl
+            . $this->url->get('quote/public/')
+            . $quote->webId;
         $response->setContent($snappy->getOutput($url));
         return $response->send();
     }

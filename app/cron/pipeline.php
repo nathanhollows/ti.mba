@@ -4,7 +4,7 @@ $mysqli = new mysqli('host', 'user', 'password', 'database');
 
 // Oh no! A connect_errno exists so the connection attempt failed!
 if ($mysqli->connect_errno) {
-    // The connection failed. What do you want to do? 
+    // The connection failed. What do you want to do?
     // You could contact yourself (email?), log the error, show a nice page, etc.
     // You do not want to reveal sensitive information
 
@@ -38,7 +38,7 @@ JOIN contact_record ON quotes.quoteId = contact_record.job
 SET quotes.followUpStatus = 1
 WHERE contact_record.completed IS NULL AND contact_record.followUpDate < NOW() AND contact_record.followUpDate IS NOT NULL;";
 if (!$result = $mysqli->query($reset)) {
-    // Oh no! The query failed. 
+    // Oh no! The query failed.
     echo "Sorry, the website is experiencing problems.";
 
     // Again, do not do this on a public site, but we'll show you how
@@ -50,7 +50,7 @@ if (!$result = $mysqli->query($reset)) {
     exit;
 }
 if (!$result = $mysqli->query($sql)) {
-    // Oh no! The query failed. 
+    // Oh no! The query failed.
     echo "Sorry, the website is experiencing problems.";
 
     // Again, do not do this on a public site, but we'll show you how
@@ -62,7 +62,7 @@ if (!$result = $mysqli->query($sql)) {
     exit;
 }
 if (!$result = $mysqli->query($sql1)) {
-    // Oh no! The query failed. 
+    // Oh no! The query failed.
     echo "Sorry, the website is experiencing problems.";
 
     // Again, do not do this on a public site, but we'll show you how
@@ -74,7 +74,7 @@ if (!$result = $mysqli->query($sql1)) {
     exit;
 }
 if (!$result = $mysqli->query($sql2)) {
-    // Oh no! The query failed. 
+    // Oh no! The query failed.
     echo "Sorry, the website is experiencing problems.";
 
     // Again, do not do this on a public site, but we'll show you how

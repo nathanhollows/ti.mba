@@ -10,7 +10,6 @@ use App\Plugins\Acl\Acl;
 
 class AclProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'acl';
 
     public function register(DiInterface $di): void

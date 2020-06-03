@@ -153,7 +153,7 @@ class FollowupController extends ControllerBase
         $contact->details 			= $this->request->getPost('details');
         $contact->date 			= $this->request->getPost('recordDate');
         $contact->contactType 		= $this->request->getPost('contactType');
-		$contact->user = $this->auth->getId();
+        $contact->user = $this->auth->getId();
         $contact->contactType 		= $this->request->getPost('contactType');
         $contact->reference 		= $this->request->getPost('reference');
         $contact->completed 		= date('Y-m-d H:i:s');

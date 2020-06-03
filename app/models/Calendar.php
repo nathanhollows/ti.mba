@@ -6,53 +6,51 @@ use Phalcon\Mvc\Model;
 
 class Calendar extends Model
 {
-	public $calendarDate;
+    public $calendarDate;
 
-	public $day;
+    public $day;
 
-	public $month;
+    public $month;
 
-	public $year;
+    public $year;
 
-	public $dayOfWeek;
+    public $dayOfWeek;
 
-	public $dayOfMonth;
+    public $dayOfMonth;
 
-	public $dayOfYear;
+    public $dayOfYear;
 
-	public $weekOfMonth;
+    public $weekOfMonth;
 
-	public $weekday;
+    public $weekday;
 
-	public $weekend;
+    public $weekend;
 
-	public $wprkDay;
+    public $wprkDay;
 
-	public $payday;
+    public $payday;
 
-	public $holiday;
+    public $holiday;
 
-	public function nextWorkingDay()
-	{
+    public function nextWorkingDay()
+    {
+    }
 
-	}
+    public function previousWorkingDay()
+    {
+    }
 
-	public function previousWorkingDay()
-	{
+    public function isWeekend()
+    {
+        if ($this->weekend == 1) {
+            return true;
+        }
+    }
 
-	}
-
-	public function isWeekend()
-	{
-		if ($this->weekend == 1){
-			return true;
-		}
-	}
-
-	public function isWorkDay()
-	{
-		if ($this->workDay == 1){
-			return true;
-		}
-	}
+    public function isWorkDay()
+    {
+        if ($this->workDay == 1) {
+            return true;
+        }
+    }
 }

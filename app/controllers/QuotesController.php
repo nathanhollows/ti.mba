@@ -304,10 +304,10 @@ class QuotesController extends ControllerBase
             );
         }
 
-		$quote->assign([
-			'date'	=> date("Y-m-d"),
-			'user'	=> $this->auth->getId(),
-		]);
+        $quote->assign([
+            'date'	=> date("Y-m-d"),
+            'user'	=> $this->auth->getId(),
+        ]);
 
         $this->tag->prependTitle('New Quote');
         $this->view->form = new QuotesForm($quote);

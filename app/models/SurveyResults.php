@@ -7,7 +7,6 @@ use Phalcon\Mvc\Model\Query\Builder;
 
 class SurveyResults extends Model
 {
-
     public $id;
 
     public $timestamp;
@@ -48,13 +47,13 @@ class SurveyResults extends Model
     public static function countResults($field)
     {
         $builder = new Builder();
-		return $builder
-			->columns(array('field' => "$field", 'result' => 'COUNT(*)'))
-			->from('App\Models\SurveyResults')
-			->where("$field IS NOT NULL")
-			->groupBy(array("$field"))
-			->getQuery()
-			->execute();
+        return $builder
+            ->columns(array('field' => "$field", 'result' => 'COUNT(*)'))
+            ->from('App\Models\SurveyResults')
+            ->where("$field IS NOT NULL")
+            ->groupBy(array("$field"))
+            ->getQuery()
+            ->execute();
     }
 
     public static function countallResults($field)
@@ -63,5 +62,4 @@ class SurveyResults extends Model
             'conditions'    => "$field IS NOT NULL",
         ));
     }
-
 }

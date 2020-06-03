@@ -41,5 +41,4 @@ class OrderLocations extends Model
     {
         $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
     }
-
 }

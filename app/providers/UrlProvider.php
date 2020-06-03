@@ -9,7 +9,6 @@ use Phalcon\Url as UrlResolver;
 
 class UrlProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'url';
 
     public function register(DiInterface $di): void

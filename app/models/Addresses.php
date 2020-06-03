@@ -85,5 +85,4 @@ class Addresses extends Model
     {
         return parent::findFirst($parameters);
     }
-
 }

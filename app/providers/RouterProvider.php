@@ -11,7 +11,6 @@ use App\Timba;
 
 class RouterProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'router';
 
     public function register(DiInterface $di): void

@@ -39,5 +39,4 @@ class Permissions extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
-
 }

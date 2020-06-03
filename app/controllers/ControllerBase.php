@@ -45,10 +45,9 @@ class ControllerBase extends Controller
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
-
         }
 
-		$this->view->elements = $this->elements;
+        $this->view->elements = $this->elements;
 
         $this->view->setVar('logged_in', is_array($this->auth->getIdentity()));
         $this->tag->appendTitle(' | ' . SITE_TITLE);

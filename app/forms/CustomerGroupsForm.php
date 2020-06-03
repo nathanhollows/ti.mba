@@ -15,7 +15,6 @@ class CustomerGroupsForm extends Form
      */
     public function initialize($entity = null, $options = array())
     {
-
         if (!isset($options['edit'])) {
             $element = new Text("id");
             $this->add($element->setLabel("Id"));

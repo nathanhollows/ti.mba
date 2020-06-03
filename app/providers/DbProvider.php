@@ -12,7 +12,6 @@ use function App\root_path;
 
 class DbProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'db';
 
     protected $adapters = [

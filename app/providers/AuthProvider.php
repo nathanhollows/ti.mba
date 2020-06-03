@@ -9,7 +9,6 @@ use App\Plugins\Auth\Auth;
 
 class AuthProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'auth';
 
     public function register(DiInterface $di): void

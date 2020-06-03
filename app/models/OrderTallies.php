@@ -30,5 +30,4 @@ class OrderTallies extends Model
      * @var int
      */
     public $length;
-
 }

@@ -6,11 +6,9 @@ use Phalcon\Mvc\Model;
 
 class Feedback extends Model
 {
-
-	public $time;
-	public $user;
-	public $uri;
-	public $opinion;
-	public $feedback;
-
+    public $time;
+    public $user;
+    public $uri;
+    public $opinion;
+    public $feedback;
 }

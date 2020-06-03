@@ -24,14 +24,13 @@ class DashboardController extends ControllerBase
 
     public function indexAction()
     {
-
         $tasks = new ContactRecord;
         $this->view->noHeader = true;
 
         $user = $this->session->get('auth-identity')['id'];
 
-		$this->view->budget = Budgets::current();
-		$this->view->kpis = Kpis::thisMonth();
+        $this->view->budget = Budgets::current();
+        $this->view->kpis = Kpis::thisMonth();
         $this->view->users = Users::listUsers();
         $this->view->monthsSales = DailySales::sumMonth();
         $this->view->daySales = DailySales::sumDay(date("Y-m-d"));
@@ -88,7 +87,6 @@ class DashboardController extends ControllerBase
 
     public function despatchAction()
     {
-
         $tasks = new ContactRecord;
 
         $this->view->orderLocations = Orders::countLocations();

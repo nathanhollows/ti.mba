@@ -24,5 +24,4 @@ class HotlistTypes extends Model
      * @var string
      */
     public $description;
-
 }

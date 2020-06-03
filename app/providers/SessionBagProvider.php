@@ -9,7 +9,6 @@ use Phalcon\Session\Bag;
 
 class SessionBagProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'sessionBag';
 
     public function register(DiInterface $di): void

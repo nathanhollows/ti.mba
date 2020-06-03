@@ -6,21 +6,21 @@ use Phalcon\Mvc\Model;
 
 class Dryness extends Model
 {
-	/**
+    /**
      *
      * @var integer
      */
-	public $id;
+    public $id;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $shortCode;
+    public $shortCode;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $name;
+    public $name;
 }

@@ -6,33 +6,32 @@ use Phalcon\Mvc\Model;
 
 class PacketOperations extends Model
 {
-	/**
+    /**
      *
      * @var int
      */
-	public $id;
+    public $id;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $shortCode;
+    public $shortCode;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $description;
+    public $description;
 
-	/**
+    /**
      *
      * @var string
      */
-	public $customerCode;
+    public $customerCode;
 
     public function initialize()
     {
         // Create relationships
     }
-
 }

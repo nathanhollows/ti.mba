@@ -29,5 +29,4 @@ class HotlistFollowing extends Model
     {
         $this->hasOne('user', 'App\Models\Users', 'id', array('alias' => 'details'));
     }
-
 }

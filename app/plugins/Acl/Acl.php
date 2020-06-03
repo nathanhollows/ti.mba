@@ -191,7 +191,6 @@ class Acl extends Injectable
         }
 
         if (touch(APP_DIR . $this->filePath) && is_writable(APP_DIR . $this->filePath)) {
-
             file_put_contents(APP_DIR . $this->filePath, serialize($acl));
 
             // Store the ACL in APC

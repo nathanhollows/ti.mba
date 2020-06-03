@@ -9,7 +9,6 @@ use App\Plugins\Elements;
 
 class ElementsProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'elements';
 
     public function register(DiInterface $di): void

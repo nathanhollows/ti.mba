@@ -18,7 +18,6 @@ class OrdersCompleted extends Model
      */
     public function initialize()
     {
-			//
+        //
     }
-
 }

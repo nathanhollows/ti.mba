@@ -34,7 +34,5 @@ class SalesBudget extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        
     }
-
 }

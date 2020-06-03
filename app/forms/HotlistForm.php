@@ -21,7 +21,6 @@ class HotlistForm extends Form
      */
     public function initialize($entity = null, $options = array())
     {
-
         $title = new Text('title');
         $title->setAttributes(array(
             "placeholder"   => "Henderson Bridge Job",
@@ -85,6 +84,5 @@ class HotlistForm extends Form
         $this->add($description);
         $this->add($customer);
         $this->add($amount);
-
     }
 }

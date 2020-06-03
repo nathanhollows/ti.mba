@@ -8,13 +8,13 @@ date_default_timezone_set('NZ');
  * We're a registering a set of directories taken from the configuration file
  */
 $loader->registerNamespaces(
-	array(
+    array(
         'App\Controllers'           => $config->application->controllersDir,
-		'App\Controllers\Mobile'	=> $config->application->mobileControllersDir,
-		'App\Models' 		        => $config->application->modelsDir,
-		'App\Forms' 		        => $config->application->formsDir,
-		'App\Providers'		        => $config->application->providersDir,
-		'App\Plugins'		        => $config->application->pluginsDir,
-		'App' 				        => $config->application->applicationDir,
-	)
+        'App\Controllers\Mobile'	=> $config->application->mobileControllersDir,
+        'App\Models' 		        => $config->application->modelsDir,
+        'App\Forms' 		        => $config->application->formsDir,
+        'App\Providers'		        => $config->application->providersDir,
+        'App\Plugins'		        => $config->application->pluginsDir,
+        'App' 				        => $config->application->applicationDir,
+    )
 )->register();

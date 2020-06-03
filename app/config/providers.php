@@ -24,7 +24,7 @@ use App\Providers\ModelsCacheProvider;
 
 return [
     AssetsProvider::class,
-	# TODO: Configure the LoggerProvider
+    # TODO: Configure the LoggerProvider
     # LoggerProvider::class,
     SecurityProvider::class,
     AclProvider::class,

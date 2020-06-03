@@ -24,7 +24,8 @@ class CustomersController extends ControllerBase
 {
     public function initialize()
     {
-        $this->view->setTemplateBefore('private'); parent::initialize();
+        $this->view->setTemplateBefore('private');
+        parent::initialize();
         $this->view->setViewsDir('/var/www/html/app/facelift/');
     }
 
@@ -235,9 +236,10 @@ class CustomersController extends ControllerBase
         }
 
         $customer = new Customers();
-		$customer->assign(
-			$this->request->getPost(), 
-			array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup'));
+        $customer->assign(
+            $this->request->getPost(),
+            array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup')
+        );
         if (!$customer->save()) {
             foreach ($customer->getMessages() as $message) {
                 $this->flashSession->error($message);

@@ -7,98 +7,98 @@ use App\Plugins\Auth\Auth;
 
 class ContactRecord extends Model
 {
-	/**
+    /**
      *
      * @var integer
      */
-	public $id;
+    public $id;
 
     /**
      *
      * @var date
      */
-	public $date;
+    public $date;
 
     /**
      *
      * @var string
      */
-	public $customerCode;
+    public $customerCode;
 
     /**
      *
      * @var integer
      */
-	public $user;
-
-	/**
-     *
-     * @var integer
-     */
-	public $contactType;
-
-	/**
-     *
-     * @var integer
-     */
-	public $status;
+    public $user;
 
     /**
      *
-     * @var string
+     * @var integer
      */
-	public $contactReference;
+    public $contactType;
+
+    /**
+     *
+     * @var integer
+     */
+    public $status;
 
     /**
      *
      * @var string
      */
-	public $details;
+    public $contactReference;
 
-	/**
+    /**
+     *
+     * @var string
+     */
+    public $details;
+
+    /**
      *
      * @var integer
      */
-	public $followUpUser;
+    public $followUpUser;
 
     /**
      *
      * @var date
      */
-	public $followUpDate;
+    public $followUpDate;
 
     /**
      *
      * @var string
      */
-	public $followUpNotes;
+    public $followUpNotes;
 
     /**
      *
      * @var string
      */
-	public $infoSent;
+    public $infoSent;
 
-	/**
+    /**
      *
      * @var integer
      */
-	public $attachments;
+    public $attachments;
 
-	/**
+    /**
      *
      * @var integer
      */
-	public $completed;
+    public $completed;
 
-	public function initialize()
-	{
+    public function initialize()
+    {
         $this->hasOne('user', 'App\Models\Users', 'id', array('alias'  => 'staff'));
-		$this->hasOne('contact', 'App\Models\Contacts', 'id', array('alias'  => 'person'));
+        $this->hasOne('contact', 'App\Models\Contacts', 'id', array('alias'  => 'person'));
         $this->hasOne('contactType', 'App\Models\ContactType', 'id', array('alias'  => 'type'));
-		$this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias'  => 'company'));
-		$this->hasOne('job', 'App\Models\Quotes', 'quoteId', array('alias'  => 'quote'));
-	}
+        $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias'  => 'company'));
+        $this->hasOne('job', 'App\Models\Quotes', 'quoteId', array('alias'  => 'quote'));
+    }
 
     public function beforeCreate()
     {
@@ -192,5 +192,4 @@ class ContactRecord extends Model
             return false;
         }
     }
-
 }

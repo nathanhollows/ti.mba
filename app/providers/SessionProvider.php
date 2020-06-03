@@ -10,7 +10,6 @@ use Phalcon\Session\Manager as SessionManager;
 
 class SessionProvider implements ServiceProviderInterface
 {
-
     protected $providerName = 'session';
 
     public function register(DiInterface $di): void

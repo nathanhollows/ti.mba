@@ -12,25 +12,22 @@ use Phalcon\Storage\SerializerFactory;
 
 class ModelsCacheProvider implements ServiceProviderInterface
 {
+    protected $providerName = 'modelsCache';
 
-	protected $providerName = 'modelsCache';
+    public function register(DiInterface $di): void
+    {
+        $di->set($this->providerName, function () {
+            $serializerFactory = new SerializerFactory();
+            $adapterFactory    = new AdapterFactory($serializerFactory);
 
-	public function register(DiInterface $di): void
-	{
+            $options = [
+                'defaultSerializer' => 'Php',
+                'lifetime'          => 7200
+            ];
 
-		$di->set($this->providerName, function () {
-			$serializerFactory = new SerializerFactory();
-			$adapterFactory    = new AdapterFactory($serializerFactory);
+            $adapter = $adapterFactory->newInstance('apcu', $options);
 
-			$options = [
-				'defaultSerializer' => 'Php',
-				'lifetime'          => 7200
-			];
-
-			$adapter = $adapterFactory->newInstance('apcu', $options);
-
-			return new Cache($adapter);
-		});
-	}
-
+            return new Cache($adapter);
+        });
+    }
 }
