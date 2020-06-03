@@ -48,7 +48,7 @@ class Timba
     }
 
     /**
-     * Run Vökuró Application
+     * Run Ti.mba Application
      *
      * @return string
      * @throws Exception
