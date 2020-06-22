@@ -26,6 +26,11 @@ class Kpis extends Model
 
     public $ordersSent;
 
+	public function afterSave() {
+        $this->di->get('modelsCache')->deleteMultiple([
+            "week-sales-{$date}", "months-kpis",
+        ]);
+	}
 
     public static function thisMonth()
     {
@@ -35,7 +40,7 @@ class Kpis extends Model
                 "order" => "date ASC",
                 "cache"	=> [
                     "key"	=> "months-kpis",
-                    "lifetime"	=> 500,
+                    "lifetime"	=> 86400,
                 ],
             )
         );
