@@ -1,4 +1,4 @@
-<button type="button" data-toggle="modal" data-target="#feedbackModal" style="position: fixed;right: 0;bottom: 0;margin: 1em; z-index: 4;" class="btn btn-danger shadow">Give Feedback</button>
+<button type="button" data-toggle="modal" data-target="#feedbackModal" style="position: fixed;right: 0;bottom: 0;margin: 1em; z-index: 4;" class="d-none d-md-block btn btn-danger shadow">Give Feedback</button>
 
 <!-- Feedback Modal -->
 <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
@@ -69,20 +69,20 @@
 </div>
 
 <script>
-	function submitFeedback() {
-		let post = $.post('/feedback/new', $('#feedbackForm').serialize());
-		// I should do error checking
-		$('#feedbackButton').html('Thank you');
-		window.setTimeout(function () {
-			$('#feedbackModal').modal('hide');
-			$("#feedbackButton").html('Send');
-			$(':input','#feedbackForm')
-				.not(':button, :submit, :reset, :hidden')
-				.val('')
-				.prop('checked', false)
-				.prop('selected', false);
-		}, 1000);
-	}
+function submitFeedback() {
+	let post = $.post('/feedback/new', $('#feedbackForm').serialize());
+	// I should do error checking
+	$('#feedbackButton').html('Thank you');
+	window.setTimeout(function () {
+		$('#feedbackModal').modal('hide');
+		$("#feedbackButton").html('Send');
+		$(':input','#feedbackForm')
+			.not(':button, :submit, :reset, :hidden')
+			.val('')
+			.prop('checked', false)
+			.prop('selected', false);
+	}, 1000);
+}
 $("a.open-modal").click(function(ev) {
 	ev.preventDefault();
 	var target = $(this).attr("href");
@@ -111,6 +111,98 @@ $(document).on("click", "#modal-save", function(e) {
 $(document).ready(function() {
 	$.fn.editable.defaults.mode = 'inline';
 	$('#username').editable();
+
+	$('#search-form').on('keyup keypress', function(e) {
+		var keyCode = e.keyCode || e.which;
+		if (keyCode === 13) {
+			e.preventDefault();
+			var active = $("#search-results .active");
+			if (active.length == 1) {
+				active[0].click();
+			} else {
+				$("#search-form").submit();
+			}
+		}
+	});
+
+	var search;
+
+	$("#search-nav").on('keyup', function(e) {
+		if (e.which === 13) {
+			return;
+		} else if (e.which === 27) {
+			$("#search-results")[0].classList.remove("d-md-block");
+			return;
+		} else if (e.which == 40) {
+			e.preventDefault();
+			var active = $("#search-results .active");
+			if (active.length) {
+				active.toggleClass("active");
+				active.next().toggleClass("active");
+			} else {
+				active = $("#search-results").children(":first").toggleClass("active")
+			}
+			return;
+		} else if (e.which == 38) {
+			e.preventDefault();
+			var active = $("#search-results .active");
+			if (active.length) {
+				active.toggleClass("active");
+				active.prev().toggleClass("active");
+			} else {
+				active = $("#search-results").children(":last").toggleClass("active");
+			}
+			return;
+		} 
+	});
+
+	$("#search-nav").on('blur', function(e) {
+		console.log("I'm so triggered");
+		$("#search-results").delay(200).queue(function() {
+			$("#search-results")[0].classList.remove("d-md-block");
+		});
+	});
+
+	var searching = $("#search-nav").on('input', function(e) {
+		var length = $(this).val().length;
+		if (length > 3) {
+			if (search) {
+				search.abort();
+			}
+			$("#search-results").addClass("d-md-block");
+			var term = $("#search-nav").val();
+			$("#search-results").empty().html(`<li class="list-group-item"> \n\
+				<div class="spinner-border spinner-border-sm" role="status"> \n\
+				<span class="sr-only">Loading...</span> \n\
+				</div> Searching for <strong>${ term }</strong>\n\
+				</li>`);
+			search = $.getJSON("{{ url('search/q/') }}" + $(this).val() + "?live", function() {
+				if (search.status == 200 && search.responseJSON["results"] > 0 ) {
+					$("#search-results").empty();
+					// $("#search-results").append('<li class="list-group-item"><strong>Customers</strong></li>');
+					var result;
+					for (var i = 0; i < Math.min(search.responseJSON["customers"].length, 10); i++) {
+						var code = search.responseJSON["customers"][i].customerCode;
+						var name = search.responseJSON["customers"][i].customerName;
+						result = '<a class="list-group-item list-group-item-action" href="/customers/view/' + code + '" data-instant>';
+						result += name;
+						result += '</a>';
+						$("#search-results").append(result);
+					}
+					if (search.responseJSON["results"] > 10) {
+						$("#search-results").append(`<li class="list-group-item text-muted">Press Enter for more results</li>`);
+					}
+				} else {
+					$("#search-results").empty().html(`<li class="list-group-item">No customers for <strong>${ term }</strong></li>`);
+					$("#search-results").append(`<li class="list-group-item text-muted">Press Enter for full results</li>`);
+				}
+			});
+		} else {
+			$("#search-results").empty();
+			$("#search-results").removeClass("d-md-block");
+		}
+	});
+
 });
 </script>
 

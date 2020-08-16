@@ -184,12 +184,18 @@ class Elements extends Injectable
     {
         $user = $this->auth->getId();
         $controllerName = $this->view->getControllerName();
-        echo '<li class="nav-item">    <form style="height: 100%;" class="form-inline  my-2 my-lg-0" action="/search/q/" method="post" autocomplete="off">
-			<input type="search" placeholder="Search" aria-label="Search" name="query" style="background: #ffffff17;border: none;color: white;height: 100%;display: inline-block;padding: 0 2.3em 0 0.7em;width: 14.6vw;max-width: 13em;min-width: 8.9em;">
+		echo '
+<ul id="search-results" class="list-group shadow d-sm-none"></ul>
+<li class="nav-item">
+<form id="search-form" style="height: 100%;" class="form-inline  my-2 my-lg-0" action="/search/q/" method="post" autocomplete="off">
+<input type="search" id="search-nav" placeholder="Search" aria-label="Search" name="query" style="background: #ffffff17;border: none;color: white;height: 100%;display: inline-block;padding: 0 2.3em 0 0.7em;width: 14.6vw;max-width: 13em;min-width: 8.9em;">
 
-			<button type="submit" style="filter: brightness(1) invert(0.6);margin-left: -1.9em;" class="btn p-0 mr-3">
-			<img src="/img/icons/search.svg" style="width: 1.4rem;">
-			</button></form></li>';
+<button type="submit" style="filter: brightness(1) invert(0.6);margin-left: -1.9em;" class="btn p-0 mr-3">
+<img src="/img/icons/search.svg" style="width: 1.4rem;">
+</button>
+</form>
+<div id="search-results"></div>
+</li>';
 
         foreach ($this->_rightNav as $controller => $option) {
             $class = ($controller == $controllerName ? "active" : "");

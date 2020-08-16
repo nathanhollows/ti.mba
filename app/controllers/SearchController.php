@@ -27,10 +27,30 @@ class SearchController extends ControllerBase
 
     public function qAction($query = null)
     {
+		if (!is_null($query)) {
+			$query = str_replace('%20', ' ', $query);
+		}
+		if ($this->request->has('live')) {
+			$this->view->disable();
+			if (strlen($query) < 3) {
+				return false;
+			}
+			$customers = Customers::searchColumns($query);
+
+			$response = new \Phalcon\Http\Response();
+			$response->setContentType('application/json');
+			$content = json_encode([
+				"term" => $query,
+				"results" => count($customers),
+				"customers" => $customers->jsonSerialize(),
+			]);
+			$response->setContent($content);
+			return $response;
+		}
+
         $this->tag->prependTitle('Search');
 
         $this->view->query = '';
-        $this->view->noHeader = true;
         $this->view->noResults = false;
         $this->view->noTerm = false;
         if (is_null($query) && $this->request->has("query")) {
@@ -46,21 +66,21 @@ class SearchController extends ControllerBase
             $this->flash->warning("Searches must contain more than 2 characters.");
             return true;
         }
-        $term = str_replace(' ', '%', $query);
         $this->view->query = $query;
 
-        $contacts = Contacts::searchColumns($term);
-        $customers = Customers::searchColumns($term);
-        $quotes = Quotes::searchColumns($term);
-        $orders = Orders::searchColumns($term);
+        $contacts = Contacts::searchColumns($query);
+        $customers = Customers::searchColumns($query);
+        $quotes = Quotes::searchColumns($query);
+        $orders = Orders::searchColumns($query);
+
+
+        $this->view->contacts = $contacts;
+        $this->view->customers = $customers;
+        $this->view->quotes = $quotes;
 
         if (count($contacts) == 0 and count($customers) == 0 and count($quotes) == 0) {
             $this->view->noResults = true;
             return true;
         }
-
-        $this->view->contacts = $contacts;
-        $this->view->customers = $customers;
-        $this->view->quotes = $quotes;
     }
 }

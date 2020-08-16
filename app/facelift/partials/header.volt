@@ -25,7 +25,8 @@
     #1b354a !important;
 }
 .feather {
-	width: 1rem;
+	height: 1rem;
+	margin-top: -0.2rem;
 }
 
 /* Timeline Stytling */
@@ -52,6 +53,26 @@ li .confirm-delete {
     border-color: #152b3e;
 }
 
+/* Search */
+
+#search-results {
+	display: none;
+	position: absolute;
+	z-index: 2;
+	top: 2.7em;
+	right: 1em;
+	left: 0;
+	z-index: 3;
+}
+
+.xedit {
+	margin-bottom: -1px;
+	border-bottom: 1px dashed;
+	color: var(--dark);
+}
+.editable-empty {
+    color: #c62d3b;
+}
 </style>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
