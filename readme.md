@@ -3,13 +3,32 @@
 Ti.mba is a CRM package for the timber industry.
 
 <description>
+   
+## Table of Contents
 
-## Version
-2.0 (versioning hasn't been consistent, let's be real)
+* [About The Project](#about-the-project)
+  * [Built With](#built-with)
+* [Getting Started](#getting-started)
+  * [Installation](#installation)
+* [Contributing](#contributing)
+* [License](#license)
+* [Contact](#contact)
 
-<version>
+## About The Project
 
-## Installation
+
+### Built With
+
+* Phalcon 4+
+* MariaDB
+* Bootstrap 3/4
+* jQuery
+* Datables
+* Swiftmail
+ 
+## Getting Started
+
+### Installation
 
 1. Navigate to htdocs (or server equivalent)
 2. Clone repository `git clone https://github.com/nathanhollows/ti.mba.git`
@@ -18,26 +37,15 @@ Ti.mba is a CRM package for the timber industry.
 
 <instructions>
 
-## Author
+## Contributing
 
-Nathan Hollows
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-<author>
-
-## Tech
-
-Ti.mba uses a number of open source projects to work properly:
-
-* [Phalcon 4+]
-* MariaDB
-* [Bootstrap 3/4]
-* [jQuery]
-
-   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
-   [Phalcon 4+]: <https://phalconphp.com/en/>
-   [jQuery]: <https://jquery.com/>
-
-<tech>
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
@@ -50,3 +58,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 <license>
+
+## Contact
+
+Nathan Hollows
+
+Project Link: [https://github.com/nathanhollows/ti.mba](https://github.com/nathanhollows/ti.mba)
