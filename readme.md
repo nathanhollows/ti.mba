@@ -1,6 +1,15 @@
-# Ti.mba
+<br />
+<p align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="public/mstile-144x144.png" alt="Logo" width="80" height="80">
+  </a>
 
-Ti.mba is a CRM package for the timber industry.
+  <h3 align="center">Ti.mba</h3>
+
+  <p align="center">
+   A CRM for the Timber industry
+  </p>
+</p>
 
 <description>
    
