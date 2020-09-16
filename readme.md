@@ -16,6 +16,33 @@ Ti.mba is a CRM package for the timber industry.
 
 ## About The Project
 
+![Ti.mba Dashboard](/docs/dashboard.png)
+
+Ti.mba is a Customer Relationship Manager for the timber industry. Ti.mba is a mature software that is still under slow development.
+
+**Dashboard**
+
+A quick overview of incoming sales and outgoing product for the day / month.
+
+**Customers**
+
+Manage customers, record notes, quickly view orders and outstanding quotes.
+
+**Quotes**
+
+Create excellent looking quotes using the quote builder and render these to PDF. Easily allows users to search and manage quotes high priority quotes.
+
+**Reports**
+
+Currently features a customers, annual sales, regional sales, and monthly sales report.
+
+**Integration**
+
+Integrates with:
+
+- PBT (freight tracking)
+- Mainfreight (freight tracking)
+- Stock management software (orders / sales)
 
 ### Built With
 
