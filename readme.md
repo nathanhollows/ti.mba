@@ -18,7 +18,9 @@ Ti.mba is a CRM package for the timber industry.
 
 ![Ti.mba Dashboard](/docs/dashboard.png)
 
-Ti.mba is a Customer Relationship Manager for the timber industry. Ti.mba is a mature software that is still under slow development.
+Ti.mba is a Customer Relationship Manager for the timber industry. It was developed for [ATS Timber](atstimber.co.nz). Ti.mba was developed to make up for my own terrible memory. I needed a system that was able to quickly give me information I needed and set reminders to orders / customers to follow up. Ti.mba was originally developed as a system for making notes on orders, and then developed into a full fledged and fully integrated CRM that the entire team started using.
+
+See [License](#license) for more information. In a nutshell, the software is free to build upon and use for commerical use. I am also happy to provide a hosted and managed solution.
 
 **Dashboard**
 
