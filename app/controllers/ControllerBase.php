@@ -41,7 +41,8 @@ class ControllerBase extends Controller
 
     public function initialize()
     {
-        if ($this->session->get('auth-identity')['dev'] || $this->request->hasQuery("facelift")) {
+        // Show errors if in dev mode
+        if (isset($this->session->get('auth-identity')['dev'])) {
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
