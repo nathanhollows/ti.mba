@@ -2,7 +2,7 @@
     "require": {
         "magnxpyr/phalcon-datatables": "1.*",
         "nesbot/carbon": "~1.21.0",
-        "cebe/markdown": "^2.27.0",
+        "cebe/markdown": "^1.2.1",
         "swiftmailer/swiftmailer": "^5.4"
     }
 }
