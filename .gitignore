@@ -8,3 +8,5 @@ composer.lock
 *.swp
 app/script
 public/.well-known/
+composer.phar
+var/*
