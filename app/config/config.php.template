@@ -21,12 +21,19 @@ return new \Phalcon\Config(array(
 		'formsDir'       => __DIR__ . '/../../app/forms/',
 		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
 		'libraryDir'     => __DIR__ . '/../../app/library/',
+		'providersDir'   => __DIR__ . '/../../app/providers/',
 		'cacheDir'       => __DIR__ . '/../../app/cache/',
+
+		// Session save path
+		'sessionSavePath' => __DIR__ . '/../../var/session/',
+
 		// Set the root URI
 		'baseUri'        => '',
 		'publicUrl'      => '',
+
 		// Define the site title
 		'siteTitle'		 => 'Ti.mba',
+		
 		// Define version number
 		'version'		 => '1.0',
 	),
