@@ -410,7 +410,9 @@ CREATE TABLE IF NOT EXISTS `reset_passwords` (
 
 CREATE TABLE IF NOT EXISTS `sales_areas` (
   `id` int(11) NOT NULL,
-  `name` varchar(25) COLLATE utf8_unicode_ci NOT NULL
+  `name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `agent` int(11) DEFAULT NULL,
+  `nicename` varchar(120) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `species` (
