@@ -55,9 +55,7 @@ class Timba
      */
     public function run(): string
     {
-        $baseUri = $this->di->getShared('url')->getBaseUri();
-        $position = strpos($_SERVER['REQUEST_URI'], $baseUri) + strlen($baseUri);
-        $uri = '/' . substr($_SERVER['REQUEST_URI'], $position);
+        $uri = $_SERVER['REQUEST_URI'];
 
         /** @var ResponseInterface $response */
         $response = $this->app->handle($uri);
