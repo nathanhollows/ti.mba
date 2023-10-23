@@ -26,6 +26,14 @@ CREATE TABLE IF NOT EXISTS `address_types` (
   `typeDescription` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `budgets` (
+  `date` date NOT NULL,
+  `year` int(4) NOT NULL,
+  `month` int(2) NOT NULL,
+  `days` int(2) NOT NULL,
+  `budget` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `bug_status` (
   `id` int(11) NOT NULL,
   `name` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
@@ -137,6 +145,15 @@ CREATE TABLE IF NOT EXISTS `customer_status` (
   `active` tinyint(1) NOT NULL,
   `warning` tinyint(1) NOT NULL,
   `statusNote` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `daily_sales` (
+  `id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `quoted` tinyint(1) NOT NULL DEFAULT '0',
+  `customerReference` varchar(255) DEFAULT NULL,
+  `value` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `rep` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `dryness` (
