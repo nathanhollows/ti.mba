@@ -1,10 +1,10 @@
-<form action="/users/update" method="POST" role="form">
+<form action="/users/new" method="POST" role="form">
 	<div class="header py-3">
 		<div class="container">
 			<div class="row header-body">
 				<div class="col">
-					<h6 class="header-pretitle">Editing User</h6>
-					<h4 class="header-title">{{ user.name }}</h4>
+					<h6 class="header-pretitle">Admin action</h6>
+					<h4 class="header-title">Add a User</h4>
 				</div>
 				<div class="col-3 text-right">
 				<button type="submit" class="btn btn-primary">Save</button>
@@ -28,7 +28,6 @@
 					</div>
 					<div class="panel-body">
 						<div class="form-group">
-							{{ hidden_field('id', 'value': user.id) }}
 							<label for="name">Name</label>
 							{{ form.render('name') }}
 						</div>
@@ -57,7 +56,7 @@
 						<ul class="list-group">
 							<li class="list-group-item">
 								<label for="developer">
-									<input type="checkbox" name="developer" id="developer" {% if user.developer is 1 %}checked="checked"{% endif %}>
+									<input type="checkbox" name="developer" id="developer">
 									Developer
 								</label>
 								<br />
@@ -65,7 +64,7 @@
 							</li>
 							<li class="list-group-item">
 								<label for="admin">
-									<input type="checkbox" name="admin" id="admin" {% if user.administrator is 1 %}checked="checked"{% endif %}>
+									<input type="checkbox" name="admin" id="admin">
 									Administrator
 								</label>
 								<br />
@@ -73,7 +72,7 @@
 							</li>
 							<li class="list-group-item">
 								<label for="suspended">
-									<input type="checkbox" name="suspended" id="suspended" {% if user.suspended is 1 %}checked="checked"{% endif %}>
+									<input type="checkbox" name="suspended" id="suspended">
 									Suspended
 								</label>
 								<br />
@@ -86,7 +85,7 @@
 				
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h5 class="panel-title">Reset Password</h9>
+						<h5 class="panel-title">Set Password</h9>
 						</div>
 						<div class="panel-body">
 							<div class="form-group">

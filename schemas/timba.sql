@@ -452,10 +452,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `directDial` varchar(50) DEFAULT NULL,
   `password` char(60) NOT NULL,
   `mustChangePassword` char(1) DEFAULT NULL,
-  `profilesId` int(10) unsigned DEFAULT NULL,
-  `banned` char(1) DEFAULT NULL,
-  `suspended` char(1) DEFAULT NULL,
-  `active` char(1) DEFAULT NULL
+  `suspended` boolean NOT NULL DEFAULT '0',
+  `active` boolean NOT NULL DEFAULT '1',
+  `administrator` boolean NOT NULL DEFAULT '0',
+  `developer` boolean NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -637,9 +637,7 @@ ALTER TABLE `treatment`
   ADD UNIQUE KEY `shortCode` (`shortCode`);
 
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `profilesId` (`profilesId`);
-
+  ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `addresses`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

@@ -153,17 +153,6 @@ class ProfileController extends ControllerBase
 
         $user = Users::findFirstByid($id);
 
-        if ($user->profilesId == 0) {
-            echo '
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<h4> This user is disabled </h4>
-					</div>
-				</div>
-			';
-            $this->view->pick('index');
-        }
-
         $this->view->pageTitle = $user->name;
         $this->view->pageSubtitle = 'Profile';
         $this->tag->prependTitle($user->name);

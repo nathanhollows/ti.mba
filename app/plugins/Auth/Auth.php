@@ -46,7 +46,6 @@ class Auth extends Injectable
             'id' => $user->id,
             'name' => $user->name,
             'changePassword' => $user->mustChangePassword,
-            'profile' => $user->profilesId,
             'dev' => $user->dev,
             'uca' => $user->useUCA,
         ));
@@ -139,7 +138,6 @@ class Auth extends Injectable
                                                     'id' => $user->id,
                                                     'name' => $user->name,
                                                     'changePassword' => $user->mustChangePassword,
-                                                    'profile' => $user->profilesId,
                                                     'dev' => $user->dev,
                                                     'uca' => $user->useUCA,
                                                 ));
@@ -163,22 +161,14 @@ class Auth extends Injectable
     }
 
     /**
-     * Checks if the user is banned/inactive/suspended
+     * Checks if the user is suspended
      *
      * @param App\Models\Users $user
      */
     public function checkUserFlags(Users $user)
     {
-        if ($user->active != '1') {
-            throw new Exception('The user is inactive');
-        }
-
-        if ($user->banned != '0') {
-            throw new Exception('The user is banned');
-        }
-
         if ($user->suspended != '0') {
-            throw new Exception('The user is suspended');
+            throw new Exception('This account is suspended');
         }
     }
 

@@ -29,45 +29,6 @@ class SessionController extends ControllerBase
     }
     
     /**
-    * Allow a user to signup to the system
-    */
-    public function registerAction()
-    {
-        // Disabled registration
-        return $this->response->redirect("login");
-        
-        $this->tag->prependTitle('Register');
-        
-        $form = new SignUpForm();
-        
-        if ($this->request->isPost()) {
-            if ($form->isValid($this->request->getPost()) != false) {
-                $user = new Users();
-                
-                $user->assign(array(
-                    'name' => $this->request->getPost('name', 'striptags'),
-                    'email' => $this->request->getPost('email'),
-                    'password' => $this->security->hash($this->request->getPost('password')),
-                    'profilesId' => 2,
-                    'banned'    => '0',
-                    'suspended'    => '0',
-                    'mustChangePassword'    => '0',
-                    'active'    => '0',
-                ));
-                
-                if ($user->save()) {
-                    $this->response->redirect("login");
-                    $this->view->disable();
-                }
-                
-                $this->flash->error($user->getMessages());
-            }
-        }
-        
-        $this->view->form = $form;
-    }
-    
-    /**
     * Starts a session in the admin backend
     */
     public function loginAction()
@@ -79,12 +40,17 @@ class SessionController extends ControllerBase
             $user->name = 'Administrator';
             $user->email = 'admin@ti.mba';
             $user->password = $this->security->hash('password');
-            $user->profilesId = 1;
             $user->active = 1;
-            $user->banned = 0;
             $user->suspended = 0;
-            $user->save();
-            $this->flash->notice("Default user created with email: admin@ti.mba and password: password");
+            $user->developer = 1;
+            $user->administrator = 1;
+            if ($user->save() == false) {
+                foreach ($user->getMessages() as $message) {
+                    $this->flash->error($message);
+                }
+            } else {
+                $this->flash->notice("Default user created with email: admin@ti.mba and password: password");
+            }
         }
         
         

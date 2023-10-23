@@ -12,7 +12,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-md-offset-3 col-lg-offset-4">
+		<div class="col-12 col-md-4 offset-md-4">
 
 			{{ content() }}
 			{{ flashSession.output() }}
@@ -39,28 +39,6 @@
 						<div class="form-group">
 							<label for="directDial">Phone</label>
 							{{ form.render('directDial') }}
-						</div>
-					</div>
-				</div>
-
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h5 class="panel-title">Mitel UCA</h5>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-							<label for="useUCA">Use Mitel UCA phone links?</label>
-							{% if user.useUCA is 1 %}
-							{{ check_field('useUCA', 'checked': 'checked') }}
-							{% else %}
-							{{ check_field('useUCA') }}
-							{% endif %}
-							<p class="text-info">
-							On desktops this updates telephone links for use with the MiCollab Client. Log out and in for this to take effect.
-							</p>
-							<p class="text-danger">
-							If telephone links stop working on mobile then deselect this option.
-							</p>
 						</div>
 					</div>
 				</div>

@@ -6,9 +6,8 @@
                 <h4 class="header-title">Users</h4>
             </div>
             <div class="col text-right">
-                {{ linkTo(['users/new', 'New User', 'class': 'btn btn-primary disabled']) }}
+                {{ linkTo(['users/new', 'Add a User', 'class': 'btn btn-primary']) }}
             </div>
-            <hr />
         </div>
     </div>
 </div>
@@ -18,6 +17,7 @@
 	{{ content() }}
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+			<div class="card">
 					<table class="table table-hover">
 						<thead>
 							<tr>
@@ -29,10 +29,7 @@
 						<tbody>
 							{% for user in users %}
 							{% set note = "" %}
-							{% if user.banned == 1 %}
-							{% set class = "danger" %}
-							{% set note = "<br> This user is banned" %}
-							{% elseif user.suspended == 1 %}
+							{% if user.suspended == 1 %}
 							{% set class = "warning" %}
 							{% set note = "<br> This user is suspended" %}
 							{% elseif user.active == 0 %}

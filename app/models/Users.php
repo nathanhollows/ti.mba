@@ -32,6 +32,18 @@ class Users extends Model
      *
      * @var string
      */
+    public $position;
+
+    /**
+     *
+     * @var string
+     */
+    public $directDial;
+
+    /**
+     *
+     * @var string
+     */
     public $password;
 
     /**
@@ -39,18 +51,6 @@ class Users extends Model
      * @var int
      */
     public $mustChangePassword;
-
-    /**
-     *
-     * @var integer
-     */
-    public $profilesId;
-
-    /**
-     *
-     * @var string
-     */
-    public $banned;
 
     /**
      *
@@ -68,13 +68,13 @@ class Users extends Model
      *
      * @var int
      */
-    public $dev;
+    public $developer;
 
     /**
      *
      * @var int
      */
-    public $useUCA;
+    public $administrator;
 
     /**
      * Validations and business logic
@@ -129,7 +129,7 @@ class Users extends Model
     public static function getActive()
     {
         $results = parent::find(array(
-            "conditions"   => "active = 1 AND suspended = 0 AND banned = 0 AND id != 10",
+            "conditions"   => "active = 1 AND suspended = 0",
             "order"       => "FIELD(name, 'Fax'), name ASC",
 "cache"		=> [
                 "key"	=> "active-users",
