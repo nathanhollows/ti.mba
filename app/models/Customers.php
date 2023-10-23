@@ -197,19 +197,6 @@ class Customers extends \Phalcon\Mvc\Model
         }
     }
 
-
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return Customers
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
-
-
     public static function getName($customerCode = null)
     {
         $customer = parent::findFirstByCustomerCode($customerCode);

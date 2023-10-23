@@ -51,17 +51,6 @@ class SalesAreas extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return SalesAreas
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
-
-    /**
      * Get the sales for the region in the current financial year
      *
      * @param date

@@ -49,14 +49,4 @@ class CustomerStatus extends \Phalcon\Mvc\Model
         $this->belongsTo('id', 'App\Models\Customers', 'customerStatus');
     }
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return CustomerStatus
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 }

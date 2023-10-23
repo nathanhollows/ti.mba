@@ -37,14 +37,4 @@ class CustomerGroups extends \Phalcon\Mvc\Model
         $this->hasMany('id', 'App\Models\Customers', 'customerGroup', array('alias' => 'Customers'));
     }
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return CustomerGroups
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 }

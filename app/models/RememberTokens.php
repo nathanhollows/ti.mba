@@ -41,14 +41,4 @@ class RememberTokens extends \Phalcon\Mvc\Model
         $this->createdAt = time();
     }
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return RememberTokens
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 }

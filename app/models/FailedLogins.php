@@ -29,14 +29,4 @@ class FailedLogins extends \Phalcon\Mvc\Model
      */
     public $attempted;
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return FailedLogins
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 }

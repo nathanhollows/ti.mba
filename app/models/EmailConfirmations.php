@@ -41,14 +41,4 @@ class EmailConfirmations extends \Phalcon\Mvc\Model
      */
     public $confirmed;
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return EmailConfirmations
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 }

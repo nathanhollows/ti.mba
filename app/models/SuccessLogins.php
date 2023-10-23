@@ -35,14 +35,4 @@ class SuccessLogins extends \Phalcon\Mvc\Model
      */
     public $timestamp;
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return SuccessLogins
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 }

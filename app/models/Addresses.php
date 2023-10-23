@@ -75,14 +75,4 @@ class Addresses extends Model
         $this->hasOne('typeCode', 'App\Models\AddressTypes', 'typeCode', array('alias' => 'type'));
     }
 
-    /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return Addresses
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
 }

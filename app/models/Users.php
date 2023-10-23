@@ -106,17 +106,6 @@ class Users extends Model
     }
 
     /**
-     * Allows to query the first record that match the specified conditions
-     *
-     * @param mixed $parameters
-     * @return Users
-     */
-    public static function findFirst($parameters = null)
-    {
-        return parent::findFirst($parameters);
-    }
-
-    /**
      * Activates the selected user
      *
      * @return boolean
@@ -142,7 +131,7 @@ class Users extends Model
         $results = parent::find(array(
             "conditions"   => "active = 1 AND suspended = 0 AND banned = 0 AND id != 10",
             "order"       => "FIELD(name, 'Fax'), name ASC",
-            "cache"		=> [
+"cache"		=> [
                 "key"	=> "active-users",
             ],
         ));
