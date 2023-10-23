@@ -7,7 +7,7 @@ $router->setDefaultNamespace('App\Controllers');
 // Define default routes. File gets included in services.php
 
 $router->add('/', array(
-    'controller' => 1
+    'controller' => "dashboard"
 ));
 
 $router->add('/:controller/:action/:params', array(
