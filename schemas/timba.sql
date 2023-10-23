@@ -178,6 +178,14 @@ CREATE TABLE IF NOT EXISTS `failed_logins` (
   `attempted` smallint(5) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS feedback (
+    time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user VARCHAR(255) NOT NULL,
+    uri VARCHAR(255) NOT NULL,
+    opinion VARCHAR(255),
+    feedback TEXT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `finish` (
   `id` int(11) NOT NULL,
   `shortCode` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
