@@ -59,6 +59,17 @@ class DailySales extends Model
         ]);
     }
 
+    /**
+     * Delete the cache after delete
+     */
+    public function afterDelete()
+    {
+        $date = date("Y-m-d", strtotime($this->date));
+        $this->di->get('modelsCache')->deleteMultiple([
+            "week-sales-{$date}", "month-sales-{$date}",
+        ]);
+    }
+
     public static function sumWeek($date = null)
     {
         $results = parent::sum([
