@@ -13,37 +13,37 @@ use App\Models\ResetPasswords;
 
 class SessionController extends ControllerBase
 {
-
+    
     /**
-     * Default action. Set the public layout (layouts/public.volt)
-     */
+    * Default action. Set the public layout (layouts/public.volt)
+    */
     public function initialize()
     {
         parent::initialize();
         $this->view->setTemplateBefore('auth');
         $this->view->setViewsDir('/var/www/html/app/facelift/');
     }
-
+    
     public function indexAction()
     {
     }
-
+    
     /**
-     * Allow a user to signup to the system
-     */
+    * Allow a user to signup to the system
+    */
     public function registerAction()
     {
         // Disabled registration
         return $this->response->redirect("login");
-
+        
         $this->tag->prependTitle('Register');
-
+        
         $form = new SignUpForm();
-
+        
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) != false) {
                 $user = new Users();
-
+                
                 $user->assign(array(
                     'name' => $this->request->getPost('name', 'striptags'),
                     'email' => $this->request->getPost('email'),
@@ -54,34 +54,50 @@ class SessionController extends ControllerBase
                     'mustChangePassword'    => '0',
                     'active'    => '0',
                 ));
-
+                
                 if ($user->save()) {
                     $this->response->redirect("login");
                     $this->view->disable();
                 }
-
+                
                 $this->flash->error($user->getMessages());
             }
         }
-
+        
         $this->view->form = $form;
     }
-
+    
     /**
-     * Starts a session in the admin backend
-     */
+    * Starts a session in the admin backend
+    */
     public function loginAction()
     {
+        // Create a default user
+        $users = Users::find();
+        if (count($users) == 0) {
+            $user = new Users();
+            $user->name = 'Administrator';
+            $user->email = 'admin@ti.mba';
+            $user->password = $this->security->hash('password');
+            $user->profilesId = 1;
+            $user->active = 1;
+            $user->banned = 0;
+            $user->suspended = 0;
+            $user->save();
+            $this->flash->notice("Default user created with email: admin@ti.mba and password: password");
+        }
+        
+        
         if ($this->session->has('auth-identity')) {
             return $this->response->redirect('dashboard');
         }
-
+        
         $this->view->setTemplateBefore('auth');
-
+        
         $this->tag->prependTitle('Login');
-
+        
         $form = new LoginForm();
-
+        
         try {
             if (!$this->request->isPost()) {
                 if ($this->auth->hasRememberMe()) {
@@ -97,27 +113,27 @@ class SessionController extends ControllerBase
                         'email' => $this->request->getPost('email'),
                         'password' => $this->request->getPost('password')
                     ));
-
+                    
                     return $this->response->redirect('dashboard');
                 }
             }
         } catch (AuthException $e) {
             $this->flash->error($e->getMessage());
         }
-
+        
         $this->view->form = $form;
     }
-
+    
     /**
-     * Shows the forgot password form
-     */
+    * Shows the forgot password form
+    */
     public function forgotPasswordAction()
     {
         $this->tag->prependTitle('Forgotton Password');
-
+        
         $form = new ForgotPasswordForm();
         $this->view->form = $form;
-
+        
         // If the user has submitted their email address
         if ($this->request->isPost()) {
             if ($form->isValid($this->request->getPost()) == false) {
@@ -142,35 +158,35 @@ class SessionController extends ControllerBase
             }
         }
     }
-
+    
     public function resetpasswordAction($token = null)
     {
         $this->tag->prependTitle('Reset Password');
-
+        
         $this->view->token = false;
-
+        
         if (!$token) {
             $this->flash->error('Link is invalid');
             return true;
         }
-
+        
         $reset = ResetPasswords::findFirstBycode($token);
-
+        
         if (!$reset) {
             $this->flash->error('Token is invalid or has expired');
             return true;
         }
-
+        
         $this->view->token = true;
     }
-
+    
     private function updatepassword()
     {
     }
-
+    
     /**
-     * Closes the session
-     */
+    * Closes the session
+    */
     public function logoutAction()
     {
         $this->auth->remove();
