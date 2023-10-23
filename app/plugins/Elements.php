@@ -46,8 +46,8 @@ class Elements extends Injectable
             'caption' => 'KPI\'s',
             'action' => '',
             'children' => array(
-                array('Daily KPI\'s', 'kpi/'),
                 array('Sales', 'kpi/dailysales'),
+                array('Daily KPI\'s', 'kpi/'),
             )),
         'reports' => array(
             'icon'  => 'bar-chart',

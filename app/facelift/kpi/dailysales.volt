@@ -34,6 +34,11 @@
 		<div class="col">
 			{{ content() }}
 			{{ flashSession.output() }}
+			{% if budget.budget is not defined or budget.budget is 0 %}
+			<div class="alert alert-info" role="alert">
+				The budget for this month has not been set. This can be done in the {{link_to("reports/annual", "annual sales report", "class": "alert-link")}}
+			</div>
+			{% endif %}
 		</div>
 	</div>
 </div>
@@ -54,7 +59,7 @@
 								<th>Value</th>
 							</tr>
 						</thead>
-
+						
 						<tbody>
 							{# Loop through the days items #}
 							{% set value = 0%}
@@ -65,7 +70,6 @@
 								</td>
 								<td>
 									{{ hidden_field('id[]', 'value': item.id) }}
-									{{ hidden_field('timestamp[]', 'value': item.timestamp) }}
 									{{ select_static(['rep[]', users, 'using': ['id', 'name'], 'value': item.rep, 'class': 'data']) }}
 								</td>
 								<td>
@@ -86,116 +90,121 @@
 							</tr>
 							{% endfor %}
 							<!-- The last <tr> in the <tbody> will be used as template for new rows -->
-							<tr>
-								<td></td>
-								<td>
-									{{ form.render('id[]') }}
-									{{ form.render('date') }}
-									{{ form.render('rep[]') }}
-								</td>
-								<td>{{ check_field('quoted[]','value': '0', 'checked': true, 'hidden': true) }}
-									{{ form.render('quoted[]') }}</td>
-								<td>{{ form.render('customerReference[]') }}</td>
-								<td>
-									{{ form.render('amount[]') }}
-								</td>
-							</tr>
-							</tbody>
-							<tfoot class="thead-dark">
 								<tr>
-									<th></th>
-									<th>Rep</th>
-									<th>Quoted</th>
-									<th>Reference</th>
-									<th>Value</th>
-								</tr>
-							</tfoot>
-					</table>
-				</editable-table>
-				<button type="save" class="btn btn-primary mt-3 shadow-sm">Submit</button>
-			</form>
+									<td></td>
+									<td>
+										{{ form.render('id[]') }}
+										{{ form.render('date') }}
+										{{ form.render('rep[]') }}
+									</td>
+									<td>{{ check_field('quoted[]','value': '0', 'checked': true, 'hidden': true) }}
+										{{ form.render('quoted[]') }}</td>
+										<td>{{ form.render('customerReference[]') }}</td>
+										<td>
+											{{ form.render('amount[]') }}
+										</td>
+									</tr>
+								</tbody>
+								<tfoot class="thead-dark">
+									<tr>
+										<th></th>
+										<th>Rep</th>
+										<th>Quoted</th>
+										<th>Reference</th>
+										<th>Value</th>
+									</tr>
+								</tfoot>
+							</table>
+						</editable-table>
+						<button type="save" class="btn btn-primary mt-3 shadow-sm">Submit</button>
+					</form>
+				</div>
+				<div class="col-sm-12 col-md-3">
+					<ul class="list-group mb-3">
+						<li class="list-group-item bg-dark text-white">
+							Summary
+						</li>
+						{% for item in salesByAgent %}
+						<li class="list-group-item">
+							{% for user in users %}
+							{% if user.id == item.rep %}
+							{{ user.name }}
+							{% break %}
+							{% endif %}
+							{% endfor %}
+							<span class="float-right"> ${{ item.sumatory|number }}</span>
+						</li>
+						{% endfor %}
+						<li class="list-group-item">
+							<strong>Total</strong>
+							<span class="float-right"> <strong>${{ total|number }} </strong></span>
+						</li>
+						<li class="list-group-item">
+							<strong>Week Total</strong>
+							<span class="float-right"> <strong>${{ weekTotal|number }} </strong></span>
+						</li>
+					</ul>
+					<ul class="list-group">
+						<li class="list-group-item bg-dark text-white">Daily Budget</li>
+						<li class="list-group-item">
+							{% if budget.budget is defined %}
+							<b>Target: </b><span class="float-right">${{ (budget.budget/budget.days)|number }}</span>
+							<br />
+							<br />
+							<div class="progress">
+								{% if (total/(budget.budget/budget.days))*100 >= 100 %}
+								{% set progress = 100 %}
+								{% set label = (total/(budget.budget/budget.days))*100 %}
+								{% set status = '-success' %}
+								{% else %}
+								{% set status = '-warning' %}
+								{% set progress = ((total/(budget.budget/budget.days))*100)|number %}
+								{% set label = progress %}
+								{% endif %}
+								<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%;">{{ label|number }}%
+									<span class="sr-only"></span>
+								</div>
+							</div>
+							{% else %}
+							<b>Target: </b><span class="float-right"><em>Not set</em></span>
+							{% endif %}
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
-		<div class="col-sm-12 col-md-3">
-			<ul class="list-group mb-3">
-				<li class="list-group-item bg-dark text-white">
-					Summary
-				</li>
-				{% for item in salesByAgent %}
-				<li class="list-group-item">
-					{% for user in users %}
-					{% if user.id == item.rep %}
-					{{ user.name }}
-					{% break %}
-					{% endif %}
-					{% endfor %}
-					<span class="float-right"> ${{ item.sumatory|number }}</span>
-				</li>
-				{% endfor %}
-				<li class="list-group-item">
-					<strong>Total</strong>
-					<span class="float-right"> <strong>${{ total|number }} </strong></span>
-				</li>
-				<li class="list-group-item">
-					<strong>Week Total</strong>
-					<span class="float-right"> <strong>${{ weekTotal|number }} </strong></span>
-				</li>
-			</ul>
-			<ul class="list-group">
-				<li class="list-group-item bg-dark text-white">Daily Budget</li>
-				<li class="list-group-item">
-					<b>Target: </b><span class="float-right">${{ (budget.budget/budget.days)|number }}</span>
-					<br />
-					<br />
-					<div class="progress">
-						{% if (total/(budget.budget/budget.days))*100 >= 100 %}
-						{% set progress = 100 %}
-						{% set label = (total/(budget.budget/budget.days))*100 %}
-						{% set status = '-success' %}
-						{% else %}
-						{% set status = '-warning' %}
-						{% set progress = ((total/(budget.budget/budget.days))*100)|number %}
-						{% set label = progress %}
-						{% endif %}
-						<div class="progress-bar bg-danger" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%;">{{ label|number }}%
-							<span class="sr-only"></span>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
-</div>
-
-<style type="text/css">
-editable-table input, editable-table select {
-	border: none;
-	background: transparent;
-	width: 100%;
-}
-.table .thead-dark th {
-	color: #fff;
-	background-color: #2a3e4f;
-	border-color: #2a3e4f;
-}
-.record:hover a.delete, .active a.delete {
-	visibility: visible;
-}
-
-a.delete {
-	visibility: hidden;
-}
-</style>
-<script type="module" src="https://cdn.pika.dev/editable-table"></script>
-<script>
-	customElements.whenDefined("editable-table").then(() => {
-		editableTable = document.querySelector("editable-table");
-		// get records out of table
-		records = editableTable.get();
-
-		editableTable.addEventListener("record:update", function(event) {
-			const { changeType, index, record } = event.detail;
-			console.log(`record %d %s: %o`, index + 1, changeType, record);
-
-		});
-	});
-</script>
+		
+		<style type="text/css">
+			editable-table input, editable-table select {
+				border: none;
+				background: transparent;
+				width: 100%;
+			}
+			.table .thead-dark th {
+				color: #fff;
+				background-color: #2a3e4f;
+				border-color: #2a3e4f;
+			}
+			.record:hover a.delete, .active a.delete {
+				visibility: visible;
+			}
+			
+			a.delete {
+				visibility: hidden;
+			}
+		</style>
+		<script type="module" src="https://cdn.pika.dev/editable-table"></script>
+		<script>
+			customElements.whenDefined("editable-table").then(() => {
+				editableTable = document.querySelector("editable-table");
+				// get records out of table
+				records = editableTable.get();
+				
+				editableTable.addEventListener("record:update", function(event) {
+					const { changeType, index, record } = event.detail;
+					console.log(`record %d %s: %o`, index + 1, changeType, record);
+					
+				});
+			});
+		</script>
+		

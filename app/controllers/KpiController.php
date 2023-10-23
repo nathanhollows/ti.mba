@@ -166,7 +166,6 @@ class KpiController extends ControllerBase
         $this->view->budget = $budget;
     }
 
-    // TODO Check timestamp of sales to stop data overwriting
     public function savesalesAction()
     {
         $this->view->disable();
@@ -211,27 +210,23 @@ class KpiController extends ControllerBase
         // Loop through each request
         for ($i = 0; $i < count($data['amount'], COUNT_RECURSIVE) - 1; $i++) {
             if (empty($data['id'][$i])) {
-                $entry = new DailySales;
-                $entry->timestamp = date('Y-m-d H:i:s');
+                $sale = new DailySales;
             } else {
-                $entry = DailySales::findFirstById($data['id'][$i]);
-                $snapshot = true;
+                $sale = DailySales::findFirstById($data['id'][$i]);
             }
 
-            $entry->date                    = $data['date'];
-            $entry->week                    = date("W", strtotime($data['date']));
-            $entry->rep                     = $data['rep'][$i];
-            $entry->quoted                  = $data['quoted'][$i];
-            $entry->customerReference       = $data['customerReference'][$i];
-            $entry->value                   = $data['amount'][$i];
+            $sale->date                    = $data['date'];
+            $sale->week                    = date("W", strtotime($data['date']));
+            $sale->rep                     = $data['rep'][$i];
+            $sale->quoted                  = $data['quoted'][$i];
+            $sale->customerReference       = $data['customerReference'][$i];
+            $sale->value                   = $data['amount'][$i];
 
-            $success = $entry->save();
-            unset($snapshot);
-
+            $success = $sale->save();
 
             // Check success and print results
             if (!$success) {
-                foreach ($entry->getMessages() as $message) {
+                foreach ($sale->getMessages() as $message) {
                     $this->flashSession->error($message->getMessage());
                 }
             }
@@ -244,21 +239,22 @@ class KpiController extends ControllerBase
     {
         $this->view->disable();
 
-        $entry = DailySales::findFirstByid($id);
+        $sale = DailySales::findFirstByid($id);
 
-        if (!$entry) {
+        if (!$sale) {
             $this->flashSession->error("This item could not be found");
             $this->_redirectBack();
         }
 
-        $success = $entry->delete();
+        $success = $sale->delete();
 
         if (!$success) {
-            foreach ($entry->getMessages() as $message) {
+            foreach ($sale->getMessages() as $message) {
                 $this->flashSession->error($message->getMessage());
             }
         } else {
-            $this->flashSession->success("Success! That line was deleted");
+            // Let the user know the order was deleted, include the order number and value
+            $this->flashSession->success("Sale $sale->customerReference for \$$sale->value was deleted");
         }
 
         $this->_redirectBack();

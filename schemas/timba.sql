@@ -457,6 +457,10 @@ ALTER TABLE `addresses`
 ALTER TABLE `address_types`
   ADD PRIMARY KEY (`typeCode`);
 
+ALTER TABLE `budgets`
+  ADD PRIMARY KEY (`date`),
+  ADD UNIQUE KEY `date` (`date`);
+
 ALTER TABLE `bug_status`
   ADD PRIMARY KEY (`id`);
 
@@ -517,6 +521,9 @@ ALTER TABLE `customer_notes`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `customer_status`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `daily_sales`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `dryness`
@@ -645,6 +652,8 @@ ALTER TABLE `customer_groups`
 ALTER TABLE `customer_notes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `customer_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `daily_sales`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `email_confirmations`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;
