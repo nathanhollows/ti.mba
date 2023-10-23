@@ -129,8 +129,8 @@ class Users extends Model
     public static function getActive()
     {
         $results = parent::find(array(
-            "conditions"   => "active = 1 AND suspended = 0",
-            "order"       => "FIELD(name, 'Fax'), name ASC",
+            "conditions"   => "active = 1 AND suspended = 0 AND developer = 0",
+            "order"       => "FIELD(name, 'Bunnings Stock', 'Fax'), name ASC",
 "cache"		=> [
                 "key"	=> "active-users",
             ],

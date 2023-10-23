@@ -61,7 +61,7 @@
 									Developer
 								</label>
 								<br />
-								<em>Allow user to use developer features</em>
+								<em>Set user as a CRM developer. This turns off error supresssion and removes the user from lists.</em>
 							</li>
 							<li class="list-group-item">
 								<label for="admin">
