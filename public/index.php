@@ -1,4 +1,5 @@
 <?php
+require_once '../app/Timba.php';
 use App\Timba as Application;
 
 $rootPath = dirname(__DIR__);
