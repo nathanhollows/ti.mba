@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `contact_record` (
 
 CREATE TABLE IF NOT EXISTS `contact_roles` (
   `id` int(11) NOT NULL,
-  `rank` int(11) NOT NULL,
+  `rank` int(11) DEFAULT NULL,
   `name` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -639,6 +639,8 @@ ALTER TABLE `bug_status`
 ALTER TABLE `contacts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `contact_record`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `contact_roles`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `contact_type`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

@@ -6,6 +6,7 @@ use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Mvc\Forms;
 use App\Models\Contacts;
 use App\Models\ContactRecord;
+use App\Models\ContactRoles;
 use App\Forms\ContactsForm;
 use Phalcon\Security\Random;
 use \Phalcon\Http\Response;
@@ -69,7 +70,7 @@ class ContactsController extends ControllerBase
         $this->view->pageSubtitle = " ";
         $this->view->pageSubheader = array(
             1 => array(
-                'text' => $contact->company->customerName,
+                'text' => $contact->company->name,
                 'icon' => 'building',
                 'link' => '/customers/view/' . $contact->company->customerCode,
             ),
@@ -133,8 +134,17 @@ class ContactsController extends ControllerBase
             ));
         }
 
+        // Check if the position already exists
+        $position = ContactRoles::findFirst("name = '" . $this->request->getPost('position') . "'");
+        if (!$position) {
+            $position = new ContactRoles();
+            $position->name = $this->request->getPost('position');
+            $position->save();
+        }
+
         $contact = new Contacts();
-        $contact->assign($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial', 'role'));
+        $contact->assign($this->request->getPost(), array('customerCode', 'name', 'email', 'directDial'));
+        $contact->role = $position->id;
         if ($contact->save()) {
             $this->response->redirect('customers/view/' . $contact->customerCode . '/#contacts');
             $this->view->disable;
@@ -157,9 +167,18 @@ class ContactsController extends ControllerBase
                 ));
         }
 
+        // Check if the position already exists
+        $position = ContactRoles::findFirst("name = '" . $this->request->getPost('position') . "'");
+        if (!$position) {
+            $position = new ContactRoles();
+            $position->name = $this->request->getPost('position');
+            $position->save();
+        }
+
         $contact = Contacts::findFirstById($this->request->getPost('id'));
         // Store and check for errors
-        $contact->assign($this->request->getPost(), array('directDial', 'email', 'name', 'role', 'customerCode'));
+        $contact->assign($this->request->getPost(), array('directDial', 'email', 'name', 'customerCode'));
+        $contact->role = $position->id;
         if ($contact->update()) {
             $this->flash->success("Contact update successfully!");
             return $this->_redirectBack();
