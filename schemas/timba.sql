@@ -235,7 +235,6 @@ CREATE TABLE IF NOT EXISTS `kpis` (
   `id` int(5) NOT NULL,
   `date` date NOT NULL,
   `chargeOut` int(11) NOT NULL,
-  `sales` varchar(10) NOT NULL,
   `onsiteDispatch` varchar(10) NOT NULL,
   `offsiteDispatch` varchar(10) NOT NULL,
   `ordersSent` int(3) NOT NULL,
