@@ -15,7 +15,6 @@ class SearchController extends ControllerBase
     {
         $this->view->setTemplateBefore('private');
         parent::initialize();
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
     }
 
     public function indexAction()
