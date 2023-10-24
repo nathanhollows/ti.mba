@@ -183,7 +183,7 @@ $(document).ready(function() {
 					var result;
 					for (var i = 0; i < Math.min(search.responseJSON["customers"].length, 10); i++) {
 						var code = search.responseJSON["customers"][i].customerCode;
-						var name = search.responseJSON["customers"][i].customerName;
+						var name = search.responseJSON["customers"][i].name;
 						result = '<a class="list-group-item list-group-item-action" href="/customers/view/' + code + '" data-instant>';
 						result += name;
 						result += '</a>';
@@ -209,8 +209,7 @@ $(document).ready(function() {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.20/datatables.min.js"></script>
-<script type="text/javascript" src="/js/instantpage.min.js" type="module" defer></script>
-<script type="text/javascript" src="/js/useUCA.js"></script>
+<!-- <script type="text/javascript" src="/js/useUCA.js"></script> -->
 <script type="text/javascript" src="/js/bootstrap-editable.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 

@@ -32,12 +32,6 @@ class Customers extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $phone2;
-
-    /**
-     *
-     * @var string
-     */
     public $fax;
 
     /**
@@ -56,63 +50,7 @@ class Customers extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $freightArea;
-
-    /**
-     *
-     * @var integer
-     */
-    public $freightCarrier;
-
-    /**
-     *
-     * @var integer
-     */
-    public $customerStatus;
-
-    /**
-     *
-     * @var string
-     */
-    public $relationship;
-
-
-    /**
-     *
-     * @var integer
-     */
-    public $manager;
-
-    /**
-     *
-     * @var integer
-     */
-    public $defaultAddress;
-
-
-    /**
-     *
-     * @var integer
-     */
-    public $billingAddress;
-
-    /**
-     *
-     * @var integer
-     */
-    public $defaultContact;
-
-    /**
-     *
-     * @var integer
-     */
-    public $headOffice;
-
-    /**
-     *
-     * @var string
-     */
-    public $branchCode;
+    public $status;
 
     /**
      *
@@ -124,43 +62,7 @@ class Customers extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $otherContacts;
-
-    /**
-     *
-     * @var string
-     */
-    public $notes;
-
-    /**
-     *
-     * @var string
-     */
     public $area;
-
-    /**
-     *
-     * @var integer
-     */
-    public $newsletter;
-
-    /**
-     *
-     * @var integer
-     */
-    public $promo;
-
-    /**
-     *
-     * @var integer
-     */
-    public $leadOnly;
-
-    /**
-     *
-     * @var integer
-     */
-    public $noContact;
 
     /**
      * Initialize method for model.
@@ -169,11 +71,8 @@ class Customers extends \Phalcon\Mvc\Model
     {
         $date = date("Y-m-d", strtotime('NOW - 3 MONTHS'));
         $year = date("Y-m-d", strtotime('NOW - 1 YEAR'));
-        $this->hasOne('freightCarrier', 'App\Models\FreightCarriers', 'id', array('alias' => 'freightcarrier'));
-        $this->hasOne('freightArea', 'App\Models\FreightAreas', 'id', array('alias' => 'freightarea'));
-        $this->hasOne('customerStatus', 'App\Models\CustomerStatus', 'id', array('alias' => 'status'));
-        $this->hasOne('area', 'App\Models\SalesAreas', 'id', array('alias' => 'salesArea'));
-        $this->hasOne('manager', 'App\Models\Users', 'id', array('alias' => 'rep'));
+        $this->hasOne('status', 'App\Models\CustomerStatus', 'id', array('alias' => 'state'));
+        $this->hasOne('salesArea', 'App\Models\SalesAreas', 'id', array('alias' => 'salesArea'));
         $this->hasMany('customerCode', 'App\Models\Addresses', 'customerCode', array('alias'  => 'addresses'));
         $this->hasMany('customerCode', 'App\Models\Contacts', 'customerCode', array('alias' => 'contacts'));
         $this->hasMany('customerCode', 'App\Models\ContactRecord', 'customerCode', array('alias' => 'history'));
@@ -197,12 +96,6 @@ class Customers extends \Phalcon\Mvc\Model
         }
     }
 
-    public static function getName($customerCode = null)
-    {
-        $customer = parent::findFirstByCustomerCode($customerCode);
-        return $customer->customerName;
-    }
-
     public function afterCreate()
     {
         $auth = new Auth;
@@ -221,7 +114,7 @@ class Customers extends \Phalcon\Mvc\Model
     public static function getActive()
     {
         return parent::find([
-            "customerStatus NOT IN (2,3)"
+            "status NOT IN (2,3)"
         ]);
     }
 
@@ -256,10 +149,10 @@ class Customers extends \Phalcon\Mvc\Model
     public static function searchColumns($search)
     {
         $query = self::query();
-        $query->where('customerName LIKE :search:');
+        $query->where('name LIKE :search:');
         $query->orWhere('customerCode LIKE :search:');
         $query->bind(['search' => '%' . $search . '%']);
-        $query->orderBy('customerName ASC');
+        $query->orderBy('name ASC');
         return $query->execute();
     }
 }

@@ -46,7 +46,7 @@ class CustomerStatus extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo('id', 'App\Models\Customers', 'customerStatus');
+        $this->belongsTo('id', 'App\Models\Customers', 'status');
     }
 
 }

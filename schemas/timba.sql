@@ -99,18 +99,12 @@ CREATE TABLE IF NOT EXISTS `contact_type` (
 
 CREATE TABLE IF NOT EXISTS `customers` (
   `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `customerName` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `customerPhone` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `customerFax` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `customerEmail` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `freightArea` int(11) DEFAULT NULL,
-  `freightCarrier` int(11) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fax` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
   `salesArea` int(11) DEFAULT NULL,
-  `customerStatus` int(11) DEFAULT NULL,
-  `defaultAddress` int(11) DEFAULT NULL,
-  `billingAddress` int(11) DEFAULT NULL,
-  `defaultContact` int(11) DEFAULT NULL,
-  `customerGroup` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `branchCode` varchar(5) COLLATE utf8_unicode_ci DEFAULT NULL,
   `rank` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -509,12 +503,8 @@ ALTER TABLE `contact_type`
 ALTER TABLE `customers`
   ADD PRIMARY KEY (`customerCode`),
   ADD UNIQUE KEY `customerCode` (`customerCode`),
-  ADD KEY `customerGroup` (`defaultAddress`),
-  ADD KEY `freightArea` (`freightArea`,`freightCarrier`,`salesArea`,`customerStatus`,`defaultAddress`,`defaultContact`),
-  ADD KEY `customerStatus` (`customerStatus`),
-  ADD KEY `freightCarrier` (`freightCarrier`),
+  ADD KEY `status` (`status`),
   ADD KEY `salesArea` (`salesArea`),
-  ADD KEY `customerGroup_2` (`customerGroup`);
 
 ALTER TABLE `customer_addresses`
   ADD PRIMARY KEY (`customerAddressId`),

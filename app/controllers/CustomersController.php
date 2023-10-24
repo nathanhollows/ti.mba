@@ -37,10 +37,10 @@ class CustomersController extends ControllerBase
         $this->tag->prependTitle("Search Customers");
         if ($this->request->isAjax()) {
             $builder = $this->modelsManager->createBuilder()
-                ->columns('customerCode, customerName, fax, phone, customerStatus, customerStatus.style, customerStatus.name')
-                ->from('App\Models\Customers')
-                ->join('App\Models\CustomerStatus', 'customerStatus = customerStatus.id', 'customerStatus', 'INNER')
-                ->orderBy('customerName');
+                ->columns('customerCode, customer.name, fax, phone, customerStatus.style, customerStatus.name as status')
+                ->from(['customer' => 'App\Models\Customers'])
+                ->join('App\Models\CustomerStatus', 'status = customerStatus.id', 'customerStatus', 'INNER')
+                ->orderBy('customer.name');
 
             $dataTables = new DataTable();
             $dataTables->fromBuilder($builder)->sendResponse();
@@ -114,7 +114,7 @@ class CustomersController extends ControllerBase
                 'icon'  => (($customer->rank <= 10) ? 'trophy faa-tada animated' : 'star'),
             );
         }
-        if ($customer->salesarea->rep) {
+        if (isset($customer->salesarea->rep->name)) {
             $badges[2] = array(
                 'text'  => $customer->salesarea->rep->name,
                 'icon'  => 'user',
@@ -125,7 +125,7 @@ class CustomersController extends ControllerBase
         $addresses = Addresses::find("customerCode = '$customerCode'");
         $this->view->addresses = $addresses;
 
-        $this->tag->prependTitle($customer->customerName);
+        $this->tag->prependTitle($customer->name);
 
         $this->view->orders = Orders::find(array(
             'conditions'        => 'customerCode = ?1 AND complete = 0',
@@ -270,7 +270,7 @@ class CustomersController extends ControllerBase
         $customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
         // Store and check for errors
 
-        $customer->assign($this->request->getPost(), array('customerName', 'phone', 'fax', 'email', 'area', 'customerStatus'));
+        $customer->assign($this->request->getPost(), array('name', 'phone', 'fax', 'email', 'area', 'customerStatus'));
         if ($customer->update()) {
             $this->flashSession->success("Successfully updated");
         } else {

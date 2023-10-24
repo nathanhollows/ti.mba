@@ -13,7 +13,7 @@ th {
 </style>
 
 {{ content() }}
-<h1>ATS Timbers Ltd</h1>
+<h1>ATS Timber Ltd</h1>
 <h2>Customers Details</h2>
 <hr>
 <h2>{{ customer.customerName }}</h2>
@@ -42,28 +42,22 @@ th {
 <table width="100%">
 	<tbody>
 		<tr>
-			<th> Phone 1 </th>
+			<th> Phone </th>
 			<td> {{ customer.phone }} </td>
 			<th> Email </th>
 			<td> {{ customer.email }} </td>
 		</tr>
 		<tr>
-			<th> Phone 2 </th>
-			<td> {{ customer.phone2 }} </td>
-			<th> Website </th>
-			<td> {{ customer.website }} </td>
-		</tr>
-		<tr>
 			<th> Fax </th>
 			<td> {{ customer.fax }} </td>
 			<th> Status </th>
-			<td> {{ customer.status.name }} </td>
+			<td> {{ customer.state.name }} </td>
 		</tr>
 		<tr>
 			<th> Area </th>
-			<td> {{ customer.salesArea.name }} </td>
+			<td> {% if customer.salesarea.name is defined %} {{ customer.salesarea.name }} {% endif %}</td>
 			<th> Account Manager </th>
-			<td> {{ customer.rep.name }} </td>
+			<td> {% if customer.salesarea.rep.name is defined %} {{ customer.salesarea.rep.name }} {% endif %} </td>
 		</tr>
 	</tbody>
 </table>

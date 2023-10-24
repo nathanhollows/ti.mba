@@ -37,8 +37,8 @@ class CustomersForm extends Form
 
         // Customer name
         // Text field
-        $name = new Text("customerName");
-        $name->setLabel("Customer Name");
+        $name = new Text("name");
+        $name->setLabel("Name");
         $name->setFilters(array('striptags', 'string'));
         $name->setAttributes(
             array(
@@ -145,7 +145,7 @@ class CustomersForm extends Form
         // Customer status
         // Select field
         $status = new Select(
-            'customerStatus',
+            'status',
             CustomerStatus::find(),
             array(
                 'using'		=> array('id', 'name'),
@@ -155,14 +155,16 @@ class CustomersForm extends Form
         );
         $defaultStatus = CustomerStatus::findFirst("name = 'Normal'");
         $status->setDefault($defaultStatus->id);
-        $status->setLabel('Customer Status');
+        $status->setLabel('Status');
         $this->add($status);
 
         // Customer status
         // Select field
         $salesArea = new Select(
-            'area',
-            SalesAreas::find(),
+            'salesArea',
+            SalesAreas::find([
+                'order' => 'ordering ASC',
+            ]),
             array(
                 'using'		=> array('id', 'name'),
                 'class'		=> 'form-control',

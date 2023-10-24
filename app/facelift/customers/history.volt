@@ -20,7 +20,7 @@ table tr td, table tr th {
 }
 </style>
 
-{{ content() }}
+From {{ content() }}
 
 <h1>{{ customer.customerName }}</h1>
 <h2>Contact Summary</h2>

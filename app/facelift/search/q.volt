@@ -41,7 +41,7 @@
 					<h4>Customers</h4>
 					<ul class="list-group shadow-sm">
 						{% for customer in customers %}
-						<li class="list-group-item">{{ link_to('customers/view/' ~ customer.customerCode, customer.customerName) }}
+						<li class="list-group-item">{{ link_to('customers/view/' ~ customer.customerCode, customer.name) }}
 							<span class="float-right"><a href="tel:{{ customer.phone|stripspace }}" class="tel-link">{{ customer.phone }}</a></span> 
 						</li>
 						{% endfor %}

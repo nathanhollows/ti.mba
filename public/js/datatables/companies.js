@@ -20,18 +20,18 @@ $(document).ready(function() {
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 				$(nTd).html("<a href='view/"+oData.customerCode+"' data-instant>"+oData.customerCode+"</a>");
 			}},
-			{data: "customerName", searchable: true,
+			{data: "name", searchable: true,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<a href='view/"+oData.customerCode+"' data-instant>"+oData.customerName+"</a>");
+				$(nTd).html("<a href='view/"+oData.customerCode+"' data-instant>"+oData.name+"</a>");
 			}},
 			{data: "phone", searchable: true,
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
 				$(nTd).html("<a href='tel:"+oData.phone+"' class='tel-link')>"+oData.phone+"</a>");
 			}},
 			{data: "fax", searchable: false, class: "hidden-xs d-none d-md-table-cell"},
-			{data: "customerStatus", searchable: true, class: "hidden-xs d-none d-md-table-cell",
+			{data: "status", searchable: true, class: "hidden-xs d-none d-md-table-cell",
 			"fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-				$(nTd).html("<span class='badge badge-"+oData.style+"'>"+oData.name+"</span>");
+				$(nTd).html("<span class='badge badge-"+oData.style+"'>"+oData.status+"</span>");
 			}},
 			],
 		});
