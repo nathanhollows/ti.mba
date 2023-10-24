@@ -38,7 +38,9 @@ class SettingsController extends ControllerBase
         }
         
         // In event of update, we fetch again to avoid inconsistent representation
-        $salesAreas = SalesAreas::find();
+        $salesAreas = SalesAreas::find([
+            'order' => 'ordering ASC'
+        ]);
         $this->tag->prependTitle('Settings');
         $this->view->salesAreas = $salesAreas;
         $this->view->reps = Users::getActive();
