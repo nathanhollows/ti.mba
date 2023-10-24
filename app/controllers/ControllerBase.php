@@ -42,7 +42,7 @@ class ControllerBase extends Controller
     public function initialize()
     {
         // Show errors if in dev mode
-        if (isset($this->session->get('auth-identity')['dev'])) {
+        if ($this->auth->getUser()->developer) {
             ini_set('display_errors', 1);
             ini_set('display_startup_errors', 1);
             error_reporting(E_ALL);
