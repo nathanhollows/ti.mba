@@ -102,7 +102,9 @@ class ContactRecord extends Model
 
     public function beforeCreate()
     {
-        $this->date = date('Y-m-d H:i:s');
+        if ($this->date == null) {
+            $this->date = date('Y-m-d H:i:s');
+        }
     }
 
     public static function getOutstanding($user = null)

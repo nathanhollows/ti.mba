@@ -65,6 +65,7 @@ class FollowupController extends ControllerBase
 
         $this->view->pageTitle = "Edit Contact Record";
         $followUp = ContactRecord::findFirstById($id);
+        $followUp->date = date("Y-m-d", strtotime($followUp->date));
         $this->view->details = $followUp;
 
         $options = array(
@@ -151,12 +152,11 @@ class FollowupController extends ControllerBase
         }
 
         $contact->details 			= $this->request->getPost('details');
-        $contact->date 			= $this->request->getPost('recordDate');
+        $contact->date             = date("Y-m-d H:i:s", strtotime($this->request->getPost('recordDate')));
         $contact->contactType 		= $this->request->getPost('contactType');
         $contact->user = $this->auth->getId();
         $contact->contactType 		= $this->request->getPost('contactType');
         $contact->reference 		= $this->request->getPost('reference');
-        $contact->completed 		= date('Y-m-d H:i:s');
 
         if ($this->request->getPost("remind")) {
             $contact->followUpDate = $this->request->getPost("followUpDate");

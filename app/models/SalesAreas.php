@@ -32,11 +32,17 @@ class SalesAreas extends \Phalcon\Mvc\Model
     public $nicename;
 
     /**
+     * 
+     * @var string
+     */
+    public $ordering;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->hasMany('id', 'App\Models\Customers', 'area', array(
+        $this->hasMany('id', 'App\Models\Customers', 'salesArea', array(
             'alias' => 'customers',
             'params' => [
                 "customerStatus NOT IN (2,3)"

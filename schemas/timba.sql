@@ -75,13 +75,13 @@ CREATE TABLE IF NOT EXISTS `contact_record` (
   `user` int(11) DEFAULT NULL,
   `contactType` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
-  `contactReference` text COLLATE utf8_unicode_ci,
+  `reference` text COLLATE utf8_unicode_ci,
   `details` text COLLATE utf8_unicode_ci,
   `infoSent` text COLLATE utf8_unicode_ci,
   `attachments` int(11) DEFAULT NULL,
   `followUpDate` date DEFAULT NULL,
   `followUpUser` int(5) DEFAULT NULL,
-  `completed` tinyint(1) NOT NULL DEFAULT '1'
+  `completed` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `contact_roles` (
@@ -93,8 +93,8 @@ CREATE TABLE IF NOT EXISTS `contact_roles` (
 CREATE TABLE IF NOT EXISTS `contact_type` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `icon` varchar(12) COLLATE utf8_unicode_ci NOT NULL,
-  `style` varchar(7) COLLATE utf8_unicode_ci NOT NULL
+  `icon` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+  `style` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `customers` (
@@ -405,7 +405,8 @@ CREATE TABLE IF NOT EXISTS `sales_areas` (
   `id` int(11) NOT NULL,
   `name` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
   `agent` int(11) DEFAULT NULL,
-  `nicename` varchar(120) COLLATE utf8_unicode_ci NOT NULL
+  `nicename` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `order` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `species` (

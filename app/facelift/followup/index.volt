@@ -31,13 +31,13 @@
 					<input type="radio" name="contactType" value="2" autocomplete="off" hidden> Phone Out
 				</label>
 				<label class="btn btn-small btn-outline-secondary btn-sm active">
-					<input type="radio" name="contactType" value="13" autocomplete="off" checked hidden> Note
+					<input type="radio" name="contactType" value="3" autocomplete="off" checked hidden> Note
 				</label>
 				<label class="btn btn-small btn-outline-secondary btn-sm">
-					<input type="radio" name="contactType" value="3" autocomplete="off" hidden> Email
+					<input type="radio" name="contactType" value="4" autocomplete="off" hidden> Email
 				</label>
 				<label class="btn btn-small btn-outline-secondary btn-sm">
-					<input type="radio" name="contactType" value="4" autocomplete="off" hidden> Rep Visit
+					<input type="radio" name="contactType" value="5" autocomplete="off" hidden> Rep Visit
 				</label>
 				<label class="btn btn-small btn-outline-secondary btn-sm">
 					<input type="radio" name="contactType" value="6" autocomplete="off" hidden> Other
