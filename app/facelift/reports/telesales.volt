@@ -13,13 +13,17 @@
   <tbody>
     {% for customer in customers %}
     <tr id="{{customer.customerCode}}">
-      <td>{{ customer.customerName }}</td>
+      <td>{{ customer.name }}</td>
       <td>
         {% for contact in customer.contacts %}
         {{ contact.name }}, 
         {% endfor %}
       </td>
-      <td>{{ customer.salesArea.rep.name }}</td>
+      <td>
+        {% if customer.salesarea.rep.name is defined %}
+        {{ customer.salesarea.rep.name }}
+        {% endif %}
+      </td>
       <td>{{ customer.phone }}</td>
       <td></td>
     </tr>

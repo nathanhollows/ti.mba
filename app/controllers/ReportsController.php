@@ -18,7 +18,6 @@ class ReportsController extends ControllerBase
 {
     public function initialize()
     {
-        $this->view->setViewsDir('/var/www/html/app/views/');
         $this->view->setTemplateBefore('private');
         parent::initialize();
     }
@@ -28,14 +27,17 @@ class ReportsController extends ControllerBase
         $this->tag->prependTitle('Reports');
     }
 
-    public function customersAction()
+    public function tripPlannerAction()
     {
-        $this->view->pageSubtitle = "Customer Reports";
-        $this->tag->prependTitle('Customer Reports');
+        $this->tag->prependTitle('Trip Planner');
 
         $this->view->customers = Customers::find(array(
-            'conditions' => 'customerStatus NOT IN (3,2)',
-            'order'      => 'customerName',
+            'conditions' => 'status IN (1, 2)',
+            'order'      => 'name',
+            'cache'      => array(
+                'key'      => 'customers',
+                'lifetime' => 3600,
+            ),
         ));
     }
 
