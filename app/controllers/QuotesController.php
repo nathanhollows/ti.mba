@@ -11,7 +11,7 @@ use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Plugins\Auth\Auth;
 use App\Models\Quotes;
 use App\Models\QuoteItems;
-use App\Models\GenericStatus;
+use App\Models\QuoteStatus;
 use App\Models\Grade;
 use App\Models\Treatment;
 use App\Models\Users;
@@ -52,9 +52,9 @@ class QuotesController extends ControllerBase
     {
         if ($this->request->isAjax()) {
             $builder = $this->modelsManager->createBuilder()
-            ->columns('quoteId, date, q.customerCode, b.customerName, reference, user, status, s.style, s.statusName, r.name, c.name as attention')
+            ->columns('quoteId, date, q.customerCode, b.name, reference, user, q.status, s.style, s.name as status, r.name as rep, c.name as attention')
             ->addFrom('App\Models\Quotes', 'q')
-            ->join('App\Models\GenericStatus', 's.id = status', 's')
+            ->join('App\Models\QuoteStatus', 's.id = q.status', 's')
             ->join('App\Models\Users', 'user = r.id', 'r')
             ->join('App\Models\Customers', 'q.customerCode = b.customerCode', 'b')
             ->leftJoin('App\Models\Contacts', 'c.id = contact', 'c');
@@ -178,7 +178,7 @@ class QuotesController extends ControllerBase
             ),
             '3' => array(
                 'icon' => 'building',
-                'text' => $quote->customer->customerName,
+                'text' => $quote->customer->name,
                 'link' => '/customers/view/' . $quote->customerCode,
             ),
             '4' => array(
@@ -220,7 +220,7 @@ class QuotesController extends ControllerBase
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/js/standalone/selectize.min.js')
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery.AreYouSure/1.9.0/jquery.are-you-sure.min.js')
             ->addJs('https://npmcdn.com/navigable-table@1.0.4/dist/navigable-table.js')
-            ->addJs('js/editable-table.js', true);
+            ->addJs('https://cdn.pika.dev/editable-table');
         $this->assets->collection('header')
             ->addCss('css/bootstrap-markdown.min.css', true)
             ->addCss('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/css/selectize.bootstrap3.min.css')
@@ -342,14 +342,23 @@ class QuotesController extends ControllerBase
         $random = new Random();
         // Store and check for errors
         $quote->webId = $random->uuid();
-        $quote->assign($this->request->getPost(), array('date', 'customerCode', 'reference', 'notes', 'user', 'contact', 'moreNotes'));
+        $quote->assign($this->request->getPost(), [
+            'date',
+            'customerCode',
+            'reference',
+            'notes',
+            'user',
+            'contact',
+            'moreNotes',
+            'status',
+        ]);
         if ($quote->save()) {
             $this->flashSession->success("Quote created successfully!");
             return $this->response->redirect("quotes/view/" . $quote->quoteId);
         } else {
-            $this->flash->error("Sorry, the quote could not be saved");
+            $this->flashSession->error("Sorry, the quote could not be saved");
             foreach ($quote->getMessages() as $message) {
-                $this->flash->error($message->getMessage());
+                $this->flashSession->error($message->getMessage());
             }
         }
     }

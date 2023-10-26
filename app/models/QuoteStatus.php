@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Phalcon\Mvc\Model;
 
-class GenericStatus extends Model
+class QuoteStatus extends Model
 {
 
     /**

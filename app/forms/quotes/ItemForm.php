@@ -34,12 +34,18 @@ class ItemForm extends Form
 
         $grade = new Select(
             'grade[]',
-            Grade::find(array('conditions' => 'active = 1', 'order' => 'name ASC')),
+            Grade::find([
+                'order' => 'name ASC',
+                'cache' => [
+                    'key' => 'grades',
+                    'lifetime' => 3600
+                ]
+            ]),
             array(
                 'using'	=> array('shortCode', 'name'),
                 'useEmpty'	=> true,
                 'emptyText'	=> 'Grade',
-                'class'		=> 'data grade no-selectize data',
+                'class'		=> 'data grade no-selectize',
                 'data-live-search'	=> 'true',
                 'data-container'	=> 'body',
             )

@@ -18,16 +18,16 @@ $(document).ready(function() {
         columns: [
             {data: "quoteId",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<a href='view/"+oData.quoteId+"' data-instant>"+oData.quoteId+"</a>");
+                    $(nTd).html("<a href='/quotes/view/"+oData.quoteId+"'>"+oData.quoteId+"</a>");
                 }},
             {data: "date"},
-            {data: "customerName"},
-            {data: "reference"},
             {data: "name"},
+            {data: "reference"},
+            {data: "rep"},
             {data: "attention"},
-            {data: "statusName", class: "hidden-xs",
+            {data: "status", class: "hidden-xs",
                 "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                    $(nTd).html("<span class='badge badge-"+oData.style+"'>"+oData.statusName+"</span>");
+                    $(nTd).html("<span class='badge badge-"+oData.style+"'>"+oData.status+"</span>");
                 }},
         ]
     });

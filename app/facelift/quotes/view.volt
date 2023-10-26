@@ -68,6 +68,7 @@
 	<div class="row">
 		<div class="col">
 			<form action="/quotes/saveitems" method="POST" role="form" id="items">
+				<editable-table>
 				<table data-navigable-spy data-editable data-editable-spy class="table table-hover">
 					<thead>
 						<tr>
@@ -166,6 +167,7 @@
 						</tr>
 					</tfoot>
 				</table>
+			</editable-table>
 				<button type="submit" class="btn btn-primary shadow float-right">Update</button>
 			</form>
 		</div>
@@ -250,7 +252,20 @@ select.data.dryness {
 	width: 54px;
 }
 	</style>
-	<script src="/js/editable-table.js"></script>
+		<script type="module" src="https://cdn.pika.dev/editable-table"></script>
+		<script>
+			customElements.whenDefined("editable-table").then(() => {
+				editableTable = document.querySelector("editable-table");
+				// get records out of table
+				records = editableTable.get();
+				
+				editableTable.addEventListener("record:update", function(event) {
+					const { changeType, index, record } = event.detail;
+					console.log(`record %d %s: %o`, index + 1, changeType, record);
+					
+				});
+			});
+		</script>
 	<script>
 		$( document ).ready( function() {
 			$('.xedit').editable();

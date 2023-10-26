@@ -16,7 +16,7 @@ use App\Plugins\Auth\Auth;
 use App\Models\Users;
 use App\Models\Customers;
 use App\Models\Contacts;
-use App\Models\GenericStatus;
+use App\Models\QuoteStatus;
 
 class QuotesForm extends Form
 {
@@ -36,7 +36,7 @@ class QuotesForm extends Form
             'customerCode',
             Customers::find(),
             array(
-                'using' => array('customerCode', 'customerName'),
+                'using' => array('customerCode', 'name'),
                 'required'	=> 'true',
                 'useEmpty'	=> true,
                 'class' => 'form-control selectpicker',
@@ -95,7 +95,7 @@ class QuotesForm extends Form
         $moreNotes = new TextArea("moreNotes");
         $moreNotes->setAttributes(array(
             'class'		=> 'form-control',
-            'placeholder' => 'Private notes. These will not be visible on the customers version'
+            'placeholder' => 'These will NOT be visible on the quote'
         ));
         $moreNotes->setLabel("Private Notes");
         $this->add($moreNotes);
@@ -118,7 +118,7 @@ class QuotesForm extends Form
 
         $status = new Select(
             "status",
-            GenericStatus::find(),
+            QuoteStatus::find(),
             array(
                 'using'	=> array(
                     'id',

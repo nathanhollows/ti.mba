@@ -212,7 +212,7 @@ CREATE TABLE IF NOT EXISTS `freight_carriers` (
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE IF NOT EXISTS `generic_status` (
+CREATE TABLE IF NOT EXISTS `quote_status` (
   `id` int(11) NOT NULL,
   `name` text NOT NULL,
   `style` varchar(10) NOT NULL
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `grade` (
   `id` int(11) NOT NULL,
   `shortCode` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `species` int(11) NOT NULL
+  `active` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `kpis` (
@@ -327,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `profiles` (
 
 CREATE TABLE IF NOT EXISTS `quotes` (
   `quoteId` int(9) NOT NULL,
-  `webId` char(32) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `webId` char(36) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `date` date DEFAULT NULL,
   `customerCode` varchar(53) COLLATE utf8_unicode_ci DEFAULT NULL,
   `user` varchar(37) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -342,7 +342,7 @@ CREATE TABLE IF NOT EXISTS `quotes` (
   `freight` decimal(6,2) DEFAULT NULL,
   `directDial` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
   `leadTime` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `value` decimal(10,2) NOT NULL
+  `value` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `quote_codes` (
@@ -549,7 +549,7 @@ ALTER TABLE `freight_areas`
 ALTER TABLE `freight_carriers`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `generic_status`
+ALTER TABLE `quote_status`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `grade`
@@ -686,6 +686,8 @@ ALTER TABLE `quotes`
 ALTER TABLE `quote_items`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `quote_items_backup`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `quote_status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `remember_tokens`
   MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT;

@@ -48,7 +48,7 @@
 				<a class="dropdown-item filter-status" data-status="Hot" href="#">Hot</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item filter-status" data-status="Won" href="#">Won</a>
-				<a class="dropdown-item filter-status" data-status="Lost" href="#">Lost</a>
+				<a class="dropdown-item filter-status" data-status="Dead" href="#">Lost</a>
 				<div class="dropdown-divider"></div>
 				<a class="dropdown-item filter-status" data-status="" href="#">All Statuses</a>
 			</div>

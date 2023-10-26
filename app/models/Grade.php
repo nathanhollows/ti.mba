@@ -23,4 +23,10 @@ class Grade extends Model
      * @var string
      */
     public $name;
+
+    /**
+     *
+     * @var integer
+     */
+    public $active;
 }
