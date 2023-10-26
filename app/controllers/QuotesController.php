@@ -18,7 +18,6 @@ use App\Models\Users;
 use App\Models\Dryness;
 use App\Models\ContactRecord;
 use App\Models\Finish;
-use App\Models\QuoteVisits;
 use App\Models\PricingUnit;
 use App\Forms\quotes\QuotesForm;
 use App\Forms\quotes\ItemForm;
@@ -138,12 +137,6 @@ class QuotesController extends ControllerBase
             $this->flashSession->error("That quote doesn't exist! Weird.");
             return $this->response->redirect('/quotes');
         }
-
-        $auth = new Auth();
-        $visit = new QuoteVisits();
-        $visit->user = $auth->getId();
-        $visit->quoteId = $quote->quoteId;
-        $visit->save();
 
         $item = new QuoteItems();
         $item->quoteId = $quote->quoteId;

@@ -10,7 +10,6 @@ use App\Models\SalesAreas;
 use App\Models\Users;
 use App\Models\DailySales;
 use App\Models\Budgets;
-use App\Models\QuoteVisits;
 use App\Models\StickyNotes;
 use App\Models\Orders;
 
