@@ -14,7 +14,7 @@
                 <ul class="list-group customers">
                     {% for customer in customers %}
                     <li class="list-group-item">
-                        <a class="show-customer" data-customer="{{ customer.customerCode }}">{{ customer.customerName }}</a>
+                        <a class="show-customer" data-customer="{{ customer.customerCode }}">{{ customer.name }}</a>
                         <span class="hidden">{{ customer.customerCode }}</span>
                     </li>
                     {% endfor %}
@@ -50,7 +50,7 @@
                             {% if order.customerCode is null %}
                             <td></td>
                             {% else %}
-                            <td>{% if order.customer %}{{ order.customer.customerName}}{% endif %}<br>
+                            <td>{% if order.customer %}{{ order.customer.name}}{% endif %}<br>
                             {{ order.customerRef }}</td>
                             {% endif %}
                             <td>{{ date("M d", strtotime(order.date)) }} <br>

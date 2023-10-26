@@ -22,7 +22,7 @@ th {
 	<h1>ATS Timber Ltd</h1>
 	<h2>Customers Details</h2>
 	<hr>
-	<h2>{{ customer.customerName }}</h2>
+	<h2>{{ customer.name }}</h2>
 	<table width="100%">
 		<tbody>
 			{% for address in customer.addresses %}

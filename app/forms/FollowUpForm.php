@@ -39,13 +39,13 @@ class FollowUpForm extends Form
             $customer = new Select(
                 "customerCode",
                 Customers::find([
-                    "order"	=> "customerName",
+                    "order"	=> "name",
                     "conditions" => "customerStatus IN (1,4)",
                 ]),
                 array(
                     'using'	=> array(
                         'customerCode',
-                        'customerName',
+                        'name',
                     ),
                     'class'	=> "form-control selectpicker",
                     'data-live-search' => 'true',

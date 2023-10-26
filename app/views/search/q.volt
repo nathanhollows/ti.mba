@@ -28,7 +28,7 @@
             <h4>Customers</h4>
             <ul class="list-group">
                 {% for customer in customers %}
-                <li class="list-group-item">{{ link_to('customers/view/' ~ customer.customerCode, customer.customerName) }}
+                <li class="list-group-item">{{ link_to('customers/view/' ~ customer.customerCode, customer.name) }}
 				<span class="pull-right"><a href="tel:{{ customer.phone|stripspace }}" class="tel-link">{{ customer.phone }}</a></span> 
 				</li>
                 {% endfor %}
@@ -53,7 +53,7 @@
                             {{ link_to('contacts/view/' ~ contact.id, contact.name) }}
                         </td>
                         <td>
-                            {{ link_to('customers/view/' ~ contact.company.customerCode, contact.company.customerName) }}
+                            {{ link_to('customers/view/' ~ contact.company.customerCode, contact.company.name) }}
                         </td>
                         <td class="hidden-xs">
                             <a href="tel:{{ contact.directDial|stripspace }}" class="tel-link">{{ contact.directDial|escape }}</a>
@@ -71,7 +71,7 @@
             <h4>Quotes</h4>
             <ul class="list-group">
                 {% for quote in quotes %}
-                <li class="list-group-item">{{ link_to('quotes/view/'~ quote.quoteId, quote.quoteId) }} - {{ quote.reference|escape }} - {{ quote.customer.customerName|escape }}</li>
+                <li class="list-group-item">{{ link_to('quotes/view/'~ quote.quoteId, quote.quoteId) }} - {{ quote.reference|escape }} - {{ quote.customer.name|escape }}</li>
                 {% endfor %}
             </ul>
         </div>

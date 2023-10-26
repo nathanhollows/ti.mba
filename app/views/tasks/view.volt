@@ -6,7 +6,7 @@
         </h3>
     </div>
     <div class="panel-body">
-        <strong>Company: </strong> <strong>{{ link_to('customers/view/' ~ record.company.customerCode, record.company.customerName ) }}</strong> <br />
+        <strong>Company: </strong> <strong>{{ link_to('customers/view/' ~ record.company.customerCode, record.company.name ) }}</strong> <br />
         {% if record.person %}
             <strong>Contact: </strong> {{ record.person.name }} <br />
         {% endif %}
@@ -92,7 +92,7 @@
             {% endif %}
         {% endif %}
 
-        <strong>{{ record.company.customerName }}</strong> <br />
+        <strong>{{ record.company.name }}</strong> <br />
         {% if record.company.phone %}
         <a href="tel:{{ record.company.phone|stripspace }}" class="tel-link">{{ record.company.phone }}</a>
         {% endif %} <br />

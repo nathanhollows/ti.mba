@@ -32,11 +32,13 @@
 			{{ content() }}
 			{{ flash.output() }}
 			{{ flashSession.output() }}
+			{#
 			{% if budget.budget is not defined or budget.budget is 0 %}
 			<div class="alert alert-danger" role="alert">
 				The budget for this month has not been set. This can be done in the {{link_to("reports/annual", "annual sales report", "class": "alert-link")}}
 			</div>
 			{% endif %}
+			#}
 		</div>
 	</div>
 </div>

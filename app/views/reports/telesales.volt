@@ -13,7 +13,7 @@
   <tbody>
     {% for customer in customers %}
     <tr id="{{customer.customerCode}}">
-      <td>{{ customer.customerName }}</td>
+      <td>{{ customer.name }}</td>
       <td>
         {% for contact in customer.contacts %}
         {{ contact.name }}, 

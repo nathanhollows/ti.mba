@@ -28,7 +28,7 @@
                         {% for task in overdue %}
                         <tr data-id="{{ task.id }}">
                             <td>
-                                {{ task.company.customerName }}
+                                {{ task.company.name }}
                             </td>
                             <td>
                                 <a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
@@ -44,7 +44,7 @@
                         {% for task in today %}
                         <tr data-id="{{ task.id }}">
                             <td>
-                                {{ task.company.customerName }}
+                                {{ task.company.name }}
                             </td>
                             <td>
                                 <a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>
@@ -60,7 +60,7 @@
                         {% for task in coming %}
                         <tr data-id="{{ task.id }}">
                             <td>
-                                {{ task.company.customerName }}
+                                {{ task.company.name }}
                             </td>
                             <td>
                                 <a class="ajax-link" data-id="{{ task.id }}">{% if task.reference %}{{ task.reference }}{% else %}<code>No reference</code>{% endif %}</a>

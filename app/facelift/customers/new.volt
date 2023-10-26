@@ -24,8 +24,8 @@
 	<div class="row">
 		<div class="col col-md-9">
 			<div class="form-group">
-				{{ form.label('customerName',['class': 'control-label']) }}
-				{{ form.render('customerName') }}
+				{{ form.label('name',['class': 'control-label']) }}
+				{{ form.render('name') }}
 			</div>
 		</div>
 		<div class="col">

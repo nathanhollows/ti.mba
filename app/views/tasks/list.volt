@@ -38,7 +38,7 @@
                         {% set url = "/customers/view/" ~ item.customerCode ~ "/" %}
                     {% endif %}
                 <tr class="danger clickable-row" data-href="{{ url }}">
-                    <td>{{ item.company.customerName }}</td>
+                    <td>{{ item.company.name }}</td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.followUpDate }}</td>
                     <td>{{ item.type.name }}</td>
@@ -52,7 +52,7 @@
                         {% set url = "/customers/view/" ~ item.customerCode ~ "/" %}
                     {% endif %}
                 <tr class="info clickable-row" data-toggle="modal" data-id="{{ loop.index }}" data-target="modal-ajax" data-href="{{ url }}">
-                    <td>{{ item.company.customerName }}</td>
+                    <td>{{ item.company.name }}</td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.followUpDate }}</td>
                     <td>{{ item.type.name }}</td>
@@ -66,7 +66,7 @@
                         {% set url = "/customers/view/" ~ item.customerCode ~ "/" %}
                     {% endif %}
                 <tr class="clickable-row" data-href="{{ url }}">
-                    <td>{{ item.company.customerName }}</td>
+                    <td>{{ item.company.name }}</td>
                     <td>{{ item.date }}</td>
                     <td>{{ item.followUpDate }}</td>
                     <td>{{ item.type.name }}</td>

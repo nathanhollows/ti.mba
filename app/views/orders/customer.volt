@@ -4,7 +4,7 @@
         <div class="panel panel-default">
             <div class="panel panel-default">
                <div class="panel-heading">
-                <h3 class="panel-title">Orders for {{ customer.customerName }}</h3>
+                <h3 class="panel-title">Orders for {{ customer.name }}</h3>
             </div>
             <div class="panel-body">
                 <input id="list-search" name="search" placeholder="Search by name, order number, sales rep, location ..." type="text" data-list=".list" class="form-control" accesskey="s" autocomplete="off" autofocus="true">

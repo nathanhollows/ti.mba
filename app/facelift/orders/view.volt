@@ -22,7 +22,7 @@
 			{% if order.customer %}
 			<dt class="text-right col-4">Customer</dt>
 			<dd class="col-8">
-			<strong>{{ link_to('customers/view/' ~ order.customerCode|lower , order.customer.customerName) }}</strong>
+			<strong>{{ link_to('customers/view/' ~ order.customerCode|lower , order.customer.name) }}</strong>
 			</dd>
 			{% endif %}
 			<dt class="text-right col-4">Reference</dt>

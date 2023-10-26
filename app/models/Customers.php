@@ -20,7 +20,7 @@ class Customers extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $customerName;
+    public $name;
 
     /**
      *

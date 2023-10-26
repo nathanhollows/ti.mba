@@ -1,6 +1,6 @@
 <div class="card shadow">
 	<div class="card-header">
-		<strong class="pt-2 d-inline-block">{{ customer.customerName }} (<span id="count"></span>)</strong>
+		<strong class="pt-2 d-inline-block">{{ customer.name }} (<span id="count"></span>)</strong>
 		<input id="list-search" name="search" placeholder="Search.." type="text" data-list=".list" class="form-control shadow-sm w-25 float-right" accesskey="s" autocomplete="off" autofocus="true">
 	</div>
 	<div class="scroll">

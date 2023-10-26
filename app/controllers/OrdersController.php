@@ -94,7 +94,7 @@ class OrdersController extends ControllerBase
         $order = Orders::findFirstByorderNumber($orderNumber);
         $this->view->order = $order;
         $this->view->pageTitle = "Order " .  $order->orderNumber;
-        $this->view->pageSubtitle = $order->customer->customerName;
+        $this->view->pageSubtitle = $order->customer->name;
         $this->view->headerButton = \Phalcon\Tag::linkTo(array("followup/?company=" . $order->customerCode . "&job=" . $order->orderNumber, '<i class="fa fa-pencil"></i> Add Record', "class" => "btn btn-default pull-right", "data-target" => "#modal-ajax"));
 
         $history = ContactRecord::find(array(
@@ -232,7 +232,7 @@ class OrdersController extends ControllerBase
         $this->view->order = $order;
         $this->view->form = new OrdersForm($order);
 
-        $this->view->pageTitle = "Order " . $order->orderNumber . " for " . \Phalcon\Tag::linkTo("customers/view/" . $order->customerCode, $order->customer->customerName);
+        $this->view->pageTitle = "Order " . $order->orderNumber . " for " . \Phalcon\Tag::linkTo("customers/view/" . $order->customerCode, $order->customer->name);
     }
 
     /**

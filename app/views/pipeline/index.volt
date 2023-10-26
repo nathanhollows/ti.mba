@@ -40,7 +40,7 @@
                 <a href="/quotes/view/{{ item.quoteId }}"><span class="arrow pull-right"><i class="fa fa-icon fa-arrow-circle-right"></i></span></a>
                 <span class="my-handle"></span>
                 <strong>{{ item.reference }}</strong> <span class="pull-right">${{ item.value|number }}</span> <br>
-                {% if item.customer %} {{ item.customer.customerName }} {% endif %}<span class="pull-right">{{ item.rep.name }}</span><br>
+                {% if item.customer %} {{ item.customer.name }} {% endif %}<span class="pull-right">{{ item.rep.name }}</span><br>
                 {{ item.quoteId }} - {{ date("d-m-Y", strtotime(item.date)) }} {% if item.followUpStatus == 1 %}overdue{% elseif item.followUpStatus == 2 %}current{% elseif item.followUpStatus == 3 %}today{% endif %}
 				</li>
 			{% endfor %}
@@ -57,7 +57,7 @@
                 <a href="/quotes/view/{{ item.quoteId }}"><span class="arrow pull-right"><i class="fa fa-icon fa-arrow-circle-right"></i></span></a>
                 <span class="my-handle"></span>
                 <strong>{{ item.reference }}</strong> <span class="pull-right">${{ item.value|number }}</span> <br>
-                {% if item.customer %} {{ item.customer.customerName }} {% endif %}<span class="pull-right">{{ item.rep.name }}</span><br>
+                {% if item.customer %} {{ item.customer.name }} {% endif %}<span class="pull-right">{{ item.rep.name }}</span><br>
                 {{ item.quoteId }} - {{ date("d-m-Y", strtotime(item.date)) }} {% if item.followUpStatus == 1 %}overdue{% elseif item.followUpStatus == 2 %}current{% endif %}
 				</li>
 			{% endfor %}
@@ -74,7 +74,7 @@
                 <a href="/quotes/view/{{ item.quoteId }}"><span class="arrow pull-right"><i class="fa fa-icon fa-arrow-circle-right"></i></span></a>
                 <span class="my-handle"></span>
                 <strong>{{ item.reference }}</strong> <span class="pull-right">${{ item.value|number }}</span> <br>
-                {% if item.customer %} {{ item.customer.customerName }} {% endif %}<span class="pull-right">{{ item.rep.name }}</span><br>
+                {% if item.customer %} {{ item.customer.name }} {% endif %}<span class="pull-right">{{ item.rep.name }}</span><br>
                 {{ item.quoteId }} - {{ date("d-m-Y", strtotime(item.date)) }} {% if item.followUpStatus == 1 %}overdue{% elseif item.followUpStatus == 2 %}current{% endif %}
 				</li>
 			{% endfor %}

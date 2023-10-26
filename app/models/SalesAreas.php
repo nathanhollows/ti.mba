@@ -118,7 +118,7 @@ class SalesAreas extends \Phalcon\Mvc\Model
 
         $query = new Query(
             "
-select c.customerName, c.customerCode, round(sum(value),2) value
+select c.name, c.customerCode, round(sum(value),2) value
 from App\Models\Customers c
 join App\Models\Orders o on o.customerCode = c.customerCode
 where area = :id:

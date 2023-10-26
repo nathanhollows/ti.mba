@@ -165,7 +165,7 @@
                         {% else %}
                             {% set url = '/customers/view/' ~ task.customerCode ~ '/' %}
                         {% endif %}
-                        <a href="{{ url }}"><li class="list-group-item">{{ task.reference }} <br /> {{ task.company.customerName }}</li></a>
+                        <a href="{{ url }}"><li class="list-group-item">{{ task.reference }} <br /> {{ task.company.name }}</li></a>
                     {% endfor %}
                 </ul>
           </div>

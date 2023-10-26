@@ -18,7 +18,7 @@
     <tr>
       <td><input type="checkbox" class="check" name="customerCode[]" value="{{ customer.customerCode }}"></td>
       <td>{{ customer.customerCode }}</td>
-      <td>{{ link_to('customers/view/' ~ customer.customerCode, customer.customerName) }}</td>
+      <td>{{ link_to('customers/view/' ~ customer.customerCode, customer.name) }}</td>
       <td>{{ customer.salesArea.name }}</td>
       <td>{{ customer.tripDay }}</td>
       <td>{{ customer.salesArea.rep.name }}</td>

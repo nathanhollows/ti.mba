@@ -1,4 +1,4 @@
-<h1>{{ company.customerName }} | Customer Details</h1>
+<h1>{{ company.name }} | Customer Details</h1>
 <hr>
 <table style="width: 100%">
 	<tbody>

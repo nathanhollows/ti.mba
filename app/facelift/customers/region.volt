@@ -25,7 +25,7 @@
 					<strong>Top Customers - past year</strong>
 				</li>
 				{% for customer in region.getTopCustomers(strtotime("now - 1 year")) %}
-				<li class="list-group-item">{{ linkTo("customers/view/"~customer.customerCode, customer.customerName) }}
+				<li class="list-group-item">{{ linkTo("customers/view/"~customer.customerCode, customer.name) }}
 					<span class="float-right">${{ customer.value|number }}</span>
 				</li>
 				{% endfor %}
@@ -37,7 +37,7 @@
 					<strong>Top Customers - past month</strong>
 				</li>
 				{% for customer in region.getTopCustomers(strtotime("now - 1 month")) %}
-				<li class="list-group-item">{{ linkTo("customers/view/"~customer.customerCode, customer.customerName) }}
+				<li class="list-group-item">{{ linkTo("customers/view/"~customer.customerCode, customer.name) }}
 					<span class="float-right">${{ customer.value|number }}</span>
 				</li>
 				{% endfor %}

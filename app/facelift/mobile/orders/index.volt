@@ -3,7 +3,7 @@
 {% for order in orders %}
     <li class="list-group-item">
         <p>
-        <strong>{{ order.orderNumber }}</strong> {{ order.customer.customerName }}
+        <strong>{{ order.orderNumber }}</strong> {{ order.customer.name }}
         {% if order.customer.rank < 11 %}<span class="badge badge-pill badge-info">Top 10 Customer</span>{% endif %}
         <button class="btn btn-primary float-right">Complete</button>
         <button class="btn btn-primary mr-1 float-right" type="button" data-toggle="collapse" data-target="#collapse{{ order.orderNumber }}" aria-expanded="false" aria-controls="collapse{{ order.orderNumber }}">View</button>

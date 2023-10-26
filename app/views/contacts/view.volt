@@ -24,7 +24,7 @@
 			<h3 class="panel-title">Organisation</h3>
 		</div>
 		<div class="panel-body">
-			{{ link_to("customers/view/" ~ contact.company.customerCode, contact.company.customerName) }}<br>
+			{{ link_to("customers/view/" ~ contact.company.customerCode, contact.company.name) }}<br>
 			<a href="tel:{{ contact.company.phone }}" class="tel-link">{{ contact.company.phone }}</a>
 		</div>
 	</div>

@@ -22,7 +22,7 @@ table tr td, table tr th {
 
 {{ content() }}
 
-<h1>{{ customer.customerName }}</h1>
+<h1>{{ customer.name }}</h1>
 <h2>Contact Summary</h2>
 <table class="table" width="100%">
 	<thead>

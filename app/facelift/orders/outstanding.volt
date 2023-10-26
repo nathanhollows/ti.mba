@@ -23,7 +23,7 @@
 					{% if order.customerCode is null %}
 					<td></td>
 					{% else %}
-					<td>{% if order.customer %}{{ order.customer.customerName}}{% else %}<em>{{ order.customerCode }}</em>{% endif %}<br>
+					<td>{% if order.customer %}{{ order.customer.name}}{% else %}<em>{{ order.customerCode }}</em>{% endif %}<br>
 						{{ order.customerRef }}</td>
 					{% endif %}
 					<td>{{ date("M d", strtotime(order.date)) }} <br>

@@ -111,7 +111,7 @@
                                             {{ link_to("quotes/view/" ~ quote.quoteId, quote.quoteId) }}
                                         </td>
                                         <td>
-                                            {{ quote.customer.customerName }}
+                                            {{ quote.customer.name }}
                                         </td>
                                         <td>
                                             {{ quote.reference }}

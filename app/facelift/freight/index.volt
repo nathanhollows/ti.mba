@@ -33,7 +33,7 @@
 					{% if item.order %}
 					{{ item.order.orderNumber }}
 					{% if item.order.customer %}
-					{{ item.order.customer.customerName }}
+					{{ item.order.customer.name }}
 					{% endif %}
 					{% endif %}
 					<span class="float-right">

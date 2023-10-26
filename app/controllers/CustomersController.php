@@ -237,7 +237,7 @@ class CustomersController extends ControllerBase
         $customer = new Customers();
         $customer->assign(
             $this->request->getPost(),
-            array('customerCode', 'customerName', 'customerPhone', 'customerFax', 'customerEmail', 'freightArea', 'freightCarrier', 'salesArea', 'customerStatus', 'defaultAddress', 'defaultContact', 'customerGroup')
+            array('customerCode', 'name', 'phone', 'fax', 'email', 'salesArea', 'status')
         );
         if (!$customer->save()) {
             foreach ($customer->getMessages() as $message) {
@@ -307,18 +307,12 @@ class CustomersController extends ControllerBase
         }
 
         $customer->customerCode = $this->request->getPost("customerCode");
-        $customer->customerName = $this->request->getPost("customerName");
-        $customer->customerPhone = $this->request->getPost("customerPhone");
-        $customer->customerFax = $this->request->getPost("customerFax");
-        $customer->customerEmail = $this->request->getPost("customerEmail");
-        $customer->freightArea = $this->request->getPost("freightArea");
-        $customer->freightCarrier = $this->request->getPost("freightCarrier");
-        $customer->area = $this->request->getPost("area");
-        $customer->customerStatus = $this->request->getPost("customerStatus");
-        $customer->defaultAddress = $this->request->getPost("defaultAddress");
-        $customer->defaultContact = $this->request->getPost("defaultContact");
-        $customer->customerGroup = $this->request->getPost("customerGroup");
-
+        $customer->name = $this->request->getPost("name");
+        $customer->phone = $this->request->getPost("phone");
+        $customer->fax = $this->request->getPost("fax");
+        $customer->email = $this->request->getPost("email");
+        $customer->salesArea = $this->request->getPost("area");
+        $customer->status = $this->request->getPost("status");
 
         if (!$customer->save()) {
             foreach ($customer->getMessages() as $message) {

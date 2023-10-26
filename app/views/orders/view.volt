@@ -13,7 +13,7 @@
                     <dt>Customer</dt>
                     <dd>
                         {% if order.customer %}
-                            <strong>{{ link_to('customers/view/' ~ order.customerCode|lower , order.customer.customerName) }}</strong>
+                            <strong>{{ link_to('customers/view/' ~ order.customerCode|lower , order.customer.name) }}</strong>
                         {% else %}
                             <em>None</em>
                         {% endif %}

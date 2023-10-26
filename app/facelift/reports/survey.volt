@@ -23,7 +23,7 @@
                             {{ link_to('contacts/view/'~i.person.id, i.person.name ) }}
                             <em>
                                 {{ date('M dS', strtotime( i.timestamp )) }}
-                                {{ link_to('customers/view/'~i.company.customerCode, i.company.customerName, 'class': 'text-primary') }}
+                                {{ link_to('customers/view/'~i.company.customerCode, i.company.name, 'class': 'text-primary') }}
                             </em>
                             <br />
                             {% if i.feedback %}

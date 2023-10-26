@@ -56,7 +56,7 @@
                 <strong>{{ quote.reference|escape }} <span class="pull-right">${{ quote.value|number }}</span></strong>
                 <br>
                 <a href='{{ url('quotes/view/' ~ quote.quoteId) }}' >View Quote <i class="fa fa-external-link"></i></a>
-                <strong class="pull-right">{{ quote.customer.customerName }}</strong>
+                <strong class="pull-right">{{ quote.customer.name }}</strong>
                 </li>
             {% endfor %}
         </ul>

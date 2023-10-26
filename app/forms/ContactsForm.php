@@ -59,7 +59,7 @@ class ContactsForm extends Form
                 'customerCode',
                 Customers::find(),
                 array(
-                    'using' => array('customerCode', 'customerName'),
+                    'using' => array('customerCode', 'name'),
                     'required'	=> true,
                     'useEmpty'	=> true,
                     'class' => 'form-control selectpicker',

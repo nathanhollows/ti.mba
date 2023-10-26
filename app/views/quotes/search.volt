@@ -15,7 +15,7 @@
         <tr {% if quote.sale == 1 %}class="success"{% endif %}>
             <td>{{ quote.quoteId }}</td>
             <td>{{ quote.date }}</td>
-            <td>{{ quote.customer.customerName }}</td>
+            <td>{{ quote.customer.name }}</td>
             <td>{{ quote.reference }}</td>
             <td>{% if quote.customerContact is not empty %}{{ quote.customerContact.name }}{% else %}{{ quote.attention }}{% endif %}</td>
             <td align="right">${{ quote.value|number }}</td>

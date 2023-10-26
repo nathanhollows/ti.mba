@@ -66,7 +66,7 @@
 										{{ link_to('contacts/view/' ~ contact.id, contact.name) }}
 									</td>
 									<td>
-										{{ link_to('customers/view/' ~ contact.company.customerCode, contact.company.customerName) }}
+										{{ link_to('customers/view/' ~ contact.company.customerCode, contact.company.name) }}
 									</td>
 									<td class="hidden-xs">
 										<a href="tel:{{ contact.directDial|stripspace }}" class="tel-link">{{ contact.directDial|escape }}</a>
@@ -84,7 +84,7 @@
 					<h4>Quotes</h4>
 					<ul class="list-group shadow-sm">
 						{% for quote in quotes %}
-						<li class="list-group-item">{{ link_to('quotes/view/'~ quote.quoteId, quote.quoteId) }} - {{ quote.reference|escape }} - {{ quote.customer.customerName|escape }}</li>
+						<li class="list-group-item">{{ link_to('quotes/view/'~ quote.quoteId, quote.quoteId) }} - {{ quote.reference|escape }} - {{ quote.customer.name|escape }}</li>
 						{% endfor %}
 					</ul>
 				</div>

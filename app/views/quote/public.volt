@@ -38,7 +38,7 @@
 	<div class="break"></div>
 	<div id="parties">
 		<div id="client">
-			<h4><strong>{{ quote.customer.customerName }} </strong></h4>
+			<h4><strong>{{ quote.customer.name }} </strong></h4>
 			<p>
 				<span><strong>Attn:</strong> {{quote.attention }}
 				{% if quote.customerContact %} {{ quote.customerContact.name }} {% endif %}<br></span>

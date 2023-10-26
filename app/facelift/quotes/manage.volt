@@ -52,7 +52,7 @@
 					<tr>
 						<td>{{ linkTo(['quotes/view/' ~ quote.quoteId, quote.quoteId]) }}</td>
 						<td>{{ quote.date }}</td>
-						<td>{{ linkTo(['customers/view/'~ quote.customer.customerCode, quote.customer.customerName]) }}</td>
+						<td>{{ linkTo(['customers/view/'~ quote.customer.customerCode, quote.customer.name]) }}</td>
 						<td>{{ quote.reference }}</td>
 						<td align="right">{{ quote.value|money }}</td>
 						<td>

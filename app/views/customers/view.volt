@@ -12,7 +12,7 @@
                 <ul class="list-group">
                     <li class="list-group-item"><span class="title">Status</span> <span class="label label-{{ customer.status.style }}">{{ customer.status.name }}</span></li>
                     <li class="list-group-item"><span class="title">Code</span>{{ customer.customerCode }}</li>
-                    <li class="list-group-item"><span class="title">Name</span>{{ customer.customerName }}</li>
+                    <li class="list-group-item"><span class="title">Name</span>{{ customer.name }}</li>
                     <li class="list-group-item"><span class="title">Phone</span><a href="tel:{{ customer.phone|stripspace }}" class="tel-link">{{ customer.phone }}</a></li>
                     <li class="list-group-item"><span class="title">Fax</span> {{ customer.fax }}</li>
                     <li class="list-group-item"><span class="title">Email</span> <a href="mailto:{{ customer.email }}">{{ customer.email }}</a></li>
