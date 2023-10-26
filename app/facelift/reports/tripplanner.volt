@@ -16,9 +16,17 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {{ content() }}
+                {{ flashSession.output() }}
+                {{ flash.output() }}
+            </div>
+        </div>
+    </div>
+
     <div class="container bg-white py-3 mb-4 border shadow-sm rounded">
-        {{ content() }}
-        {{ flashSession.output() }}
         <div class="row">
             <div class="col py-3">
                 <div class="btn-group">

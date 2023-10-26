@@ -56,6 +56,26 @@ class SalesAreas extends \Phalcon\Mvc\Model
         $this->nicename = strtolower(str_replace(" ", "-", $this->name));
     }
 
+    public function afterCreate()
+    {
+        $this->getDI()->getShared('cache')->delete('sales-areas');
+    }
+
+    public function afterUpdate()
+    {
+        $this->getDI()->getShared('cache')->delete('sales-areas');
+    }
+
+    public function afterDelete()
+    {
+        $this->getDI()->getShared('cache')->delete('sales-areas');
+    }
+
+    public function afterSave()
+    {
+        $this->getDI()->getShared('cache')->delete('sales-areas');
+    }
+
     /**
      * Get the sales for the region in the current financial year
      *

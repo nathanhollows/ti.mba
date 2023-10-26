@@ -6,6 +6,7 @@ use App\Freight\Freight;
 use App\Models\ContactRecord;
 use App\Models\Quotes;
 use App\Models\Kpis;
+use App\Models\SalesAreas;
 use App\Models\Users;
 use App\Models\DailySales;
 use App\Models\Budgets;
@@ -28,6 +29,17 @@ class DashboardController extends ControllerBase
         $this->view->noHeader = true;
 
         $user = $this->session->get('auth-identity')['id'];
+
+        $unassignedAreas = SalesAreas::find(array(
+            'conditions'    => 'agent IS NULL',
+            'cache'         => array(
+                'key'       => 'unassigned-areas',
+                'lifetime'  => 86400
+            ),
+        ));
+        if (count($unassignedAreas) > 0) {
+            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings', 'here')) . "</strong>.");
+        }
 
         $this->view->budget = Budgets::current();
         $this->view->kpis = Kpis::thisMonth();

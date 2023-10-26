@@ -39,6 +39,17 @@ class ReportsController extends ControllerBase
                 'lifetime' => 3600,
             ),
         ));
+
+        $unassignedAreas = SalesAreas::find(array(
+            'conditions'    => 'agent IS NULL',
+            'cache'         => array(
+                'key'       => 'unassigned-areas',
+                'lifetime'  => 86400
+            ),
+        ));
+        if (count($unassignedAreas) > 0) {
+            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings', 'here')) . "</strong>.");
+        }
     }
 
     public function annualAction($year = null, $month = null)

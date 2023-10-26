@@ -54,7 +54,7 @@ class Elements extends Injectable
             'caption' => 'Reports',
             'action' => '',
             'children' => array(
-                array('Customers', 'reports/customers'),
+                array('Trip Planner', 'reports/tripplanner'),
                 array('Monthly Sales', 'reports/sales'),
                 array('Annual Sales', 'reports/annual'),
                 array('Regional Sales', 'customers/regions'),
