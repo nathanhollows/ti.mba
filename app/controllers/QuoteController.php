@@ -14,7 +14,7 @@ class QuoteController extends ControllerBase
     {
         $quote = Quotes::findFirstBywebId($webId);
         // $snappy = new Pdf('C:\"Program Files"\wkhtmltopdf\bin\wkhtmltopdf.exe');
-        $snappy = new Pdf('xvfb-run -a /usr/bin/wkhtmltopdf');
+        $snappy = new Pdf('/usr/bin/wkhtmltopdf');
         $snappy->setOptions(
             array(
                 // 'header-html'	=> 'http://ats.ti.mba/quote/header',
@@ -33,9 +33,8 @@ class QuoteController extends ControllerBase
         $response = new Response;
         // Setting a header by its name
         $response->setHeader("Content-Type", "application/pdf");
-        $response->setHeader("Content-Disposition", 'inline; filename="' . $quote->quoteId . ' ' . $quote->customer->name . '.pdf"');
-        $url = $this->config->application->publicUrl
-            . $this->url->get('quote/public/')
+        $response->setHeader("Content-Disposition", 'inline; filename="Quote ' . $quote->quoteId . ' - ' . $quote->customer->name . '.pdf"');
+        $url = $this->url->get('quote/public/')
             . $quote->webId;
         $response->setContent($snappy->getOutput($url));
         return $response->send();

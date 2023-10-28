@@ -50,15 +50,15 @@
 				<tbody>
 					{% for quote in quotes %}
 					<tr>
-						<td>{{ linkTo(['quotes/view/' ~ quote.quoteId, quote.quoteId]) }}</td>
+						<td>{{ linkTo(['quotes/view/' ~ quote.quoteId, "#" ~ quote.quoteId]) }}</td>
 						<td>{{ quote.date }}</td>
 						<td>{{ linkTo(['customers/view/'~ quote.customer.customerCode, quote.customer.name]) }}</td>
 						<td>{{ quote.reference }}</td>
 						<td align="right">{{ quote.value|money }}</td>
 						<td>
 							<div class="btn-group" role="group" aria-label="Basic example">
-								<a href="{{ url('quotes/turntosale/' ~ quote.quoteId ) }}" class="btn btn-outline-success btn-sm">Won</a>
-								<a href="{{ url('quotes/quotelost/' ~ quote.quoteId ) }}" class="btn btn-outline-danger btn-sm">Lost</a>
+								<a href="{{ url('quotes/won/' ~ quote.quoteId ) }}" class="btn btn-outline-success btn-sm">Won</a>
+								<a href="{{ url('quotes/lost/' ~ quote.quoteId ) }}" class="btn btn-outline-danger btn-sm">Lost</a>
 							</div>
 						</td>
 					</tr>

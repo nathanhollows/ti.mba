@@ -9,18 +9,18 @@ class QuoteItems extends Model
     public $id;
 
     public $quoteId;
+    
+    public $width;
+
+    public $thickness;
 
     public $grade;
 
     public $finish;
 
-    public $width;
+    public $treatment;
 
-    public $thickness;
-
-    public $callSize;
-
-    public $finSize;
+    public $dryness;
 
     public $lengths;
 
@@ -28,7 +28,9 @@ class QuoteItems extends Model
 
     public $priceUnit;
 
-    public $unitPrice;
+    public $price;
+
+    public $lineValue;
 
     public function initialize()
     {
@@ -41,6 +43,9 @@ class QuoteItems extends Model
 
     public function beforeSave()
     {
+        if ($this->price == null) {
+            $this->price = 0;
+        }
         $this->lineValue = $this->price * $this->qty;
     }
 }

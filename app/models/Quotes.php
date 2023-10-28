@@ -50,7 +50,7 @@ class Quotes extends Model
         $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
         $this->hasOne('contact', 'App\Models\Contacts', 'id', array('alias' => 'customerContact'));
         $this->hasOne('user', 'App\Models\Users', 'id', array('alias' => 'rep'));
-        $this->hasOne('status', 'App\Models\QuoteStatus', 'id', array('alias' => 'genericStatus'));
+        $this->hasOne('status', 'App\Models\QuoteStatus', 'id', array('alias' => 'state'));
         $this->hasMany('quoteId', 'App\Models\QuoteItems', 'quoteId', ['alias' => 'items']);
         $this->hasMany('quoteId', 'App\Models\ContactRecord', 'reference', ['alias' => 'history']);
     }
@@ -113,7 +113,7 @@ class Quotes extends Model
         $history->followUpDate = date('Y-m-d');
         $history->customerCode = $this->customerCode;
         $history->user = $auth->getId();
-        $history->contactType = 5;
+        $history->contactType = 7;
         $history->contact = $this->contact;
         $history->job = $this->quoteId;
         $history->reference = $this->quoteId . " " . $this->reference;

@@ -3,6 +3,7 @@
         "magnxpyr/phalcon-datatables": "1.*",
         "nesbot/carbon": "~1.21.0",
         "cebe/markdown": "^1.2.1",
-        "swiftmailer/swiftmailer": "^5.4"
+        "swiftmailer/swiftmailer": "^5.4",
+        "knplabs/knp-snappy": "1.2"
     }
 }

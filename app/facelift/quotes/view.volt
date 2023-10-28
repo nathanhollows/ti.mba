@@ -9,8 +9,8 @@
 			</div>
 			<div class="col text-right">
 				<div class="btn-group shadow">
-					{{ linkTo(["quote/won", "Won",  "class": "btn btn-success btn-sm "]) }}
-					{{ linkTo(["quote/lost", "Lost",  "class": "btn btn-secondary btn-sm "]) }}
+					{{ linkTo(["quotes/won/" ~ quote.quoteId, "Won",  "class": "btn btn-success btn-sm "]) }}
+					{{ linkTo(["quotes/lost/" ~ quote.quoteId, "Lost",  "class": "btn btn-secondary btn-sm "]) }}
 				</div>
 				{{ linkTo(['quote/get/' ~ quote.webId, 'Get PDF', 'class': 'btn btn-primary shadow']) }}
 			</div>
@@ -27,147 +27,148 @@
 			<h5>Overview</h5>
 			<dl>
 				<dt>Status</dt>
-				<dd><span class="badge badge-{{ quote.genericStatus.style }}">{{ quote.genericStatus.statusName }}</span></dd>
+				<dd><span class="badge badge-{{ quote.state.style }} xedit" id="status" data-mode="inline" data-type="select" data-source="[ {% for status in statuses %}{value: {{status.id}}, text: '{{ status.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Status" data-value="{{ quote.state.id }}">{{ quote.state.name }}</span></dd>
 				<dt>Attention</dt>
-				<dd>{% if quote.customerContact is not empty %}{{ quote.customerContact.name }} {% endif %}</dd>
+				<dd></dd>
+				<dd><a href="#" class="xedit" id="attention" data-mode="inline" data-type="select" data-source="[ {% for contact in contacts %}{value: {{contact.id}}, text: '{{ contact.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Attention" data-value="{% if quote.customerContact is not empty %}{{ quote.contact }} {% endif %}">{% if quote.customerContact is not empty %}{{ quote.customerContact.name }} {% endif %}</a></dd>
 				<dt>Rep</dt>
 				<dd><a href="#" class="xedit" id="rep" data-mode="inline" data-type="select" data-source="[ {% for user in users %}{value: {{user.id}}, text: '{{ user.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Sales Rep" data-value="{{ quote.rep.id }}">{{ quote.rep.name }}</a></dd>
 			</dl>
 		</div>
-
+		
 		<div class="col pt-4">
 			<dl>
 				<dt>Lead time<dt>
-				<dd>
-				<a href="#" class="xedit" data-mode="inline" id="leadTime" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Lead Time">{{ quote.leadTime }}</a>
-				</dd>
-				<dt>Date</dt>
-				<dd>
-				<a href="#" class="xedit" data-mode="inline" id="date" data-type="date" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Date" data-placement="bottom">{{ quote.date }}</a>
-</dd>
-				<dt>Validity Period</dt>
-				<dd><a href="#" class="xedit" data-mode="inline"  id="validity" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Vailidity">{{ quote.validity }}</a> days</dd>
-				<dt>Freight</dt>
-				<dd>$<a href="#" class="xedit" data-mode="inline" id="freight" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Freight">{{ quote.freight }}</a></dd>
-			</dl>
-		</div>
-
-		<div class="col">
-			<h5>Notes</h5>
-			<dl>
-				<dt>Notes to Customer</dt>
-				<dd>{{ quote.notes }}</dd>
-				<dt>Private notes</dt>
-				<dd>{{ quote.moreNotes }}</dd>
-			</dl>
+					<dd>
+						<a href="#" class="xedit" data-mode="inline" id="leadTime" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Lead Time">{{ quote.leadTime }}</a>
+					</dd>
+					<dt>Date</dt>
+					<dd>
+						<a href="#" class="xedit" data-mode="inline" id="date" data-type="date" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Date" data-placement="bottom">{{ quote.date }}</a>
+					</dd>
+					<dt>Validity Period</dt>
+					<dd><a href="#" class="xedit" data-mode="inline"  id="validity" data-type="number" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Vailidity">{{ quote.validity }}</a> days</dd>
+					<dt>Freight</dt>
+					<dd>$<a href="#" class="xedit" data-mode="inline" id="freight" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Freight">{{ quote.freight }}</a></dd>
+				</dl>
+			</div>
+			
+			<div class="col">
+				<h5>Notes</h5>
+				<dl>
+					<dt>Notes to Customer</dt>
+					<dd><a href="#" class="xedit" data-mode="inline" id="notes" data-type="textarea" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Notes">{{ quote.notes }}</a></dd>
+					<dt>Private notes</dt>
+					<dd><a href="#" class="xedit" data-mode="inline" id="moreNotes" data-type="textarea" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="MoreNotes">{{ quote.moreNotes }}</a></dd>
+				</dl>
+			</div>
 		</div>
 	</div>
-</div>
-
-<div class="container-fluid bg-white border-top border-bottom shadow py-3 my-3 d-none d-lg-block">
-	<div class="row">
-		<div class="col">
-			<form action="/quotes/saveitems" method="POST" role="form" id="items">
-				<editable-table>
-				<table data-navigable-spy data-editable data-editable-spy class="table table-hover">
-					<thead>
-						<tr>
-							<th>Grade</th>
-							<th>Treatment</th>
-							<th>Dryness</th>
-							<th>Width</th>
-							<th>Thick</th>
-							<th>Finish</th>
-							<th>Notes</th>
-							<th>Qty</th>
-							<th>Unit</th>
-							<th>Price</th>
-						</tr>
-					</thead>
-					<tbody>
-						{# Loop through the quote items #}
-						{{ hidden_field('quoteId', 'value': quote.quoteId) }}
-						{% for item in items %}
-						<tr class="record">
-							<td>
-								{{ hidden_field('id[]', 'value': item.id) }}
-								{{ select_static(['grade[]', grades, 'using': ['shortCode', 'name'], 'value': item.grade, 'class': 'data grade', 'data-live-search': 'true', 'data-container': 'body']) }}
-							</td>
-							<td>{{ select_static(['treatment[]', treatment, 'using': ['shortCode', 'shortCode'], 'value': item.treatment, 'class': 'data treatment' , 'data-live-search': 'true', 'data-container': 'body']) }}</td>
-							<td>{{ select_static(['dryness[]', dryness, 'using': ['shortCode', 'shortCode'], 'value': item.dryness, 'class': 'data dryness', 'data-live-search': 'true', 'data-container': 'body']) }}</td>
-							<td>
-								{{ numeric_field('width[]', 'value': item.width, 'class': 'data width') }}
-							</td>
-							<td>
-								{{ numeric_field('thickness[]', 'value': item.thickness, 'class': 'data thickness') }}
-							</td>
-							<td>
-								{{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'value': item.finish, 'class': 'data']) }}
-							</td>
-							<td>
-								{{ text_field('lengths[]', 'value': item.lengths) }}
-							</td>
-							<td>
-								{{ numeric_field('qty[]', 'value': item.qty, 'step': 'any', 'class': 'qty') }}
-							</td>
-							<td>
-								{{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'value': item.priceMethod, 'class': 'data priceMethod']) }}
-							</td>
-							<td>
-								{{ numeric_field('unitPrice[]', 'value': item.price, 'step': 'any') }}
-							</td>
-							<td>
-								<a href="#" data-href="/quotes/deleteitem/{{ item.id }}" data-toggle="modal" data-target="#confirm-delete" tabindex="-1" class="text-danger delete"><i class="fa fa-times"></i></a>
-							</td>
-						</tr>
-						{% endfor %}
-						<tr>
-							<td>
-								{{ hidden_field('id[]') }}
-								{{ form.render('grade[]') }}
-							</td>
-							<td>{{ form.render('treatment[]') }}</td>
-							<td>{{ form.render('dryness[]') }}</td>
-							<td>
-								{{ numeric_field('width[]', 'placeholder': 'Width', 'class': 'data width') }}
-							</td>
-							<td>
-								{{ numeric_field('thickness[]', 'placeholder': 'Thickness', 'class': 'data thickness') }}
-							</td>
-							<td>
-								{{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'class': 'data', 'useEmpty': true]) }}
-							</td>
-							</td>
-							<td>
-								{{ text_field('lengths[]', 'placeholder': 'Notes / Lengths') }}
-							</td>
-							<td>
-								{{ numeric_field('qty[]', 'step': 'any', 'placeholder': 'Qty', 'class': 'qty') }}
-							</td>
-							<td>
-								{{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'class': 'data priceMethod', 'useEmpty': false]) }}
-							</td>
-							<td>
-								{{ numeric_field('unitPrice[]', 'step': 'any', 'placeholder': 'Price') }}
-							</td>
-						</tr>
-					</tbody>
-					<tfoot>
-						<tr>
-							<th>Grade</th>
-							<th>Treatment</th>
-							<th>Dryness</th>
-							<th>Width</th>
-							<th>Thick</th>
-							<th>Finish</th>
-							<th>Notes</th>
-							<th>Qty</th>
-							<th>Unit</th>
-							<th>Price</th>
-						</tr>
-					</tfoot>
-				</table>
-			</editable-table>
+	
+	<div class="container-fluid bg-white border-top border-bottom shadow py-3 my-3 d-none d-lg-block">
+		<div class="row">
+			<div class="col">
+				<form action="/quotes/saveitems" method="POST" role="form" id="items">
+					<editable-table>
+						<table data-navigable-spy data-editable data-editable-spy class="table table-hover">
+							<thead>
+								<tr>
+									<th>Grade</th>
+									<th>Treatment</th>
+									<th>Dryness</th>
+									<th>Width</th>
+									<th>Thick</th>
+									<th>Finish</th>
+									<th>Notes</th>
+									<th>Qty</th>
+									<th>Unit</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								{# Loop through the quote items #}
+								{{ hidden_field('quoteId', 'value': quote.quoteId) }}
+								{% for item in items %}
+								<tr class="record">
+									<td>
+										{{ hidden_field('id[]', 'value': item.id) }}
+										{{ select_static(['grade[]', grades, 'using': ['shortCode', 'name'], 'value': item.grade, 'class': 'data grade']) }}
+									</td>
+									<td>{{ select_static(['treatment[]', treatment, 'using': ['shortCode', 'shortCode'], 'value': item.treatment, 'class': 'data treatment' , 'data-live-search': 'true', 'data-container': 'body']) }}</td>
+									<td>{{ select_static(['dryness[]', dryness, 'using': ['shortCode', 'shortCode'], 'value': item.dryness, 'class': 'data dryness', 'data-live-search': 'true', 'data-container': 'body']) }}</td>
+									<td>
+										{{ numeric_field('width[]', 'value': item.width, 'class': 'data width') }}
+									</td>
+									<td>
+										{{ numeric_field('thickness[]', 'value': item.thickness, 'class': 'data thickness') }}
+									</td>
+									<td>
+										{{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'value': item.finish, 'class': 'data']) }}
+									</td>
+									<td>
+										{{ text_field('lengths[]', 'value': item.lengths) }}
+									</td>
+									<td>
+										{{ numeric_field('qty[]', 'value': item.qty, 'step': 'any', 'class': 'qty') }}
+									</td>
+									<td>
+										{{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'value': item.priceMethod, 'class': 'data priceMethod']) }}
+									</td>
+									<td>
+										{{ numeric_field('unitPrice[]', 'value': item.price, 'step': 'any') }}
+									</td>
+									<td>
+										<a href="#" data-href="/quotes/deleteitem/{{ item.id }}" data-toggle="modal" data-target="#confirm-delete" tabindex="-1" class="text-danger delete"><i class="fa fa-times"></i></a>
+									</td>
+								</tr>
+								{% endfor %}
+								<tr>
+									<td>
+										{{ hidden_field('id[]') }}
+										{{ form.render('grade[]') }}
+									</td>
+									<td>{{ form.render('treatment[]') }}</td>
+									<td>{{ form.render('dryness[]') }}</td>
+									<td>
+										{{ numeric_field('width[]', 'placeholder': 'Width', 'class': 'data width') }}
+									</td>
+									<td>
+										{{ numeric_field('thickness[]', 'placeholder': 'Thickness', 'class': 'data thickness') }}
+									</td>
+									<td>
+										{{ select_static(['finish[]', finishes, 'using': ['id', 'name'], 'class': 'data', 'useEmpty': true]) }}
+									</td>
+								</td>
+								<td>
+									{{ text_field('lengths[]', 'placeholder': 'Notes / Lengths') }}
+								</td>
+								<td>
+									{{ numeric_field('qty[]', 'step': 'any', 'placeholder': 'Qty', 'class': 'qty') }}
+								</td>
+								<td>
+									{{ select_static(['priceMethod[]', priceMethod, 'using': ['id', 'name'], 'class': 'data priceMethod', 'useEmpty': false]) }}
+								</td>
+								<td>
+									{{ numeric_field('unitPrice[]', 'step': 'any', 'placeholder': 'Price') }}
+								</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<th>Grade</th>
+								<th>Treatment</th>
+								<th>Dryness</th>
+								<th>Width</th>
+								<th>Thick</th>
+								<th>Finish</th>
+								<th>Notes</th>
+								<th>Qty</th>
+								<th>Unit</th>
+								<th>Price</th>
+							</tr>
+						</tfoot>
+					</table>
+				</editable-table>
 				<button type="submit" class="btn btn-primary shadow float-right">Update</button>
 			</form>
 		</div>
@@ -202,72 +203,66 @@
 	{{ partial('timeline') }}
 </div>
 
-	<style type="text/css">
-#rowToClone {
-	display: none;
-}
-
-#items td {
-	padding: 0;
-}
-
-.priceMethod {
-	min-width: 58px;
-}
-
-#items select, #items input {
-	width: 100%;
-	padding: 8px;
-}
-#items input[type='number'] {
-	max-width: 80px;
-}
-span.quote-deets {
-	width: 90px;
-	display: block;
-	float: left;
-}
-span.block {
-	display: inline-table;
-}
-select.data {
-	background: transparent;
-	border: 0;
-}
-.record:hover a.delete, .active a.delete {
-	visibility: visible;
-}
-
-a.delete {
-	visibility: hidden;
-}
-
-select.data.grade {
-	width: 170px;
-}
-select.data.treatment {
-	width: 72px;
-}
-select.data.dryness {
-	width: 54px;
-}
-	</style>
-		<script type="module" src="https://cdn.pika.dev/editable-table"></script>
-		<script>
-			customElements.whenDefined("editable-table").then(() => {
-				editableTable = document.querySelector("editable-table");
-				// get records out of table
-				records = editableTable.get();
-				
-				editableTable.addEventListener("record:update", function(event) {
-					const { changeType, index, record } = event.detail;
-					console.log(`record %d %s: %o`, index + 1, changeType, record);
-					
-				});
-			});
-		</script>
-	<script>
-		$( document ).ready( function() {
-			$('.xedit').editable();
-		});
-	</script>
+<style type="text/css">
+	.badge.xedit {
+		color: white;
+		border: none;
+	}
+	#rowToClone {
+		display: none;
+	}
+	
+	#items td {
+		padding: 0;
+	}
+	
+	.priceMethod {
+		min-width: 58px;
+	}
+	
+	#items select, #items input {
+		width: 100%;
+		padding: 8px;
+		border: none;
+		background: transparent;
+	}
+	#items input[type='number'] {
+		max-width: 80px;
+		background: transparent;
+	}
+	span.quote-deets {
+		width: 90px;
+		display: block;
+		float: left;
+	}
+	span.block {
+		display: inline-table;
+	}
+	select.data {
+		background: transparent;
+		border: 0;
+	}
+	.record:hover a.delete, .active a.delete {
+		visibility: visible;
+	}
+	
+	a.delete {
+		visibility: hidden;
+	}
+	
+	select.data.grade {
+		width: 170px;
+	}
+	select.data.treatment {
+		width: 72px;
+	}
+	select.data.dryness {
+		width: 54px;
+	}
+</style>
+<script type="module" src="https://cdn.pika.dev/editable-table"></script>
+<script>
+	$( document ).ready( function() {
+		$('.xedit').editable();
+	});
+</script>

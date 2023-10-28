@@ -358,30 +358,15 @@ CREATE TABLE IF NOT EXISTS `quote_items` (
   `quoteId` int(11) NOT NULL,
   `width` int(11) DEFAULT NULL,
   `thickness` int(11) DEFAULT NULL,
-  `grade` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `finish` varchar(29) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `callSize` varchar(18) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `finSize` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lengths` varchar(48) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `grade` VARCHAR(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `finish` VARCHAR(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `treatment` VARCHAR(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dryness` VARCHAR(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lengths` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `qty` varchar(9) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `priceUnit` int(11) DEFAULT NULL,
-  `unitPrice` double(9,2) DEFAULT NULL,
+  `priceMethod` int(1) DEFAULT NULL,
+  `price` double(9,2) DEFAULT NULL,
   `lineValue` decimal(9,2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE IF NOT EXISTS `quote_items_backup` (
-  `id` int(11) NOT NULL,
-  `quoteId` int(11) NOT NULL,
-  `width` int(11) DEFAULT NULL,
-  `thickness` int(11) DEFAULT NULL,
-  `grade` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `finish` varchar(29) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `callSize` varchar(18) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `finSize` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lengths` varchar(48) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `qty` varchar(9) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `priceUnit` int(11) DEFAULT NULL,
-  `unitPrice` varchar(9) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `remember_tokens` (
@@ -601,9 +586,6 @@ ALTER TABLE `quote_codes`
 ALTER TABLE `quote_items`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `quote_items_backup`
-  ADD PRIMARY KEY (`id`);
-
 ALTER TABLE `remember_tokens`
   ADD PRIMARY KEY (`id`),
   ADD KEY `token` (`token`);
@@ -684,8 +666,6 @@ ALTER TABLE `profiles`
 ALTER TABLE `quotes`
   MODIFY `quoteId` int(9) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `quote_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `quote_items_backup`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 ALTER TABLE `quote_status`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

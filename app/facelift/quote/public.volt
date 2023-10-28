@@ -44,20 +44,25 @@
 				{% if quote.customerContact %} {{ quote.customerContact.name }} {% endif %}<br></span>
 				<span><strong>Address:</strong>
 				{% for address in quote.customer.addresses %}
-					{% if address.type.typeCode is 2 %}
+					{% if address.type.typeCode is 6 %}
 						{% if address.line2 %}
-							{{ address.line2 }},
+							{{ address.line2 }}
 						{% endif %}
 						{% if address.line3 %}
+							{% if address.line2 and address.line3 %}
+								<br>
+								<strong>&nbsp;</strong>
+							{% endif %}
+							{{ address.line3 }}
 						{% endif %}
 						{% if address.city or address.zipCode or address.country %}
 							<br>
 							<strong>&nbsp;</strong>
 							{% if address.city %}
-								{{ address.city }},
+								{{ address.city }}
 							{% endif %}
 							{% if address.zipCode %}
-								{{ address.zipCode }},
+								{{ address.zipCode }}
 							{% endif %}
 							{% if address.country %}
 								{{ address.country }}
@@ -65,7 +70,6 @@
 						{% endif %}
 					{% endif %}
 				{% endfor %}</span>
-				<span><strong>Ref: </strong> {{quote.reference }}</span>
 			</p>
 		</div>
 		<div id="supplier">
@@ -73,7 +77,12 @@
 			<p>
 				<strong>Prepared by:</strong> {{quote.rep.name }} <br>
 				<strong>Email:</strong> {{ quote.rep.email }}<br>
-				<strong>Phone:</strong> {{ quote.rep.directDial }}<br>
+				<strong>Phone:</strong>
+				{% if quote.rep.directDial %}
+					{{ quote.rep.directDial }}<br>
+				{% else %}
+					0508 22 77 22<br>
+				{% endif %}
 				<strong>Fax:</strong>0508 22 77 11<br>
 			</p>
 		</div>

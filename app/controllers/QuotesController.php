@@ -15,6 +15,7 @@ use App\Models\QuoteStatus;
 use App\Models\Grade;
 use App\Models\Treatment;
 use App\Models\Users;
+use App\Models\Contacts;
 use App\Models\Dryness;
 use App\Models\ContactRecord;
 use App\Models\Finish;
@@ -86,7 +87,7 @@ class QuotesController extends ControllerBase
         $this->view->dated  = strtotime($quote->date);
     }
 
-    public function turntosaleAction($quoteId)
+    public function wonAction($quoteId)
     {
         $this->view->disable();
 
@@ -102,7 +103,7 @@ class QuotesController extends ControllerBase
         return $this->_redirectBack();
     }
 
-    public function quotelostAction($quoteId)
+    public function lostAction($quoteId)
     {
         $this->view->disable();
 
@@ -130,7 +131,6 @@ class QuotesController extends ControllerBase
 
     public function viewAction($quoteId = null)
     {
-        $this->view->setViewsDir('/var/www/html/app/views/');
         $quote = Quotes::findFirstByquoteId($quoteId);
         if (!$quote) {
             // If the quote does not exist then spit out an error
@@ -164,47 +164,7 @@ class QuotesController extends ControllerBase
             ],
         ));
 
-        $this->view->pageSubtitle = $quote->reference;
         $this->view->pageTitle = "Quote " . $quote->quoteId;
-        $this->view->pageSubheader = (object) array(
-            '1' => array(
-                'icon' => 'usd',
-                'text' => number_format($quote->value, 0),
-            ),
-            '2' => array(
-                'icon' => 'user',
-                'text' => ($quote->customerContact ? $quote->customerContact->name : $quote->attention),
-                'link' => '/contacts/view/' . ($quote->customerContact ? $quote->customerContact->id : ''),
-            ),
-            '3' => array(
-                'icon' => 'building',
-                'text' => $quote->customer->name,
-                'link' => '/customers/view/' . $quote->customerCode,
-            ),
-            '4' => array(
-                'icon' => 'phone',
-                'text' => $quote->customer->phone,
-                'link' => 'tel:' . str_replace(' ', '', $quote->customer->phone),
-                'link-class'=> 'tel-link'
-            ),
-        );
-        $this->view->headerButton = '
-		<!-- Split button -->
-		<div class="btn-group pull-right">
-			<a class="btn btn-success" href="/quotes/turntosale/' . $quote->quoteId . '" role="button">Won</a>
-			<a class="btn btn-danger" href="/quotes/quotelost/' . $quote->quoteId . '" role="button">Lost</a>
-			<a class="btn btn-default" href="/quote/get/' . $quote->webId . '" target="_blank"><i class="fa fa-icon fa-download"></i> Get PDF</a>
-			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				<span class="caret"></span>
-				<span class="sr-only">Toggle Dropdown</span>
-			</button>
-			<ul class="dropdown-menu">
-				<li><a data-target="#modal-ajax" href="/followup/?company=' . $quote->customerCode . '&job=' . $quote->quoteId . '" role="button"> Add Record</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#" data-href="/quotes/delete/' . $quote->quoteId . '" data-toggle="modal" data-target="#confirm-delete">Delete</a></li>
-			</ul>
-		</div>
-		';
 
         $this->view->grades = Grade::find(array('order'	=> 'name ASC'));
         $this->view->treatment = Treatment::find(array('order'	=> 'name'));
@@ -212,6 +172,8 @@ class QuotesController extends ControllerBase
         $this->view->finishes = Finish::find(array('order'	=> 'name'));
         $this->view->priceMethod = PricingUnit::find();
         $this->view->users = Users::getActive();
+        $this->view->contacts = Contacts::findByCustomerCode($quote->customerCode);
+        $this->view->statuses = QuoteStatus::find();
 
         $this->assets->collection('footer')
             ->addJs('js/to-markdown.js', true)
@@ -219,12 +181,10 @@ class QuotesController extends ControllerBase
             ->addJs('js/markdown.js', true)
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/js/standalone/selectize.min.js')
             ->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery.AreYouSure/1.9.0/jquery.are-you-sure.min.js')
-            ->addJs('https://npmcdn.com/navigable-table@1.0.4/dist/navigable-table.js')
-            ->addJs('https://cdn.pika.dev/editable-table');
+            ->addJs('https://npmcdn.com/navigable-table@1.0.4/dist/navigable-table.js');
         $this->assets->collection('header')
             ->addCss('css/bootstrap-markdown.min.css', true)
-            ->addCss('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/css/selectize.bootstrap3.min.css')
-            ->addCss('https://npmcdn.com/editable-table/dist/editable-table.css');
+            ->addCss('https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/css/selectize.bootstrap3.min.css');
     }
 
     public function editAction($quoteId = null)
@@ -308,7 +268,6 @@ class QuotesController extends ControllerBase
 
     public function manageAction()
     {
-        parent::initialize();
         $this->tag->prependTitle("Manage Quotes");
         $this->view->quotes = Quotes::find([
             "conditions"	=> "user = ?1 AND status != 4",
@@ -421,11 +380,17 @@ class QuotesController extends ControllerBase
             case 'date':
                 $quote->date = $this->request->getPost('value');
                 break;
+            case 'status':
+                $quote->status = $this->request->getPost('value');
+                break;
             case 'reference':
                 $quote->reference = $this->request->getPost('value');
                 break;
             case 'freight':
                 $quote->freight = $this->request->getPost('value');
+                if ($this->freight == "") {
+                    $quote->freight = null;
+                }
                 break;
             default:
                 $response->setStatusCode(404, "Field not found");
@@ -564,11 +529,6 @@ class QuotesController extends ControllerBase
 
         $data = $this->request->getPost();
 
-        echo "<pre>";
-        echo print_r($data);
-        echo "</pre>";
-
-
         // Let's sort through the posted array and update or save data
         // Count the grade and loop through 1 less than the count
         // This is done because the last line will always contain empty values due to the JS and form setup
@@ -585,8 +545,8 @@ class QuotesController extends ControllerBase
 
             $line->quoteId			= $data['quoteId'];
             $line->grade			= $data['grade'][$i];
-            $line->treatment		= $data['treatment'][$i];
-            $line->dryness			= $data['dryness'][$i];
+            $line->treatment        = $data['treatment'][$i];
+            $line->dryness       	= $data['dryness'][$i];
             $line->finish			= $data['finish'][$i];
             $line->width			= $data['width'][$i];
             $line->thickness		= $data['thickness'][$i];
@@ -598,8 +558,7 @@ class QuotesController extends ControllerBase
             $success = $line->save();
 
             if (!$success) {
-                $this->flashSession->error('Sorry, the item could not be added');
-                foreach ($item->getMessages() as $message) {
+                foreach ($line->getMessages() as $message) {
                     $this->flashSession->error($message->getMessage());
                 }
             }
