@@ -13,11 +13,16 @@ class SettingsController extends ControllerBase
             $this->flashSession->error("You don't have permission to access the Settings module");
             return $this->response->redirect('dashboard');
         }
+        $this->view->developer = $user->developer == 1;
         $this->view->setTemplateBefore('private');
-        parent::initialize();
     }
     
     public function indexAction()
+    {
+        $this->tag->prependTitle('Settings');
+    }
+    
+    public function salesareasAction()
     {
         if ($this->request->isPost()) {
             $salesAreas = SalesAreas::find();
@@ -41,7 +46,7 @@ class SettingsController extends ControllerBase
         $salesAreas = SalesAreas::find([
             'order' => 'ordering ASC'
         ]);
-        $this->tag->prependTitle('Settings');
+        $this->tag->prependTitle('Sales Areas');
         $this->view->salesAreas = $salesAreas;
         $this->view->reps = Users::getActive();
     }

@@ -37,7 +37,7 @@ class DashboardController extends ControllerBase
             ),
         ));
         if (count($unassignedAreas) > 0) {
-            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings', 'here')) . "</strong>.");
+            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings/salesareas', 'here')) . "</strong>.");
         }
 
         $this->view->budget = Budgets::current();

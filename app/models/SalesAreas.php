@@ -45,7 +45,7 @@ class SalesAreas extends \Phalcon\Mvc\Model
         $this->hasMany('id', 'App\Models\Customers', 'salesArea', array(
             'alias' => 'customers',
             'params' => [
-                "customerStatus NOT IN (2,3)"
+                "status NOT IN (3,4)"
             ]
         ));
         $this->hasOne('agent', 'App\Models\Users', 'id', array('alias' => 'rep'));
@@ -87,7 +87,7 @@ class SalesAreas extends \Phalcon\Mvc\Model
             "SELECT DATE_FORMAT(date, '%Y-%m') period, sum(value) value
 				FROM App\Models\Orders o
 				JOIN App\Models\Customers c ON c.customerCode = o.customerCode
-			WHERE area = :id:
+			WHERE salesArea = :id:
 			AND date >= :date:
 			GROUP BY period
 			ORDER BY period ASC

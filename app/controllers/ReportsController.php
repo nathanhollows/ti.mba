@@ -48,13 +48,12 @@ class ReportsController extends ControllerBase
             ),
         ));
         if (count($unassignedAreas) > 0) {
-            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings', 'here')) . "</strong>.");
+            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings/salesareas', 'here')) . "</strong>.");
         }
     }
 
     public function annualAction($year = null, $month = null)
     {
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
         if (date('m')<4) {
             $year = ($year) ? $year : date("Y")-1 ;
         } else {
@@ -349,8 +348,6 @@ class ReportsController extends ControllerBase
     public function salesteamAction()
     {
         $this->tag->prependTitle('Sales Team Report');
-        $this->view->pageTitle = 'Sales Team Report';
-        $this->view->pageSubtitle = ' ';
 
         $sales = DailySales::find(array(
             'columns'    => array(

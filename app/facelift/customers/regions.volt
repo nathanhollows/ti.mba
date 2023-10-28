@@ -97,7 +97,7 @@
 		<p>
 		<strong>Notes:</strong><br>
 		Updated daily. Sales are based on customer location only.<br>
-		Regions and reps can be reassigned {{ linkTo(["settings", "here"]) }}
+		Regions and reps can be reassigned {{ linkTo(["settings/salesareas", "here"]) }}
 		</p>
 	</div>
 	</div>
