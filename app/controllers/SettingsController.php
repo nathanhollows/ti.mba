@@ -9,7 +9,8 @@ class SettingsController extends ControllerBase
 {
     public function initialize()
     {
-        if ($this->auth->getUser()->administrator != 1) {
+        $user = $this->auth->getUser();
+        if ($user->administrator != 1) {
             $this->flashSession->error("You don't have permission to access the Settings module");
             return $this->response->redirect('dashboard');
         }
@@ -50,4 +51,41 @@ class SettingsController extends ControllerBase
         $this->view->salesAreas = $salesAreas;
         $this->view->reps = Users::getActive();
     }
+    
+    public function clearcacheAction($cache)
+    {
+        if (!$this->view->developer) {
+            $this->flashSession->error('You do not have permission to clear the cache');
+            return $this->response->redirect('settings');
+        }
+        $cacheDir = $this->di->getShared('config')->path('application.cacheDir');
+        
+        switch ($cache) {
+            case 'models':
+                $cacheDir .= 'modelsCache/';
+                break;
+            case 'metadata':
+                $cacheDir .= 'metaData/';
+                break;
+            case 'volt':
+                $cacheDir .= 'volt/';
+                break;
+            default:
+            $this->flashSession->error('Invalid cache type');
+            return $this->response->redirect('settings');
+        }
+        
+        $files = glob($cacheDir . '*');
+        foreach ($files as $file) {
+            if (is_file($file)) {
+                unlink($file);
+            }
+        }
+        
+        
+        $this->view->disable();
+        $this->flashSession->success('Cache cleared');
+        return $this->response->redirect('settings');
+    }
+    
 }
