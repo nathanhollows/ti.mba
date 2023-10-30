@@ -102,7 +102,7 @@ class Users extends Model
         $this->hasMany('id', 'App\Models\Quotes', 'user', array('alias' => 'quotes', 'params' => array('conditions' => "status <> 4", "order" => 'quoteId DESC')));
         $this->hasMany('id', 'App\Models\Quotes', 'user', array('alias' => 'allquotes', 'params' => array("order" => 'quoteId DESC')));
         $this->hasMany('id', 'App\Models\ContactRecord', 'user', array('alias' => 'history'));
-        $this->hasMany('id', 'App\Models\SalesAreas', 'agent', array('alias' => 'regions'));
+        $this->hasMany('id', 'App\Models\SalesAreas', 'agent', array('alias' => 'regions', 'params' => array('order' => 'ordering')));
     }
 
     /**
