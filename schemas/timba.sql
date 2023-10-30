@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS `budgets` (
   `date` date NOT NULL,
   `year` int(4) NOT NULL,
   `month` int(2) NOT NULL,
-  `days` int(2) NOT NULL,
-  `budget` int(11) NOT NULL
+  `days` int(2) DEFAULT NULL,
+  `budget` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `bug_status` (
@@ -51,9 +51,7 @@ CREATE TABLE IF NOT EXISTS `calendar` (
   `weekOfMonth` int(11) NOT NULL,
   `weekday` tinyint(1) NOT NULL,
   `weekend` tinyint(1) NOT NULL,
-  `workDay` tinyint(4) NOT NULL,
-  `payday` tinyint(1) NOT NULL,
-  `holiday` tinyint(1) NOT NULL
+  `financialYear` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `contacts` (
@@ -246,7 +244,8 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cancelled` tinyint(1) NOT NULL,
   `scheduled` tinyint(1) DEFAULT NULL,
-  `location` int(11) DEFAULT NULL
+  `location` int(11) DEFAULT NULL,
+  `value` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `order_items` (
@@ -458,14 +457,12 @@ ALTER TABLE `calendar`
   ADD UNIQUE KEY `calendar_date` (`calendarDate`),
   ADD KEY `weekday` (`weekday`),
   ADD KEY `weekend` (`weekend`),
-  ADD KEY `payday` (`payday`),
-  ADD KEY `holiday` (`holiday`),
   ADD KEY `day` (`day`),
   ADD KEY `month` (`month`),
   ADD KEY `year` (`year`),
   ADD KEY `dayOfMonth` (`dayOfMonth`),
   ADD KEY `dayOfYear` (`dayOfYear`),
-  ADD KEY `workDay` (`workDay`);
+  ADD KEY `financialYear` (`financialYear`);
 
 ALTER TABLE `contacts`
   ADD PRIMARY KEY (`id`),
@@ -686,3 +683,53 @@ ALTER TABLE `users`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+DELIMITER $$
+CREATE PROCEDURE FillCalendar(IN start_date DATE, IN end_date DATE)
+BEGIN
+    DECLARE crt_date DATE;
+    DECLARE v_year INT;
+    DECLARE v_month INT;
+    DECLARE v_day INT;
+    DECLARE v_dayOfWeek INT;
+    DECLARE v_dayOfYear INT;
+    DECLARE v_weekOfMonth INT;
+    DECLARE v_weekday TINYINT;
+    DECLARE v_weekend TINYINT;
+    DECLARE v_financialYear INT; -- Variable for financial year
+
+    SET crt_date = start_date;
+
+    WHILE crt_date <= end_date DO
+        -- Extracting date parts
+        SET v_year = YEAR(crt_date);
+        SET v_month = MONTH(crt_date);
+        SET v_day = DAY(crt_date);
+        SET v_dayOfWeek = DAYOFWEEK(crt_date);
+        SET v_dayOfYear = DAYOFYEAR(crt_date);
+        SET v_weekOfMonth = (DAY(crt_date) + 6) DIV 7;
+
+        -- Determining if it's a weekday or weekend
+        SET v_weekday = v_dayOfWeek IN (2,3,4,5,6);
+        SET v_weekend = v_dayOfWeek IN (1,7);
+
+        -- Calculating the financial year based on the month
+        -- If the month is January to March, it belongs to the previous financial year
+        IF v_month >= 4 THEN
+            SET v_financialYear = v_year;
+        ELSE
+            SET v_financialYear = v_year - 1;
+        END IF;
+
+        -- Inserting data into the calendar table
+        INSERT IGNORE INTO calendar (
+            calendarDate, day, month, year, dayOfWeek, dayOfMonth, dayOfYear, weekOfMonth, weekday, weekend, financialYear -- Updated field list
+        ) VALUES (
+            crt_date, v_day, v_month, v_year, v_dayOfWeek, v_day, v_dayOfYear, v_weekOfMonth, v_weekday, v_weekend, v_financialYear -- Updated data list
+        );
+
+        -- Going to the next date
+        SET crt_date = ADDDATE(crt_date, INTERVAL 1 DAY);
+    END WHILE;
+END$$
+DELIMITER ;
