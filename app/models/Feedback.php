@@ -11,4 +11,11 @@ class Feedback extends Model
     public $uri;
     public $opinion;
     public $feedback;
+
+    public function initialize()
+    {
+        $this->hasOne("user", "App\Models\Users", "id", [
+            "alias" => "rep"
+        ]);
+    }
 }

@@ -9,8 +9,23 @@ class FeedbackController extends ControllerBase
 {
     public function initialize()
     {
-        $this->view->setTemplateBefore('none');
+        $this->view->setTemplateBefore('private');
         parent::initialize();
+    }
+
+    public function indexAction()
+    {
+        // Check if developer
+        if ($this->auth->getUser()->developer != 1) {
+            $this->flashSession->warning("You are not allowed to view this page.");
+            $this->response->redirect("dashboard");
+            return;
+        }
+
+        $this->tag->prependTitle("Feedback");
+        $this->view->feedback = Feedback::find([
+            "order" => "time DESC"
+        ]);
     }
 
     public function newAction()
@@ -33,6 +48,7 @@ class FeedbackController extends ControllerBase
             }
             $response->setStatusCode(400, "Something went wrong");
             $response->send();
+            return;
         } else {
             $response = new Response();
             $response->setStatusCode(200, "Okay");
