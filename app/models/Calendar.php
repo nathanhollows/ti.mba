@@ -26,7 +26,9 @@ class Calendar extends Model
 
     public $weekend;
 
-    public $wprkDay;
+    public $workDay;
+
+    public $financialYear;
 
     public $payday;
 

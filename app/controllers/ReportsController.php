@@ -72,12 +72,18 @@ class ReportsController extends ControllerBase
 
         $builder = new Builder();
         $budget = $builder
-            ->betweenWhere('date', $start, $end)
-            ->from('App\Models\Budgets')
-            ->orderBy('date')
+            ->columns('c.calendarDate as date, b.budget, b.days')
+            ->addFrom('App\Models\Calendar', 'c')
+            ->leftJoin('App\Models\Budgets', 'b.month = c.month', 'b')
+            ->where('c.calendarDate BETWEEN :start: AND :end: AND c.day = 1 and c.financialYear = :year:')
+            ->orderBy('c.calendarDate')
             ->limit(12)
             ->getQuery()
-            ->execute();
+            ->execute([
+                'start' => $start,
+                'end'   => $end,
+                'year'  => $year,
+            ]);
 
         $running = [];
         foreach ($budget as $key => $value) {
@@ -89,26 +95,46 @@ class ReportsController extends ControllerBase
 
         $builder = new Builder();
         $this->view->orderCount = $builder
-            ->columns(array('count' => 'COUNT(value)', 'month' => 'MONTH(date)', 'average' => 'AVG(value)', 'sumatory' => 'SUM(value)', 'year' => 'YEAR(date)'))
-            ->betweenWhere('date', $start, $end)
-            ->from('App\Models\DailySales')
-            ->groupBy('year, month')
+            ->columns([
+                'c.month',
+                'c.year',
+                'count' => 'COUNT(d.date)',
+                'average' => 'AVG(d.value)',
+                'sumatory' => 'SUM(d.value)'
+            ])
+            ->addFrom('App\Models\Calendar', 'c') // Starting from Calendar table
+            ->leftJoin('App\Models\DailySales', 'd.date = c.calendarDate', 'd') // Left join DailySales table on month and year
+            ->where('c.calendarDate BETWEEN :start: AND :end: AND c.financialYear = :year:') // Conditions for the date
+            ->groupBy(['c.year', 'c.month']) // Group by year and month based on the Calendar date
+            ->orderBy('c.year ASC, c.month ASC') // Order by year and month
             ->limit(12)
             ->getQuery()
-            ->execute();
-
-        $builder = new Builder();
-        $this->view->salesOut = $builder
-            ->columns(array('salesOut' => 'MAX(chargeOut)', 'month' => 'MONTH(date)', 'year' => 'YEAR(date)'))
-            ->betweenWhere('date', $start, $end)
-            ->from('App\Models\Kpis')
-            ->groupBy('month')
-            ->orderBy('year, month')
-            ->limit(12)
-            ->getQuery()
-            ->execute();
-
-        $query = new Query(
+            ->execute([
+                'start' => $start,
+                'end'   => $end,
+                'year'  => $year,
+            ]);
+            $builder = new Builder();
+            $this->view->salesOut = $builder
+                ->columns([
+                    'c.calendarDate as date', // assuming 'calendarDate' is the column in your Calendar model that represents the date
+                    'MAX(k.chargeOut) as salesOut', 
+                ])
+                ->addFrom('App\Models\Calendar', 'c') // Starting from Calendar table
+                ->leftJoin('App\Models\Kpis', 'k.date = c.calendarDate', 'k') // Left join Kpis table
+                ->where('c.calendarDate BETWEEN :start: AND :end: AND c.financialYear = :year:') // Conditions for the date
+                ->groupBy('month') // Group by month based on the Calendar date
+                ->orderBy('c.calendarDate') // Order by the Calendar date
+                ->limit(12)
+                ->getQuery()
+                ->execute([
+                    'start' => $start,
+                    'end'   => $end,
+                    'year'  => $year,
+                ]);
+                
+                
+            $query = new Query(
             "SELECT c.month, c.year, (
 				SELECT count(*)
 				FROM App\Models\Quotes

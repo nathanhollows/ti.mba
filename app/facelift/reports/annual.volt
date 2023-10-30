@@ -86,7 +86,10 @@
             {% for i in 0..11 %}
                 <td>
                     {% if budget|length > i %}
-                        <a href="#" class="xedit" id="budget" data-type="text" data-placement="bottom" data-pk="{{ budget[i]['date'] }}" data-url="/budget/update/" data-title="Budget">${{ budget[i]['budget']|number }}</a>
+                        $<a href="#" class="xedit" id="budget" data-type="text" data-placement="bottom" data-pk="{{ budget[i]['date'] }}" data-url="/budget/update/" data-title="Budget">
+                            {% if budget[i]['budget'] == 0 %} {% else %}{{ budget[i]['budget']|number }}
+                            {% endif %}
+                        </a>
                         {% set total += budget[i]['budget'] %}
                     {% else %}
                         <a href="#" class="xedit" id="budget" data-type="text" data-placement="bottom" data-url="/budget/update/" data-pk="{{ date("Y-m-d", strtotime(start ~ " + " ~ i ~ " MONTHS")) }}" data-title="Budget"></a>
@@ -127,7 +130,9 @@
             </td>
             {% set total = 0 %}
             {% for i in orderCount %}
-                <td>{{ i.count }}</td>
+                <td>
+                    {% if i.count > 0 %}{{ i.count }}{% else %}-{% endif %}
+                </td>
                 {% set total += i.count %}
             {% endfor %}
             {% if orderCount|length != 12 %}
@@ -138,6 +143,7 @@
             <td>
                 <b>{{ total|number }}</b>
             </td>
+            {% set totalOrderCount = total %}
             {% set total = 0 %}
         </tr>
 
@@ -146,7 +152,9 @@
                 Sales In
             </td>
             {% for i in orderCount %}
-                <td>${{ i.sumatory|number }}</td>
+                <td>
+                    {% if i.sumatory > 0 %}${{ i.sumatory|number }}{% else %}-{% endif %}
+                </td>
                 {% set total += i.sumatory %}
             {% endfor %}
             {% if orderCount|length != 12 %}
@@ -157,7 +165,6 @@
             <td>
                 <b>${{ total|number }}</b>
             </td>
-            {% set total = 0 %}
         </tr>
 
         <tr>
@@ -165,19 +172,17 @@
                 Average Order Value
             </td>
             {% for i in orderCount %}
-                <td>${{ i.average|number }}</td>
-                {% set total += i.average %}
+                <td>
+                    {% if i.average > 0 %}
+                    ${{ i.average|number }}
+                    {% else %}-{% endif %}
+                </td>
             {% endfor %}
-            {% if orderCount|length != 12 %}
-                {% for i in 1..12 - orderCount|length %}
-                    <td class="null-value">-</td>
-                {% endfor %}
-            {% endif %}
             <td>
                 {% if orderCount|length == 0 %}
                     <b>$0</b>
                 {% else %}
-                    <b>${{ (total / orderCount|length)|number }}</b>
+                    <b>${{ (total / totalOrderCount)|number }}</b>
                 {% endif %}
             </td>
             {% set total = 0 %}
@@ -227,7 +232,11 @@
             </td>
             {% set var = 0 %}
             {% for i, k in salesOut %}
+                {% if k.salesOut == 0 or budget[loop.index0]['budget'] == 0 %}
+                <td>-</td>
+                {% else %}
                 <td>{{ ((k.salesOut / budget[loop.index0]['budget'] * 100) - 100 )|number }}%</td>
+                {% endif %}
             {% endfor %}
             {% if salesOut|length != 12 %}
                 {% for i in 1..12 - salesOut|length %}
@@ -235,7 +244,7 @@
                 {% endfor %}
             {% endif %}
             <td>
-                {% if budgetYTDnow is defined %}
+                {% if salesYTDnow != 0 and budgetYTDnow != 0 %}
                     <b>{{ ((salesYTDnow / budgetYTDnow * 100) - 100)|number }}%</b>
                 {% else %}
                     <b>-</b>
@@ -298,7 +307,11 @@
 				{% endif %}
 			{% endfor %}
             <td>
+                {% if won == 0 or presented == 0 %}
+                <b>-</b>
+                {% else %}
                 <b>{{ (won / presented * 100)|number }}%</b>
+                {% endif %}
             </td>
             {% set total = 0 %}
         </tr>
