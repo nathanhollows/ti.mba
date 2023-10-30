@@ -81,6 +81,12 @@ class Orders extends Model
     public $rep;
 
     /**
+     * Value
+     * @var float
+     */
+    public $value;
+
+    /**
      * Define relationships
      */
     public function initialize()
