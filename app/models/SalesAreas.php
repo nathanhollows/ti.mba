@@ -59,21 +59,36 @@ class SalesAreas extends \Phalcon\Mvc\Model
     public function afterCreate()
     {
         $this->getDI()->getShared('cache')->delete('sales-areas');
+        $this->getDI()->getShared('cache')->delete('unassigned-areas');
     }
 
     public function afterUpdate()
     {
         $this->getDI()->getShared('cache')->delete('sales-areas');
+        $this->getDI()->getShared('cache')->delete('unassigned-areas');
     }
 
     public function afterDelete()
     {
         $this->getDI()->getShared('cache')->delete('sales-areas');
+        $this->getDI()->getShared('cache')->delete('unassigned-areas');
     }
 
     public function afterSave()
     {
         $this->getDI()->getShared('cache')->delete('sales-areas');
+        $this->getDI()->getShared('cache')->delete('unassigned-areas');
+    }
+
+    public function unassigned() 
+    {
+        return parent::find([
+            'conditions'    => 'agent IS NULL',
+            'cache'         => array(
+                'key'       => 'unassigned-areas',
+                'lifetime'  => 86400
+            ),
+        ]);
     }
 
     /**

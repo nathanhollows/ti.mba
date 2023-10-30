@@ -31,22 +31,9 @@ class ReportsController extends ControllerBase
     {
         $this->tag->prependTitle('Trip Planner');
 
-        $this->view->customers = Customers::find(array(
-            'conditions' => 'status IN (1, 2)',
-            'order'      => 'name',
-            'cache'      => array(
-                'key'      => 'customers',
-                'lifetime' => 3600,
-            ),
-        ));
+        $this->view->customers = Customers::getActive();
 
-        $unassignedAreas = SalesAreas::find(array(
-            'conditions'    => 'agent IS NULL',
-            'cache'         => array(
-                'key'       => 'unassigned-areas',
-                'lifetime'  => 86400
-            ),
-        ));
+        $unassignedAreas = SalesAreas::unassigned();
         if (count($unassignedAreas) > 0) {
             $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings/salesareas', 'here')) . "</strong>.");
         }
@@ -54,6 +41,9 @@ class ReportsController extends ControllerBase
 
     public function annualAction($year = null, $month = null)
     {
+        $this->tag->prependTitle('Annual Sales Report');
+
+        // Calcuate the required date range
         if (date('m')<4) {
             $year = ($year) ? $year : date("Y")-1 ;
         } else {
@@ -65,10 +55,6 @@ class ReportsController extends ControllerBase
         $end = date('Y-m-d', strtotime("$year-$month-01 + 12 MONTHS - 1 DAY"));
         $this->view->startMonth = date('F', strtotime($start));
         $this->view->start = $start;
-
-        $this->tag->prependTitle('Annual Sales Report');
-        $this->view->pageTitle = 'Annual Sales Report';
-        $this->view->pageSubtitle = date('M Y', strtotime($start)) . ' - ' . date('M Y', strtotime($end));
 
         $builder = new Builder();
         $budget = $builder

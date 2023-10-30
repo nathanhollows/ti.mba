@@ -120,7 +120,12 @@ class Customers extends \Phalcon\Mvc\Model
     public static function getActive()
     {
         return parent::find([
-            "status NOT IN (2,3)"
+            'conditions' => 'status IN (1, 2)',
+            'order'      => 'name',
+            'cache'      => array(
+                'key'      => 'customers',
+                'lifetime' => 3600,
+            ),
         ]);
     }
 
