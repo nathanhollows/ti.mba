@@ -1,19 +1,18 @@
-<button type="button" data-toggle="modal" data-target="#feedbackModal" style="position: fixed;right: 0;bottom: 0;margin: 1em; z-index: 4;" class="d-none d-md-block btn btn-danger shadow">Give Feedback</button>
+<button type="button" data-toggle="modal" data-target="#feedbackModal" style="position: fixed;right: 0;bottom: 0;margin: 1em; z-index: 4;" class="d-none d-md-block btn btn-secondary shadow">Give Feedback</button>
 
 <!-- Feedback Modal -->
 <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModal" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Your Feedback</h5>
+				<h5 class="modal-title" id="exampleModalLabel">Feedback</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<form id="feedbackForm">
-					<p class="mb-4">Your feedback is appreciated and will help me get the CRM looking good and working better.</p>
-					<p>What is your opinion of this page?</p>
+					<p>What has your experience been with this page?</p>
 					<div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
 						<label class="btn btn-light btn-lg">
 							<input type="radio" name="opinion" value="frown" autocomplete="off"> 
@@ -29,8 +28,11 @@
 						</label>
 					</div>
 					<input type="hidden" name="uri" value="<?php echo $_SERVER['REQUEST_URI'] ?>"></input>
-					<label for="feedback-input" class="mt-4">(Optional) Please write your feedback here</label>
-					<textarea id="feedback-input" name="feedback" class="form-control w-100"></textarea>
+					<label for="feedback-input" class="mt-4">Please write your feedback here</label>
+					<textarea id="feedback-input" name="feedback" class="form-control w-100 mb-3"></textarea>
+					<em>
+						I'll get an alert sent to my phone with your feedback and the URL for this page, and will use it to improve the CRM.
+					</em>
 				</form>
 			</div>
 			<div class="modal-footer">
