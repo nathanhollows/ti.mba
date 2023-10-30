@@ -22,7 +22,7 @@
 	</div>
 </div>
 
-<div class="container-fluid py-2 border bg-white">
+<div class="container-fluid py-2 border bg-white shadow rounded" style="margin: 0 auto; max-width: min(100vw - 4em, 1600px);">
 	<div id="filter-list">
 
 		<div class="dropdown mr-3">

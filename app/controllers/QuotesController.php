@@ -16,6 +16,7 @@ use App\Models\Grade;
 use App\Models\Treatment;
 use App\Models\Users;
 use App\Models\Contacts;
+use App\Models\Customers;
 use App\Models\Dryness;
 use App\Models\ContactRecord;
 use App\Models\Finish;
@@ -173,6 +174,7 @@ class QuotesController extends ControllerBase
         $this->view->priceMethod = PricingUnit::find();
         $this->view->users = Users::getActive();
         $this->view->contacts = Contacts::findByCustomerCode($quote->customerCode);
+        $this->view->customers = Customers::getActive();
         $this->view->statuses = QuoteStatus::find();
 
         $this->assets->collection('footer')
@@ -380,6 +382,9 @@ class QuotesController extends ControllerBase
             case 'date':
                 $quote->date = $this->request->getPost('value');
                 break;
+            case 'customerCode':
+                $quote->customerCode = $this->request->getPost('value');
+                break;
             case 'status':
                 $quote->status = $this->request->getPost('value');
                 break;
@@ -388,7 +393,7 @@ class QuotesController extends ControllerBase
                 break;
             case 'freight':
                 $quote->freight = $this->request->getPost('value');
-                if ($this->freight == "") {
+                if ($quote->freight == "") {
                     $quote->freight = null;
                 }
                 break;
@@ -565,5 +570,39 @@ class QuotesController extends ControllerBase
         }
 
         $this->_redirectBack();
+    }
+
+    public function duplicateAction($quoteId)
+    {
+        $this->view->disable();
+
+        $quote = Quotes::findFirstByquoteId($quoteId);
+        $newQuote = new Quotes();
+        $newQuote->assign($quote->toArray());
+        $newQuote->quoteId = null;
+        $random = new Random();
+        $newQuote->webId = $random->uuid();
+        $newQuote->date = date("Y-m-d");
+        $newQuote->status = 2;
+        $newQuote->user = $this->auth->getId();
+        $success = $newQuote->save();
+
+        if (!$success) {
+            foreach ($newQuote->getMessages() as $message) {
+                $this->flashSession->error($message->getMessage());
+            }
+            return $this->response->redirect("quotes/view/" . $quote->quoteId);
+        }
+
+        foreach ($quote->items as $item) {
+            $newItem = new QuoteItems();
+            $newItem->assign($item->toArray());
+            $newItem->id = null;
+            $newItem->quoteId = $newQuote->quoteId;
+            $newItem->save();
+        }
+
+        $this->flashSession->success("Quote duplicated successfully");
+        return $this->response->redirect("quotes/view/" . $newQuote->quoteId);
     }
 }

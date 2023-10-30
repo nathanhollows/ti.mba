@@ -1,47 +1,41 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<link href='https://fonts.googleapis.com/css?family=Rokkitt' rel='stylesheet' type='text/css'>
-	<style type="text/css">
-		#header {
-			font-family: 'Rokkitt', serif;
-			color: white;
-			font-size: 7mm;
-			background: #084727;
-            margin-bottom: 6mm;
-		}
-        body {
-            font-size: 1em;
-        }
-	</style>
-</head>
-<body>
-	<div id="header" style="width: 100%; border-bottom: 1mm solid orange; padding: 6.5mm 0 6.5mm 15mm;">
-		<img src="/img/logo.png" height="80mm" style="vertical-align: middle;">
-		<span style="padding: 9mm; font-weight: 700; letter-spacing: 0.26mm">The Timber Innovators</span>
-	</div>
- {{ content() }}
+<div id="header">
+	<img src="/img/logo.png" height="80mm"
+		style="vertical-align: middle; float: left; margin-top: 1em; margin-right: 2em;">
+	<h1>
+		The easiest timber company <br>
+		to deal with in New Zealand
+	</h1>
+</div>
 
 <div class="page">
 	<div id="quote-details">
-		<span id="header"><h2><strong>Quote: {{ quote.quoteId }} &nbsp;</strong>
-		</h2>
-		<h2>
-			{% if quote.reference is not empty %}
-				<span style="font-size: 25px;">Ref: {{ quote.reference }}</span>
-			{% endif %}
-		</h2>
+		<span id="ref">
+			<h1 style="display: inline-block;">
+				<strong>Quote: {{ quote.quoteId }} &nbsp;</strong>
+			</h1>
+			<h2 style="display: inline-block;">
+				{% if quote.reference is not empty %}
+				Ref: {{ quote.reference }}
+				{% endif %}
+			</h2>
 		</span>
 		<span id="subheader">
-		<h3><strong>Date:</strong> {{ date('d F Y', dated) }}</h3>
+			<p>
+				<strong>Date:</strong>
+				{{ date('d F Y', dated) }}
+				<br>
+				<br>
+			</p>
+		</span>
 	</div>
-	<div class="break"></div>
+	<hr>
 	<div id="parties">
 		<div id="client">
 			<h4><strong>{{ quote.customer.name }} </strong></h4>
 			<p>
-				<span><strong>Attn:</strong> {{quote.attention }}
-				{% if quote.customerContact %} {{ quote.customerContact.name }} {% endif %}<br></span>
+				{% if quote.customerContact %} 
+				<span><strong>Attn:</strong> {{quote.customerContact.name }}</span>
+				{% endif %}
 				<span><strong>Address:</strong>
 				{% for address in quote.customer.addresses %}
 					{% if address.type.typeCode is 6 %}
@@ -92,10 +86,10 @@
 			<thead>
 				<tr>
 					<th>Item</th>
-					<th>Description</th>
+					<th class="left">Description</th>
 					<th>Finish Size</th>
-					<th>Qty</th>
-					<th>Price</th>
+					<th class="right">Qty</th>
+					<th class="right">Price</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -124,7 +118,7 @@
 						{% endif %}
 					</td>
 					<td class="qty">{{ item.qty }} {% if item.qty is not null %}{{ item.unit.name }}{% else %}-{% endif %}</td>
-					<td class="price">${{ item.price}} {{ item.unit.name }}</td>
+					<td class="price">${{ item.price|number }} {{ item.unit.name }}</td>
 				</tr>
 			{% endfor %}
 			</tbody>
@@ -145,8 +139,8 @@
 			{% endif %}
 				<tr id="validity">
 					<td><strong>Price Valid For</strong>
-					{% if quote.validty is not empty %}
-						<span class="rightalign">{{ quote.validity }}</span></td>
+					{% if quote.validity is not empty %}
+						<span class="rightalign">{{ quote.validity }} days</span></td>
 					{% else %}
 						<span class="rightalign">30 days</span></td>
 					{% endif %}

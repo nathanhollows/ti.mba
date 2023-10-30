@@ -2,17 +2,28 @@
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
-				<h6 class="header-pretitle">Quote {{ quote.quoteId }}</h6>
+				<h6 class="header-pretitle">Quote for {{ linkTo(["customers/view/" ~ quote.customer.customerCode, quote.customer.name ]) }}</h6>
 				<h4 class="header-title">
-					<a href="#" class="xedit" id="reference" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-mode="inline" data-title="Reference">{{ quote.reference }}</a><br />
+					Quote {{ quote.quoteId }}: <a href="#" class="xedit" id="reference" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-mode="inline" data-title="Reference">{{ quote.reference }}</a><br />
 				</h4>
 			</div>
 			<div class="col text-right">
-				<div class="btn-group shadow">
-					{{ linkTo(["quotes/won/" ~ quote.quoteId, "Won",  "class": "btn btn-success btn-sm "]) }}
-					{{ linkTo(["quotes/lost/" ~ quote.quoteId, "Lost",  "class": "btn btn-secondary btn-sm "]) }}
+				<div class="btn-group ">
+					{{ linkTo(["quotes/won/" ~ quote.quoteId, "Won",  "class": "btn btn-success"]) }}
+					{{ linkTo(["quotes/lost/" ~ quote.quoteId, "Lost",  "class": "btn btn-secondary"]) }}
 				</div>
-				{{ linkTo(['quote/get/' ~ quote.webId, 'Get PDF', 'class': 'btn btn-primary shadow']) }}
+					{{ linkTo(['quote/get/' ~ quote.webId, '<span class="feather">' ~ icon("download") ~ '</span>' ~ 'Get PDF', 'class': 'btn btn-primary', 'target': '_blank']) }}
+				<div class="btn-group " role="group" aria-label="Button group with nested dropdown">
+					<div class="btn-group" role="group">
+					  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Actions
+					  </button>
+					  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+						{{ linkTo(['quotes/duplicate/' ~ quote.quoteId, 'Duplicate quote', 'class': 'dropdown-item']) }}
+						{{ linkTo(['quotes/delete/' ~ quote.quoteId, 'Delete quote', 'class': 'dropdown-item']) }}
+					  </div>
+					</div>
+				  </div>
 			</div>
 			<hr class="w-100"/>
 		</div>
@@ -24,10 +35,11 @@
 	{{ flashSession.output() }}
 	<div class="row">
 		<div class="col">
-			<h5>Overview</h5>
 			<dl>
 				<dt>Status</dt>
 				<dd><span class="badge badge-{{ quote.state.style }} xedit" id="status" data-mode="inline" data-type="select" data-source="[ {% for status in statuses %}{value: {{status.id}}, text: '{{ status.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Status" data-value="{{ quote.state.id }}">{{ quote.state.name }}</span></dd>
+				<dt>Customer</dt>
+				<dd><a href="#" class="xedit" id="customerCode" data-mode="inline" data-type="select" data-source="[ {% for customer in customers %}{value: {{customer.customerCode}}, text: '{{ customer.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Customer" data-value="{{ quote.customerCode }}">{{ quote.customer.name }}</a></dd>
 				<dt>Attention</dt>
 				<dd></dd>
 				<dd><a href="#" class="xedit" id="attention" data-mode="inline" data-type="select" data-source="[ {% for contact in contacts %}{value: {{contact.id}}, text: '{{ contact.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Attention" data-value="{% if quote.customerContact is not empty %}{{ quote.contact }} {% endif %}">{% if quote.customerContact is not empty %}{{ quote.customerContact.name }} {% endif %}</a></dd>
@@ -36,7 +48,7 @@
 			</dl>
 		</div>
 		
-		<div class="col pt-4">
+		<div class="col">
 			<dl>
 				<dt>Lead time<dt>
 					<dd>
@@ -54,7 +66,6 @@
 			</div>
 			
 			<div class="col">
-				<h5>Notes</h5>
 				<dl>
 					<dt>Notes to Customer</dt>
 					<dd><a href="#" class="xedit" data-mode="inline" id="notes" data-type="textarea" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Notes">{{ quote.notes }}</a></dd>
@@ -65,7 +76,7 @@
 		</div>
 	</div>
 	
-	<div class="container-fluid bg-white border-top border-bottom shadow py-3 my-3 d-none d-lg-block">
+	<div class="container-fluid bg-white border-top border-bottom shadow py-3 my-3 d-none d-lg-block rounded" style="margin: 0 auto; max-width: min(100vw - 4em, 1600px);">
 		<div class="row">
 			<div class="col">
 				<form action="/quotes/saveitems" method="POST" role="form" id="items">
@@ -204,9 +215,16 @@
 </div>
 
 <style type="text/css">
+	.feather svg {
+		width: 1em;
+		margin-top: -0.2em;
+	}
 	.badge.xedit {
 		color: white;
 		border: none;
+	}
+	.badge.badge-warning.xedit {
+		color: black;
 	}
 	#rowToClone {
 		display: none;

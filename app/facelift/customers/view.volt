@@ -125,7 +125,7 @@
 					<a class="nav-link" id="pills-contacts-tab" data-toggle="pill" href="#pills-contacts" role="tab" aria-controls="pills-contacts" aria-selected="false">Contacts</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" id="pills-quotes-tab" data-toggle="pill" href="#pills-quotes" role="tab" aria-controls="pills-quotes" aria-selected="false">Quotes</a>
+					<a class="nav-link" id="pills-quotes-tab" data-toggle="pill" href="#pills-quotes" role="tab" aria-controls="pills-quotes" aria-selected="false">Quotes {% if customer.activeQuotes|length > 0 %}<span class="badge badge-primary text-light">{{ customer.activeQuotes|length}}</span>{% endif %}</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" id="pills-orders-tab" data-toggle="pill" href="#pills-orders" role="tab" aria-controls="pills-orders" aria-selected="false">Orders <span class="badge badge-primary text-light">{{ customer.orders|length }}</span></a>
@@ -187,7 +187,7 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="pills-quotes" role="tabpanel" aria-labelledby="pills-quotes-tab">
-						<table class="table table-striped table-bordered bg-white shadow-sm">
+						<table class="table table-hover rounded bg-white shadow-sm">
 							<thead>
 								<tr>
 									<th> ID </th>
@@ -200,11 +200,11 @@
 							<tbody>
 								{% for quote in customer.quotes %}
 								<tr>
-									<td> {{ link_to('quotes/view/' ~ quote.quoteId ~ '/', quote.quoteId )}} </td>
+									<td> #{{ link_to('quotes/view/' ~ quote.quoteId ~ '/', quote.quoteId )}} </td>
 									<td> {{ quote.reference }} </td>
 									<td> ${{ quote.value|number }} </td>
 									<td> {{ quote.rep.name }} </td>
-									<td> <span class="badge badge-{{ quote.genericStatus.style }}">{{ quote.genericStatus.statusName }}</span></td>
+									<td> <span class="badge badge-{{ quote.state.style }}">{{ quote.state.name }}</span></td>
 								</tr>
 								{% endfor %}
 							</tbody>

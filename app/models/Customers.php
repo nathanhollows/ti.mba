@@ -81,6 +81,12 @@ class Customers extends \Phalcon\Mvc\Model
                     'params' => array(
                         // Open quotes first, then closed
                         'order' => 'if (status < 4, 1, 2), quoteId DESC')));
+        $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
+                    'alias' => 'activeQuotes',
+                    'params' => array(
+                        // Open quotes first, then closed
+                        'conditions' => 'status IN (1,2,3)',
+                        'order' => 'quoteId DESC')));
         // Get all outstanding orders
         $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders', 'params' => array('conditions' => 'complete = 0')));
         // Get all orders from the last 3 months

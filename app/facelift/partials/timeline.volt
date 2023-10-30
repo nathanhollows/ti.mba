@@ -9,12 +9,12 @@
 			<hr class="mb-4"/>
 			{% set outstanding = false %}
 			{% endif %}
-			{% if line.type.name is "Quote Made" %}
+			{% if line.type.name is "Quote" %}
 			<p class="px-3 py-3 d-block">
 			<strong>
 				Quote {{ linkTo('quotes/view/' ~ line.job, line.reference) }} 
 				{% if line.quote %}
-				<span class="badge badge-pill badge-{{ line.quote.genericStatus.style }}">{{ line.quote.genericStatus.statusName }}</span>
+				<span class="badge badge-pill badge-{{ line.quote.state.style }}">{{ line.quote.state.name }}</span>
 				{% endif %}
 				made by {{ line.staff.name }} 
 			</strong>

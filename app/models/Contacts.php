@@ -83,6 +83,19 @@ class Contacts extends Model
         $this->position = null;
     }
 
+    /**
+     * Find contacts by customer code
+     * @param  string $customerCode
+     * @return array
+     */ 
+    public static function findByCustomerCode($customerCode)
+    {
+        $query = self::query();
+        $query->where('customerCode = :customerCode:');
+        $query->bind(['customerCode' => $customerCode]);
+        return $query->execute();
+    }
+
     public static function searchColumns($search)
     {
         $query = self::query();

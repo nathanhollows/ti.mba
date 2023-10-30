@@ -44,7 +44,7 @@
 					<th>Date</th>
 					<th>Custumer</th>
 					<th>Reference</th>
-					<th>Value</th>
+					<th class="text-right">Value</th>
 					<th></th>
 				</thead>
 				<tbody>
@@ -55,7 +55,7 @@
 						<td>{{ linkTo(['customers/view/'~ quote.customer.customerCode, quote.customer.name]) }}</td>
 						<td>{{ quote.reference }}</td>
 						<td align="right">{{ quote.value|money }}</td>
-						<td>
+						<td align="center">
 							<div class="btn-group" role="group" aria-label="Basic example">
 								<a href="{{ url('quotes/won/' ~ quote.quoteId ) }}" class="btn btn-outline-success btn-sm">Won</a>
 								<a href="{{ url('quotes/lost/' ~ quote.quoteId ) }}" class="btn btn-outline-danger btn-sm">Lost</a>
