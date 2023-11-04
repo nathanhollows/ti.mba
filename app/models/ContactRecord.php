@@ -105,6 +105,9 @@ class ContactRecord extends Model
         if ($this->date == null) {
             $this->date = date('Y-m-d H:i:s');
         }
+        if ($this->contactType == null) {
+            $this->contactType = 3; // Note
+        }
     }
 
     public static function getOutstanding($user = null)
