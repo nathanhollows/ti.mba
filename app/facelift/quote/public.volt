@@ -118,7 +118,7 @@
 						{% endif %}
 					</td>
 					<td class="qty">{{ item.qty }} {% if item.qty is not null %}{{ item.unit.name }}{% else %}-{% endif %}</td>
-					<td class="price">${{ item.price|number }} {{ item.unit.name }}</td>
+					<td class="price">{{ item.price|money }} {{ item.unit.name }}</td>
 				</tr>
 			{% endfor %}
 			</tbody>
