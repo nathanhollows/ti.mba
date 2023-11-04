@@ -9,7 +9,7 @@
 			<hr class="mb-4"/>
 			{% set outstanding = false %}
 			{% endif %}
-			{% if line.type.name is "Quote" %}
+			{% if line.type.name is defined and line.type.name is "Quote" %}
 			<p class="px-3 py-3 d-block">
 			<strong>
 				Quote {{ linkTo('quotes/view/' ~ line.job, line.reference) }} 
