@@ -98,10 +98,10 @@
 	<div class="card-body">
 		<p class="card-text">
 		{% for docket in order.dockets %}
-		{% if docket.carrier is defined %}
-		{% if "Mainfreight" in docket.carrier %}
-		<a href="https://www.mainfreight.com/Track/MSNZS/{{ docket.carrierLabel }}" target="_blank" title="Track and Trace">{{ docket.conNote }} <i class="fa fa-icon fa-external-link"></i></a>
-		{% elseif "peter" in docket.carrier|lower %}
+		{% if docket.carrier.name is defined %}
+		{% if "Mainfreight" in docket.carrier.name and docket.carrierLabel is defined %}
+		<a href="https://www.mainfreight.com/en-nz/tracking?trackingNumber={{ docket.carrierLabel }}" target="_blank" title="Track and Trace">{{ docket.conNote }} {{ emicon("external-link") }}</a>
+		{% elseif "peter" in docket.carrier.name|lower %}
 		<a href="http://www.pbt.co.nz/nick/results.cfm?ticketNo={{ docket.conNote }}" target="_blank" title="Track and Trace">{{ docket.conNote }} <i class="fa fa-icon fa-external-link"></i></a>
 		{% else %} 
 		{{ docket.conNote }} 
@@ -109,12 +109,10 @@
 		{% else %}
 		{{ docket.conNote }} 
 		{% endif %}
-		Sent {{ docket.date|timeAgoDate }} on {{ docket.carrier }}
+		Sent {{ docket.date|timeAgoDate }} on {{ docket.carrier.name }}
 		{% if docket.delivered is 0 %}
 		{% if docket.status %}
-		{% if docket.red > 2 %}
-		<span class="badge badge-danger float-right" title="Status has not changed in {{ docket.red }} days">{{ docket.status }}</span>
-		{% elseif "Received" in docket.status %}
+		{% if "Received" in docket.status %}
 		<span class="badge badge-dark float-right" title="Consignment loaded but not picked up">{{ docket.status }}</span>
 		{% else %}
 		<span class="badge badge-info float-right" title="Picked up an in transit">{{ docket.status }}</span>

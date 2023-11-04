@@ -148,6 +148,19 @@ CREATE TABLE IF NOT EXISTS `daily_sales` (
   `rep` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `dockets` (
+  `docketNo` INT NOT NULL,
+  `orderNo` INT NOT NULL,
+  `date` DATE NOT NULL,
+  `conNote` VARCHAR(255),
+  `carrierID` int(11) NOT NULL,
+  `delivered` TINYINT(1) NOT NULL DEFAULT 0,
+  `emailed` TINYINT(1) NOT NULL DEFAULT 0,
+  `status` VARCHAR(255) DEFAULT NULL,
+  `carrierLabel` VARCHAR(255) DEFAULT NULL,
+  PRIMARY KEY (`docketNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS `dryness` (
   `id` int(11) NOT NULL,
   `shortCode` varchar(10) NOT NULL,
@@ -206,8 +219,7 @@ CREATE TABLE IF NOT EXISTS `freight_areas` (
 
 CREATE TABLE IF NOT EXISTS `freight_carriers` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `description` text NOT NULL
+  `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `quote_status` (
@@ -236,39 +248,41 @@ CREATE TABLE IF NOT EXISTS `kpis` (
 CREATE TABLE IF NOT EXISTS `orders` (
   `orderNumber` int(7) NOT NULL,
   `customerCode` varchar(6) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `customerRef` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
+  `customerRef` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date` date NOT NULL,
   `eta` date DEFAULT NULL,
-  `quoted` tinyint(1) NOT NULL,
-  `complete` tinyint(1) NOT NULL,
+  `quoted` tinyint(1) DEFAULT 0,
+  `followUp` tinyint(1) DEFAULT 0,
+  `complete` tinyint(1) DEFAULT 0,
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `cancelled` tinyint(1) NOT NULL,
+  `cancelled` tinyint(1) DEFAULT 0,
   `scheduled` tinyint(1) DEFAULT NULL,
   `location` int(11) DEFAULT NULL,
-  `value` decimal(10,2) DEFAULT NULL
+  `value` decimal(10,2) DEFAULT NULL,
+  `rep` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `order_items` (
-  `grade` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
+  `orderNo` int(11) NOT NULL,
+  `itemNo` int(11) NOT NULL,
+  `grade` varchar(8) COLLATE utf8_unicode_ci NOT NULL,
   `treatment` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `dryness` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
   `finish` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `width` int(11) NOT NULL,
-  `thickness` int(11) NOT NULL,
-  `length` decimal(10,0) NOT NULL,
-  `dry` tinyint(1) NOT NULL,
-  `customerCode` varchar(6) COLLATE utf8_unicode_ci NOT NULL,
-  `orderNo` int(11) NOT NULL,
-  `itemNo` int(11) NOT NULL,
-  `requiredBy` date NOT NULL,
-  `ordered` decimal(10,0) NOT NULL,
-  `sent` decimal(10,0) NOT NULL,
-  `outstanding` decimal(10,0) NOT NULL,
-  `unit` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `despatch` tinyint(1) NOT NULL,
-  `comments` text COLLATE utf8_unicode_ci,
-  `orderStock` tinyint(1) NOT NULL,
+  `width` int(11) DEFAULT NULL,
+  `thickness` int(11) DEFAULT NULL,
   `notes` text COLLATE utf8_unicode_ci,
+  `ordered` decimal(10,0) DEFAULT NULL,
+  `unit` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sent` decimal(10,0) DEFAULT NULL,
+  `price` double(9,2) DEFAULT NULL,
+
+  `length` decimal(10,0) DEFAULT NULL,
+  `outstanding` decimal(10,0) DEFAULT NULL,
+  `despatch` tinyint(1) DEFAULT NULL,
+  `complete` tinyint(1) DEFAULT NULL,
+  `comments` text COLLATE utf8_unicode_ci,
+  `orderStock` tinyint(1) DEFAULT NULL,
   `despatchNotes` text COLLATE utf8_unicode_ci,
   `location` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -277,8 +291,17 @@ CREATE TABLE IF NOT EXISTS `order_locations` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `description` text NOT NULL,
-  `customerCode` text NOT NULL
+  `customerCode` text NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `order_tallies` (
+  `orderNumber` int(7) NOT NULL,
+  `itemNumber` INT NOT NULL,
+  `pieces` INT NOT NULL,
+  `length` INT NOT NULL,
+  PRIMARY KEY (orderNumber, itemNumber)
+);
 
 CREATE TABLE IF NOT EXISTS `password_changes` (
   `id` int(10) unsigned NOT NULL,

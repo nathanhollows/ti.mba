@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model;
 
 class Dockets extends Model
@@ -33,6 +34,12 @@ class Dockets extends Model
 
     /**
      *
+     * @var string
+     */
+    public $carrierLabel;
+
+    /**
+     *
      * @var bool
      */
     public $delivered;
@@ -46,6 +53,7 @@ class Dockets extends Model
     public function initialize()
     {
         $this->hasOne('orderNo', 'App\Models\Orders', 'orderNumber', array('alias'  => 'order'));
+        $this->hasOne('carrierID', 'App\Models\FreightCarriers', 'id', array('alias'  => 'carrier'));
     }
 
 
@@ -59,12 +67,19 @@ class Dockets extends Model
         );
     }
 
-    public function tracking()
+    public static function tracking()
     {
+        $carriers = FreightCarriers::find([
+            'columns'    => 'id',
+            'conditions' => 'name LIKE "%Mainfreight%" OR name LIKE "%Peter%"'
+        ]);
+        foreach ($carriers as $carrier) {
+            $carrierIds[] = $carrier->id;
+        }
         return parent::find(
             array(
-                'conditions'    => '(carrier LIKE "%Mainfreight%" OR carrier LIKE "%Peter%") AND delivered = 0',
-                'order'         => 'date ASC'
+                'conditions' => 'delivered = 0 AND carrierID IN (' . implode(',', $carrierIds) . ')',
+                'order'      => 'date ASC',
             )
         );
     }

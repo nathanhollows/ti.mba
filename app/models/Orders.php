@@ -63,6 +63,12 @@ class Orders extends Model
     public $checked;
 
     /**
+     * FollowUp state
+     * @var boolean
+     */
+    public $followUp;
+
+    /**
      * When to alert the despatcher to follow up this order
      * @var string
      */

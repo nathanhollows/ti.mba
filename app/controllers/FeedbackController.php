@@ -54,5 +54,12 @@ class FeedbackController extends ControllerBase
             $response->setStatusCode(200, "Okay");
             $response->send();
         }
+        file_get_contents('https://ntfy.sh/atsfeedback', false, stream_context_create([
+            'http' => [
+                'method' => 'POST', // PUT also works
+                'header' => 'Content-Type: text/plain',
+                'content' => 'Feedback received.'
+            ]
+        ]));
     }
 }
