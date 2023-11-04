@@ -111,7 +111,7 @@ class Customers extends \Phalcon\Mvc\Model
         $history->completed = date('Y-m-d H:i:s');
         $history->customerCode = $this->customerCode;
         $history->user = $auth->getId();
-        $history->contactType = 13;
+        $history->contactType = 3;
         $history->contact = $this->id;
         $history->details = "Customer created by " . $auth->getName();
         $history->save();

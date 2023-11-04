@@ -60,14 +60,14 @@
 	<div class="row">
 		<div class="col">
 			<div class="form-group">
-				{{ form.label('customerStatus',['class': 'control-label']) }}
-				{{ form.render('customerStatus') }}
+				{{ form.label('status',['class': 'control-label']) }}
+				{{ form.render('status') }}
 			</div>
 		</div>
 		<div class="col">
 			<div class="form-group">
-				{{ form.label('area',['class': 'control-label']) }}
-				{{ form.render('area') }}
+				{{ form.label('salesArea',['class': 'control-label']) }}
+				{{ form.render('salesArea') }}
 			</div>
 		</div>
 	</div>
