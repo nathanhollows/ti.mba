@@ -5,5 +5,8 @@
         "cebe/markdown": "^1.2.1",
         "swiftmailer/swiftmailer": "^5.4",
         "knplabs/knp-snappy": "1.2"
+    },
+    "require-dev": {
+        "phalcon/ide-stubs": "^5.4"
     }
 }
