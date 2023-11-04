@@ -37,6 +37,16 @@ class Budgets extends Model
      */
     public $budget;
 
+    public function afterSave()
+    {
+        $this->getDI()->get('cache')->delete('this-month-budget');
+    }
+
+    public function afterCreate()
+    {
+        $this->getDI()->get('cache')->delete('this-month-budget');
+    }
+
     public static function current()
     {
         $budget = parent::findFirst(array(
@@ -46,6 +56,7 @@ class Budgets extends Model
                 2 => date('m'),
             ),
             'cache' => [
+                'lifetime' => 3600,
                 'key' => 'this-month-budget',
             ],
         ));
