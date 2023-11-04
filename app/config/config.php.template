@@ -49,16 +49,6 @@ return new \Phalcon\Config(array(
             'password'      => '',
         ),
     ),
-	'pbt' => array(
-		// Toggle PBT file downloads
-		'enable'		=> false,
-		'ftpServer'		=> 'ftp.pbt.com',
-		'ftpUserName'	=> '',
-		'ftpPassword'	=> '',
-		// Use value supplied by PBT
-		// Format as 'directory/'
-		'ftpDirectory'	=> ''
-	),
 	'logger'      => [
         'path'     => '/../../var/logs/',
         'format'   => '%date% [%type%] %message%',

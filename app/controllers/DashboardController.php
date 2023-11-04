@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Freight\Freight;
 use App\Models\ContactRecord;
 use App\Models\Quotes;
 use App\Models\Kpis;

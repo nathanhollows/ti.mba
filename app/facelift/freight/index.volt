@@ -25,8 +25,12 @@
 				{% endif %}
 
 				<li class="list-group-item {% if delayed %}list-group-item-danger{% endif %}" id="{{ item.docketNo }}">
-					{% if "Mainfreight" in item.carrier %}
+					{% if "Mainfreight" in item.carrier.name %}
+					{% if item.carrierLabel %}
 					<a href="https://www.mainfreight.com/Track/MSNZS/{{ item.carrierLabel }}" target="_blank" title="Track and Trace">{{ item.conNote }}</a>
+					{% else %}
+					{{ item.conNote }}
+					{% endif %}
 					{% elseif  "PBT" in item.carrier %}
 					<a href="http://www.pbt.co.nz/nick/results.cfm?ticketNo={{ item.conNote }}" target="_blank" title="Track and Trace">{{ item.conNote }}</a>
 					{% endif %}
