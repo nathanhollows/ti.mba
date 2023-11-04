@@ -131,8 +131,9 @@
 	<div class="row">
 		<div class="col">
 				<div id="legend" aria-label="Toggle Graph">
-					<a id="toggle-sales" onClick="toggleChart(this);"  data-set="0">Sales</a>
-					<a id="toggle-despatch" onClick="toggleChart(this);" data-set="1">Despatch</a>
+					<a id="toggle-sales" onClick="toggleChart(this);" data-set="0,1">Sales</a>
+					<a id="toggle-despatch" onClick="toggleChart(this);" data-set="2,3">Despatch</a>
+					<a id="toggle-month">MTD</a>
 				</div>
 			<div class="card bg-dark shadow mb-3 p-3">
 				<canvas id="myChart" width="400" height="250"></canvas>
@@ -231,14 +232,13 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
 <script type="text/javascript">
+	const N = {{ sales|length }};
 	var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
+	var myChart = new Chart(ctx, {
 	type: 'bar',
 	data: {
 		labels: [
-			{% for item in sales %}
-			"{{ date("jS", strtotime(item.date)) }}",
-			{% endfor %}
+			{% for day in graph %} "{{ date("jS", strtotime(day.date)) }}", {% endfor %}
 		],
 		datasets: [{
 			label: 'Sales $',
@@ -247,30 +247,57 @@ var myChart = new Chart(ctx, {
 			pointRadius: 0,
 			hoverRadius: 0,
 			data: [
-				{% for item in sales %}
-				{{ item.sumatory }},
+				{% for day in graph %} 
+					{% if day.current %}
+						{{ day.sales }}, 
+					{% else %}
+						null ,
+					{% endif %} 
 				{% endfor %}
-			]}, 
-			{
-				label: 'Despatch $',
-				hidden: false,
-				backgroundColor: "#007bff",
-				borderColor: "#007bff",
-				pointRadius: 0,
-				hoverRadius: 0,
-				data: [
-					{% set acc = 0 %}
-					{% for item in kpis %}
-					{% if not loop.first and strtotime(item.date) - date is 172800%}0,{% endif %}
-					{% set date = strtotime(item.date) %}
-					{% if item.chargeOut - acc > 0 %}
-					{{ item.chargeOut - acc}},
-					{% endif %}
-					{% if item.chargeOut > 0 %}
-					{% set acc = item.chargeOut %}
-					{% endif %}
-					{% endfor %}
-				]},
+			]}, {
+			label: '(Previous) Sales $',
+			backgroundColor: "#dc354566",
+			borderColor: "#dc354566",
+			pointRadius: 0,
+			hoverRadius: 0,
+			data: [
+				{% for day in graph %} 
+					{% if not day.current %}
+						{{ day.sales }}, 
+					{% else %}
+						null ,
+					{% endif %} 
+				{% endfor %}
+			]}, {
+			label: 'Despatch $',
+			hidden: false,
+			backgroundColor: "#007bff",
+			borderColor: "#007bff",
+			pointRadius: 0,
+			hoverRadius: 0,
+			data: [
+				{% for day in graph %} 
+					{% if day.current %}
+						{{ day.chargeOut }}, 
+					{% else %}
+						null ,
+					{% endif %} 
+				{% endfor %}
+			]},{
+			label: '(Previous) Despatch $',
+			backgroundColor: "#007bff66",
+			borderColor: "#007bff66",
+			pointRadius: 0,
+			hoverRadius: 0,
+			data: [
+				{% for day in graph %} 
+					{% if not day.current %}
+						{{ day.chargeOut }}, 
+					{% else %}
+						null ,
+					{% endif %} 
+				{% endfor %}
+			]},
 		]},
 	options: {
 		cornerRadius: 20,
@@ -325,17 +352,117 @@ var myChart = new Chart(ctx, {
 });
 
 function toggleChart(el) {
+	let set = el.getAttribute("data-set").split(','); // Split the data-set attribute by comma to get an array of strings
+	set.forEach(function(index) {
+		let datasetIndex = parseInt(index.trim(), 10); // Parse each string as an integer
+		myChart.data.datasets[datasetIndex].hidden = !myChart.data.datasets[datasetIndex].hidden;
+	});
 	let sales = document.getElementById("toggle-sales");
 	let despatch = document.getElementById("toggle-despatch");
-	let set = el.attributes["data-set"].value;
-	if (el.classList.contains("toggled-off")) {
-		el.classList.remove("toggled-off");
-	} else {
-		el.classList.add("toggled-off");
-	}
-	myChart.data.datasets[set].hidden = !myChart.data.datasets[set].hidden;
-	myChart.update();
+	el.classList.toggle("toggled-off");
+	myChart.update({
+	});
 }
+
+
+// Check localStorage for the saved state and initialize showingLastN
+var showingLastN = localStorage.getItem('showingLastN') === 'true';
+
+document.getElementById('toggle-month').addEventListener('click', function() {
+	showingLastDataPoints();
+});
+
+// Check localStorage for the saved state
+function checkSavedState() {
+  var savedState = localStorage.getItem('showingLastN');
+  // If there is a saved state and it's true, toggle the view
+  if (savedState !== null) {
+    showingLastN = savedState === 'true'; // localStorage stores everything as strings
+    if (showingLastN) {
+      // Update the chart to show the last 6 data points
+      myChart.data.datasets.forEach(function(dataset) {
+        dataset.data = dataset.data.slice(-N);
+      });
+      if (Array.isArray(myChart.data.labels)) {
+        myChart.data.labels = myChart.data.labels.slice(-N);
+      }
+      myChart.update({
+		duration: 0,
+	  });
+    } else {
+      // Restore the original data
+      restoreOriginalData();
+    }
+  }
+}
+
+// Update button text based on saved state
+function updateButtonText() {
+  if (!showingLastN) {
+	document.getElementById('toggle-month').classList.remove("toggled-off");
+  } else {
+	document.getElementById('toggle-month').classList.add("toggled-off");
+  }
+}
+
+updateButtonText();
+
+// Call these functions when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+  checkSavedState();
+  updateButtonText();
+});
+
+
+document.getElementById('toggle-month').addEventListener('click', function() {
+  showLastDataPoints();
+});
+
+// Function to show the last N data points
+function showLastDataPoints() {
+
+  if (showingLastN) {
+    // Restore the original data
+    restoreOriginalData();
+  } else {
+    // Show only the last 6 data points
+    myChart.data.datasets.forEach(function(dataset) {
+      dataset.data = dataset.data.slice(-N);
+    });
+    if (Array.isArray(myChart.data.labels)) {
+      myChart.data.labels = myChart.data.labels.slice(-N);
+    }
+    myChart.update({
+      duration: 0,
+    });
+  }
+  showingLastN = !showingLastN;
+  // Save the state to localStorage
+  localStorage.setItem('showingLastN', showingLastN);
+
+	updateButtonText();
+
+}
+
+// Assuming 'myChart' is the variable holding your chart instance
+
+// Store the original data and labels
+var originalData = myChart.data.datasets.map(dataset => {
+  return dataset.data.slice(); // Use slice to copy the data array
+});
+var originalLabels = myChart.data.labels.slice(); // Copy the labels array
+
+// Function to restore the original data
+function restoreOriginalData() {
+  myChart.data.datasets.forEach((dataset, index) => {
+    dataset.data = originalData[index];
+  });
+  myChart.data.labels = originalLabels;
+  myChart.update({
+	duration: 0,
+  });
+}
+
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
@@ -356,12 +483,12 @@ $(function () {
 .toggled-off {
 	opacity: 0.5;
 }
-#toggle-sales, #toggle-despatch {
+#legend a {
 	font-weight: bold;
 	color: #f2f1eb;
     transition: all 0.4s ease;
 }
-#toggle-sales::before, #toggle-despatch::before {
+#legend a::before {
     content: " ";
     width: 0.6em;
     height: 0.6em;
@@ -374,5 +501,8 @@ $(function () {
 }
 #toggle-despatch::before {
     background: #007bff;
+}
+#toggle-month::before {
+    background: transparent;
 }
 </style>

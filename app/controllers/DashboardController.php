@@ -23,24 +23,16 @@ class DashboardController extends ControllerBase
 
     public function indexAction()
     {
-        $tasks = new ContactRecord;
-        $this->view->noHeader = true;
-
-        $user = $this->session->get('auth-identity')['id'];
-
-        $unassignedAreas = SalesAreas::find(array(
+        $unassignedAreas = SalesAreas::count(array(
             'conditions'    => 'agent IS NULL',
-            'cache'         => array(
-                'key'       => 'unassigned-areas',
-                'lifetime'  => 86400
-            ),
         ));
-        if (count($unassignedAreas) > 0) {
-            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings/salesareas', 'here')) . "</strong>.");
+        if ($unassignedAreas > 0) {
+            $this->flash->notice("There are " . $unassignedAreas . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings/salesareas', 'here')) . "</strong>.");
         }
 
         $this->view->budget = Budgets::current();
         $this->view->kpis = Kpis::thisMonth();
+        $this->view->graph = Kpis::dashboardKpis();
         $this->view->users = Users::listUsers();
         $this->view->monthsSales = DailySales::sumMonth();
         $this->view->daySales = DailySales::sumDay(date("Y-m-d"));
@@ -48,9 +40,6 @@ class DashboardController extends ControllerBase
         $this->view->daySalesByAgent = DailySales::getDayByRep(date("Y-m-d"));
         $this->view->sales = DailySales::dailySalesBetween(date("Y-m-01"), date("Y-m-t"));
 
-        $this->view->parser = new \cebe\markdown\Markdown();
-
-        $this->view->quotes = new Quotes();
     }
 
     public function createstickyAction()
