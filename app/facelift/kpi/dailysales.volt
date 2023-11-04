@@ -66,7 +66,7 @@
 							{% for item in records %}
 							<tr class="record">
 								<td>
-									<a href="/kpi/deletesale/{{ item.id }}" class="text-danger delete confirm-delete">{{ icon("trash-2") }}</a>
+									<a href="/kpi/deletesale/{{ item.id }}" class="text-danger delete confirm-delete">{{ emicon("trash-2") }}</a>
 								</td>
 								<td>
 									{{ hidden_field('id[]', 'value': item.id) }}

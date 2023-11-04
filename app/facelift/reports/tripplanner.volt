@@ -32,13 +32,13 @@
                 <div class="btn-group">
                     <button type="button" class="btn btn-secondary btn-outline" id="select-all">
                         <span class="feather">
-                            {{ icon('copy-check') }}
+                            {{ emicon('copy-check') }}
                             </span>
                         Select Visible
                     </button>
                     <button type="button" class="btn btn-secondary btn-outline" id="deselect-all">
                         <span class="feather">
-                            {{ icon('square') }}
+                            {{ emicon('square') }}
                             </span>
                         Deselect All
                     </button>

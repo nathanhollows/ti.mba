@@ -12,7 +12,7 @@
 					{{ linkTo(["quotes/won/" ~ quote.quoteId, "Won",  "class": "btn btn-success"]) }}
 					{{ linkTo(["quotes/lost/" ~ quote.quoteId, "Lost",  "class": "btn btn-secondary"]) }}
 				</div>
-					{{ linkTo(['quote/get/' ~ quote.webId, '<span class="feather">' ~ icon("download") ~ '</span>' ~ 'Get PDF', 'class': 'btn btn-primary', 'target': '_blank']) }}
+					{{ linkTo(['quote/get/' ~ quote.webId, emicon("download") ~ 'Get PDF', 'class': 'btn btn-primary', 'target': '_blank']) }}
 				<div class="btn-group " role="group" aria-label="Button group with nested dropdown">
 					<div class="btn-group" role="group">
 					  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -90,7 +90,7 @@
 									<th>Width</th>
 									<th>Thick</th>
 									<th>Finish</th>
-									<th>Notes</th>
+									<th>Notes / Lengths</th>
 									<th>Qty</th>
 									<th>Unit</th>
 									<th>Price</th>
@@ -172,7 +172,7 @@
 								<th>Width</th>
 								<th>Thick</th>
 								<th>Finish</th>
-								<th>Notes</th>
+								<th>Notes / Lengths</th>
 								<th>Qty</th>
 								<th>Unit</th>
 								<th>Price</th>

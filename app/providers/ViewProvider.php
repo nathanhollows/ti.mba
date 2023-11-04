@@ -62,6 +62,9 @@ class ViewProvider implements ServiceProviderInterface
                     $compiler->addFunction('icon', function ($resolvedArgs, $exprArgs) {
                         return 'file_get_contents("img/icons/' . trim($resolvedArgs, "'") . '.svg")';
                     });
+                    $compiler->addFunction('emicon', function ($resolvedArgs, $exprArgs) {
+                        return '"<span class=\"icon\">" . file_get_contents("img/icons/' . trim($resolvedArgs, "'") . '.svg") . "</span>"';
+                    });
 
                     return $volt;
                 },

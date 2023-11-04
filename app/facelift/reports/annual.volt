@@ -13,12 +13,12 @@
 			</div>
 			<div class="col text-right">
 				<div class="btn-group">
-					<a href="/reports/annual/{{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}" class="btn btn-info">{{ icon("arrow-left") }} {{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}</a>
-					<a href="/reports/annual/{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}}" class="btn btn-info">{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}} {{ icon("arrow-right") }}</a>
+					<a href="/reports/annual/{{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}" class="btn btn-info">{{ emicon("arrow-left") }} {{ date("Y", strtotime("- 1 YEAR", strtotime(start)))}}</a>
+					<a href="/reports/annual/{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}}" class="btn btn-info">{{ date("Y", strtotime("+ 1 YEAR", strtotime(start)))}} {{ emicon("arrow-right") }}</a>
 				</div>
 				<div class="btn-group pull-right">
 					<button type="button" class="btn btn-primary" onclick="window.print();">
-						{{ icon("printer") }}
+						{{ emicon("printer") }}
 						Print
 					</button>
 				</div>

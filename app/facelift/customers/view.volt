@@ -40,9 +40,7 @@
 				<div class="card-body">
 					<h5 class="card-title">Details
 						<a class="float-right open-modal text-sm text-primary" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax">
-							<span class="feather">
-								{{ icon("pencil") }}
-							</span>
+							{{ emicon("pencil") }}
 						</a>
 					</h5>
 				</div>
@@ -96,9 +94,7 @@
 					{% for address in addresses %}
 					<h6 class="card-subtitle mb-1 mt-2 text-muted">{{ address.type.typeDescription }}</h6>
 					<a class="float-right text-info open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax">
-						<span class="feather">
-							{{ icon("pencil") }}
-						</span>
+						{{ emicon("pencil") }}
 					</a>
 					<p class="card-text">
 						{% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
@@ -141,14 +137,10 @@
 							<h5 class="card-title mb-n1 d-inline-block">Contacts</h5>
 							<div class="btn-group float-right ml-3">
 								<button id="unlock-contacts" class="btn btn-sm btn-secondary">
-									<span class="feather">
-										{{ icon("pencil") }}
-									</span>
+									{{ emicon("pencil") }}
 									Edit List</button>
 									<a class="btn btn-sm btn-primary open-modal" href="/contacts/new/{{ customer.customerCode }}" role="button">
-										<span class="feather">
-											{{ icon("plus") }} 
-										</span>
+										{{ emicon("plus") }} 
 										Add
 									</a>
 								</div>
@@ -175,9 +167,7 @@
 										<div class="col-xs-12 col-md-5">
 											<a href="mailto:{{ contact.email }}" class="xedit-toggle" data-name="email" data-type="text" data-pk="{{ contact.id }}" data-url="/contacts/ajaxupdate" data-placement="auto" data-title="Email">{{ contact.email }}</a>
 											<a href="/contacts/delete/{{ contact.id }}" tabindex="-1" class="text-danger confirm-delete float-right">
-												<span class="feather">
-													{{ icon("trash-2") }}
-												</span>
+												{{ emicon("trash-2") }}
 											</a>
 										</div>
 									</div>
@@ -299,9 +289,6 @@
 		});
 	</script>
 	<style>
-		.feather svg {
-			width: 1em;
-		}
 		.email {
 			white-space: nowrap; /* Keeps the email on one line */
 			overflow: hidden; /* Ensures the overflow is not visible */
