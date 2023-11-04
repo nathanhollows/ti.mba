@@ -80,7 +80,7 @@ class SalesAreas extends \Phalcon\Mvc\Model
         $this->getDI()->getShared('cache')->delete('unassigned-areas');
     }
 
-    public function unassigned() 
+    public static function unassigned() 
     {
         return parent::find([
             'conditions'    => 'agent IS NULL',
@@ -133,14 +133,14 @@ class SalesAreas extends \Phalcon\Mvc\Model
 
         $query = new Query(
             "
-select c.name, c.customerCode, round(sum(value),2) value
-from App\Models\Customers c
-join App\Models\Orders o on o.customerCode = c.customerCode
-where area = :id:
-AND date > :date:
-GROUP BY c.customerCode
-ORDER BY value DESC
-",
+                select c.name, c.customerCode, round(sum(value),2) value
+                from App\Models\Customers c
+                join App\Models\Orders o on o.customerCode = c.customerCode
+                where salesArea = :id:
+                AND date > :date:
+                GROUP BY c.customerCode
+                ORDER BY value DESC
+            ",
             $this->di
         );
 
