@@ -235,7 +235,7 @@ class FollowupController extends ControllerBase
             return $this->_redirectBack();
         } else {
             $this->flash->error("Sorry, the contact record could not be updated");
-            foreach ($contact->getMessages() as $message) {
+            foreach ($record->getMessages() as $message) {
                 $this->flash->error($message->getMessage());
             }
         }
@@ -317,7 +317,7 @@ class FollowupController extends ControllerBase
             $response->setStatusCode(200, 'Update successfully');
             return $response;
         } else {
-            $reponse->setStatusCode(501, 'Something went wrong');
+            $response->setStatusCode(501, 'Something went wrong');
             return $response;
         }
 
@@ -348,7 +348,7 @@ class FollowupController extends ControllerBase
             $response->setStatusCode(200, 'Update successfully');
             return $response;
         } else {
-            $reponse->setStatusCode(501, 'Something went wrong');
+            $response->setStatusCode(501, 'Something went wrong');
             return $response;
         }
 

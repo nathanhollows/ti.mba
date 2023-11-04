@@ -86,7 +86,7 @@ class AddressController extends ControllerBase
         if ($address->update()) {
             return $this->_redirectBack();
         } else {
-            foreach ($contact->getMessages() as $message) {
+            foreach ($address->getMessages() as $message) {
                 $this->flash->error($message->getMessage());
             }
         }

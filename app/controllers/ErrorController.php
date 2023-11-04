@@ -33,7 +33,6 @@ class ErrorController extends ControllerBase
             $response->send();
             return true;
         }
-        $this->view->noHeader = true;
         $this->tag->prependTitle('Error 404');
         $this->response->setStatusCode(404, 'Not Found');
         $this->view->pick('error/404');
@@ -51,7 +50,6 @@ class ErrorController extends ControllerBase
             $response->send();
             return true;
         }
-        $this->view->noHeader = true;
         $this->tag->prependTitle('Error | ');
         $this->response->setStatusCode(500, 'Server error');
         $this->view->pick('error/panic');

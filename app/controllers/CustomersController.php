@@ -274,7 +274,7 @@ class CustomersController extends ControllerBase
             $this->flashSession->success("Successfully updated");
         } else {
             $this->flashSession->error("Something went wrong");
-            foreach ($contact->getMessages() as $message) {
+            foreach ($customer->getMessages() as $message) {
                 $this->flashSession->error($message->getMessage());
             }
         }
