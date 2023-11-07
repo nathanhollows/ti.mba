@@ -40,7 +40,7 @@ class FollowUpForm extends Form
                 "customerCode",
                 Customers::find([
                     "order"	=> "name",
-                    "conditions" => "customerStatus IN (1,4)",
+                    "conditions" => "status IN (1,2)",
                 ]),
                 array(
                     'using'	=> array(
@@ -77,14 +77,14 @@ class FollowUpForm extends Form
         $job->setAttributes(array(
             'class'		=> 'form-control',
             'placeholder'	=> 'Quote Number',
-            ));
+        ));
         $job->setLabel("Job");
         $this->add($job);
 
         $reference = new Text("reference");
         $reference->setAttributes(array(
             'class'		=> 'form-control',
-            ));
+        ));
         $reference->setLabel("Title");
         $this->add($reference);
 

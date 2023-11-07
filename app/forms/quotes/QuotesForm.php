@@ -32,6 +32,9 @@ class QuotesForm extends Form
         $id = new Hidden('quoteId');
         $this->add($id);
 
+        $duplicate = new Hidden('duplicate');
+        $this->add($duplicate);
+
         $customerCode = new Select(
             'customerCode',
             Customers::find([

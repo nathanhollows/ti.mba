@@ -7,6 +7,7 @@ use App\Forms\ReminderForm;
 use App\Plugins\Auth\Auth;
 use App\Models\FollowUp;
 use App\Models\ContactRecord;
+use App\Models\Quotes;
 use Phalcon\Http\Response;
 
 class FollowupController extends ControllerBase
@@ -23,7 +24,6 @@ class FollowupController extends ControllerBase
             $this->view->setTemplateBefore('modal-form');
         }
 
-        $this->view->pageTitle = "New Contact Record";
         $followUp = new FollowUp;
         $options = array();
 
@@ -46,12 +46,14 @@ class FollowupController extends ControllerBase
             );
         }
 
-        if (null !== ($this->request->getQuery('job'))) {
-            $followUp->assign(
-                array(
-                'job'	=> $this->request->getQuery('job')
-                )
-            );
+        if ($this->request->getQuery('job') !== null) {
+            $quote = Quotes::findFirst($this->request->getQuery('job'));
+            $followUp->reference = $quote->reference;
+            $followUp->assign([
+                'job'	=> $this->request->getQuery('job'),
+                'customerCode' => $quote->customerCode,
+                'contact' => $quote->contact,
+            ]);
         }
 
         $this->view->form = new FollowUpForm($followUp, $options);
@@ -63,7 +65,6 @@ class FollowupController extends ControllerBase
             $this->view->setTemplateBefore('modal-form');
         }
 
-        $this->view->pageTitle = "Edit Contact Record";
         $followUp = ContactRecord::findFirstById($id);
         $followUp->date = date("Y-m-d", strtotime($followUp->date));
         $this->view->details = $followUp;

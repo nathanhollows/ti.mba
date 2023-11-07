@@ -4,7 +4,13 @@
 			<div class="col-lg-8 offset-lg-2">
 				<div class="row header-body">
 					<div class="col">
+						{% if quote is not null %}
+						<h4 class="header-title">
+							Duplicating Quote {{ quote.quoteId }}
+						</h4>
+						{% else %}
 						<h4 class="header-title">New Quote</h4>
+						{% endif %}
 					</div>
 					<div class="col text-right">
 					</div>
@@ -18,11 +24,12 @@
 <div class="container">
 	{{ content() }}
 	{{ flashSession.output() }}
+	{{ form("quotes/create", "method":"post", "autocomplete" : "off") }}
+	{{ form.render('duplicate') }}
 	<div class="row">
 		<div class="col-lg-8 offset-lg-2">
 			<div class="row">
 				<div class="col">
-					{{ form("quotes/create", "method":"post", "autocomplete" : "off") }}
 					<div class="form-group">
 						{{ form.label('customerCode') }}
 						{{ form.render('customerCode') }}

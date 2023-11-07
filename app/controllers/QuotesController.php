@@ -212,10 +212,10 @@ class QuotesController extends ControllerBase
         $this->view->disable();
         $quote = Quotes::findFirstByquoteId($quoteId);
         if ($quote != false) {
-            if ($quote->delete() == false) {
-                $this->flashSession->error("The quote has not been deleted");
-            } else {
+            if ($quote->delete()) {
                 $this->flashSession->success("The quote has been deleted");
+            } else {
+                $this->flashSession->error("The quote has not been deleted");
             }
         } else {
             $this->flashSession->error("The quote could not be found");
@@ -223,7 +223,7 @@ class QuotesController extends ControllerBase
         return $this->response->redirect("quotes/");
     }
 
-    public function newAction($customerCode = null)
+    public function newAction()
     {
         $this->view->ajax = false;
 
@@ -232,10 +232,10 @@ class QuotesController extends ControllerBase
             $this->view->ajax = true;
         }
 
-        $this->view->pageTitle = "Create a Quote";
-
         $quote = new Quotes;
+        $form = new QuotesForm($quote);
 
+        // Set the customer code if it's been passed in the URL
         if (null !== ($this->request->getQuery('company'))) {
             $quote->assign(
                 array(
@@ -244,6 +244,7 @@ class QuotesController extends ControllerBase
             );
         }
 
+        // Set the contact if it's been passed in the URL
         if (null !== ($this->request->getQuery('contact'))) {
             $quote->assign(
                 array(
@@ -252,13 +253,25 @@ class QuotesController extends ControllerBase
             );
         }
 
+        // For duplicating quotes
+        // Set the reference if it's been passed in the URL
+        if (null !== ($this->request->getQuery('copy'))) {
+            $form->get('duplicate')->setDefault($this->request->getQuery('copy'));
+            $oldQuote = Quotes::findFirstByquoteId($this->request->getQuery('copy'));
+            $quote->assign($oldQuote->toArray());
+            $this->tag->prependTitle("Duplicate Quote");
+            $this->view->quote = $oldQuote;
+        } else {
+            $this->tag->prependTitle("New Quote");
+        }
+
+        // Set the user and date
         $quote->assign([
             'date'	=> date("Y-m-d"),
             'user'	=> $this->auth->getId(),
         ]);
 
-        $this->tag->prependTitle('New Quote');
-        $this->view->form = new QuotesForm($quote);
+        $this->view->form = $form;
     }
 
     public function manageAction()
@@ -306,14 +319,35 @@ class QuotesController extends ControllerBase
             'moreNotes',
             'status',
         ]);
-        if ($quote->save()) {
-            $this->flashSession->success("Quote created successfully!");
+        $success = $quote->save();
+        if ($success) {
+            // If the quote is a duplicate then copy the items from the old quote
+            if ($this->request->has("duplicate")) {
+                $oldQuote = Quotes::findFirstByquoteId($this->request->getPost("duplicate"));
+                foreach ($oldQuote->items as $item) {
+                    $newItem = new QuoteItems();
+                    $newItem->assign($item->toArray());
+                    $newItem->id = null;
+                    $newItem->quoteId = $quote->quoteId;
+                    $newItem->save();
+                }
+                $quote->validity = $oldQuote->validity;
+                $quote->freight = $oldQuote->freight;
+                $quote->leadTime = $oldQuote->leadTime;
+                $quote->value = $oldQuote->value;
+                $quote->update();
+                $this->flashSession->success("Quote created successfully! Items copied from quote " . $oldQuote->quoteId);
+            // Otherwise just flash a success message
+            } else {
+                $this->flashSession->success("Quote created successfully!");
+            }
             return $this->response->redirect("quotes/view/" . $quote->quoteId);
         } else {
             $this->flashSession->error("Sorry, the quote could not be saved");
             foreach ($quote->getMessages() as $message) {
                 $this->flashSession->error($message->getMessage());
             }
+            $this->_redirectBack();
         }
     }
 
@@ -565,37 +599,4 @@ class QuotesController extends ControllerBase
         $this->_redirectBack();
     }
 
-    public function duplicateAction($quoteId)
-    {
-        $this->view->disable();
-
-        $quote = Quotes::findFirstByquoteId($quoteId);
-        $newQuote = new Quotes();
-        $newQuote->assign($quote->toArray());
-        $newQuote->quoteId = null;
-        $random = new Random();
-        $newQuote->webId = $random->uuid();
-        $newQuote->date = date("Y-m-d");
-        $newQuote->status = 2;
-        $newQuote->user = $this->auth->getId();
-        $success = $newQuote->save();
-
-        if (!$success) {
-            foreach ($newQuote->getMessages() as $message) {
-                $this->flashSession->error($message->getMessage());
-            }
-            return $this->response->redirect("quotes/view/" . $quote->quoteId);
-        }
-
-        foreach ($quote->items as $item) {
-            $newItem = new QuoteItems();
-            $newItem->assign($item->toArray());
-            $newItem->id = null;
-            $newItem->quoteId = $newQuote->quoteId;
-            $newItem->save();
-        }
-
-        $this->flashSession->success("Quote duplicated successfully");
-        return $this->response->redirect("quotes/view/" . $newQuote->quoteId);
-    }
 }

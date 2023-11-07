@@ -6,6 +6,7 @@ use App\Plugins\Auth\Auth;
 use App\Models\ContactRecord;
 use App\Models\QuoteItems;
 use Phalcon\Mvc\Model;
+use Phalcon\Mvc\Model\Relation;
 
 class Quotes extends Model
 {
@@ -47,12 +48,30 @@ class Quotes extends Model
 
     public function initialize()
     {
-        $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
-        $this->hasOne('contact', 'App\Models\Contacts', 'id', array('alias' => 'customerContact'));
-        $this->hasOne('user', 'App\Models\Users', 'id', array('alias' => 'rep'));
-        $this->hasOne('status', 'App\Models\QuoteStatus', 'id', array('alias' => 'state'));
-        $this->hasMany('quoteId', 'App\Models\QuoteItems', 'quoteId', ['alias' => 'items']);
-        $this->hasMany('quoteId', 'App\Models\ContactRecord', 'reference', ['alias' => 'history']);
+        $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array(
+            'alias' => 'customer'
+        ));
+        $this->hasOne('contact', 'App\Models\Contacts', 'id', array(
+            'alias' => 'customerContact'
+        ));
+        $this->hasOne('user', 'App\Models\Users', 'id', array(
+            'alias' => 'rep'
+        ));
+        $this->hasOne('status', 'App\Models\QuoteStatus', 'id', array(
+            'alias' => 'state'
+        ));
+        $this->hasMany('quoteId', 'App\Models\QuoteItems', 'quoteId', [
+            'alias' => 'items',
+            'foreignKey' => [
+                'action' => Relation::ACTION_CASCADE
+            ]
+        ]);
+        $this->hasMany('quoteId', 'App\Models\ContactRecord', 'reference', [
+            'alias' => 'history',
+            'foreignKey' => [
+                'action' => Relation::ACTION_CASCADE
+            ]
+        ]);
     }
 
     public function beforeSave()

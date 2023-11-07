@@ -12,9 +12,14 @@
 			{% if line.type.name is defined and line.type.name is "Quote" %}
 			<p class="px-3 py-3 d-block">
 			<strong>
-				Quote {{ linkTo('quotes/view/' ~ line.job, line.reference) }} 
+				Quote 
 				{% if line.quote %}
-				<span class="badge badge-pill badge-{{ line.quote.state.style }}">{{ line.quote.state.name }}</span>
+					{{ linkTo('quotes/view/' ~ line.job, line.reference) }}
+					<span class="badge badge-pill badge-{{ line.quote.state.style }}">{{ line.quote.state.name }}</span>
+				{% else %}
+					{{ line.reference }}
+					<span class="badge badge-pill badge-dark">Deleted</span>
+				{{ end }}
 				{% endif %}
 				made by {{ line.staff.name }} 
 			</strong>
