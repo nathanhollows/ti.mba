@@ -4,11 +4,6 @@ namespace App\Controllers;
 
 use DataTables\DataTable;
 use Phalcon\Security\Random;
-use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Forms;
-use Phalcon\Paginator\Adapter\Model as Paginator;
-use App\Plugins\Auth\Auth;
 use App\Models\Quotes;
 use App\Models\QuoteItems;
 use App\Models\QuoteStatus;
@@ -23,8 +18,6 @@ use App\Models\Finish;
 use App\Models\PricingUnit;
 use App\Forms\quotes\QuotesForm;
 use App\Forms\quotes\ItemForm;
-use Knp\Snappy\Pdf;
-use Phalcon\Http\Response;
 
 class QuotesController extends ControllerBase
 {
