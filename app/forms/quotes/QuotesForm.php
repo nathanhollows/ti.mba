@@ -34,7 +34,9 @@ class QuotesForm extends Form
 
         $customerCode = new Select(
             'customerCode',
-            Customers::find(),
+            Customers::find([
+                'conditions' => 'status NOT IN (3,4)',
+            ]),
             array(
                 'using' => array('customerCode', 'name'),
                 'required'	=> 'true',

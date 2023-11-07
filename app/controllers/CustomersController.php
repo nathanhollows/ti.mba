@@ -3,11 +3,6 @@
 namespace App\Controllers;
 
 use DataTables\DataTable;
-use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Forms;
-use Phalcon\Http\Response;
-use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Customers;
 use App\Models\Addresses;
 use App\Models\Contacts;
@@ -39,6 +34,7 @@ class CustomersController extends ControllerBase
                 ->columns('customerCode, customer.name, fax, phone, customerStatus.style, customerStatus.name as status')
                 ->from(['customer' => 'App\Models\Customers'])
                 ->join('App\Models\CustomerStatus', 'status = customerStatus.id', 'customerStatus', 'INNER')
+                ->where('customerStatus.id NOT IN (3,4)')
                 ->orderBy('customer.name');
 
             $dataTables = new DataTable();
@@ -147,8 +143,8 @@ class CustomersController extends ControllerBase
             'bind'       => array(1 => $customerCode),
         ));
         if (!$contacts) {
-            $response->setStatusCode(404, "No contacts found");
-            $response->send();
+            $contacts->setStatusCode(404, "No contacts found");
+            $contacts->send();
             return true;
         }
 
