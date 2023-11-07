@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="margin: 0 auto; max-width: min(100vw - 4em, 1600px);">
 	<div class="row">
 		<div class="d-none d-lg-block col-lg-3">
 			<div class="card shadow w-100">
