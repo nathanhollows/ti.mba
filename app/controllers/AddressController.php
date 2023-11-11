@@ -12,7 +12,6 @@ class AddressController extends ControllerBase
     {
         // Set the default view
         $this->view->setTemplateBefore('private');
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
         parent::initialize();
     }
 
