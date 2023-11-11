@@ -44,12 +44,15 @@
 						{% if delayed %}
 						<span class="badge badge-danger">{{ ((strtotime(date("Y-m-d")) - strtotime(item.date)) / (60 * 60 * 24))|round }} days</span>
 						{% endif %}
+
 						{% if item.status %}
 						{% if "Received" in item.status %}
 						<span class="badge badge-secondary" title="Consignment not loaded into Mainchain">{{ item.status }}</span>
 						{% else %}
-						<span class="badge badge-info" title="Picked up an in transit">{{ item.status }}</span>
+						<span class="badge badge-info" title="Picked up and in transit">{{ item.status }}</span>
 						{% endif %}
+						{% else %}
+						<span class="badge badge-secondary" title="Not tracked">Not tracked</span>
 						{% endif %}
 						<span>{{ date("dS M", strtotime(item.date)) }}</span>
 						{#

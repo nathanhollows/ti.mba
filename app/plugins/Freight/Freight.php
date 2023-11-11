@@ -38,22 +38,29 @@ class Freight extends Injectable
         curl_close($ch);
     }
 
-    public static function trackMainfreight()
+    public function trackMainfreight()
     {
         $dockets = Dockets::tracking();
+        echo "Tracking " . count($dockets) . " dockets\n";
 
         foreach ($dockets as $docket) {
             $status = (new self())->getMainfreightStatus($docket->conNote);
             if (!$status) {
+                echo "No status for " . $docket->conNote . "\n";
                 continue;
             }
             $docket->carrierLabel = str_replace("MSNZS/", "", $status["url"]);
             if ($status["status"] == "Delivered") {
-                $docket->status = $status["status"];
-                $docket->delivered = true;
+                $docket->delivered = 1;
+            } else {
+                $docket->delivered = 0;
             }
             $docket->status = $status["status"];
             $docket->update();
+            foreach ($docket->getMessages() as $message) {
+                echo $message->getMessage() . "\n";
+            }
+            
         }
     }
 }

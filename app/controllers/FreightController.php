@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Dockets;
-use App\Mail\Mail;
 use Phalcon\Http\Response;
+use App\Plugins\Freight\Freight;
 
 class FreightController extends ControllerBase
 {
