@@ -2,23 +2,17 @@
 
 namespace App\Controllers;
 
-use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Paginator\Adapter\Model as Paginator;
-use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Http\Response;
-use App\Models\CustomerOrders;
 use App\Models\Customers;
 use App\Models\Orders;
 use App\Models\OrderLocations;
 use App\Models\ContactRecord;
-use App\Models\OrderItems;
 use App\Forms\OrdersForm;
 
 class OrdersController extends ControllerBase
 {
     public function initialize()
     {
-        $this->view->setViewsDir('/var/www/html/app/facelift/');
         $this->view->setTemplateBefore('private');
         $this->tag->prependTitle('Orders');
         parent::initialize();
@@ -30,9 +24,7 @@ class OrdersController extends ControllerBase
     public function indexAction()
     {
         $this->persistent->parameters = null;
-        $this->view->headerButton = \Phalcon\Tag::linkTo(array('orders/import', 'Import', 'class' => ' btn btn-default pull-right'));
 
-        $date = date("Y-m-d", strtotime("Now - 1 MONTH"));
         $orders = Orders::find(
             array(
                 "complete = 0 OR scheduled = 1",
@@ -61,26 +53,6 @@ class OrdersController extends ControllerBase
         $this->view->locations = $locationArray;
 
         $this->view->customers = Customers::getActive();
-    }
-
-    /*
-     * Import Action responsible for parsing raw data into database
-     */
-    public function importAction()
-    {
-        // Runs the import script
-        // Connects to the database, fetches all outstanding orders and items and
-        // Inserts / Updates the database
-        // Requires the despatch planner to have been updated to get new items
-        exec('C:\xampp\htdocs\app\script\import_orders.py', $output, $return);
-        // Return will return non-zero upon an error
-        if (!$return) {
-            $this->flashSession->success("Orders updated successfully");
-        } else {
-            $this->flashSession->error("The orders could not be imported");
-        }
-        $response = new Response();
-        return $response->redirect('orders');
     }
 
     /**
@@ -120,7 +92,7 @@ class OrdersController extends ControllerBase
                 ));
         }
 
-        $customer_order = new CustomerOrders();
+        $customer_order = new Orders();
 
         $customer_order->customerId = $this->request->getPost("customerId");
         $customer_order->customerAddress = $this->request->getPost("customerAddress");
@@ -169,7 +141,7 @@ class OrdersController extends ControllerBase
 
         $orderNumber = $this->request->getPost("orderNumber");
 
-        $customer_order = CustomerOrders::findFirstByorderNumber($orderNumber);
+        $customer_order = Orders::findFirstByorderNumber($orderNumber);
         if (!$customer_order) {
             $this->flash->error("customer_order does not exist " . $orderNumber);
 
@@ -343,6 +315,10 @@ class OrdersController extends ControllerBase
             ));
     }
 
+    /**
+     * AJAX action for searching orders by customer
+     *
+     */
     public function customerAction($customerCode = null)
     {
         $this->view->setTemplateBefore('none');
@@ -363,6 +339,10 @@ class OrdersController extends ControllerBase
         $this->view->customer = $customer;
     }
 
+    /**
+     * AJAX action to get outstanding orders
+     *
+     */
     public function outstandingAction()
     {
         $this->view->setTemplateBefore('none');

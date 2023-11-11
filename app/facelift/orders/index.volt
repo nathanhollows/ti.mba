@@ -123,30 +123,89 @@ a, .order-listing, .show-customer, .show-outstanding {
 </style>
 <script src="/js/hideseek.min.js"></script>
 <script>
+$(document).ready(function() {
+    startHideSeek();
+    setupSearchHandlers();
+    setupClickHandlers();
 
-	$( document ).ready( function() {
-		startHideSeek();
-		$('#customer-search').hideseek({
-			throttle: 300,
-			ignore: '.ignore',
-		});
-		$('#count').html( $('.table').find('.list > tr:visible').length );
-		$('body').on('click', '.order-listing', function (){
-			order( $( this ).data('order'));
-			$('tr.table-active').removeClass('table-active');
-			$(this).addClass('table-active');
-		});
-		$(".show-customer").click(function() {
-			customer( $( this ).data('customer'));
-			$('.customers .active').removeClass('active');
-			$(this).addClass('active');
-		});
-		$(".show-outstanding").click(function() {
-			outstanding();
-			$('.customers .active').removeClass('active');
-			$(this).addClass('active');
-		});
-	});
+    var customerCode = getParameterFromURL('customer');
+    var orderCode = getParameterFromURL('order');
+
+    if (customerCode) {
+        clickCustomerLink(customerCode, function() {
+            if (orderCode) {
+                clickOrderLink(orderCode);
+            }
+        });
+    } else if (orderCode) {
+        clickOrderLink(orderCode);
+    }
+});
+
+function setupSearchHandlers() {
+    $('#customer-search').hideseek({
+        throttle: 300,
+        ignore: '.ignore',
+    });
+    updateCount();
+}
+
+function setupClickHandlers() {
+    $('body').on('click', '.order-listing', function() {
+        order($(this).data('order'));
+        $('tr.table-active').removeClass('table-active');
+        $(this).addClass('table-active');
+    });
+
+    $(".show-customer").click(function() {
+        customer($(this).data('customer'));
+        $('.customers .active').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    $(".show-outstanding").click(function() {
+        outstanding();
+        $('.customers .active').removeClass('active');
+        $(this).addClass('active');
+    });
+}
+
+function updateCount() {
+    $('#count').html($('.table').find('.list > tr:visible').length);
+}
+
+$(document).on('ajaxComplete.updateCount', function() {
+    updateCount();
+});
+
+function getParameterFromURL(key) {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(key);
+}
+
+function clickCustomerLink(customerCode, callback) {
+    var customerLink = $('.show-customer[data-customer="' + customerCode + '"]');
+    if (customerLink.length) {
+        customerLink[0].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        customerLink.click();
+        $(document).one('ajaxComplete.customerLink', function() {
+            callback();
+            $(document).off('ajaxComplete.customerLink');
+        });
+    } else {
+        console.log('Customer with code ' + customerCode + ' not found.');
+    }
+}
+
+function clickOrderLink(orderCode) {
+    var orderLink = $('.order-listing[data-order="' + orderCode + '"]');
+    if (orderLink.length) {
+        orderLink[0].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+        orderLink.click();
+    } else {
+        console.log('Order with code ' + orderCode + ' not found.');
+    }
+}
 
 var startHideSeek = function() {
 	$('#list-search').hideseek({
@@ -191,6 +250,7 @@ var customer = function(id)
 		}
 	});
 }
+
 var outstanding = function(id)
 {
 	if(xhr && xhr.readyState != 4){
@@ -207,60 +267,4 @@ var outstanding = function(id)
 		}
 	});
 }
-$( document ).ajaxComplete(function() {
-	$('#count').html( $('.table').find('.list > tr:visible').length );
-	$('#list-search').on("_after_each", function() {
-		$( '#count' ).html( $('.table').find('.list > tr:visible').length );
-	});
-	$(".toggle-status").click(function(){
-		var target = $(this);
-		var pk = target.data("order");
-		var name = target.data("name");
-		var style = target.data("style");
-		var text = target.text();
-		target.append(" <div class='spinner-border spinner-border-sm' role='status'> <span class='sr-only'>Loading...</span> </div>");
-		jQuery.ajax({
-			type: "POST",
-			url: "/orders/update",
-			data: { 'pk': pk , 'name': name},
-			dataType: 'json',
-			cache: false,
-			error: function (data) {
-				alert('Something went wrong!');
-				$('.spinner-border').remove();
-			},
-			success: function (data) {
-				order(pk);
-				var badge = $('*[data-order='+pk+'] .badge-'+style);
-				if (badge.length == 1) {
-					badge[0].remove();
-				} else {
-					$('*[data-order='+pk+'] .badges').append('<span class="badge badge-'+style+'">'+text+'</span>');
-				}
-			}
-		});
-	});
-});
-$(window).keydown(function(e){
-	if($("input,textarea,select").is(":focus")){
-		return;
-	}else if(e.which === 40){ // Down
-		$( 'tr.table-active' ).removeClass('table-active').nextAll('tr:visible:first').addClass('table-active');
-		if (!$( 'tr.table-active' ).data('order')) {
-			$('.list tr:visible:first ').addClass('table-active');
-			order( $( 'tr.table-active' ).data('order'));
-		} else {
-			order( $( 'tr.table-active' ).data('order'));
-
-		}
-	}else if(e.which === 38){ // Up
-		$( 'tr.table-active' ).removeClass('table-active').prevAll('tr:visible:first').addClass('table-active');
-		if (!$( 'tr.table-active' ).data('order')) {
-			$('.list tr:visible:last ').addClass('table-active');
-			order( $( 'tr.table-active' ).data('order'));
-		} else {
-			order( $( 'tr.table-active' ).data('order'));
-		}
-	}
-});
 </script>

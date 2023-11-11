@@ -7,7 +7,7 @@
 			</div>
 			<div class="col text-right">
 				<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-					{{ linkTo(['followup/?company=' ~ customer.customerCode ~ '&facelift', 'Add Note', 'class': 'btn btn-primary open-modal']) }}
+					{{ linkTo(['followup/?company=' ~ customer.customerCode, 'Add Note', 'class': 'btn btn-primary open-modal']) }}
 					<div class="btn-group" role="group">
 						<button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
@@ -204,20 +204,14 @@
 						{% for order in orders %}
 						<div class="card shadow-sm mb-3">
 							<div class="card-body">
-								<h5 class="card-title">{{ order.customerRef }}</h5>
-								<h6 class="card-subtitle mb-2 text-muted">{{ order.orderNumber }}</h6>
-								<dl class="dl-horizontal">
-									<dt>Date</dt>
-									<dd>{{ date('d-m-Y', strtotime(order.date)) }}</dd>
-									<dt>ETA</dt>
-									<dd>{% if order.eta %}{{ date('d-m-Y', strtotime(order.eta)) }}{% endif %}</dd>
-									<dt>Location</dt>
-									<dd>{% if order.location %}{{ order.whereabouts.name }} {% endif %}</dd>
-									<dt>Order Notes</dt>
-									<dd>{{ order.description|escape }}</dd>
-									<dt>Despatcher Notes</dt>
-									<dd>{{ order.notes|escape }}</dd>
-								</dl>
+								<h5 class="card-title">
+									Order {{ linkTo("orders?customer="~order.customerCode~"&order="~order.orderNumber, order.orderNumber ) }}
+									</h5>
+								<h6 class="card-subtitle mb-2 text-muted">{{ order.customerRef }}
+									<span class="float-right">
+										{{ date('d M Y', strtotime(order.date)) }}
+									</span>
+								</h6>
 								<ul class="list-group list-group-flush">
 									{% for item in order.items %}
 									<li class="list-group-item {% if item.complete is 1 %}complete{% endif %}">
@@ -230,7 +224,7 @@
 										{% if item.despatch %}
 										<span class="badge badge-success float-right">Scheduled</span>
 										{% endif %}
-										{% if item.complete is 1 %}
+										{% if item.complete %}
 										<span class="badge badge-info float-right">Complete</span>
 										{% endif %}
 										<strong>{{ item.itemNo }}.</strong>
@@ -247,9 +241,11 @@
 										{{ tally.pieces }}/{{ number_format(tally.length,1) }}
 										{% endfor %}
 										{% endif %}
+										{% if item.sent > 0 %}
 										<code>
-											{{ item.sent|number }}/{{ item.ordered|number }} {{ item.unit }}
+											Sent {{ item.sent|number }}/{{ item.ordered|number }} {{ item.unit }}
 										</code>
+										{% endif %}
 										{% else %}
 										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										{% if item.tallies %}
@@ -257,9 +253,11 @@
 										{{ tally.pieces }}/{{ number_format(tally.length,1) }}
 										{% endfor %}
 										{% endif %}
+										{% if item.sent > 0 %}
 										<code>
-											{{ item.sent|number }}/{{ item.ordered|number }} {{ item.unit }}
+											Sent {{ item.sent|number }}/{{ item.ordered|number }} {{ item.unit }}
 										</code>
+										{% endif %}
 										{% endif %}
 										<span class="float-right">${{ item.price }}</span>
 									</li>
@@ -268,6 +266,9 @@
 							</div>
 						</div>
 						{% endfor %}
+						<div class="text-center">
+							<strong>{{ linkTo(["orders?customer=" ~ customer.customerCode, "See historic orders", "class": "mt-3"]) }}</strong>
+						</div>
 					</div>
 				</div>
 			</div>
