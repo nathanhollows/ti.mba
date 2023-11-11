@@ -2,34 +2,12 @@
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
-				<h6 class="header-pretitle">Manage</h6>
-				<h4 class="header-title">Quotes</h4>
+				<h4 class="header-title">My quotes</h4>
+				<h6 class="header-pretitle">
+					You have <strong>{{ quotes|length }}</strong> active quote{% if quotes|length != 1 %}s{% endif %} worth <strong>{{ value|money }}</strong></h6>
 			</div>
 			<div class="col text-right">
 				{{ linkTo(['quotes/new/', 'New Quote', 'class': 'btn btn-primary']) }}
-			</div>
-		</div>
-	</div>
-</div>
-
-<div class="container">
-	<div class="card shadow">
-		<div class="row">
-			<div class="col">
-				<div class="card-body">
-					<h5 class="card-title">Active Quotes</h5>
-					<p class="card-text">
-					{{ quotes|length }} Quotes
-					</p>
-				</div>
-			</div>
-			<div class="col">
-				<div class="card-body">
-					<h5 class="card-title">Total Value</h5>
-					<p class="card-text">
-					{{ value|money }}
-					</p>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -42,23 +20,37 @@
 				<thead>
 					<th>#</th>
 					<th>Date</th>
-					<th>Custumer</th>
+					<th>Customer</th>
 					<th>Reference</th>
 					<th class="text-right">Value</th>
-					<th></th>
+					<th class="text-right">Actions</th>
 				</thead>
 				<tbody>
 					{% for quote in quotes %}
 					<tr>
-						<td>{{ linkTo(['quotes/view/' ~ quote.quoteId, "#" ~ quote.quoteId]) }}</td>
+						<td>
+							<strong>{{ linkTo(['quotes/view/' ~ quote.quoteId, quote.quoteId]) }}</strong>
+						</td>
 						<td>{{ quote.date }}</td>
 						<td>{{ linkTo(['customers/view/'~ quote.customer.customerCode, quote.customer.name]) }}</td>
 						<td>{{ quote.reference }}</td>
 						<td align="right">{{ quote.value|money }}</td>
-						<td align="center">
+						<td align="right">
 							<div class="btn-group" role="group" aria-label="Basic example">
 								<a href="{{ url('quotes/won/' ~ quote.quoteId ) }}" class="btn btn-outline-success btn-sm">Won</a>
 								<a href="{{ url('quotes/lost/' ~ quote.quoteId ) }}" class="btn btn-outline-danger btn-sm">Lost</a>
+							</div>
+							<div class="btn-group " role="group" aria-label="Actions">
+								<div class="btn-group" role="group">
+									<button id="btnGroupDrop1" type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										Actions
+									</button>
+									<div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+										{{ linkTo(['followup/?job=' ~ quote.quoteId, 'Add Note', 'class': 'dropdown-item open-modal']) }}
+										{{ linkTo(['quotes/new?copy=' ~ quote.quoteId, 'Duplicate quote', 'class': 'dropdown-item']) }}
+										{{ linkTo(['quotes/delete/' ~ quote.quoteId, 'Delete quote', 'class': 'dropdown-item text-danger delete confirm-delete']) }}
+									</div>
+								</div>
 							</div>
 						</td>
 					</tr>
