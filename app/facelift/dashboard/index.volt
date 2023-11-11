@@ -34,7 +34,7 @@
 			{{ flashSession.output() }}
 			{% if budget.budget is not defined or budget.budget is 0 %}
 			<div class="alert alert-info" role="alert">
-				The budget for this month has not been set. This can be done in the {{link_to("reports/annual", "annual sales report", "class": "alert-link")}}
+				Please set the budget for this month in the {{link_to("reports/annual", "annual sales report " ~ emicon("link"), "class": "alert-link")}}
 			</div>
 			{% endif %}
 		</div>
@@ -470,6 +470,9 @@ $(function () {
 </script>
 <script type="text/javascript" charset="utf-8" src="/js/chart-round.js"></script>
 <style>
+#myChart {
+	max-height: 400px;
+}
 #legend {
 	cursor: pointer;
 	position: absolute;
