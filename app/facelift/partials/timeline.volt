@@ -19,7 +19,6 @@
 				{% else %}
 					{{ line.reference }}
 					<span class="badge badge-pill badge-dark">Deleted</span>
-				{{ end }}
 				{% endif %}
 				made by {{ line.staff.name }} 
 			</strong>
@@ -45,7 +44,7 @@
 				<div class="card-footer">
 					{{ line.staff.name }} ~ {{ date('d M Y', strtotime(line.date)) }}
 					<a href="{{ url('followup/delete/' ~ line.id) }}" class="card-link text-danger float-right confirm-delete">Delete</a>
-					<a href="{{ url('followup/edit/' ~ line.id ~ '?facelift') }}" class="card-link float-right mr-3 open-modal">Edit</a>
+					<a href="{{ url('followup/edit/' ~ line.id) }}" class="card-link float-right mr-3 open-modal">Edit</a>
 					{% if oustanding is defined and outstanding %}
 			<a href="{{ url('followup/complete/' ~ line.id) }}" class="card-link float-right">Done</a>
 			{% endif %}
@@ -66,7 +65,7 @@
 				{% elseif contact is not empty %}
 				<a class="open-modal" data-target="#modal-ajax" href='{{ url('followup/?company=' ~ contact.customerCode ~ '&contact=' ~ contact.id) }}' data-target="#modal-ajax">add a note</a>
 				{% elseif customer is not empty %}
-				<a class="open-modal" data-target="#modal-ajax" href='{{ url('followup/?company=' ~ customer.customerCode ~ '&facelift') }}' data-target="#modal-ajax">add a note</a>
+				<a class="open-modal" data-target="#modal-ajax" href='{{ url('followup/?company=' ~ customer.customerCode) }}' data-target="#modal-ajax">add a note</a>
 				{% else %}
 				<a class="open-modal" data-target="#modal-ajax" href='{{ url('followup/') }}' data-target="#modal-ajax">add a note</a>
 				{% endif %}?
