@@ -4,37 +4,13 @@ namespace App\Models;
 
 use Phalcon\Mvc\Model;
 
-class Packets extends Model
+class Stock extends Model
 {
     /**
      *
      * @var string
      */
-    public $packetNumber;
-
-    /**
-     * createdId
-     * @var integer
-     */
-    public $createdId;
-
-    /**
-     * lastId
-     * @var integer
-     */
-    public $lastId;
-
-    /**
-     *
-     * @var integer
-     */
-    public $location;
-
-    /**
-     *
-     * @var integer
-     */
-    public $order_no;
+    public $packetNo;
 
     /**
      *
@@ -47,16 +23,15 @@ class Packets extends Model
      */
     public function initialize()
     {
-        $this->setSource('packets');
-        $this->hasMany('packetNumber', 'App\Models\PacketTallies', 'packetNumber', array('alias'  => 'tallies'));
+        $this->hasMany('packetNo', 'App\Models\PacketTallies', 'packetNo', array('alias'  => 'tallies'));
         $this->hasOne('createdId', 'App\Models\PacketHistory', 'id', array('alias'  => 'created'));
         $this->hasOne('lastId', 'App\Models\PacketHistory', 'id', array('alias'  => 'lastRecord'));
-        $this->hasMany('packetNumber', 'App\Models\PacketHistory', 'packetNumber', array('alias'  => 'history'));
+        $this->hasMany('packetNo', 'App\Models\PacketHistory', 'packetNo', array('alias'  => 'history'));
     }
 
     /**
      * Get all current packets
-     * @return App\Models\Packets
+     * @return App\Models\Stock
      */
     public function getCurrent()
     {

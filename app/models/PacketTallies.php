@@ -10,7 +10,7 @@ class PacketTallies extends Model
      *
      * @var string
      */
-    public $packetNumber;
+    public $packetNo;
 
     /**
      * length
@@ -26,6 +26,6 @@ class PacketTallies extends Model
 
     public function initialize()
     {
-        $this->hasOne('packetNumber', 'App\Models\Packets', 'packetNumber', array('alias'  => 'packet'));
+        $this->hasOne('packetNo', 'App\Models\Stock', 'packetNo', array('alias'  => 'packet'));
     }
 }
