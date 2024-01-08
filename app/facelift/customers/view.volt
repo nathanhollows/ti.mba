@@ -39,7 +39,7 @@
 			<div class="card shadow-sm mb-3">
 				<div class="card-body">
 					<h5 class="card-title">Details
-						<a class="float-right open-modal text-sm text-primary" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax">
+						<a class="float-right open-modal text-sm text-muted" data-target="#modal-ajax" href='{{ url('customers/edit/' ~ customer.customerCode) }}' data-target="#modal-ajax">
 							{{ emicon("pencil") }}
 						</a>
 					</h5>
@@ -92,10 +92,10 @@
 				<div class="card-body">
 					<h5 class="card-title">Addresses</h5>
 					{% for address in addresses %}
-					<h6 class="card-subtitle mb-1 mt-2 text-muted">{{ address.type.typeDescription }}</h6>
-					<a class="float-right text-info open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax">
+					<h6 class="card-subtitle mb-1 mt-2 text-muted">{{ address.type.typeDescription }}
+					<a class="float-right text-muted open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax">
 						{{ emicon("pencil") }}
-					</a>
+					</a></h6>
 					<p class="card-text">
 						{% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
 						{% if address.line2 is not empty %} {{ address.line2 }} <br>{% endif %}
