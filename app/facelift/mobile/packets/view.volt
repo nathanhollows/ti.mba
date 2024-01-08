@@ -6,7 +6,7 @@
                 <span class="badge badge-warning">Dead</span>
             {% else %}
                 <span class="badge badge-info">Current</span>
-                {% if packet.onsite is 0 %}
+                {% if packet.lastRecord.offsite is 1 %}
                     <span class="badge badge-warning">Offsite</span>
                 {% else %}
                     <span class="badge badge-info">Onsite</span>
@@ -14,15 +14,14 @@
             {% endif %}
                 <span class="badge badge-danger">FSC 100%</span>
             </p>
-            <h2>{{ packet.lastRecord.lineal }}m
+            <h2>{{ packet.lastRecord.linealTally }}m
                 <br />
                 {{ packet.lastRecord.width }} x {{ packet.lastRecord.thickness }}
-                <br />
                 {{ packet.lastRecord.grade }} {{ packet.lastRecord.treatment }} {{ packet.lastRecord.dryness }} {{ packet.lastRecord.finish }}
             </h2>
             {% if packet.tallies|length > 0 %}
             <h2>Tally</h2>
-            <table class="table table-bordered table-striped">
+            <table class="table table-striped table-responsive">
                 {% set counts = [] %}
                 {% set lengths = [] %}
                 {% for tally in packet.tallies %}
@@ -78,16 +77,16 @@
                     <th>Move</th>
                     <th>Comment</th>
                     <th>Cube</th>
-                    <th>Lineal Tally</th>
+                    <th>Tally</th>
                 </thead>
                 <tbody>
                     {% for history in packet.history %}
                     <tr>
-                        <td>{{ date("d M y", strtotime(history.date)) }}</td>
+                        <td>{{ date("d M y", strtotime(history.dateIn)) }}</td>
                         <td>{{ history.operation }}</td>
                         <td {% if history.operation in ["TPO", "CPP", "ATP"] %} class="link" {% endif %}>{{ history.comment }}</td>
-                        <td>{{ history.cube }}</td>
-                        <td>{{ history.lineal }}</td>
+                        <td>{{ history.netCube }}</td>
+                        <td>{{ history.linealTally }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

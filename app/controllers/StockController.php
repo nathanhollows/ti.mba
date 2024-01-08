@@ -8,7 +8,7 @@ use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Forms;
 use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as Paginator;
-use App\Models\Packets;
+use App\Models\Stock;
 use App\Models\PacketHistory;
 use App\Models\PacketTallies;
 
@@ -29,7 +29,7 @@ class StockController extends ControllerBase
         if ($this->request->isAjax()) {
             $builder = $this->modelsManager->createBuilder()
             ->columns('packetHistory.packetNumber, width, thickness, grade, treatment, dryness, dry, finish, machined, onsite, cube, lineal')
-            ->from('App\Models\Packets')
+            ->from('App\Models\Stock')
             ->join('App\Models\PacketHistory', 'lastId = packetHistory.id', 'packetHistory')
             ->join('App\Models\Dryness', 'dryness =dryness.shortCode', 'dryness')
             ->join('App\Models\Finish', 'finish = finish.shortCode', 'finish')
@@ -52,7 +52,7 @@ class StockController extends ControllerBase
     public function packetsAction($packet = null)
     {
         $this->view->setTemplateBefore('blank');
-        $packet = Packets::findFirstByPacketNumber($packet);
+        $packet = Stock::findFirstByPacketNumber($packet);
         $this->tag->prependTitle(strtoupper($packet->packetNumber));
         $this->view->packet = $packet;
         $this->view->pageTitle = $packet->packetNumber;

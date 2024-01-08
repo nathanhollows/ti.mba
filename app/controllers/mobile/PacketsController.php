@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Mobile;
 
-use App\Models\Packets;
+use App\Models\Stock;
 
 class PacketsController extends ControllerBase
 {
@@ -17,17 +17,17 @@ class PacketsController extends ControllerBase
         $this->view->pageTitle = "Scheduled Orders";
     }
 
-    public function viewAction($packetNumber = null)
+    public function viewAction($packetNo = null)
     {
         $this->tag->prependTitle('Packet');
 
-        $packet = Packets::findFirst([
-            'conditions'    => 'packetNumber = ?1',
+        $packet = Stock::findFirst([
+            'conditions'    => 'packetNo = ?1',
             'bind'  => [
-                1 => $packetNumber
+                1 => $packetNo
             ]
         ]);
-        $this->view->pageTitle = strtoupper($packet->packetNumber);
+        $this->view->pageTitle = strtoupper($packet->packetNo);
         $this->view->packet = $packet;
     }
 }

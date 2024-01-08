@@ -2,8 +2,10 @@
 
 namespace App\Controllers\Mobile;
 
+use App\Models\Dryness;
+use App\Models\Finish;
 use App\Models\Orders;
-use App\Models\Packets;
+use App\Models\Stock;
 use App\Models\PacketHistory;
 use App\Models\PacketTallies;
 use DataTables\DataTable;
@@ -38,14 +40,11 @@ class StockController extends ControllerBase
 
         if ($this->request->isAjax()) {
             $builder = $this->modelsManager->createBuilder()
-            ->columns('packetHistory.packetNumber, width, thickness, finWidth, finThickness, grade, treatment, dryness, dryness.dry, finish, finish.machined, onsite, lineal, cube')
-            ->from('App\Models\Packets')
-            ->join('App\Models\PacketHistory', 'lastId = packetHistory.id', 'packetHistory')
-            ->join('App\Models\Dryness', 'dryness =dryness.shortCode', 'dryness')
-            ->join('App\Models\Finish', 'finish = finish.shortCode', 'finish')
-            ->where('current = 1')
-            ->groupBy(['packetHistory.packetNumber'])
-            ->orderBy('dryness DESC, finThickness ASC, finWidth ASC');
+            ->columns('packetHistory.packetNo, width, thickness, finishWidth, finishThickness, grade, treatment, dryness, finish, linealTally, netCube, offsite')
+            ->from(Stock::class)
+            ->innerJoin(PacketHistory::class, 'lastId = packetHistory.id', 'packetHistory')
+            ->where('current = 1 AND packetHistory.packetNo NOT LIKE \'%X\'')
+            ->orderBy('dryness DESC, finishThickness ASC, finishWidth ASC');
 
             $dataTables = new DataTable();
             $dataTables->fromBuilder($builder)->sendResponse();

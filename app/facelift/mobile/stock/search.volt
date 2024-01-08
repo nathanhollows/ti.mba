@@ -4,20 +4,12 @@
         <input type="number" class="form-control size" id="width" placeholder="Width" data-column="1" autofocus="true">
     </div>
     <div class="form-group ml-1">
-        <label class="sr-only" for="thickness">Password</label>
+        <label class="sr-only" for="thickness">Thickness</label>
         <input type="number" class="form-control size" id="thickness" placeholder="Thickness" data-column="2">
     </div>
     <div class="btn-group ml-1" role="group">
-        <button type="button" class="btn btn-default filter-dryness" data-dryness="0">Wet</button>
-        <button type="button" class="btn btn-default filter-dryness" data-dryness="1">Dry</button>
-    </div>
-    <div class="btn-group ml-1" role="group">
-        <button type="button" class="btn btn-default filter-finish" data-finish="0">Sawn</button>
-        <button type="button" class="btn btn-default filter-finish" data-finish="1">Machined</button>
-    </div>
-    <div class="btn-group ml-1" role="group">
-        <button type="button" class="btn btn-info filter-onsite" data-onsite="1">Onsite</button>
-        <button type="button" class="btn btn-default filter-onsite" data-onsite="0">Offsite</button>
+        <button type="button" class="btn btn-info filter-offsite" data-offsite="0">Onsite</button>
+        <button type="button" class="btn btn-default filter-offsite" data-offsite="1">Offsite</button>
     </div>
     <button type="button" class="btn btn-danger ml-1" id="clear">Clear Filters</button>
 </form>
@@ -51,9 +43,9 @@ $(document).ready(function() {
         pagingType: "simple_numbers",
         lengthMenu: [10,25,50,100,500,1500],
         columns: [
-            {data: "packetNumber", searchable: true,
+            {data: "packetNo", searchable: true,
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
-                $(nTd).html("<a href='/m/packets/view/"+oData.packetNumber+"'>"+oData.packetNumber+"</a>");
+                $(nTd).html("<a href='/m/packets/view/"+oData.packetNo+"'>"+oData.packetNo+"</a>");
             }},
             {data: "width", searchable: true},
             {data: "thickness", searchable: true},
@@ -61,11 +53,9 @@ $(document).ready(function() {
             {data: "treatment", searchable: true},
             {data: "dryness", searchable: true},
             {data: "finish", searchable: true},
-            {data: "lineal", searchable: true},
-            {data: "cube", searchable: true},
-            {data: "dry", searchable: true, visible: false},
-            {data: "machined", searchable: true, visible: false},
-            {data: "onsite", searchable: true, visible: false},
+            {data: "linealTally", searchable: true},
+            {data: "netCube", searchable: true},
+            {data: "offsite", searchable: true, visible: false},
         ],
     });
     table.column( 12 ).search(1).draw();
@@ -76,19 +66,14 @@ $(document).ready(function() {
         .search(this.value)
         .draw()
     });
-    $('.filter-dryness').on( 'click', function () {
-      table.column( 9 ).search( $(this).data('dryness')  ).draw();
-      $(".filter-dryness").removeClass('btn-info').addClass('btn-default');
-      $(this).removeClass('btn-default').addClass('btn-info');
-    });
     $('.filter-finish').on( 'click', function () {
       table.column( 10 ).search( $(this).data('finish')  ).draw();
       $(".filter-finish").removeClass('btn-info').addClass('btn-default');
       $(this).removeClass('btn-default').addClass('btn-info');
     });
-    $('.filter-onsite').on( 'click', function () {
-      table.column( 11 ).search( $(this).data('onsite')  ).draw();
-      $(".filter-onsite").removeClass('btn-info').addClass('btn-default');
+    $('.filter-offsite').on( 'click', function () {
+      table.column( 11 ).search( $(this).data('offsite')  ).draw();
+      $(".filter-offsite").removeClass('btn-info').addClass('btn-default');
       $(this).removeClass('btn-default').addClass('btn-info');
     });
     $('#clear').on( 'click', function () {

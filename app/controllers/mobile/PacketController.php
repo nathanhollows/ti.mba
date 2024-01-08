@@ -2,7 +2,7 @@
 
 namespace App\Controllers\Mobile;
 
-use App\Models\Packets;
+use App\Models\Stock;
 
 class PacketsControllers extends ControllerBase
 {
@@ -19,12 +19,12 @@ class PacketsControllers extends ControllerBase
 
     /**
      * View packet details
-     * @param  App\Models\Packet packetNumber string $packet
+     * @param  App\Models\Packet packetNo string $packet
      */
     public function viewAction($packet = null)
     {
-        $packet = Packets::findFirst([
-            'conditions'    => 'packetNumber = ?1',
+        $packet = Stock::findFirst([
+            'conditions'    => 'packetNo = ?1',
             'bind'          => [
                 1   => $packet
             ],
