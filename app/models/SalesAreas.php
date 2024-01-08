@@ -51,43 +51,42 @@ class SalesAreas extends \Phalcon\Mvc\Model
         $this->hasOne('agent', 'App\Models\Users', 'id', array('alias' => 'rep'));
     }
 
+    public static function findOrdered()
+    {
+        return SalesAreas::Find([
+            'order' => 'ordering ASC',
+            'join' => 'App\Models\Users',
+        ]   );
+    }
+
+
+    // Find all sales areas with reps names
+    public function findReps()
+    {
+        // Turn on errors
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+        $builder = $this->modelsManager->createBuilder()
+            ->columns('name, nicename, agent, rep.name as repName')
+            ->from(['customer' => 'App\Models\SalesAreas'])
+            ->join('App\Models\Users', 'rep.id = customer.agent', 'rep')
+            ->orderBy('rep.name');
+        return $builder;
+    }
+
+
+
+
     public function beforeCreate()
     {
         $this->nicename = strtolower(str_replace(" ", "-", $this->name));
-    }
-
-    public function afterCreate()
-    {
-        $this->getDI()->getShared('cache')->delete('sales-areas');
-        $this->getDI()->getShared('cache')->delete('unassigned-areas');
-    }
-
-    public function afterUpdate()
-    {
-        $this->getDI()->getShared('cache')->delete('sales-areas');
-        $this->getDI()->getShared('cache')->delete('unassigned-areas');
-    }
-
-    public function afterDelete()
-    {
-        $this->getDI()->getShared('cache')->delete('sales-areas');
-        $this->getDI()->getShared('cache')->delete('unassigned-areas');
-    }
-
-    public function afterSave()
-    {
-        $this->getDI()->getShared('cache')->delete('sales-areas');
-        $this->getDI()->getShared('cache')->delete('unassigned-areas');
     }
 
     public static function unassigned() 
     {
         return parent::find([
             'conditions'    => 'agent IS NULL',
-            'cache'         => array(
-                'key'       => 'unassigned-areas',
-                'lifetime'  => 86400
-            ),
         ]);
     }
 
