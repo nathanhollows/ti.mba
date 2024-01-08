@@ -2,7 +2,7 @@
 	<div class="container">
 		<div class="row header-body">
 			<div class="col">
-				<h6 class="header-pretitle">Quote for {{ linkTo(["customers/view/" ~ quote.customer.customerCode, quote.customer.name ]) }}</h6>
+				<h6 class="header-pretitle">Valued at {{ quote.value|money }}</h6>
 				<h4 class="header-title">
 					Quote {{ quote.quoteId }}: <a href="#" class="xedit" id="reference" data-type="text" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-mode="inline" data-title="Reference">{{ quote.reference }}</a><br />
 				</h4>
@@ -13,17 +13,18 @@
 					{{ linkTo(["quotes/lost/" ~ quote.quoteId, "Lost",  "class": "btn btn-secondary"]) }}
 				</div>
 					{{ linkTo(['quote/get/' ~ quote.webId, emicon("download") ~ 'Get PDF', 'class': 'btn btn-primary', 'target': '_blank']) }}
-				<div class="btn-group " role="group" aria-label="Button group with nested dropdown">
+				<div class="btn-group " role="group" aria-label="Actions">
 					<div class="btn-group" role="group">
 					  <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						Actions
 					  </button>
 					  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-						{{ linkTo(['quotes/duplicate/' ~ quote.quoteId, 'Duplicate quote', 'class': 'dropdown-item']) }}
-						{{ linkTo(['quotes/delete/' ~ quote.quoteId, 'Delete quote', 'class': 'dropdown-item']) }}
+						{{ linkTo(['followup/?job=' ~ quote.quoteId, 'Add Note', 'class': 'dropdown-item open-modal']) }}
+						{{ linkTo(['quotes/new?copy=' ~ quote.quoteId, 'Duplicate quote', 'class': 'dropdown-item']) }}
+						{{ linkTo(['quotes/delete/' ~ quote.quoteId, 'Delete quote', 'class': 'dropdown-item text-danger delete confirm-delete']) }}
 					  </div>
 					</div>
-				  </div>
+				</div>
 			</div>
 			<hr class="w-100"/>
 		</div>
@@ -39,7 +40,7 @@
 				<dt>Status</dt>
 				<dd><span class="badge badge-{{ quote.state.style }} xedit" id="status" data-mode="inline" data-type="select" data-source="[ {% for status in statuses %}{value: {{status.id}}, text: '{{ status.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Status" data-value="{{ quote.state.id }}">{{ quote.state.name }}</span></dd>
 				<dt>Customer</dt>
-				<dd><a href="#" class="xedit" id="customerCode" data-mode="inline" data-type="select" data-source="[ {% for customer in customers %}{value: {{customer.customerCode}}, text: '{{ customer.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Customer" data-value="{{ quote.customerCode }}">{{ quote.customer.name }}</a></dd>
+				<dd>{{ linkTo("customers/view/" ~ quote.customerCode, quote.customer.name) }}</dd>
 				<dt>Attention</dt>
 				<dd></dd>
 				<dd><a href="#" class="xedit" id="attention" data-mode="inline" data-type="select" data-source="[ {% for contact in contacts %}{value: {{contact.id}}, text: '{{ contact.name }}'},{% endfor %} ]" data-pk="{{ quote.quoteId }}" data-url="/quotes/ajaxupdate" data-title="Attention" data-value="{% if quote.customerContact is not empty %}{{ quote.contact }} {% endif %}">{% if quote.customerContact is not empty %}{{ quote.customerContact.name }} {% endif %}</a></dd>
@@ -129,7 +130,7 @@
 										{{ numeric_field('unitPrice[]', 'value': item.price, 'step': 'any') }}
 									</td>
 									<td>
-										<a href="#" data-href="/quotes/deleteitem/{{ item.id }}" data-toggle="modal" data-target="#confirm-delete" tabindex="-1" class="text-danger delete"><i class="fa fa-times"></i></a>
+										<a href="#" data-href="/quotes/deleteitem/{{ item.id }}" data-toggle="modal" data-target="#confirm-delete" tabindex="-1" class="text-danger delete">{{ emicon("trash-2") }}</a>
 									</td>
 								</tr>
 								{% endfor %}
@@ -264,7 +265,7 @@
 		visibility: visible;
 	}
 	
-	a.delete {
+	.record a.delete {
 		visibility: hidden;
 	}
 	
