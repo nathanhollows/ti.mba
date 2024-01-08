@@ -46,8 +46,7 @@ class Auth extends Injectable
             'id' => $user->id,
             'name' => $user->name,
             'changePassword' => $user->mustChangePassword,
-            'dev' => $user->dev,
-            'uca' => $user->useUCA,
+            'dev' => $user->developer,
         ));
     }
 
@@ -138,8 +137,6 @@ class Auth extends Injectable
                                                     'id' => $user->id,
                                                     'name' => $user->name,
                                                     'changePassword' => $user->mustChangePassword,
-                                                    'dev' => $user->dev,
-                                                    'uca' => $user->useUCA,
                                                 ));
 
                         // Register the successful login
