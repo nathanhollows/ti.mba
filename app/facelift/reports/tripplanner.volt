@@ -57,7 +57,7 @@
         <table class="table table-hover dataTable bg-white" id="customers">
             <thead>
                 <tr>
-                    <th>Select</th>
+                    <th class="skip-filter">Select</th>
                     <th class="skip-filter">Code</th>
                     <th class="skip-filter">Name</th>
                     <th>Area</th>
@@ -76,7 +76,16 @@
                         {% if customer.salesarea.name is defined %}
                         {{ customer.salesarea.name }}
                         {% else %}
-                        <span class="badge badge-secondary">Not set</span>
+                        <span 
+                            class="xedit" 
+                            data-name="area" 
+                            data-type="select" 
+                            data-pk="{{ customer.customerCode}}" 
+                            data-url="/customers/ajaxupdate" 
+                            data-placement="auto" 
+                            data-title="Area" 
+                            data-value="{{ customer.salesarea.name }}" 
+                            ></span>
                         {% endif %}
                     </td>
                     <td>
@@ -110,6 +119,10 @@
     $(document).ready(function() {
         // Using event delegation for better performance on dynamic content
         $('#customers').on('click', 'tbody tr', function(event) {
+            // Prevent checkbox click event from bubbling
+            event.stopPropagation();
+            // Don't do anything if a span or link was clicked
+if ($(event.target).is('span') || $(event.target).is('a') || $(event.target).is('div') || $(event.target).is('select')) return;
             // Prevent triggering twice for the checkbox
             if (event.target.type !== 'checkbox') {
                 $(':checkbox', this).trigger('click');
@@ -271,8 +284,39 @@
 
 })(jQuery);
 
-</script>
-        
+		$( document ).ready( function() {
+           var salesareas = [
+           // Volt
+           {% for area in salesAreas %}
+           {"value": "{{ area.id }}", "text": "{{ area.area }}", "rep": "{{ area.rep}}"},
+           {% endfor %}
+           ]; // Define your roles here
+			$.fn.editable.defaults.mode = 'inline';
+			$('.xedit').editable({
+                source: function() {
+                    return salesareas;
+                },
+                // Set the nearest badge to the matching rep name from the salesareas array
+                success: function(response, newValue) {
+                    // Get the text of the selected option
+                    var text = salesareas.find(x => x.value === newValue).text;
+                    // Update the parent td ddtf-value attribute encoded for url
+                    var safeValue = encodeURIComponent(text);
+                    $(this).parent().attr('ddtf-value', safeValue);
+
+                    // Update the neighbouring td with the rep name and new ddtf-value
+                    var rep = salesareas.find(x => x.value === newValue).rep;
+                    var safeRep = encodeURIComponent(rep);
+                    $(this).parent().next().text(rep);
+                    $(this).parent().next().attr('ddtf-value', safeRep);
+
+                }
+            });
+		});
+
+
+	</script>
+
 <style>
     table select {
         font-weight: bold !important;

@@ -265,7 +265,7 @@ class CustomersController extends ControllerBase
         $customer = Customers::findFirstBycustomerCode($this->request->getPost('customerCode'));
         // Store and check for errors
 
-        $customer->assign($this->request->getPost(), array('name', 'phone', 'fax', 'email', 'area', 'customerStatus'));
+        $customer->assign($this->request->getPost(), array('name', 'phone', 'fax', 'email', 'salesArea', 'customerStatus'));
         if ($customer->update()) {
             $this->flashSession->success("Successfully updated");
         } else {
@@ -275,6 +275,41 @@ class CustomersController extends ControllerBase
             }
         }
         return $this->_redirectBack();
+    }
+
+    /**
+     * Update a customer using x-editable
+     * AJAX only
+     */
+    public function ajaxupdateAction()
+    {
+        $this->view->disable();
+        if (!$this->request->isPost()) {
+            $this->_redirectBack();
+        }
+
+        $response = new \Phalcon\Http\Response();
+
+        $customer = Customers::findFirstByCustomerCode($this->request->getPost("pk"));
+        if (!$customer) {
+            $response->setStatusCode(404, "customer not found");
+            $response->send();
+        }
+        switch ($this->request->getPost('name')) {
+            case 'area':
+                $customer->salesArea = $this->request->getPost('value');
+                break;
+            default:
+                $response->setStatusCode(404, "Field not found");
+                $response->send();
+        }
+
+        if ($customer->update()) {
+            $response->setStatusCode(200, "Update successful");
+        } else {
+            $response->setStatusCode(500, "Something went wrong");
+        }
+        $response->send();
     }
 
     /**

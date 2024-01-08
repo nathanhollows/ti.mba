@@ -31,10 +31,18 @@ class ReportsController extends ControllerBase
 
         $this->view->customers = Customers::getActive();
 
-        $unassignedAreas = SalesAreas::unassigned();
-        if (count($unassignedAreas) > 0) {
-            $this->flash->notice("There are " . count($unassignedAreas) . " sales areas without an assigned rep. You can assign them <strong>" . \Phalcon\Tag::linkTo(array('settings/salesareas', 'here')) . "</strong>.");
-        }
+        $phql = "
+            SELECT
+                App\Models\SalesAreas.id as id,
+                App\Models\SalesAreas.name as area,
+                App\Models\Users.name as rep
+            FROM App\Models\SalesAreas
+            INNER JOIN App\Models\Users
+                ON App\Models\SalesAreas.agent = App\Models\Users.id
+            ORDER BY App\Models\SalesAreas.ordering ASC
+        ";
+
+        $this->view->salesAreas = $this->modelsManager->executeQuery($phql);
     }
 
     public function annualAction($year = null, $month = null)
