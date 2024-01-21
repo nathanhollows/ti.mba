@@ -130,7 +130,7 @@
 										{{ numeric_field('unitPrice[]', 'value': item.price, 'step': 'any') }}
 									</td>
 									<td>
-										<a href="#" data-href="/quotes/deleteitem/{{ item.id }}" data-toggle="modal" data-target="#confirm-delete" tabindex="-1" class="text-danger delete">{{ emicon("trash-2") }}</a>
+										<a href="/quotes/deleteitem/{{ item.id }}" class="text-danger delete confirm-delete">{{ emicon("trash-2") }}</a>
 									</td>
 								</tr>
 								{% endfor %}
