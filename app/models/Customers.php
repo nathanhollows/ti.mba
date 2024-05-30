@@ -122,10 +122,6 @@ class Customers extends \Phalcon\Mvc\Model
         return parent::find([
             'conditions' => 'status IN (1, 2)',
             'order'      => 'name',
-            'cache'      => array(
-                'key'      => 'customers',
-                'lifetime' => 3600,
-            ),
         ]);
     }
 
