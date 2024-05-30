@@ -193,7 +193,7 @@
 				visibility: hidden;
 			}
 		</style>
-		<script type="module" src="https://cdn.pika.dev/editable-table"></script>
+		<script type="module" src="/js/editable-table.js"></script>
 		<script>
 			customElements.whenDefined("editable-table").then(() => {
 				editableTable = document.querySelector("editable-table");
@@ -202,7 +202,6 @@
 				
 				editableTable.addEventListener("record:update", function(event) {
 					const { changeType, index, record } = event.detail;
-					console.log(`record %d %s: %o`, index + 1, changeType, record);
 					
 				});
 			});

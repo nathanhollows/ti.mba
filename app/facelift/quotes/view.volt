@@ -279,7 +279,7 @@
 		width: 54px;
 	}
 </style>
-<script type="module" src="https://cdn.pika.dev/editable-table"></script>
+<script type="module" src="/js/editable-table.js"></script>
 <script>
 	$( document ).ready( function() {
 		$('.xedit').editable();
