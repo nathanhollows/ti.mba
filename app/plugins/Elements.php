@@ -40,7 +40,8 @@ class Elements extends Injectable
             'children' => array(
                 array('Orders', 'orders'),
                 array('Freight Tracker', 'freight'),
-            )),
+            )
+        ),
         'kpi' => array(
             'icon'  => 'truck',
             'caption' => 'KPI\'s',
@@ -48,17 +49,18 @@ class Elements extends Injectable
             'children' => array(
                 array('Sales', 'kpi/dailysales'),
                 array('Daily KPI\'s', 'kpi/'),
-            )),
+            )
+        ),
         'reports' => array(
             'icon'  => 'bar-chart',
             'caption' => 'Reports',
             'action' => '',
             'children' => array(
                 array('Trip Planner', 'reports/tripplanner'),
-                array('Monthly Sales', 'reports/sales'),
                 array('Annual Sales', 'reports/annual'),
                 array('Regional Sales', 'customers/regions'),
-            )),
+            )
+        ),
     );
 
     private $_rightNav = array(
@@ -102,7 +104,9 @@ class Elements extends Injectable
                 'children' => array(
                     array('Orders', 'orders'),
                     array('Freight Tracker', 'freight'),
-                )),
+                    array('Committed Stock', 'stock/committed'),
+                )
+            ),
             'kpi' => array(
                 'icon'  => 'truck',
                 'caption' => 'KPI\'s',
@@ -110,7 +114,8 @@ class Elements extends Injectable
                 'children' => array(
                     array('Daily KPI\'s', 'kpi/'),
                     array('Sales', 'kpi/dailysales'),
-                )),
+                )
+            ),
             'reports' => array(
                 'icon'  => 'bar-chart',
                 'caption' => 'Reports',
@@ -120,7 +125,8 @@ class Elements extends Injectable
                     array('Monthly Sales', 'reports/sales'),
                     array('Annual Sales', 'reports/annual'),
                     array('Survey', 'reports/survey'),
-                )),
+                )
+            ),
         ),
         'navbar-right faa-parent animated-hover' => array(
             'tasks' => array(
@@ -149,31 +155,31 @@ class Elements extends Injectable
         $controllerName = $this->view->getControllerName();
 
         foreach ($this->_leftNav as $controller => $option) {
-            $class = ($controller == $controllerName ? "active" : "");
+            $active = ($controller == $controllerName ? "active" : "");
+            $class = (isset($option['class']) ? $option['class'] : "");
             if (isset($option['children'])) {
-                echo "<li class='nav-item dropdown $class'>";
-                echo '<a class="nav-link dropdown-toggle" href="#" id="' . $controller. 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-instant>';
+                echo "<li class='nav-item dropdown $active'>";
+                echo '<a class="nav-link dropdown-toggle ' . $class . '" href="#" id="' . $controller . 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 echo $option['caption'];
                 echo '</a>';
 
                 echo '<div class="dropdown-menu" aria-labelledby="' . $controller . 'Dropdown">';
                 foreach ($option['children'] as $key) {
+                    $class = (isset($key['class']) ? $key['class'] : "");
                     echo $this->tag->linkTo([
                         $key['1'],
                         $key[0],
-                        'class' => 'dropdown-item',
-                        'data-instant' => '',
+                        'class' => "dropdown-item $class",
                     ]);
                 }
                 echo '</div>';
                 echo '</li>';
             } else {
-                echo "<li class='nav-item $class'>";
+                echo "<li class='nav-item $active'>";
                 echo $this->tag->linkTo([
                     $controller . '/' . $option['action'],
                     $option['caption'],
-                    'class' => 'nav-link',
-                    'data-instant' => '',
+                    'class' => "nav-link $class",
                 ]);
                 echo '</li>';
             }
@@ -184,7 +190,7 @@ class Elements extends Injectable
     {
         $user = $this->auth->getId();
         $controllerName = $this->view->getControllerName();
-		echo '
+        echo '
 <ul id="search-results" class="list-group shadow d-sm-none"></ul>
 <li class="nav-item">
 <form id="search-form" style="height: 100%;" class="form-inline  my-2 my-lg-0" action="/search/q/" method="post" autocomplete="off">
@@ -198,31 +204,30 @@ class Elements extends Injectable
 </li>';
 
         foreach ($this->_rightNav as $controller => $option) {
-            $class = ($controller == $controllerName ? "active" : "");
+            $active = ($controller == $controllerName ? "active" : "");
             if (isset($option['children'])) {
-                echo "<li class='nav-item dropdown $class'>";
-                echo '<a class="nav-link dropdown-toggle" href="#" id="' . $controller. 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+                echo "<li class='nav-item dropdown $active'>";
+                echo '<a class="nav-link dropdown-toggle" href="#" id="' . $controller . 'Dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
                 echo $option['caption'];
                 echo '</a>';
 
                 echo '<div class="dropdown-menu dropdown-menu-right" aria-labelledby="' . $controller . 'Dropdown">';
                 foreach ($option['children'] as $key) {
                     echo $this->tag->linkTo([
-                                $key['1'],
-                                $key[0],
-                                'class' => 'dropdown-item'
-                            ]);
+                        $key['1'],
+                        $key[0],
+                        'class' => 'dropdown-item'
+                    ]);
                 }
                 echo '</div>';
                 echo '</li>';
             } else {
-                echo "<li class='nav-item $class'>";
+                echo "<li class='nav-item $active'>";
                 echo $this->tag->linkTo([
-                            $controller . '/' . $option['action'],
-                            $option['caption'],
-                            'class' => 'nav-link',
-                            'data-instant' => '',
-                        ]);
+                    $controller . '/' . $option['action'],
+                    $option['caption'],
+                    'class' => 'nav-link',
+                ]);
                 echo '</li>';
             }
         }
@@ -317,9 +322,9 @@ class Elements extends Injectable
         $identity = $this->auth->getIdentity();
         if (is_array($identity)) {
             echo '<li>' . $this->tag->linkTo('dashboard', 'Dashboard') . '</li>';
-            echo $this->tag->linkTo(array("logout","Log out", "class" => "btn btn-default navbar-btn"));
+            echo $this->tag->linkTo(array("logout", "Log out", "class" => "btn btn-default navbar-btn"));
         } else {
-            echo $this->tag->linkTo(array("login","Sign In", "class" => "btn btn-default navbar-btn"));
+            echo $this->tag->linkTo(array("login", "Sign In", "class" => "btn btn-default navbar-btn"));
         }
         echo '</ul>';
         echo '</div><!--/.nav-collapse -->';
