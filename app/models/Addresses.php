@@ -75,8 +75,21 @@ class Addresses extends Model
         $this->hasOne('typeCode', 'App\Models\AddressTypes', 'typeCode', array('alias' => 'type'));
     }
 
+    // Encode address as Google Maps URL
+    public function getGoogleMapsUrl()
+    {
+        $url = "https://www.google.com/maps?q=";
+        if ($this->line1) {
+            $url = $url . str_replace(" ", "+", $this->line1) . "+";
+        }
+        if ($this->city) {
+            $url = $url . str_replace(" ", "+", $this->city) . "+";
+        }
+        return $url;
+    }
+
     // Encode address as QR code generating URL
-    public function getQRUrl() 
+    public function getQRUrl()
     {
         $url = "https://qrcode.tec-it.com/API/QRCode?data=https%3a%2f%2fwww.google.com%2fmaps%3fsaddr%3dMy%2bLocation%26daddr%3d";
         if ($this->line1) {
@@ -86,7 +99,5 @@ class Addresses extends Model
             $url = $url . str_replace(" ", "%2520", $this->city) . "%2520";
         }
         return $url;
-    // {{ address.line1 }}%2520{{ address.line2 }}%2520{{ address.line3 }}%2520{{ address.city }}%2520{{ address.zipCode }}
     }
-
 }

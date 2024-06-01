@@ -87,27 +87,53 @@
 				</ul>
 			</div>
 			{% if addresses %}
-			{# TODO: Show the header even if no addresses st yet #}
 			<div class="card shadow-sm">
 				<div class="card-body">
 					<h5 class="card-title">Addresses</h5>
 					{% for address in addresses %}
 					<h6 class="card-subtitle mb-1 mt-2 text-muted">{{ address.type.typeDescription }}
-					<a class="float-right text-muted open-modal" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax">
+						<a class="float-right text-muted open-modal" data-target="#modal-ajax" href='{{ url('
+							address/edit/' ~ address.id) }}' data-target="#modal-ajax">
 						{{ emicon("pencil") }}
-					</a></h6>
+						</a>
+					</h6>
 					<p class="card-text">
 						{% if address.line1 is not empty %} {{ address.line1 }} <br>{% endif %}
 						{% if address.line2 is not empty %} {{ address.line2 }} <br>{% endif %}
 						{% if address.line3 is not empty %} {{ address.line3 }} <br>{% endif %}
-						{% if address.city is not empty %} {{ address.city }} {% endif %} {% if address.zipCode is not empty %} {{ address.zipCode }}{% endif %}
+						{% if address.city is not empty %} {{ address.city }} {% endif %} {% if address.zipCode is not
+						empty %} {{ address.zipCode }}{% endif %}
 						{% if address.country is not "New Zealand" %}<br> {{ address.country }} {% endif %}
+						{% if address.type.typeDescription === "Delivery" %}
+						<a href='{{ address.getGoogleMapsUrl() }}' target=" _blank">
+							<small>
+								View in maps {{ emicon("map") }}
+							</small>
+						</a>
+						{% endif %}
 					</p>
-					{#<a href="https://maps.google.com/?q={{ address.line1 ~ " " ~ address.city }}" class="float-right text-info" target="_blank"><i class="fa fa-icon fa-map-marker" class="float-right"></i> </a>#}
-					<a class="float-right text-info" data-target="#modal-ajax" href='{{ url('address/edit/' ~ address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
-					{#<a href="https://maps.google.com/?q={{ address.line1 ~ " " ~ address.city }}" class="float-right text-info" target="_blank"><i class="fa fa-icon fa-map-marker" class="float-right"></i> </a>#}
+					{#<a href="https://maps.google.com/?q={{ address.line1 ~ " " ~ address.city }}"
+						class="float-right text-info" target="_blank"><i class="fa fa-icon fa-map-marker"
+							class="float-right"></i> </a>#}
+					<a class="float-right text-info" data-target="#modal-ajax" href='{{ url(' address/edit/' ~
+						address.id) }}' data-target="#modal-ajax"><i class="fa fa-edit"></i></a>
+					{#<a href="https://maps.google.com/?q={{ address.line1 ~ " " ~ address.city }}"
+						class="float-right text-info" target="_blank"><i class="fa fa-icon fa-map-marker"
+							class="float-right"></i> </a>#}
 					{% endfor %}
-					<a href="{{ url('address/new/' ~ customer.customerCode) }}" class="card-link open-modal">Add Address</a>
+					<a href="{{ url('address/new/' ~ customer.customerCode) }}" class="card-link open-modal">Add
+						Address</a>
+				</div>
+			</div>
+			{% else %}
+			<div class="card shadow-sm">
+				<div class="card-body">
+					<h5 class="card-title
+								">Addresses</h5>
+					<p class="card-text">No addresses set</p>
+					<a href="{{ url('address/new/' ~ customer.customerCode) }}" class="card-link open-modal">Add
+						Address</a>
+
 				</div>
 			</div>
 			{% endif %}
