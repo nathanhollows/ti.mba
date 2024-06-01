@@ -6,11 +6,6 @@
                     <h4 class="header-title">Trip planner</h4>
                 </div>
                 <div class="col text-right">
-                    <div class="m-2 d-inline-block">
-                        Show records since:
-                    </div>
-                    <input type="date" name="date" id="date" class="form-control float-right"
-                        value="{{ date("Y-m-d", strtotime("- 6 month")) }}" title="" style="width: auto;">
                 </div>
             </div>
         </div>
@@ -33,24 +28,22 @@
                     <button type="button" class="btn btn-secondary btn-outline" id="select-all">
                         <span class="feather">
                             {{ emicon('copy-check') }}
-                            </span>
+                        </span>
                         Select Visible
                     </button>
-                    <button type="button" class="btn btn-secondary btn-outline" id="deselect-all">
+                    <button type="button" class="btn btn-secondary btn-outline" id="deselect-all" disabled>
                         <span class="feather">
                             {{ emicon('square') }}
-                            </span>
+                        </span>
                         Deselect All
                     </button>
                 </div>
                 <div class="btn-group float-right">
-                    <button type="submit" formaction="/reports/telesales" class="btn btn-primary">Telesales
-                        List</button>
-                    <button type="submit" formaction="/reports/customerdetails" class="btn btn-primary">
-                        Contact Details
+                    <button type="submit" formaction="/reports/customerdetails" class="btn btn-primary"
+                        id="contact-details" disabled>
+                        {{ emicon('printer') }}
+                        Print details
                     </button>
-                    <button type="submit" formaction="/reports/customerhistory" class="btn btn-primary">Customer
-                        History</button>
                 </div>
             </div>
         </div>
@@ -76,16 +69,9 @@
                         {% if customer.salesarea.name is defined %}
                         {{ customer.salesarea.name }}
                         {% else %}
-                        <span 
-                            class="xedit" 
-                            data-name="area" 
-                            data-type="select" 
-                            data-pk="{{ customer.customerCode}}" 
-                            data-url="/customers/ajaxupdate" 
-                            data-placement="auto" 
-                            data-title="Area" 
-                            data-value="{{ customer.salesarea.name }}" 
-                            ></span>
+                        <span class="xedit" data-name="area" data-type="select" data-pk="{{ customer.customerCode}}"
+                            data-url="/customers/ajaxupdate" data-placement="auto" data-title="Area"
+                            data-value="{{ customer.salesarea.name }}"></span>
                         {% endif %}
                     </td>
                     <td>
@@ -116,214 +102,231 @@
 </form>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        // Using event delegation for better performance on dynamic content
-        $('#customers').on('click', 'tbody tr', function(event) {
+    $(document).ready(function () {
+        // Initialize the buttons as disabled
+        updateButtonStates();
+
+        // Event listener for checkbox state change
+        $('#customers').on('change', '.check', function () {
+            updateButtonStates();
+        });
+
+        // Event delegation for row click
+        $('#customers').on('click', 'tbody tr', function (event) {
             // Prevent checkbox click event from bubbling
             event.stopPropagation();
             // Don't do anything if a span or link was clicked
-if ($(event.target).is('span') || $(event.target).is('a') || $(event.target).is('div') || $(event.target).is('select')) return;
+            if ($(event.target).is('span') || $(event.target).is('a') || $(event.target).is('div') || $(event.target).is('select')) return;
             // Prevent triggering twice for the checkbox
             if (event.target.type !== 'checkbox') {
                 $(':checkbox', this).trigger('click');
             }
         });
-        
+
         // Simplified 'select all' behavior
-        $("#select-all").click(function() {
+        $("#select-all").click(function () {
             $('.check:visible').prop('checked', true);
+            updateButtonStates();
         });
-        
+
         // Simplified 'deselect all' behavior
-        $("#deselect-all").click(function() {
+        $("#deselect-all").click(function () {
             $('.check').prop('checked', false);
+            updateButtonStates();
         });
-        
+
+        // Function to update the state of the buttons
+        function updateButtonStates() {
+            const anyChecked = $('.check:checked').length > 0;
+            $('#deselect-all').prop('disabled', !anyChecked);
+            $('#contact-details').prop('disabled', !anyChecked);
+        }
+
         // Initialize the custom table filter plugin
         $('#customers').ddTableFilter();
     });
 
-    (function($) {
-    'use strict';
+    (function ($) {
+        'use strict';
 
-    // Main function for the ddTableFilter plugin
-    $.fn.ddTableFilter = function(options) {
-        // Extend default options with those provided
-        options = $.extend(true, $.fn.ddTableFilter.defaultOptions, options);
+        // Main function for the ddTableFilter plugin
+        $.fn.ddTableFilter = function (options) {
+            // Extend default options with those provided
+            options = $.extend(true, $.fn.ddTableFilter.defaultOptions, options);
 
-        // Process each matched element
-        return this.each(function() {
-            var table = $(this);
+            // Process each matched element
+            return this.each(function () {
+                var table = $(this);
 
-            // If table has been processed, refresh filters and exit
-            if (table.hasClass('ddtf-processed')) {
-                refreshFilters(table);
-                return;
-            }
-
-            var start = new Date(); // For debug timing
-
-            // Process each visible header in the table
-            $('th:visible', table).each(function(index) {
-                if ($(this).hasClass('skip-filter')) return;
-
-                var selectbox = $('<select class="form-control">');
-                var values = [];
-                var opts = [];
-                selectbox.append('<option value="--all--">' + $(this).text() + '</option>');
-
-                // Get unique filter values and labels for this column
-                var col = $('tr:not(.skip-filter) td:nth-child(' + (index + 1) + ')', table).each(function() {
-                    var cellVal = options.valueCallback.apply(this);
-                    if (cellVal.length === 0) {
-                        cellVal = '--empty--';
-                    }
-                    $(this).attr('ddtf-value', cellVal);
-
-                    if ($.inArray(cellVal, values) === -1) {
-                        var cellText = options.textCallback.apply(this);
-                        if (cellText.length === 0) {
-                            cellText = options.emptyText;
-                        }
-                        values.push(cellVal);
-                        opts.push({val: cellVal, text: cellText});
-                    }
-                });
-
-                // If not enough options, skip the filter for this column
-                if (opts.length < options.minOptions) {
+                // If table has been processed, refresh filters and exit
+                if (table.hasClass('ddtf-processed')) {
+                    refreshFilters(table);
                     return;
                 }
 
-                // Sort options if required
-                if (options.sortOpt) {
-                    opts.sort(options.sortOptCallback);
-                }
+                var start = new Date(); // For debug timing
 
-                // Add options to selectbox
-                $.each(opts, function() {
-                    selectbox.append('<option value="' + this.val + '">' + this.text + '</option>');
-                });
+                // Process each visible header in the table
+                $('th:visible', table).each(function (index) {
+                    if ($(this).hasClass('skip-filter')) return;
 
-                // Replace header content with selectbox
-                $(this).wrapInner('<div style="display:none">').append(selectbox);
+                    var selectbox = $('<select class="form-control">');
+                    var values = [];
+                    var opts = [];
+                    selectbox.append('<option value="--all--">' + $(this).text() + '</option>');
 
-                // Bind the change event handler
-                selectbox.bind('change', {column: col}, function(event) {
-                    var value = $(this).val();
+                    // Get unique filter values and labels for this column
+                    var col = $('tr:not(.skip-filter) td:nth-child(' + (index + 1) + ')', table).each(function () {
+                        var cellVal = options.valueCallback.apply(this);
+                        if (cellVal.length === 0) {
+                            cellVal = '--empty--';
+                        }
+                        $(this).attr('ddtf-value', cellVal);
 
-                    event.data.column.each(function() {
-                        if ($(this).attr('ddtf-value') === value || value === '--all--') {
-                            $(this).removeClass('ddtf-filtered');
-                        } else {
-                            $(this).addClass('ddtf-filtered');
+                        if ($.inArray(cellVal, values) === -1) {
+                            var cellText = options.textCallback.apply(this);
+                            if (cellText.length === 0) {
+                                cellText = options.emptyText;
+                            }
+                            values.push(cellVal);
+                            opts.push({ val: cellVal, text: cellText });
                         }
                     });
 
-                    refreshFilters(table);
-                });
+                    // If not enough options, skip the filter for this column
+                    if (opts.length < options.minOptions) {
+                        return;
+                    }
 
-                table.addClass('ddtf-processed');
+                    // Sort options if required
+                    if (options.sortOpt) {
+                        opts.sort(options.sortOptCallback);
+                    }
 
-                if ($.isFunction(options.afterBuild)) {
-                    options.afterBuild.apply(table);
-                }
-            });
+                    // Add options to selectbox
+                    $.each(opts, function () {
+                        selectbox.append('<option value="' + this.val + '">' + this.text + '</option>');
+                    });
 
-            // Refresh function to show/hide rows based on filter selections
-            function refreshFilters(table) {
-                $('tr', table).each(function() {
-                    var row = $(this);
-                    if ($('td.ddtf-filtered', row).length > 0) {
-                        options.transition.hide.apply(row, options.transition.options);
-                    } else {
-                        options.transition.show.apply(row, options.transition.options);
+                    // Replace header content with selectbox
+                    $(this).wrapInner('<div style="display:none">').append(selectbox);
+
+                    // Bind the change event handler
+                    selectbox.bind('change', { column: col }, function (event) {
+                        var value = $(this).val();
+
+                        event.data.column.each(function () {
+                            if ($(this).attr('ddtf-value') === value || value === '--all--') {
+                                $(this).removeClass('ddtf-filtered');
+                            } else {
+                                $(this).addClass('ddtf-filtered');
+                            }
+                        });
+
+                        refreshFilters(table);
+                    });
+
+                    table.addClass('ddtf-processed');
+
+                    if ($.isFunction(options.afterBuild)) {
+                        options.afterBuild.apply(table);
                     }
                 });
 
-                if ($.isFunction(options.afterFilter)) {
-                    options.afterFilter.apply(table);
+                // Refresh function to show/hide rows based on filter selections
+                function refreshFilters(table) {
+                    $('tr', table).each(function () {
+                        var row = $(this);
+                        if ($('td.ddtf-filtered', row).length > 0) {
+                            options.transition.hide.apply(row, options.transition.options);
+                        } else {
+                            options.transition.show.apply(row, options.transition.options);
+                        }
+                    });
+
+                    if ($.isFunction(options.afterFilter)) {
+                        options.afterFilter.apply(table);
+                    }
+
+                    if (options.debug) {
+                        var refreshEnd = new Date();
+                        console.log('Refresh: ' + (refreshEnd.getTime() - start.getTime()) + 'ms');
+                    }
                 }
 
                 if (options.debug) {
-                    var refreshEnd = new Date();
-                    console.log('Refresh: ' + (refreshEnd.getTime() - start.getTime()) + 'ms');
-                }
-            }
-
-            if (options.debug) {
-                var stop = new Date();
-                console.log('Build: ' + (stop.getTime() - start.getTime()) + 'ms');
-            }
-        });
-    };
-
-    // Default options for ddTableFilter plugin
-    $.fn.ddTableFilter.defaultOptions = {
-        valueCallback: function() {
-            return encodeURIComponent($.trim($(this).text()));
-        },
-        textCallback: function() {
-            return $.trim($(this).text());
-        },
-        sortOptCallback: function(a, b) {
-            return a.text.toLowerCase() > b.text.toLowerCase();
-        },
-        afterFilter: null,
-        afterBuild: null,
-        transition: {
-            hide: $.fn.hide,
-            show: $.fn.show,
-            options: []
-        },
-        emptyText: '--Empty--',
-        sortOpt: true,
-        debug: false,
-        minOptions: 2
-    };
-
-})(jQuery);
-
-		$( document ).ready( function() {
-           var salesareas = [
-           // Volt
-           {% for area in salesAreas %}
-           {"value": "{{ area.id }}", "text": "{{ area.area }}", "rep": "{{ area.rep}}"},
-           {% endfor %}
-           ]; // Define your roles here
-			$.fn.editable.defaults.mode = 'inline';
-			$('.xedit').editable({
-                source: function() {
-                    return salesareas;
-                },
-                // Set the nearest badge to the matching rep name from the salesareas array
-                success: function(response, newValue) {
-                    // Get the text of the selected option
-                    var text = salesareas.find(x => x.value === newValue).text;
-                    // Update the parent td ddtf-value attribute encoded for url
-                    var safeValue = encodeURIComponent(text);
-                    $(this).parent().attr('ddtf-value', safeValue);
-
-                    // Update the neighbouring td with the rep name and new ddtf-value
-                    var rep = salesareas.find(x => x.value === newValue).rep;
-                    var safeRep = encodeURIComponent(rep);
-                    $(this).parent().next().text(rep);
-                    $(this).parent().next().attr('ddtf-value', safeRep);
-
+                    var stop = new Date();
+                    console.log('Build: ' + (stop.getTime() - start.getTime()) + 'ms');
                 }
             });
-		});
+        };
 
+        // Default options for ddTableFilter plugin
+        $.fn.ddTableFilter.defaultOptions = {
+            valueCallback: function () {
+                return encodeURIComponent($.trim($(this).text()));
+            },
+            textCallback: function () {
+                return $.trim($(this).text());
+            },
+            sortOptCallback: function (a, b) {
+                return a.text.toLowerCase() > b.text.toLowerCase();
+            },
+            afterFilter: null,
+            afterBuild: null,
+            transition: {
+                hide: $.fn.hide,
+                show: $.fn.show,
+                options: []
+            },
+            emptyText: '--Empty--',
+            sortOpt: true,
+            debug: false,
+            minOptions: 2
+        };
 
-	</script>
+    })(jQuery);
+
+    $(document).ready(function () {
+        var salesareas = [
+            // Volt
+            {% for area in salesAreas %}
+            { "value": "{{ area.id }}", "text": "{{ area.area }}", "rep": "{{ area.rep}}" },
+        {% endfor %}
+        ]; // Define your roles here
+    $.fn.editable.defaults.mode = 'inline';
+    $('.xedit').editable({
+        source: function () {
+            return salesareas;
+        },
+        // Set the nearest badge to the matching rep name from the salesareas array
+        success: function (response, newValue) {
+            // Get the text of the selected option
+            var text = salesareas.find(x => x.value === newValue).text;
+            // Update the parent td ddtf-value attribute encoded for url
+            var safeValue = encodeURIComponent(text);
+            $(this).parent().attr('ddtf-value', safeValue);
+
+            // Update the neighbouring td with the rep name and new ddtf-value
+            var rep = salesareas.find(x => x.value === newValue).rep;
+            var safeRep = encodeURIComponent(rep);
+            $(this).parent().next().text(rep);
+            $(this).parent().next().attr('ddtf-value', safeRep);
+
+        }
+    });
+    });
+</script>
 
 <style>
     table select {
         font-weight: bold !important;
     }
+
     .feather svg {
         width: 1em;
     }
+
     thead {
         position: sticky;
         top: 0;
