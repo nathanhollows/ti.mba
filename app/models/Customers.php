@@ -74,7 +74,12 @@ class Customers extends \Phalcon\Mvc\Model
         $this->hasOne('status', 'App\Models\CustomerStatus', 'id', array('alias' => 'state'));
         $this->hasOne('salesArea', 'App\Models\SalesAreas', 'id', array('alias' => 'salesArea'));
         $this->hasMany('customerCode', 'App\Models\Addresses', 'customerCode', array('alias'  => 'addresses'));
-        $this->hasMany('customerCode', 'App\Models\Contacts', 'customerCode', array('alias' => 'contacts'));
+        $this->hasMany('customerCode', 'App\Models\Contacts', 'customerCode', [
+            'alias' => 'contacts',
+            'params' => [
+                'order' => 'name ASC',
+            ]
+        ]);
         $this->hasMany('customerCode', 'App\Models\ContactRecord', 'customerCode', array('alias' => 'history'));
         $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
                     'alias' => 'quotes',

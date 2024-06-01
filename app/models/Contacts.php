@@ -25,13 +25,7 @@ class Contacts extends Model
      *
      * @var string
      */
-    public $firstName;
-
-    /**
-     *
-     * @var string
-     */
-    public $lastName;
+    public $name;
 
     /**
      *
