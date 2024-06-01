@@ -42,8 +42,8 @@ class QuotesForm extends Form
             ]),
             array(
                 'using' => array('customerCode', 'name'),
-                'required'	=> 'true',
-                'useEmpty'	=> true,
+                'required'    => 'true',
+                'useEmpty'    => true,
                 'class' => 'form-control selectpicker',
                 'data-live-search' => 'true',
             )
@@ -62,36 +62,36 @@ class QuotesForm extends Form
             'contact',
             Contacts::find($params),
             array(
-                'using'	=> array('id', 'name'),
-                'useEmpty'	=> true,
-                'emptyText'	=> 'Select a customer',
-                'class'	=> 'form-control',
+                'using'    => array('id', 'name'),
+                'useEmpty'    => true,
+                'emptyText'    => 'Select a contact',
+                'class'    => 'form-control',
                 'data-live-search' => 'true',
-                )
+            )
         );
         $contact->setLabel("Contact");
         $this->add($contact);
 
         $reference = new Text("reference");
         $reference->setAttributes(array(
-            'required'	=> 'true',
-            'class'		=> 'form-control'
-            ));
+            'required'    => 'true',
+            'class'        => 'form-control'
+        ));
         $reference->setLabel("Reference");
         $this->add($reference);
 
         $date = new Date("date");
         $date->setAttributes(array(
-            'required'	=> 'true',
-            'class'		=> 'form-control'
-            ));
+            'required'    => 'true',
+            'class'        => 'form-control'
+        ));
         $date->setLabel("Date");
         $date->setDefault(date('d/m/Y'));
         $this->add($date);
 
         $notes = new TextArea("notes");
         $notes->setAttributes(array(
-            'class'		=> 'form-control',
+            'class'        => 'form-control',
             'placeholder' => 'This will be visible on the quote'
         ));
         $notes->setLabel("Notes");
@@ -99,7 +99,7 @@ class QuotesForm extends Form
 
         $moreNotes = new TextArea("moreNotes");
         $moreNotes->setAttributes(array(
-            'class'		=> 'form-control',
+            'class'        => 'form-control',
             'placeholder' => 'These will NOT be visible on the quote'
         ));
         $moreNotes->setLabel("Private Notes");
@@ -110,12 +110,12 @@ class QuotesForm extends Form
             "user",
             Users::getActive(),
             array(
-                'using'	=> array(
+                'using'    => array(
                     'id',
                     'name'
-                    ),
-                'class'	=> 'form-control'
-                )
+                ),
+                'class'    => 'form-control'
+            )
         );
         $salesAgent->setLabel("Sales Agent");
         $salesAgent->setDefault($auth->getId());
@@ -125,12 +125,12 @@ class QuotesForm extends Form
             "status",
             QuoteStatus::find(),
             array(
-                'using'	=> array(
+                'using'    => array(
                     'id',
                     'name'
-                    ),
-                'class'	=> 'form-control'
-                )
+                ),
+                'class'    => 'form-control'
+            )
         );
         $status->setLabel("Status");
         $status->setDefault('2');
@@ -138,8 +138,8 @@ class QuotesForm extends Form
 
         $submit = new Submit("Submit");
         $submit->setAttributes(array(
-            'class'	=> 'btn btn-primary shadow',
-            ));
+            'class'    => 'btn btn-primary shadow',
+        ));
         $this->add($submit);
     }
 }
