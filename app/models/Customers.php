@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Plugins\Auth\Auth;
 use App\Models\ContactRecord;
+use Phalcon\Mvc\Model\Query\Builder;
 
 use Phalcon\Mvc\Model\Relation;
 
@@ -62,7 +63,7 @@ class Customers extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $area;
+    public $salesArea;
 
     /**
      * Initialize method for model.
@@ -82,16 +83,20 @@ class Customers extends \Phalcon\Mvc\Model
         ]);
         $this->hasMany('customerCode', 'App\Models\ContactRecord', 'customerCode', array('alias' => 'history'));
         $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
-                    'alias' => 'quotes',
-                    'params' => array(
-                        // Open quotes first, then closed
-                        'order' => 'if (status < 4, 1, 2), quoteId DESC')));
+            'alias' => 'quotes',
+            'params' => array(
+                // Open quotes first, then closed
+                'order' => 'if (status < 4, 1, 2), quoteId DESC'
+            )
+        ));
         $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
-                    'alias' => 'activeQuotes',
-                    'params' => array(
-                        // Open quotes first, then closed
-                        'conditions' => 'status IN (1,2,3)',
-                        'order' => 'quoteId DESC')));
+            'alias' => 'activeQuotes',
+            'params' => array(
+                // Open quotes first, then closed
+                'conditions' => 'status IN (1,2,3)',
+                'order' => 'quoteId DESC'
+            )
+        ));
         // Get all outstanding orders
         $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders', 'params' => array('conditions' => 'complete = 0')));
         // Get all orders from the last 3 months
@@ -128,6 +133,35 @@ class Customers extends \Phalcon\Mvc\Model
             'conditions' => 'status IN (1, 2)',
             'order'      => 'name',
         ]);
+    }
+
+    public static function getActiveSortedBySalesArea()
+    {
+        $builder = new Builder();
+        return $builder
+            ->columns(['customerCode', 'c.name', 's.name as salesArea', 'u.name as salesRep', 'st.name as status', 'st.style as style'])
+            ->addFrom('App\Models\Customers', 'c')
+            ->leftJoin('App\Models\SalesAreas', 's.id = c.salesArea', 's')
+            ->join('App\Models\Users', 'u.id = s.agent', 'u')
+            ->join('App\Models\CustomerStatus', 'st.id = c.status', 'st')
+            ->where('c.status IN (1, 2)')
+            ->orderBy('s.name, c.name')
+            ->getQuery()
+            ->execute();
+    }
+
+    public static function getActiveNoSalesArea()
+    {
+        $builder = new Builder();
+        return $builder
+            ->columns(['customerCode', 'c.name', 'st.name as status', 'st.style as style'])
+            ->addFrom('App\Models\Customers', 'c')
+            ->join('App\Models\CustomerStatus', 'st.id = c.status', 'st')
+            ->where('c.status IN (1, 2)')
+            ->andWhere('c.salesArea IS NULL')
+            ->orderBy('c.name')
+            ->getQuery()
+            ->execute();
     }
 
     public function quotesFrom($date)
