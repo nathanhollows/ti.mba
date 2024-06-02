@@ -40,6 +40,7 @@ class Elements extends Injectable
             'children' => array(
                 array('Orders', 'orders'),
                 array('Freight Tracker', 'freight'),
+                array('Committed Stock', 'stock/committed'),
             )
         ),
         'kpi' => array(
@@ -64,12 +65,8 @@ class Elements extends Injectable
     );
 
     private $_rightNav = array(
-        'tasks' => array(
-            'caption' => '<img src="/img/icons/bell.svg" style="filter: brightness(0) invert(0.7); margin: 0.2rem; width: 1.2rem;"></img>',
-            'action' => ''
-        ),
         '' => array(
-            'caption' => 'Account',
+            'caption' => '<img src="/img/icons/settings.svg" style="filter: brightness(0) invert(0.7); margin: 0.2rem; width: 1.2rem;"></img>',
             'action' => '',
             'children'  => array(
                 array('Profile', 'profile'),
@@ -129,10 +126,6 @@ class Elements extends Injectable
             ),
         ),
         'navbar-right faa-parent animated-hover' => array(
-            'tasks' => array(
-                'caption' => '<span><i class="fa fa-bell"></i></span>&nbsp;',
-                'action' => ''
-            ),
             '' => array(
                 'caption' => 'Account',
                 'action' => '',
@@ -240,10 +233,6 @@ class Elements extends Injectable
      */
     public function getPrivateMenu()
     {
-        $user = $this->auth->getId();
-        $contactRecords = new ContactRecord();
-        $query = $contactRecords->getOverdue($user);
-        $followUps = $query->count();
         $controllerName = $this->view->getControllerName();
         foreach ($this->_privateMenu as $position => $menu) {
             echo '<ul class="nav navbar-nav ', $position, '">';
@@ -283,15 +272,6 @@ class Elements extends Injectable
                             'data-target'  => '#modal-ajax',
                             'role' => 'button'
                         ));
-                    } else {
-                        if ($controller == 'tasks' && $followUps > 0) {
-                            echo $this->tag->linkTo(
-                                $controller . '/' . $option['action'],
-                                '<span><i class="fa fa-bell faa-ring animated"></i></span>&nbsp;<span class="badge badge-info">' . $followUps . '</span>'
-                            );
-                        } else {
-                            echo $this->tag->linkTo($controller . '/' . $option['action'], $option['caption']);
-                        }
                     }
                 }
                 echo '</li>';
