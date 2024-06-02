@@ -14,7 +14,6 @@ class ProfileController extends ControllerBase
 {
     public function initialize()
     {
-        $this->view->setViewsDir('/var/www/html/app/views/');
         $this->view->setTemplateBefore('private');
         parent::initialize();
 
@@ -47,18 +46,21 @@ class ProfileController extends ControllerBase
         $this->view->budget = Budgets::current();
 
         $this->view->history = ContactRecord::find(array(
-            'conditions'	=> 'user = ?1',
-            'bind'			=> array(1 => $id),
-            'order'			=> 'date DESC',
-            'limit'			=> '30',
+            'conditions'    => 'user = ?1',
+            'bind'            => array(1 => $id),
+            'order'            => 'date DESC',
+            'limit'            => '30',
         ));
 
         $this->view->topDay = DailySales::sum(array(
-            'column'		=> 'value',
-            'conditions'	=> "rep = $id",
-            'group'			=> 'date',
-            'order'			=> 'date DESC',
-            'limit'			=> '1',
+            'column'        => 'value',
+            'conditions'    => "rep = :rep:",
+            'group'            => 'date',
+            'order'            => 'value DESC',
+            'limit'            => '1',
+            'bind'            => array(
+                'rep' => $id,
+            )
         ));
 
         $builder = new Builder();
@@ -67,17 +69,6 @@ class ProfileController extends ControllerBase
             ->from('App\Models\DailySales')
             ->where("rep = $id")
             ->groupBy(array('month', 'year'))
-            ->orderBy('topValue DESC')
-            ->limit(1)
-            ->getQuery()
-            ->execute();
-
-        $builder = new Builder();
-        $this->view->topWeek = $builder
-            ->columns(array('topValue' => 'SUM(value)', 'week' => 'WEEK(date)', 'year' => 'YEAR(date)'))
-            ->from('App\Models\DailySales')
-            ->where("rep = $id")
-            ->groupBy(array('week', 'year'))
             ->orderBy('topValue DESC')
             ->limit(1)
             ->getQuery()
@@ -95,34 +86,34 @@ class ProfileController extends ControllerBase
             ->getQuery()
             ->execute();
 
-        $builder = new Builder();
-        $this->view->topWeek = $builder
-            ->columns(array('topValue' => 'SUM(value)', 'date', 'year' => 'YEAR(date)',  'week'))
-            ->from('App\Models\DailySales')
-            ->where("rep = $id")
-            ->groupBy(array('year', 'week'))
-            ->orderBy('topValue DESC')
-            ->limit(1)
-            ->getQuery()
-            ->execute();
+        // $builder = new Builder();
+        // $this->view->topWeek = $builder
+        //     ->columns(array('topValue' => 'SUM(value)', 'date', 'year' => 'YEAR(date)',  'week'))
+        //     ->from('App\Models\DailySales')
+        //     ->where("rep = $id")
+        //     ->groupBy(array('year', 'week'))
+        //     ->orderBy('topValue DESC')
+        //     ->limit(1)
+        //     ->getQuery()
+        //     ->execute();
 
         $quotes = new Quotes();
         $this->view->quotes = $quotes->find(array(
-            'columns'	=> ['count' => 'count(*)'],
-            'conditions'	=> 'month(date) = month(now()) AND year(date) = year(now()) AND user = ?1',
-            'bind'		=> [1 => $id ],
+            'columns'    => ['count' => 'count(*)'],
+            'conditions'    => 'month(date) = month(now()) AND year(date) = year(now()) AND user = ?1',
+            'bind'        => [1 => $id],
         ));
         $this->view->wonQuotes = $quotes->find(array(
-            'columns'	=> ['count' => 'count(*)'],
-            'conditions'	=> 'month(date) = month(now()) AND year(date) = year(now()) AND sale = 1 AND user = ?1',
-            'bind'		=> [1 => $id ],
+            'columns'    => ['count' => 'count(*)'],
+            'conditions'    => 'month(date) = month(now()) AND year(date) = year(now()) AND sale = 1 AND user = ?1',
+            'bind'        => [1 => $id],
         ));
 
         $this->view->sales = DailySales::sum(array(
-            'column'		=> 'value',
-            'conditions'	=> "rep = $id",
-            'group'			=> 'date',
-            'limit'			=> '20',
+            'column'        => 'value',
+            'conditions'    => "rep = $id",
+            'group'            => 'date',
+            'limit'            => '20',
         ));
 
         $this->view->headerButton = '<a href="/preferences/" type="button" class="btn btn-default pull-right"><i class="fa fa-icon fa-cog"></i> Preferences</a>';
@@ -160,26 +151,26 @@ class ProfileController extends ControllerBase
         $this->view->user = $user;
 
         $this->view->sales = DailySales::sum(array(
-            'column'		=> 'value',
-            'conditions'	=> "rep = $user->id",
-            'group'			=> 'date',
-            'order'			=> 'date DESC',
-            'limit'			=> '20',
+            'column'        => 'value',
+            'conditions'    => "rep = $user->id",
+            'group'            => 'date',
+            'order'            => 'date DESC',
+            'limit'            => '20',
         ));
 
         $this->view->history = ContactRecord::find(array(
-            'conditions'	=> 'user = ?1',
-            'bind'			=> array(1 => $id),
-            'order'			=> 'date DESC',
-            'limit'			=> '30',
+            'conditions'    => 'user = ?1',
+            'bind'            => array(1 => $id),
+            'order'            => 'date DESC',
+            'limit'            => '30',
         ));
 
         $this->view->topDay = DailySales::sum(array(
-            'column'		=> 'value',
-            'conditions'	=> "rep = $id",
-            'group'			=> 'date',
-            'order'			=> 'sumatory DESC',
-            'limit'			=> '1',
+            'column'        => 'value',
+            'conditions'    => "rep = $id",
+            'group'            => 'date',
+            'order'            => 'sumatory DESC',
+            'limit'            => '1',
         ));
 
         $builder = new Builder();
@@ -218,14 +209,14 @@ class ProfileController extends ControllerBase
 
         $quotes = new Quotes();
         $this->view->quotes = $quotes->find(array(
-            'columns'	=> ['count' => 'count(*)'],
-            'conditions'	=> 'month(date) = month(now()) AND year(date) = year(now()) AND user = ?1',
-            'bind'		=> [1 => $id ],
+            'columns'    => ['count' => 'count(*)'],
+            'conditions'    => 'month(date) = month(now()) AND year(date) = year(now()) AND user = ?1',
+            'bind'        => [1 => $id],
         ));
         $this->view->wonQuotes = $quotes->find(array(
-            'columns'	=> ['count' => 'count(*)'],
-            'conditions'	=> 'month(date) = month(now()) AND year(date) = year(now()) AND sale = 1 AND user = ?1',
-            'bind'		=> [1 => $id ],
+            'columns'    => ['count' => 'count(*)'],
+            'conditions'    => 'month(date) = month(now()) AND year(date) = year(now()) AND sale = 1 AND user = ?1',
+            'bind'        => [1 => $id],
         ));
 
         $this->assets->collection('footer')
