@@ -68,7 +68,8 @@ class CustomersController extends ControllerBase
 
         $quotes = Quotes::find(array(
             "customerCode = '$customerCode'",
-            'order'         => 'quoteId DESC'));
+            'order'         => 'quoteId DESC'
+        ));
         $this->view->quotes = $quotes;
 
         $history = ContactRecord::find(array(
@@ -94,7 +95,7 @@ class CustomersController extends ControllerBase
         ));
         $rolesstr = "[";
         foreach ($roles as $role) {
-            $rolesstr = $rolesstr . '{value: ' . $role->id . ', text: "' . $role->name .'"}, ';
+            $rolesstr = $rolesstr . '{value: ' . $role->id . ', text: "' . $role->name . '"}, ';
         }
         $rolesstr = $rolesstr . "]";
         $this->view->roles = $rolesstr;
@@ -113,7 +114,7 @@ class CustomersController extends ControllerBase
             $badges[2] = array(
                 'text'  => $customer->salesarea->rep->name,
                 'icon'  => 'user',
-                'link'  => '/profile/view/'. $customer->salesarea->rep->id,
+                'link'  => '/profile/view/' . $customer->salesarea->rep->id,
             );
         }
 
@@ -419,38 +420,5 @@ class CustomersController extends ControllerBase
 
         $this->view->setTemplateBefore('none');
         $this->tag->prependTitle('Customer Details Report');
-    }
-
-    public function regionsAction($year = null)
-    {
-        $this->tag->prependTitle("Regions");
-
-        if (is_null($year)) {
-            if (date("m") > 4) {
-                $date = date("Y-04-01");
-            } else {
-                $date = date("Y-04-01", strtotime("now - 1 year"));
-            }
-        } else {
-            $date = date("$year-04-01");
-        }
-
-        $this->view->year = date("Y", strtotime($date));
-        $this->view->date = $date;
-
-        $this->view->users = Users::find();
-    }
-
-    public function regionAction($nicename = null)
-    {
-        $region = SalesAreas::findFirstByNicename($nicename);
-        if (!$region) {
-            return $this->dispatcher->forward(array(
-                "controller" => "error",
-                "action" => "show404"
-            ));
-        }
-        $this->tag->prependTitle($region->name);
-        $this->view->region = $region;
     }
 }

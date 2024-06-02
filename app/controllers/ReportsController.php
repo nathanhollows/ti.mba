@@ -25,6 +25,39 @@ class ReportsController extends ControllerBase
         $this->tag->prependTitle('Reports');
     }
 
+    public function regionsAction($year = null)
+    {
+        $this->tag->prependTitle("Regions");
+
+        if (is_null($year)) {
+            if (date("m") > 4) {
+                $date = date("Y-04-01");
+            } else {
+                $date = date("Y-04-01", strtotime("now - 1 year"));
+            }
+        } else {
+            $date = date("$year-04-01");
+        }
+
+        $this->view->year = date("Y", strtotime($date));
+        $this->view->date = $date;
+
+        $this->view->users = Users::find();
+    }
+
+    public function regionAction($nicename = null)
+    {
+        $region = SalesAreas::findFirstByNicename($nicename);
+        if (!$region) {
+            return $this->dispatcher->forward(array(
+                "controller" => "error",
+                "action" => "show404"
+            ));
+        }
+        $this->tag->prependTitle($region->name);
+        $this->view->region = $region;
+    }
+
     public function tripPlannerAction()
     {
         $this->tag->prependTitle('Trip Planner');

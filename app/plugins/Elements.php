@@ -58,7 +58,7 @@ class Elements extends Injectable
             'children' => array(
                 array('Trip Planner', 'reports/tripplanner'),
                 array('Annual Sales', 'reports/annual'),
-                array('Regional Sales', 'customers/regions'),
+                array('Regional Sales', 'reports/regions'),
             )
         ),
     );
