@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Providers\AclProvider;
@@ -11,7 +12,6 @@ use App\Providers\ElementsProvider;
 use App\Providers\FlashProvider;
 use App\Providers\FlashSessionProvider;
 use App\Providers\LoggerProvider;
-use App\Providers\MailProvider;
 use App\Providers\ModelsMetadataProvider;
 use App\Providers\RouterProvider;
 use App\Providers\SecurityProvider;
@@ -36,7 +36,6 @@ return [
     ElementsProvider::class,
     FlashProvider::class,
     FlashSessionProvider::class,
-    MailProvider::class,
     ModelsCacheProvider::class,
     ModelsMetadataProvider::class,
     RouterProvider::class,
