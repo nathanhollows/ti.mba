@@ -37,18 +37,6 @@ return new \Phalcon\Config(array(
 		// Define version number
 		'version'		 => '1.0',
 	),
-    'mail' => array(
-        'fromEmail'      => '',
-        'fromName'       => '',
-        'smtp'           => array(
-            'server'        => '',
-            'port'          => '',
-            // Accepts 'tls', 'ssl', 'none'
-            'security'      => 'tls',
-            'username'      => '',
-            'password'      => '',
-        ),
-    ),
 	'logger'      => [
         'path'     => '/../../var/logs/',
         'format'   => '%date% [%type%] %message%',
