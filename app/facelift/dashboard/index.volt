@@ -48,7 +48,7 @@
 				<div class="row">
 					<div class="col">
 							{% set salesDiff = (monthsSales - (dailybudget * sales|length)) %}
-							<div class="card-body" data-toggle="tooltip" data-placement="top" title="${{ salesDiff|number }} {% if salesDiff > 0 %}ahead{% else %}behind{% endif %}">
+							<div class="card-body" data-toggle="tooltip" data-placement="top" title="${{ salesDiff|abs|number }} {% if salesDiff > 0 %}ahead{% else %}behind{% endif %}">
 							<span class="card-text">Month Sales</span>
 							<h5 class="card-title mt-2 mb-3" >${{ monthsSales|number }}
 							{% if salesDiff < 0 %}
