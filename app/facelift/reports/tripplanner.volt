@@ -55,7 +55,7 @@
                     <th class="skip-filter">Name</th>
                     <th>Area</th>
                     <th>Rep</th>
-                    <th>Status</th>
+                    <th class="skip-filter">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,23 +66,50 @@
                     <td>{{ customer.customerCode }}</td>
                     <td>{{ link_to('customers/view/' ~ customer.customerCode, customer.name) }}</td>
                     <td>
-                        {% if customer.salesarea.name is defined %}
-                        {{ customer.salesarea.name }}
+                        {% if customer.salesArea is defined %}
+                        {{ customer.salesArea }}
                         {% else %}
                         <span class="xedit" data-name="area" data-type="select" data-pk="{{ customer.customerCode}}"
                             data-url="/customers/ajaxupdate" data-placement="auto" data-title="Area"
-                            data-value="{{ customer.salesarea.name }}"></span>
+                            data-value="{{ customer.salesArea }}"></span>
                         {% endif %}
                     </td>
                     <td>
-                        {% if customer.salesarea.rep.name is defined %}
-                        {{ customer.salesarea.rep.name }}
+                        {% if customer.salesRep is defined %}
+                        {{ customer.salesRep }}
                         {% else %}
                         <span class="badge badge-secondary">Not set</span>
                         {% endif %}
                     </td>
                     <td>
-                        <span class="badge badge-{{ customer.state.style }}">{{ customer.state.name }}</span>
+                        <span class="badge badge-{{ customer.style }}">{{ customer.status }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% for customer in incomplete %}
+                <tr>
+                    <td><input type="checkbox" class="check" name="customerCode[]" value="{{ customer.customerCode }}">
+                    </td>
+                    <td>{{ customer.customerCode }}</td>
+                    <td>{{ link_to('customers/view/' ~ customer.customerCode, customer.name) }}</td>
+                    <td>
+                        {% if customer.salesArea is defined %}
+                        {{ customer.salesArea }}
+                        {% else %}
+                        <span class="xedit" data-name="area" data-type="select" data-pk="{{ customer.customerCode}}"
+                            data-url="/customers/ajaxupdate" data-placement="auto" data-title="Area"
+                            data-value="{{ customer.salesArea }}"></span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if customer.salesRep is defined %}
+                        {{ customer.salesRep }}
+                        {% else %}
+                        <span class="badge badge-secondary">Not set</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="badge badge-{{ customer.style }}">{{ customer.status }}</span>
                     </td>
                 </tr>
                 {% endfor %}
@@ -103,8 +130,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        // Initialize the buttons as disabled
-        updateButtonStates();
 
         // Event listener for checkbox state change
         $('#customers').on('change', '.check', function () {
@@ -279,7 +304,7 @@
                 show: $.fn.show,
                 options: []
             },
-            emptyText: '--Empty--',
+            emptyText: ' Not Set',
             sortOpt: true,
             debug: false,
             minOptions: 2

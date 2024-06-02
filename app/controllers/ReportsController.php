@@ -18,6 +18,9 @@ class ReportsController extends ControllerBase
     {
         $this->view->setTemplateBefore('private');
         parent::initialize();
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
     }
 
     public function indexAction()
@@ -62,7 +65,11 @@ class ReportsController extends ControllerBase
     {
         $this->tag->prependTitle('Trip Planner');
 
-        $this->view->customers = Customers::getActive();
+        $customers = Customers::getActiveSortedBySalesArea();
+        $this->view->customers = $customers;
+        $this->view->incomplete = Customers::getActiveNoSalesArea();
+
+        $this->view->name = $this->auth->getIdentity()['name'];
 
         $phql = "
             SELECT
@@ -83,13 +90,13 @@ class ReportsController extends ControllerBase
         $this->tag->prependTitle('Annual Sales Report');
 
         // Calcuate the required date range
-        if (date('m')<4) {
-            $year = ($year) ? $year : date("Y")-1 ;
+        if (date('m') < 4) {
+            $year = ($year) ? $year : date("Y") - 1;
         } else {
             $year = ($year) ? $year : date("Y");
         }
         $this->view->year = $year;
-        $month = ($month) ? $month : '04' ;
+        $month = ($month) ? $month : '04';
         $start = date('Y-m-d', strtotime("$year-$month-01"));
         $end = date('Y-m-d', strtotime("$year-$month-01 + 12 MONTHS - 1 DAY"));
         $this->view->startMonth = date('F', strtotime($start));
@@ -98,8 +105,9 @@ class ReportsController extends ControllerBase
         $builder = new Builder();
         $budget = $builder
             ->columns('c.calendarDate as date, b.budget, b.days')
+            ->distinct('c.calendarDate')
             ->addFrom('App\Models\Calendar', 'c')
-            ->leftJoin('App\Models\Budgets', 'b.month = c.month', 'b')
+            ->leftJoin('App\Models\Budgets', 'b.month = c.month AND b.year = c.year', 'b')
             ->where('c.calendarDate BETWEEN :start: AND :end: AND c.day = 1 and c.financialYear = :year:')
             ->orderBy('c.calendarDate')
             ->limit(12)
@@ -139,27 +147,27 @@ class ReportsController extends ControllerBase
                 'end'   => $end,
                 'year'  => $year,
             ]);
-            $builder = new Builder();
-            $this->view->salesOut = $builder
-                ->columns([
-                    'c.calendarDate as date', // assuming 'calendarDate' is the column in your Calendar model that represents the date
-                    'MAX(k.chargeOut) as salesOut', 
-                ])
-                ->addFrom('App\Models\Calendar', 'c') // Starting from Calendar table
-                ->leftJoin('App\Models\Kpis', 'k.date = c.calendarDate', 'k') // Left join Kpis table
-                ->where('c.calendarDate BETWEEN :start: AND :end: AND c.financialYear = :year:') // Conditions for the date
-                ->groupBy('month') // Group by month based on the Calendar date
-                ->orderBy('c.calendarDate') // Order by the Calendar date
-                ->limit(12)
-                ->getQuery()
-                ->execute([
-                    'start' => $start,
-                    'end'   => $end,
-                    'year'  => $year,
-                ]);
-                
-                
-            $query = new Query(
+        $builder = new Builder();
+        $this->view->salesOut = $builder
+            ->columns([
+                'c.calendarDate as date', // assuming 'calendarDate' is the column in your Calendar model that represents the date
+                'MAX(k.chargeOut) as salesOut',
+            ])
+            ->addFrom('App\Models\Calendar', 'c') // Starting from Calendar table
+            ->leftJoin('App\Models\Kpis', 'k.date = c.calendarDate', 'k') // Left join Kpis table
+            ->where('c.calendarDate BETWEEN :start: AND :end: AND c.financialYear = :year:') // Conditions for the date
+            ->groupBy('month') // Group by month based on the Calendar date
+            ->orderBy('c.calendarDate') // Order by the Calendar date
+            ->limit(12)
+            ->getQuery()
+            ->execute([
+                'start' => $start,
+                'end'   => $end,
+                'year'  => $year,
+            ]);
+
+
+        $query = new Query(
             "SELECT c.month, c.year, (
 				SELECT count(*)
 				FROM App\Models\Quotes
@@ -322,7 +330,7 @@ class ReportsController extends ControllerBase
 
         $this->view->headerButton = '
             <button type="button" class="btn btn-info" id="datebutton">
-                <input type="text" name="" id="datepicker" class="form-control" value="' . date("Y/m", $startTime). '" required="required" pattern="" title="" hidden="true">
+                <input type="text" name="" id="datepicker" class="form-control" value="' . date("Y/m", $startTime) . '" required="required" pattern="" title="" hidden="true">
                 <i class="fa fa-icon fa-calendar"></i>
                 Select Month ...
             </button>
@@ -353,9 +361,9 @@ class ReportsController extends ControllerBase
         }
 
         $weeklySales = DailySales::find(array(
-            'columns'        => array('sumatory' => 'SUM(value)', 'rep', 'week', 'count' => 'COUNT(value)'),
+            'columns'        => array('sumatory' => 'SUM(value)', 'rep', 'week(date) as week', 'count' => 'COUNT(value)'),
             'conditions' => 'YEAR(date) = ?1 AND MONTH(date) = ?2',
-            'bind' => array(1 => date("Y", $startTime),2 => date("m", $startTime)),
+            'bind' => array(1 => date("Y", $startTime), 2 => date("m", $startTime)),
             'group'         => 'week, rep',
             'order'         => 'week ASC, rep',
         ));
@@ -366,7 +374,7 @@ class ReportsController extends ControllerBase
         $monthSales = DailySales::find(array(
             'columns'        => array('sumatory' => 'SUM(value)', 'rep', 'count' => 'COUNT(value)'),
             'conditions'    => 'YEAR(date) = ?1 AND MONTH(date) = ?2',
-            'bind'          => array( 1 => date("Y", $startTime), 2 => date("m", $startTime) ),
+            'bind'          => array(1 => date("Y", $startTime), 2 => date("m", $startTime)),
             'group'         => 'rep',
             'order'         => 'sumatory DESC',
         ));
