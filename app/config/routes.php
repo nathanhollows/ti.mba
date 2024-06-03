@@ -61,34 +61,10 @@ $router->add('/resetpassword/:params', array(
     'params'    => 1,
 ));
 
-$router->add('/survey/:params', array(
-    'controller' => 'survey',
-    'action'    =>  'index',
-    'params'    => 1,
-));
-
 $router->add('/p/:params', array(
     'namespace' => 'App\Controllers\Mobile',
     'controller' => 'packets',
     'action'    =>  'view',
-    'params'    => 1,
-));
-
-$router->add('/survey/thankyou', array(
-    'controller' => 'survey',
-    'action'	=>	'thankyou',
-    'params'    => 1,
-));
-
-$router->add('/survey/submit', array(
-    'controller' => 'survey',
-    'action'	=>	'submit',
-    'params'    => 1,
-));
-
-$router->add('/survey/error', array(
-    'controller' => 'survey',
-    'action'	=>	'error',
     'params'    => 1,
 ));
 
@@ -97,12 +73,12 @@ $router->add('/survey/error', array(
 $router->add(
     "/kpi/([0-9]{4})/([0-9]{2})/([0-9]{2})/:params",
     array(
-        "controller"	=> "kpi",
-        "action"		=> "edit",
-        "year"			=> 1, // ([0-9]{4})
-        "month"			=> 2, // ([0-9]{2})
-        "day"			=> 3, // ([0-9]{2})
-        "params"		=> 4 // :params
+        "controller"    => "kpi",
+        "action"        => "edit",
+        "year"            => 1, // ([0-9]{4})
+        "month"            => 2, // ([0-9]{2})
+        "day"            => 3, // ([0-9]{2})
+        "params"        => 4 // :params
     )
 );
 
