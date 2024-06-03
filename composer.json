@@ -3,9 +3,9 @@
         "magnxpyr/phalcon-datatables": "1.*",
         "nesbot/carbon": "~1.21.0",
         "cebe/markdown": "^1.2.1",
-        "knplabs/knp-snappy": "1.2"
+        "knplabs/knp-snappy": "1.4.3"
     },
     "require-dev": {
-        "phalcon/ide-stubs": "^5.4"
+        "phalcon/ide-stubs": "v4.1.0"
     }
 }
