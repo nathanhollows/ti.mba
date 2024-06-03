@@ -23,13 +23,13 @@ use App\Providers\AssetsProvider;
 use App\Providers\ModelsCacheProvider;
 
 return [
+    ConfigProvider::class,
     AssetsProvider::class,
     # TODO: Configure the LoggerProvider
-    # LoggerProvider::class,
+    LoggerProvider::class,
     SecurityProvider::class,
     AclProvider::class,
     AuthProvider::class,
-    ConfigProvider::class,
     CryptProvider::class,
     DbProvider::class,
     DispatcherProvider::class,

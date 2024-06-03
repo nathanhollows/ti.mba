@@ -21,35 +21,36 @@ class NotFoundListener extends Injectable
         Dispatcher $dispatcher,
         \Exception $ex
     ) {
+        $this->di->getShared('logger')->debug($ex->getMessage());
         switch ($ex->getCode()) {
-        case 2: // Missing controller
-        case 5: // Missing action
-            $params = [
-                'controller' => 'error',
-                'action'     => 'show404',
-            ];
+            case 2: // Missing controller
+            case 5: // Missing action
+                $params = [
+                    'controller' => 'error',
+                    'action'     => 'show404',
+                ];
 
-            /**
-             * 404 not logged in
-             */
-            if (true !== $this->auth->isLoggedIn()) {
-                $params['controller'] = 'session';
-                $params['action'] = 'login';
-            }
+                /**
+                 * 404 not logged in
+                 */
+                if (true !== $this->auth->isLoggedIn()) {
+                    $params['controller'] = 'session';
+                    $params['action'] = 'login';
+                }
 
-            $dispatcher->forward($params);
+                $dispatcher->forward($params);
 
-            return false;
-        default:
-            $params = [
-                'controller' => 'error',
-                'action'     => 'panic',
-            ];
-            echo $ex->getMessage();
-            $dispatcher->forward($params);
-            // $this->logger->error($ex->getMessage());
-            // $this->logger->error($ex->getTraceAsString());
-            return false;
+                return false;
+            default:
+                $params = [
+                    'controller' => 'error',
+                    'action'     => 'panic',
+                ];
+                echo $ex->getMessage();
+                $dispatcher->forward($params);
+                // $this->logger->error($ex->getMessage());
+                // $this->logger->error($ex->getTraceAsString());
+                return false;
         }
     }
 }

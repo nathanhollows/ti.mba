@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Providers;
@@ -6,6 +7,7 @@ namespace App\Providers;
 use Phalcon\Config;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
+use Phalcon\Logger;
 use Phalcon\Logger\Adapter\Stream as FileLogger;
 use Phalcon\Logger\Formatter\Line as FormatterLine;
 
@@ -23,9 +25,14 @@ class LoggerProvider implements ServiceProviderInterface
             $path     = rtrim($loggerConfigs->get('path'), '\\/') . DIRECTORY_SEPARATOR;
 
             $formatter = new FormatterLine($loggerConfigs->get('format'), $loggerConfigs->get('date'));
-            $logger    = new FileLogger($path . $filename);
+            $adapter    = new FileLogger($path . $filename);
+            $logger = new Logger(
+                'messages',
+                [
+                    'main' => $adapter,
+                ]
+            );
 
-            $logger->setFormatter($formatter);
 
             return $logger;
         });
