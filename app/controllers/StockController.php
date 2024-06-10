@@ -3,14 +3,8 @@
 namespace App\Controllers;
 
 use DataTables\DataTable;
-use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Forms;
-use Phalcon\Http\Response;
-use Phalcon\Paginator\Adapter\Model as Paginator;
 use App\Models\Stock;
-use App\Models\PacketHistory;
-use App\Models\PacketTallies;
+use Phalcon\Http\Response;
 
 class StockController extends ControllerBase
 {

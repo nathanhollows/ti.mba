@@ -2,18 +2,9 @@
 
 namespace App\Controllers\Mobile;
 
-use App\Models\Dryness;
-use App\Models\Finish;
-use App\Models\Orders;
 use App\Models\Stock;
 use App\Models\PacketHistory;
-use App\Models\PacketTallies;
 use DataTables\DataTable;
-use Phalcon\Http\Response;
-use Phalcon\Mvc\Model\Criteria;
-use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Forms;
-use Phalcon\Paginator\Adapter\Model as Paginator;
 
 class StockController extends ControllerBase
 {
