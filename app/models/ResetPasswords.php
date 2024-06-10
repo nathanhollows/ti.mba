@@ -63,16 +63,7 @@ class ResetPasswords extends \Phalcon\Mvc\Model
         // Timestamp the confirmaton
         $this->modifiedAt = date('Y-m-d G:i:s');
     }
-    /**
-     * Send an e-mail to users allowing him/her to reset his/her password
-     */
-    public function afterCreate()
-    {
-        $resetUrl = '/reset-password/' . $this->code . '/' . $this->user->email;
-        $mail = new Mail;
-        $mail = new Mail();
-        $mail->send($this->user->email, "Reset your password", 'resetpassword', array('code' => $resetUrl));
-    }
+
     public function initialize()
     {
         $this->belongsTo('usersId', __NAMESPACE__ . '\Users', 'id', array(
