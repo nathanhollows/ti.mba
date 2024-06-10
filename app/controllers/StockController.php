@@ -149,4 +149,48 @@ class StockController extends ControllerBase
 
         $this->view->grades = $grades;
     }
+
+    /**
+     * Search action
+     * Shows the stock list and search
+     * View: stock/search
+     */
+    public function searchAction()
+    {
+        $this->tag->prependTitle('Search Stock');
+
+        if ($this->request->hasQuery("width")) {
+            $this->view->disable();
+
+            $stock = new Stock;
+            $stockSearch = $stock->searchStockFromRequest($this->request);
+            $dataTables = new DataTable();
+            $dataTables->fromBuilder($stockSearch);
+
+            $response = new Response();
+            $response->setJsonContent($dataTables->getResponse());
+            $response->send();
+
+            $this->persistent->parameters = null;
+        }
+    }
+
+    /**
+     * CheckInStock action
+     * Returns a boolean value if the stock is in stock
+     * 
+     */
+    public function checkInStockAction()
+    {
+        // Check if the request has a width parameter, as a basic check
+        if ($this->request->hasQuery("width")) {
+            $this->view->disable();
+            $stock = new Stock;
+            $stockCheck = $stock->checkStockFromRequest($this->request);
+
+            $response = new Response();
+            $response->setJsonContent($stockCheck->getQuery()->execute()[0]);
+            $response->send();
+        }
+    }
 }
