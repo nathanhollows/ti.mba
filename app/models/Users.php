@@ -108,7 +108,7 @@ class Users extends Model
      *
      * @return boolean
      */
-    public static function activate()
+    public function activate()
     {
         $this->active = 1;
     }

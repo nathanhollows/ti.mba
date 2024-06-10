@@ -56,17 +56,13 @@ class SalesAreas extends \Phalcon\Mvc\Model
         return SalesAreas::Find([
             'order' => 'ordering ASC',
             'join' => 'App\Models\Users',
-        ]   );
+        ]);
     }
 
 
     // Find all sales areas with reps names
     public function findReps()
     {
-        // Turn on errors
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
         $builder = $this->modelsManager->createBuilder()
             ->columns('name, nicename, agent, rep.name as repName')
             ->from(['customer' => 'App\Models\SalesAreas'])
@@ -75,15 +71,12 @@ class SalesAreas extends \Phalcon\Mvc\Model
         return $builder;
     }
 
-
-
-
     public function beforeCreate()
     {
         $this->nicename = strtolower(str_replace(" ", "-", $this->name));
     }
 
-    public static function unassigned() 
+    public static function unassigned()
     {
         return parent::find([
             'conditions'    => 'agent IS NULL',
@@ -147,6 +140,31 @@ class SalesAreas extends \Phalcon\Mvc\Model
             "id" => $this->id,
             "date" => $date,
         ]);
+
+        return $query->execute();
+    }
+
+    /**
+     * Update total sales for the region
+     * 
+     */
+    public static function updateSales()
+    {
+        $query = new Query(
+            "UPDATE orders o
+            JOIN (
+                SELECT orderNo, SUM(ordered * price) AS value
+                FROM order_items i
+                JOIN orders o ON i.orderNo = o.orderNumber
+                WHERE o.value IS NULL
+                OR o.complete IS FALSE
+                GROUP BY orderNo
+            ) AS subquery ON o.orderNumber = subquery.orderNo
+            SET o.value = subquery.value
+            WHERE o.value IS NULL
+            OR o.complete IS FALSE;
+            "
+        );
 
         return $query->execute();
     }

@@ -43,7 +43,7 @@ class StockController extends ControllerBase
             ->addJs('//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js')
             ->addJs('//cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js')
             // View specific JS
-            ->addJs('js/datatables/stock.js');
+            ->addJs('js/datatables/stock.js', true);
     }
 
     public function packetsAction($packet = null)
@@ -64,10 +64,10 @@ class StockController extends ControllerBase
             oi.thickness,
             treatment,
             finish,
-            SUM(CASE WHEN ot.length = 3.6 THEN ot.pieces ELSE 0 END) AS '3.6m',
-            SUM(CASE WHEN ot.length = 4.8 THEN ot.pieces ELSE 0 END) AS '4.8m',
-            SUM(CASE WHEN ot.length = 6.0 THEN ot.pieces ELSE 0 END) AS '6.0m',
-            SUM(CASE WHEN ot.length = 7.2 THEN ot.pieces ELSE 0 END) AS '7.2m',
+            SUM(CASE WHEN ot.length = 3.6 THEN ot.pieces ELSE 0 END) AS '3.6',
+            SUM(CASE WHEN ot.length = 4.8 THEN ot.pieces ELSE 0 END) AS '4.8',
+            SUM(CASE WHEN ot.length = 6.0 THEN ot.pieces ELSE 0 END) AS '6.0',
+            SUM(CASE WHEN ot.length = 7.2 THEN ot.pieces ELSE 0 END) AS '7.2',
             GROUP_CONCAT(DISTINCT CASE WHEN ot.length NOT IN (3.6, 4.8, 6.0, 7.2) THEN CONCAT(ot.pieces, '/', FORMAT(ot.length, 1)) END ORDER BY ot.length SEPARATOR ', ') AS 'other',
             SUM(CASE WHEN ot.length IS NULL THEN oi.ordered ELSE 0 END) AS 'random',
             o.orderNumber,

@@ -31,7 +31,8 @@
             </form>
         </div>
 <div class="table-responsive">
-    <table id="stock" class="table table-bordered table-striped table-hover dataTable" data-source="{{ url('stock/index') }}">
+            <table id="stock" class="table table-bordered table-striped table-hover dataTable"
+                data-source="{{ url('stock/index') }}">
         <thead>
             <tr>
                 <th>Packet</th>
@@ -70,9 +71,11 @@
 .size {
     max-width: 100px;
 }
-.table-responsive .row:first-of-type{
+
+    .table-responsive .row:first-of-type {
     display: none;
 }
+
 .btn-group {
     margin-left: 1rem;
 }

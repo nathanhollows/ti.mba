@@ -94,7 +94,6 @@ class Kpis extends Model
             // Skip the first result
             if (is_null($previousChargeOut)) {
                 $previousChargeOut = $result->chargeOut;
-                continue;
             }
 
             if ($month != $result->current) {
@@ -119,6 +118,8 @@ class Kpis extends Model
             $previousChargeOut = $result->chargeOut;
         }
 
+        // Remove the first result
+        array_shift($adjustedResults);
         return $adjustedResults;
     }
 

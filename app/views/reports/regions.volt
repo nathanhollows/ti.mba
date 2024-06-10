@@ -63,11 +63,18 @@
 						{% set total = 0 %}
 						{% for i in 1..12 %}
 						<td class="text-right">
-							{% if index < figures|length %} {% if date("Y-m", strtotime(date))==figures[index].period %}
-								${{ figures[index].value|number }} {% set total +=figures[index].value %} {% set index
-								+=1 %} {% else %} - {% endif %} {% set date=date('Y-m', strtotime(date ~ " +1 months" ))
-								%} {% else %} - {% endif %} </td>
-								{% endfor %}
+							{% if index < figures|length %} 
+								{% if date("Y-m", strtotime(date))==figures[index].period %}
+									${{ figures[index].value|number }} 
+									{% set total +=figures[index].value %} 
+									{% set index +=1 %} 
+								{% else %} 
+								- 
+								{% endif %} 
+								{% set date=date('Y-m', strtotime(date ~ " +1 months" )) %} 
+							{% else %} - {% endif %} 
+						</td>
+						{% endfor %}
 						<td class="text-right">
 							<strong>${{ total|number }}</strong>
 						</td>
