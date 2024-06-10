@@ -45,7 +45,7 @@ class ReportsController extends ControllerBase
         $this->view->year = date("Y", strtotime($date));
         $this->view->date = $date;
 
-        $this->view->users = Users::find();
+        $this->view->users = Users::getUsersWithRegions();
     }
 
     public function regionAction($nicename = null)

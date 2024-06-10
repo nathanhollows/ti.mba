@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Model\Resultset;
 use Phalcon\Validation\Validator\Email;
-use Phalcon\Validation\Validator\Uniqueness;
 
 class Users extends Model
 {
@@ -131,9 +129,16 @@ class Users extends Model
         $results = parent::find(array(
             "conditions"   => "active = 1 AND suspended = 0 AND developer = 0",
             "order"       => "FIELD(name, 'Bunnings Stock', 'Fax'), name ASC",
-"cache"		=> [
-                "key"	=> "active-users",
-            ],
+        ));
+        return $results;
+    }
+
+    public static function getUsersWithRegions()
+    {
+        $results = parent::find(array(
+            "conditions"   => "active = 1 AND suspended = 0 AND developer = 0",
+            "order"       => "name ASC",
+            "with"        => "regions",
         ));
         return $results;
     }
