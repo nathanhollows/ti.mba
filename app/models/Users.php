@@ -117,9 +117,6 @@ class Users extends Model
     {
         $results = parent::find(array(
             "columns"   => "id,name",
-            "cache"		=> [
-                "key"	=> "list-users",
-            ],
         ));
         return $results;
     }
