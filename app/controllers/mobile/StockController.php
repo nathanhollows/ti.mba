@@ -31,11 +31,11 @@ class StockController extends ControllerBase
 
         if ($this->request->isAjax()) {
             $builder = $this->modelsManager->createBuilder()
-            ->columns('packetHistory.packetNo, width, thickness, finishWidth, finishThickness, grade, treatment, dryness, finish, linealTally, netCube, offsite')
+                ->columns('packetHistory.packetNo, IF(finishWidth, finishWidth, width) as finishWidth, IF(finishThickness, finishThickness, thickness) as finishThickness, grade, treatment, dryness, finish, linealTally, netCube, offsite')
             ->from(Stock::class)
             ->innerJoin(PacketHistory::class, 'lastId = packetHistory.id', 'packetHistory')
             ->where('current = 1 AND packetHistory.packetNo NOT LIKE \'%X\'')
-            ->orderBy('dryness DESC, finishThickness ASC, finishWidth ASC');
+                ->orderBy(' finishWidth ASC, finishThickness ASC');
 
             $dataTables = new DataTable();
             $dataTables->fromBuilder($builder)->sendResponse();
