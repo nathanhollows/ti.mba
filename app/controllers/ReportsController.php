@@ -7,7 +7,6 @@ use App\Models\SalesAreas;
 use App\Models\Users;
 use App\Models\Quotes;
 use App\Models\DailySales;
-use App\Models\SurveyResults;
 use App\Models\Budgets;
 use Phalcon\Mvc\Model\Query\Builder;
 use Phalcon\Mvc\Model\Query;
@@ -450,45 +449,5 @@ class ReportsController extends ControllerBase
                 'date'  => date('Y-m-d', strtotime("now - 1 month")),
             ),
         ));
-    }
-
-    public function surveyAction()
-    {
-        $this->tag->prependTitle("Survey Results");
-        $count = SurveyResults::count();
-        $this->view->count = $count;
-        $this->view->results = SurveyResults::find(array(
-            'order' => 'id DESC',
-        ));
-
-        $last = SurveyResults::findFirst(array(
-            'columns' => 'timestamp',
-            'order'   => 'id DESC',
-            'limit'   => 1,
-        ));
-
-        $this->view->count = SurveyResults::count();
-        $this->view->count1 = SurveyResults::countResults('result1');
-        $this->view->count2 = SurveyResults::countResults('result2');
-        $this->view->count3 = SurveyResults::countResults('result3');
-        $this->view->count4 = SurveyResults::countResults('result4');
-        $this->view->count5 = SurveyResults::countResults('result5');
-        $this->view->count6 = SurveyResults::countResults('result6');
-        $this->view->count7 = SurveyResults::countResults('result7');
-        $this->view->count8 = SurveyResults::countResults('result8');
-        $this->view->recommend = SurveyResults::countResults('recommend');
-
-        $date = date('Y-m-d', strtotime($last->timestamp));
-
-        $this->view->pageSubtitle = "Last received $date";
-        $this->view->pageTitle = "$count received";
-
-        $this->assets->collection('footer')
-            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js')
-            ->addJs('https://cdnjs.cloudflare.com/ajax/libs/jquery-sparklines/2.1.2/jquery.sparkline.min.js');
-    }
-
-    public function topcustomersAction()
-    {
     }
 }

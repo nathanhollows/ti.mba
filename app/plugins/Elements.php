@@ -121,7 +121,6 @@ class Elements extends Injectable
                     array('Customers', 'reports/customers'),
                     array('Monthly Sales', 'reports/sales'),
                     array('Annual Sales', 'reports/annual'),
-                    array('Survey', 'reports/survey'),
                 )
             ),
         ),
