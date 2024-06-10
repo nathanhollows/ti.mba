@@ -49,7 +49,7 @@ class ErrorController extends ControllerBase
             $response->send();
             return true;
         }
-        $this->di->getShared('logger')->error($this->dispatcher->getParam('message'), $this->auth->getUser());
+        $this->di->getShared('logger')->error($this->dispatcher->getParam('message'), (array) $this->auth->getUser());
         $this->tag->prependTitle('Error | ');
         $this->response->setStatusCode(500, 'Server error');
         $this->view->pick('error/panic');
