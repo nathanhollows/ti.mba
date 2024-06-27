@@ -41,6 +41,6 @@ fi
 
 # DB migrations
 echo "Running migrations..."
-vendor/bin/phalcon-migrations generate
+vendor/bin/phalcon-migrations run
 
 echo "Done!"
