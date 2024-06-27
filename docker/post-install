@@ -39,4 +39,8 @@ if [ ! -d public/img/icons ]; then
     rm -rf lucide
 fi
 
+# DB migrations
+echo "Running migrations..."
+vendor/bin/phalcon-migrations generate
+
 echo "Done!"
