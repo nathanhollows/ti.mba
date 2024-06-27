@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Set the working directory
+cd /var/www/html
+
+# Run composer install
+composer install
+
+# Copy the config file if it doesn't already exist
+if [ ! -f app/config/config.php ]; then
+    echo "Copying config.php..."
+    cp app/config/config.php.template app/config/config.php
+
+    # If config.php does not have a cryptSalt, generate one
+    echo "Generating cryptSalt..."
+    # Replace the 16th line with a random string
+    # "'cryptSalt' => ''," -> "'cryptSalt' => 'randomString',"
+    sed -i "s/\"\"/\"$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)\"/" app/config/config.php
+fi
+
+# Create var directories
+echo "Creating var directories..."
+mkdir -p var/backup
+mkdir -p var/logs
+mkdir -p var/metaData
+mkdir -p var/modelsCache
+mkdir -p var/session
+mkdir -p var/volt
+
+# Set the correct permissions
+chown www-data:www-data -R var
+chown www-data:www-data -R app/migrations
+
+# Download lucide icons
+if [ ! -d public/img/icons ]; then
+    echo "Downloading lucide icons..."
+    git clone https://github.com/lucide-icons/lucide
+    mv lucide/icons public/img/
+    rm -rf lucide
+fi
+
+# DB migrations
+echo "Running migrations..."
+vendor/bin/phalcon-migrations run
+
+echo "Done!"

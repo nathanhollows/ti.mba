@@ -4,7 +4,6 @@ vendor/*
 public/img/icons/*
 public/pdf/*
 public/font-awesome/*
-composer.lock
 *.swp
 app/script
 public/.well-known/

@@ -1,15 +1,18 @@
 <?php
+
+use \Phalcon\Logger;
+
 return new \Phalcon\Config(array(
 	'database' => array(
 		// Describe how the app is to connect to the database
-		'adapter'     => 'Mysql',
-		'host'        => '',
-		'username'    => '',
-		'password'    => '',
-		'dbname'      => '',
+		'adapter'     => 'mysql',
+		'host'        => 'database',
+		'username'    => 'timba',
+		'password'    => 'timba',
+		'dbname'      => 'timba',
 	),
 	'application' => array(
-		'cryptSalt'		=> '',
+		'cryptSalt'		=> "", // MUST BE SET
 
 		// Define the folders for various components
 		'controllersDir' => __DIR__ . '/../../app/controllers/',
@@ -22,26 +25,30 @@ return new \Phalcon\Config(array(
 		'pluginsDir'     => __DIR__ . '/../../app/plugins/',
 		'libraryDir'     => __DIR__ . '/../../app/library/',
 		'providersDir'   => __DIR__ . '/../../app/providers/',
-		'cacheDir'       => __DIR__ . '/../../app/cache/',
+		'cacheDir'       => __DIR__ . '/../../var/',
 
 		// Session save path
 		'sessionSavePath' => __DIR__ . '/../../var/session/',
 
 		// Set the root URI
-		'baseUri'        => '',
-		'publicUrl'      => '',
+		'baseUri'        => 'http://localhost:8080/',
+		'publicUrl'      => 'http://localhost:8080/',
 
 		// Define the site title
 		'siteTitle'		 => 'Ti.mba',
-		
+
 		// Define version number
 		'version'		 => '1.0',
+
+		// DB Migrations
+		'logInDb'			=> true, // Log in database
+		'migrationsDir'		=> 'app/migrations',
 	),
 	'logger'      => [
-        'path'     => '/../../var/logs/',
-        'format'   => '%date% [%type%] %message%',
-        'date'     => 'D j H:i:s',
-        'logLevel' => Logger::DEBUG,
-        'filename' => 'application.log',
-    ],
+		'path'     => '/var/www/html/var/logs/', // Asbolute path
+		'format'   => '%date% [%type%] %message%',
+		'date'     => 'D j H:i:s',
+		'logLevel' => Logger::DEBUG,
+		'filename' => 'application.log',
+	],
 ));

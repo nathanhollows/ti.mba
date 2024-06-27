@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Providers;
@@ -8,7 +9,6 @@ use Phalcon\Db\Adapter\Pdo;
 use Phalcon\Di\DiInterface;
 use Phalcon\Di\ServiceProviderInterface;
 use RuntimeException;
-use function App\root_path;
 
 class DbProvider implements ServiceProviderInterface
 {
@@ -30,6 +30,32 @@ class DbProvider implements ServiceProviderInterface
         $di->set($this->providerName, function () use ($class, $config) {
             return new $class($config);
         });
+
+        // Check if the DB connection is successful
+        try {
+            $this->checkConnection($di->getShared($this->providerName));
+        } catch (\Exception $e) {
+            throw new RuntimeException(
+                sprintf(
+                    'Database connection error: %s',
+                    $e->getMessage()
+                )
+            );
+        }
+    }
+
+    private function checkConnection($db)
+    {
+        try {
+            $db->connect();
+        } catch (\Exception $e) {
+            throw new RuntimeException(
+                sprintf(
+                    'Database connection error: %s',
+                    $e->getMessage()
+                )
+            );
+        }
     }
 
     private function getClass(Config $config): string
@@ -58,7 +84,7 @@ class DbProvider implements ServiceProviderInterface
         switch ($this->adapters[$name]) {
             case Pdo\Sqlite::class:
                 // Resolve database path
-                $dbConfig = ['dbname' => root_path("db/{$config->get('dbname')}.sqlite3")];
+                $dbConfig['dbname'] = "/var/www/html/db/{$config->get('dbname')}.sqlite3";
                 break;
             case Pdo\Postgresql::class:
                 // Postgres does not allow the charset to be changed in the DSN.
