@@ -3,7 +3,8 @@
         "magnxpyr/phalcon-datatables": "1.*",
         "nesbot/carbon": "~1.21.0",
         "cebe/markdown": "^1.2.1",
-        "knplabs/knp-snappy": "1.4.3"
+        "knplabs/knp-snappy": "1.4.3",
+        "phalcon/migrations": "v2.1.6"
     },
     "require-dev": {
         "phalcon/ide-stubs": "v4.1.0"

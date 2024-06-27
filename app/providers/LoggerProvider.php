@@ -26,13 +26,13 @@ class LoggerProvider implements ServiceProviderInterface
 
             $formatter = new FormatterLine($loggerConfigs->get('format'), $loggerConfigs->get('date'));
             $adapter    = new FileLogger($path . $filename);
+            $adapter->setFormatter($formatter);
             $logger = new Logger(
                 'messages',
                 [
                     'main' => $adapter,
                 ]
             );
-
 
             return $logger;
         });
