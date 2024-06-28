@@ -5,8 +5,17 @@
                 <div class="col">
                     <h4 class="header-title">Trip planner</h4>
                 </div>
-                <div class="col text-right">
-                </div>
+                {# <div class="col text-right">
+                      <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Saved Trips
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="btnGroupDrop1">
+                        <a class="dropdown-item" href="#">Dropdown link</a>
+                        <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </div> #}
             </div>
         </div>
     </div>
@@ -39,6 +48,10 @@
                     </button>
                 </div>
                 <div class="btn-group float-right">
+                    {# <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveTripModal" id="modal-trigger" disabled>
+                        Save trip
+                    </button> #}
+
                     <button type="submit" formaction="/reports/customerdetails" class="btn btn-primary"
                         id="contact-details" disabled>
                         {{ emicon('printer') }}
@@ -128,6 +141,37 @@
     </div>
 </form>
 
+<form action="/return" method="POST" role="form" target="_blank">
+    <!-- Existing HTML code -->
+    <div class="modal fade" id="saveTripModal" tabindex="-1" role="dialog" aria-labelledby="save-trip-modal-title" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="save-trip-modal-title">Create a new trip</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tripName" class="form-label">Trip name</label>
+                        <input type="text" class="form-control" id="tripName" name="tripName" placeholder="Trip name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Selected Customers</label>
+                        <ul id="selected-customers-list" class="list-group"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button id="save-trip" type="submit" class="btn btn-primary">Save trip</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -148,13 +192,13 @@
             }
         });
 
-        // Simplified 'select all' behavior
+        // Simple 'select all' behavior
         $("#select-all").click(function () {
             $('.check:visible').prop('checked', true);
             updateButtonStates();
         });
 
-        // Simplified 'deselect all' behavior
+        // Simple 'deselect all' behavior
         $("#deselect-all").click(function () {
             $('.check').prop('checked', false);
             updateButtonStates();
@@ -165,10 +209,44 @@
             const anyChecked = $('.check:checked').length > 0;
             $('#deselect-all').prop('disabled', !anyChecked);
             $('#contact-details').prop('disabled', !anyChecked);
+            $('#modal-trigger').prop('disabled', !anyChecked);
+            $('#save-trip').prop('disabled', !anyChecked);
         }
 
         // Initialize the custom table filter plugin
         $('#customers').ddTableFilter();
+
+        // Update the selected customers list in the modal
+        $('#modal-trigger').click(function () {
+            var selectedCustomers = $('.check:checked').closest('tr').map(function () {
+                return {
+                    code: $('td:nth-child(2)', this).text(),
+                    name: $('td:nth-child(3)', this).text()
+                };
+            }).get();
+            var $list = $('#selected-customers-list').empty();
+            $.each(selectedCustomers, function (index, customer) {
+                $list.append('<li class="list-group-item" data-customer-code="' + customer.code + '">' +
+                    customer.name + '<button type="button" class="close remove-customer" aria-label="Close">' +
+                    '<span aria-hidden="true">&times;</span></button></li>');
+            });
+            Sortable.create($list[0], {
+                animation: 150
+            });
+            setTimeout(() => $('#tripName').focus(), 500);
+        });
+
+        // Handle removal of customers from the list
+        $('#selected-customers-list').on('click', '.remove-customer', function () {
+            var $item = $(this).closest('li');
+            var customerCode = $item.data('customer-code');
+            // Uncheck the corresponding checkbox in the table
+            $('input.check[value="' + customerCode + '"]').prop('checked', false);
+            $item.remove();
+            updateButtonStates();
+        });
+
+
     });
 
     (function ($) {
@@ -356,5 +434,11 @@
         position: sticky;
         top: 0;
         background-color: #fff;
+    }
+    .list-group-item {
+        cursor: move;
+    }
+    .btn:disabled {
+        cursor: not-allowed;
     }
 </style>
