@@ -83,8 +83,8 @@ class Users extends Model
     {
         $validation = new \Phalcon\Validation();
         $validation->add('email', new Email(array(
-         'message' => 'The e-mail is not valid'
-         )));
+            'message' => 'The e-mail is not valid'
+        )));
 
         $messages = $validation->validate($_POST);
         if (count($messages)) {
