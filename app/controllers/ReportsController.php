@@ -17,9 +17,6 @@ class ReportsController extends ControllerBase
     {
         $this->view->setTemplateBefore('private');
         parent::initialize();
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
     }
 
     public function indexAction()
@@ -40,6 +37,8 @@ class ReportsController extends ControllerBase
         } else {
             $date = date("$year-04-01");
         }
+
+        // SalesAreas::updateSales();
 
         $this->view->year = date("Y", strtotime($date));
         $this->view->date = $date;
