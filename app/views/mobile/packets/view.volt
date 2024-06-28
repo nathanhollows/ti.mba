@@ -12,16 +12,15 @@
                     <span class="badge badge-info">Onsite</span>
                 {% endif %}
             {% endif %}
-                <span class="badge badge-danger">FSC 100%</span>
             </p>
-            <h2>{{ packet.lastRecord.linealTally }}m
+            <strong>{{ packet.lastRecord.linealTally }}m
                 <br />
                 {{ packet.lastRecord.width }} x {{ packet.lastRecord.thickness }}
                 {{ packet.lastRecord.grade }} {{ packet.lastRecord.treatment }} {{ packet.lastRecord.dryness }} {{ packet.lastRecord.finish }}
-            </h2>
+            </strong>
             {% if packet.tallies|length > 0 %}
-            <h2>Tally</h2>
-            <table class="table table-striped table-responsive">
+            <strong>Tally</strong>
+            <table class="table table-striped ">
                 {% set counts = [] %}
                 {% set lengths = [] %}
                 {% for tally in packet.tallies %}
@@ -58,19 +57,9 @@
             {% endif %}
         </div>
     </div>
-    {% if packet.current %}
-    <div class="row">
-        <div class="col-sm-12">
-            <button class="btn btn-info" data-toggle="collapse" data-target="#split" aria-expanded="false" aria-controls="split">Split</button>
-            <button class="btn btn-info">Process</button>
-            <button class="btn btn-warning" {% if (8 in packet.lastRecord.grade) or (10 in packet.lastRecord.grade) %}disabled="disabled"{% endif %}>Verify</button>
-            <button class="btn btn-warning">Attach to Order</button>
-        </div>
-    </div>
-    {% endif %}
     <div class="row" >
         <div class="col-sm-12">
-            <h2>History</h2>
+            <strong>History</strong>
             <table class="table table-hover table-striped">
                 <thead>
                     <th>Date</th>

@@ -35,7 +35,7 @@ $(document).ready(function() {
             url: '{{ url('m/stock/search') }}',
             method: 'POST'
         },
-        stateSave: true,
+        stateSave: false,
         search: {
             smart: true,
         },
@@ -47,8 +47,8 @@ $(document).ready(function() {
             "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
                 $(nTd).html("<a href='/m/packets/view/"+oData.packetNo+"'>"+oData.packetNo+"</a>");
             }},
-            {data: "width", searchable: true},
-            {data: "thickness", searchable: true},
+            {data: "finishWidth", searchable: true},
+            {data: "finishThickness", searchable: true},
             {data: "grade", searchable: true},
             {data: "treatment", searchable: true},
             {data: "dryness", searchable: true},
