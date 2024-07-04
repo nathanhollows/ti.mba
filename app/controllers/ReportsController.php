@@ -19,11 +19,13 @@ class ReportsController extends ControllerBase
         parent::initialize();
     }
 
-    public function indexAction()
-    {
-        $this->tag->prependTitle('Reports');
-    }
-
+    /** 
+     * This action shows all the regions, their sales reps, and sales totals
+     * 
+     * @param int $year
+     * 
+     * @return void
+     */
     public function regionsAction($year = null)
     {
         $this->tag->prependTitle("Regions");
@@ -46,6 +48,13 @@ class ReportsController extends ControllerBase
         $this->view->users = Users::getUsersWithRegions();
     }
 
+    /**
+     * This action shows the sales and top customers for a specific region
+     * 
+     * @param string $nicename
+     * 
+     * @return void
+     */
     public function regionAction($nicename = null)
     {
         $region = SalesAreas::findFirstByNicename($nicename);
@@ -59,6 +68,16 @@ class ReportsController extends ControllerBase
         $this->view->region = $region;
     }
 
+    /**
+     * This action shows the annual sales report and budget
+     *
+     * TODO: Refactor this so db queries are in the model
+     * 
+     * @param int $year
+     * @param int $month
+     * 
+     * @return void
+     */
     public function annualAction($year = null, $month = null)
     {
         $this->tag->prependTitle('Annual Sales Report');
@@ -190,6 +209,16 @@ class ReportsController extends ControllerBase
         $this->view->sales = $running;
     }
 
+    /**
+     * A historical report for cold calling
+     *
+     * NOTE: Not currently in use
+     *
+     * @param string $area
+     * @param string $day
+     *
+     * @return void
+     */
     public function telesalesAction($area = null, $day = null)
     {
         $this->tag->prependTitle('Telesales Report');
@@ -222,6 +251,13 @@ class ReportsController extends ControllerBase
         }
     }
 
+    /**
+     * Prints a report of customer contact details
+     *
+     * Accepts a POST request with an array of customer codes
+     *
+     * @return void
+     */
     public function customerdetailsAction()
     {
         $this->tag->prependTitle('Customer Details');
@@ -254,6 +290,13 @@ class ReportsController extends ControllerBase
         }
     }
 
+    /**
+     * Prints a report of customer contact history
+     *
+     * Accepts a POST request with a date and an array of customer codes
+     *
+     * @return void
+     */
     public function customerhistoryAction()
     {
         $this->tag->prependTitle('Customer History');
@@ -288,6 +331,14 @@ class ReportsController extends ControllerBase
         }
     }
 
+    /**
+     * Prints a report of sales by rep and week
+     *
+     * @param int $year
+     * @param int $month
+     *
+     * @return void
+     */
     public function salesAction($year = null, $month = null)
     {
         $this->view->pageTitle = "Monthly Sales Summary";
@@ -378,6 +429,14 @@ class ReportsController extends ControllerBase
             ->addJs('js/dashboard/charts.js');
     }
 
+    /**
+     * Prints a report of sales by rep and week
+     *
+     * @param int $year
+     * @param int $month
+     *
+     * @return void
+     */
     public function salesteamAction()
     {
         $this->tag->prependTitle('Sales Team Report');
