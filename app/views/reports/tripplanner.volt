@@ -5,7 +5,7 @@
                 <div class="col">
                     <h4 class="header-title">Trip planner</h4>
                 </div>
-                {# <div class="col text-right">
+                <div class="col text-right">
                       <div class="btn-group" role="group">
                         <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Saved Trips
@@ -15,10 +15,14 @@
                         <a class="dropdown-item" href="#">Dropdown link</a>
                         </div>
                     </div>
-                </div> #}
+                </div>
             </div>
         </div>
     </div>
+
+    <button id="modal-trigger" type="button" class="btn btn-primary" data-toggle="modal" data-target="#saveTripModal">
+        Save trip
+    </button>
 
     <div class="container">
         <div class="row">
@@ -141,8 +145,7 @@
     </div>
 </form>
 
-<form action="/return" method="POST" role="form" target="_blank">
-    <!-- Existing HTML code -->
+<form action="/trips/save" method="POST" role="form">
     <div class="modal fade" id="saveTripModal" tabindex="-1" role="dialog" aria-labelledby="save-trip-modal-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -155,10 +158,12 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="tripName" class="form-label">Trip name</label>
-                        <input type="text" class="form-control" id="tripName" name="tripName" placeholder="Trip name" required>
+                        <input type="text" class="form-control" id="tripName" name="tripName" placeholder="Auckland Day 2" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Selected Customers</label>
+                        <label class="form-label">
+                            Selected Customers
+                        </label>
                         <ul id="selected-customers-list" class="list-group"></ul>
                     </div>
                 </div>
@@ -171,7 +176,7 @@
     </div>
 </form>
 
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script src="/js/sortable.1.15.2.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -228,6 +233,7 @@
             $.each(selectedCustomers, function (index, customer) {
                 $list.append('<li class="list-group-item" data-customer-code="' + customer.code + '">' +
                     customer.name + '<button type="button" class="close remove-customer" aria-label="Close">' +
+                    '<input type="hidden" name="customerCode[]" value="' + customer.code + '">' +
                     '<span aria-hidden="true">&times;</span></button></li>');
             });
             Sortable.create($list[0], {

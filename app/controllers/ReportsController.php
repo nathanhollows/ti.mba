@@ -59,30 +59,6 @@ class ReportsController extends ControllerBase
         $this->view->region = $region;
     }
 
-    public function tripPlannerAction()
-    {
-        $this->tag->prependTitle('Trip Planner');
-
-        $customers = Customers::getActiveSortedBySalesArea();
-        $this->view->customers = $customers;
-        $this->view->incomplete = Customers::getActiveNoSalesArea();
-
-        $this->view->name = $this->auth->getIdentity()['name'];
-
-        $phql = "
-            SELECT
-                App\Models\SalesAreas.id as id,
-                App\Models\SalesAreas.name as area,
-                App\Models\Users.name as rep
-            FROM App\Models\SalesAreas
-            INNER JOIN App\Models\Users
-                ON App\Models\SalesAreas.agent = App\Models\Users.id
-            ORDER BY App\Models\SalesAreas.ordering ASC
-        ";
-
-        $this->view->salesAreas = $this->modelsManager->executeQuery($phql);
-    }
-
     public function annualAction($year = null, $month = null)
     {
         $this->tag->prependTitle('Annual Sales Report');
