@@ -19,23 +19,30 @@ class QuoteController extends ControllerBase
             array(
                 // 'header-html'	=> 'http://ats.ti.mba/quote/header',
                 // 'header-spacing'=> '10',
-                'footer-spacing'=> '10',
+                'footer-spacing' => '10',
                 // 'margin-top'	=> '44',
-                'margin-top'	=> '0',
-                'margin-bottom'	=> '20',
-                'margin-left'	=> '0',
-                'margin-right'	=> '0',
-                'page-size'		=> 'A4',
-                'disable-smart-shrinking'	=> true,
-                'dpi'			=> '620',
-                )
+                'margin-top'    => '0',
+                'margin-bottom'    => '20',
+                'margin-left'    => '0',
+                'margin-right'    => '0',
+                'page-size'        => 'A4',
+                'disable-smart-shrinking'    => true,
+                'dpi'            => '620',
+            )
         );
         $response = new Response;
         // Setting a header by its name
         $response->setHeader("Content-Type", "application/pdf");
         $response->setHeader("Content-Disposition", 'inline; filename="Quote ' . $quote->quoteId . ' - ' . $quote->customer->name . '.pdf"');
-        $url = $this->url->get('quote/public/')
-            . $quote->webId;
+        // Check if the application is running in a Docker container
+        $inDocker = getenv('IN_DOCKER');
+        if ($inDocker) {
+            $url = $this->url->get('quote/public/')
+                . $quote->webId;
+        } else {
+            $url = 'http://nginx:80/quote/header';
+        }
+        // Generate and send
         $response->setContent($snappy->getOutput($url));
         return $response->send();
     }
