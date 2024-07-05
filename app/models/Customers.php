@@ -137,7 +137,7 @@ class Customers extends \Phalcon\Mvc\Model
         ]);
     }
 
-    public static function getActiveSortedBySalesArea()
+    public function getActiveSortedBySalesArea()
     {
         $builder = new Builder();
         return $builder
@@ -152,7 +152,7 @@ class Customers extends \Phalcon\Mvc\Model
             ->execute();
     }
 
-    public static function getActiveNoSalesArea()
+    public function getActiveNoSalesArea()
     {
         $builder = new Builder();
         return $builder
