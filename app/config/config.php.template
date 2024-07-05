@@ -51,4 +51,7 @@ return new \Phalcon\Config(array(
 		'logLevel' => Logger::DEBUG,
 		'filename' => 'application.log',
 	],
+	'mapbox' => [
+		'apiKey'	=> ''
+	]
 ));

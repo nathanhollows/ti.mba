@@ -14,4 +14,12 @@ class TripsController extends ControllerBase
         $this->view->setTemplateBefore('private');
         parent::initialize();
     }
+
+    /**
+     * Index action
+     */
+    public function indexAction()
+    {
+        $this->tag->setTitle('Trips');
+    }
 }
