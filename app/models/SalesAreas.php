@@ -168,4 +168,25 @@ class SalesAreas extends \Phalcon\Mvc\Model
 
         return $query->execute();
     }
+
+    /**
+     * Get a list of customers for the trip planner
+     * Used in the plannerAction in 
+     * App/Controllers/TripsController.php
+     *
+     */
+    public function tripPlannerQuery()
+    {
+        $phql = "
+            SELECT
+                App\Models\SalesAreas.id as id,
+                App\Models\SalesAreas.name as area,
+                App\Models\Users.name as rep
+            FROM App\Models\SalesAreas
+            INNER JOIN App\Models\Users
+                ON App\Models\SalesAreas.agent = App\Models\Users.id
+            ORDER BY App\Models\SalesAreas.ordering ASC
+        ";
+        return $this->modelsManager->executeQuery($phql);
+    }
 }

@@ -103,6 +103,8 @@ class Customers extends \Phalcon\Mvc\Model
         $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders3months', 'params' => array('conditions' => "date >= '$date' OR complete = 0", 'order' => 'orderNumber DESC')));
         // Get all orders from the last year
         $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders75', 'params' => array('order' => 'orderNumber DESC', 'limit' => 75)));
+        // Trips
+        $this->hasMany('customerCode', 'App\Models\TripStops', 'customerCode', array('alias' => 'trips'));
     }
 
     public function beforeSave()

@@ -36,5 +36,6 @@ class TripStops extends Model
     public function initialize()
     {
         $this->belongsTo('tripId', 'App\Models\Trips', 'id', array('alias'  => 'trip'));
+        $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
     }
 }
