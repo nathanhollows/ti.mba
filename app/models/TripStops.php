@@ -38,4 +38,18 @@ class TripStops extends Model
         $this->belongsTo('tripId', 'App\Models\Trips', 'id', array('alias'  => 'trip'));
         $this->hasOne('customerCode', 'App\Models\Customers', 'customerCode', array('alias' => 'customer'));
     }
+
+    /**
+     * Remove stops for a given trip
+     * @param int $tripId
+     */
+    public static function removeStopsForTrip($tripId)
+    {
+        self::find([
+            'conditions' => 'tripId = :tripId:',
+            'bind' => [
+                'tripId' => $tripId
+            ]
+        ])->delete();
+    }
 }

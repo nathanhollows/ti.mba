@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Phalcon\Mvc\Model;
+use App\Models\TripStops;
 
 /**
  * Trips
@@ -42,7 +43,7 @@ class Trips extends Model
     {
         $this->hasMany(
             'id',
-            'App\Models\TripStops',
+            TripStops::class,
             'tripId',
             [
                 'alias' => 'stops',
@@ -80,6 +81,62 @@ class Trips extends Model
         if ($existing) {
             // Append a random counter to the nice name if it already exists
             $this->niceName = $baseNiceName . '-' . rand(3000, 9999);
+        }
+    }
+
+    /**
+     * saveTrip is a static method that creates a new trip record
+     * @param string $name
+     * @return Trips
+     */
+    public static function saveTrip($name, $id = null, $customers = [])
+    {
+        // Check for an existing trip with the same name
+        $trip = Trips::findFirstById($id);
+
+        // If the trip does not exist, create a new record
+        if (!$trip) {
+            $trip = new Trips();
+        }
+
+        $trip->name = $name;
+
+        if (!$trip->save()) {
+            throw new \Exception(implode(', ', $trip->getMessages()));
+        }
+
+        // Update trip stops
+        if ($customers) {
+            try {
+                $trip->updateStops($customers);
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage());
+            }
+        }
+
+        return $trip;
+    }
+
+    /**
+     * Update the trip stops
+     * @param array $customers
+     */
+    public function updateStops($customers)
+    {
+        // Remove existing stops
+        TripStops::removeStopsForTrip($this->id);
+
+        // Add new stops
+        $ordering = 1;
+        foreach ($customers as $customer) {
+            $stop = new TripStops();
+            $stop->tripId = $this->id;
+            $stop->customerCode = $customer;
+            $stop->ordering = $ordering;
+            if (!$stop->save()) {
+                throw new \Exception(implode(', ', $stop->getMessages()));
+            }
+            $ordering++;
         }
     }
 }

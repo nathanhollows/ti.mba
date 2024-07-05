@@ -3,15 +3,42 @@
 
 <div id='map'></div>
 <div id='sidebar' class='sidebar'>
-	<h4 class=''>{{ trip.name }}</h4>
-	<ul id="locations" class="list-group">
-		{% for stop in trip.stops %}
-		<li class="list-group-item d-flex align-items-center">
-			{{ stop.customer.name }}
-		</li>
-		{% endfor %}
-	</ul>
-	<a href="/trips/delete/{{ trip.niceName }}" class="btn btn-danger mt-3 delete confirm-delete">Delete trip</a>
+	<form action="/trips/save/{{ trip.niceName }}" method="post" class="h-100">
+		{{ content() }}
+		{{ flashSession.output() }}
+		{{ flash.output() }}
+		<div class="form-group mb-3">
+			<label for="name">Trip name</label>
+			<input type="text" class="form-control" id="name" name="name" value="{{ trip.name }}" list="salesareas" autocomplete="off" required>
+			<datalist id="salesareas">
+				{% for area in salesAreas %}
+				<option value="{{ area.area }}">{{ area.area }}</option>
+				{% endfor %}
+			</datalist>
+			<input type="hidden" name="id" value="{{ trip.id }}">
+		</div>
+
+		<div class="form-group mb-3">
+			<label>Stops</label>
+			<ul id="locations" class="list-group">
+				{% for stop in trip.stops %}
+				<li class="list-group-item d-flex align-items-center">
+					{{ emicon('grip-vertical') }}
+					{{ stop.customer.name }}
+					<input type="hidden" name="customerCode[]" value="{{ stop.customer.customerCode }}">
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+
+		<div id="links">
+			<hr class="w-100">
+			<div>
+				<a href="/trips/delete/{{ trip.niceName }}" class="btn btn-danger delete confirm-delete">Delete</a>
+				<button type="submit" class="btn btn-primary">Save</button>
+			</div>
+		</div>
+	</form>
 </div>
 
 <script src="/js/sortable.1.15.2.min.js"></script>
@@ -19,6 +46,7 @@
 Sortable.create($('#locations')[0], {
 	animation: 200,
 	swapThreshold: 0.5,
+	handle: '.icon',
 });
 mapboxgl.accessToken = '{{ mapBoxKey }}';
 const map = new mapboxgl.Map({
@@ -66,8 +94,27 @@ nav.navbar {
 	height: 100%;
 	padding: 5em 1em 1em 1em;
 	z-index: 2;
+}
+#sidebar form {
 	display: flex;
 	flex-direction: column;
+}
+#sidebar form label {
+	margin-bottom: 0;
+	font-weight: bold;
+	font-size: 1em;
+}
+#sidebar form li {
+	padding-left: 0;
+}
+#sidebar #links {
+	margin-top: auto;
+}
+#sidebar #links div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	gap: 0.5em;
 }
 #clear-button {
 	position: absolute;
@@ -83,7 +130,12 @@ nav.navbar {
 	width: 1.3em;
 	height: 1.3em;
 }
-li {
+li .icon {
 	cursor: move;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+}
+li.sortable-ghost {
+	background-color: rgba(255, 255, 255, 0.5);
 }
 </style>

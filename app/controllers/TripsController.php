@@ -52,40 +52,17 @@ class TripsController extends ControllerBase
             $this->_redirectBack();
         }
 
-        $trip = new Trips();
-        $trip->name = $this->request->getPost('name');
+        $tripName = $this->request->getPost('name', 'string');
+        $id = $this->request->getPost('id', 'string', null);
 
-        // Verify the trip name is unique
-        if (Trips::findFirstByName($trip->name)) {
-            $this->flashSession->error('Trip name must be unique');
+        try {
+            $trip = Trips::saveTrip($tripName, $id, $this->request->getPost('customerCode'));
+            $this->flashSession->success('Trip saved successfully');
+            $this->response->redirect('trips/view/' . $trip->niceName);
+        } catch (\Exception $e) {
+            $this->flashSession->error($e->getMessage());
             $this->_redirectBack();
         }
-
-        if (!$trip->save()) {
-            foreach ($trip->getMessages() as $message) {
-                $this->flashSession->error((string) $message);
-            }
-        } else {
-            $this->flashSession->success('Trip was created successfully');
-        }
-
-        $customers = $this->request->getPost('customerCode');
-        if ($customers) {
-            $counter = 1;
-            foreach ($customers as $customer) {
-                $tripStop = new TripStops();
-                $tripStop->tripId = $trip->id;
-                $tripStop->ordering = $counter;
-                $tripStop->customerCode = $customer;
-                $message = $tripStop->save();
-                foreach ($tripStop->getMessages() as $message) {
-                    $this->flashSession->error((string) $message);
-                }
-                $counter++;
-            }
-        }
-
-        $this->response->redirect('trips/view/' . $trip->niceName);
     }
 
     /**
@@ -96,10 +73,14 @@ class TripsController extends ControllerBase
         $trip = Trips::findFirstByNiceName($niceName);
         if (!$trip) {
             $this->flashSession->error('Trip not found');
-            $this->_redirectBack();
+            $this->response->redirect('trips');
         }
 
         $this->view->trip = $trip;
+        $this->tag->prependTitle($trip->name);
+
+        $salesAreas = new SalesAreas;
+        $this->view->salesAreas = $salesAreas->tripPlannerQuery();
     }
 
     /**
