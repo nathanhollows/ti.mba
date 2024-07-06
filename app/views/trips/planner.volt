@@ -182,231 +182,231 @@
 
 <script src="/js/sortable.1.15.2.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        // Event listener for checkbox state change
-        $('#customers').on('change', '.check', function () {
-            updateButtonStates();
-        });
-
-        // Event delegation for row click
-        $('#customers').on('click', 'tbody tr', function (event) {
-            // Prevent checkbox click event from bubbling
-            event.stopPropagation();
-            // Don't do anything if a span or link was clicked
-            if ($(event.target).is('span') || $(event.target).is('a') || $(event.target).is('div') || $(event.target).is('select')) return;
-            // Prevent triggering twice for the checkbox
-            if (event.target.type !== 'checkbox') {
-                $(':checkbox', this).trigger('click');
-            }
-        });
-
-        // Simple 'select all' behavior
-        $("#select-all").click(function () {
-            $('.check:visible').prop('checked', true);
-            updateButtonStates();
-        });
-
-        // Simple 'deselect all' behavior
-        $("#deselect-all").click(function () {
-            $('.check').prop('checked', false);
-            updateButtonStates();
-        });
-
-        // Function to update the state of the buttons
-        function updateButtonStates() {
-            const anyChecked = $('.check:checked').length > 0;
-            $('#deselect-all').prop('disabled', !anyChecked);
-            $('#contact-details').prop('disabled', !anyChecked);
-            $('#modal-trigger').prop('disabled', !anyChecked);
-            $('#save-trip').prop('disabled', !anyChecked);
-        }
-
-        // Initialize the custom table filter plugin
-        $('#customers').ddTableFilter();
-
-        // Update the selected customers list in the modal
-        $('#modal-trigger').click(function () {
-            var selectedCustomers = $('.check:checked').closest('tr').map(function () {
-                return {
-                    code: $('td:nth-child(2)', this).text(),
-                    name: $('td:nth-child(3)', this).text()
-                };
-            }).get();
-            var $list = $('#selected-customers-list').empty();
-            $.each(selectedCustomers, function (index, customer) {
-                $list.append('<li class="list-group-item" data-customer-code="' + customer.code + '">' +
-                    customer.name + '<button type="button" class="close remove-customer" aria-label="Close">' +
-                    '<input type="hidden" name="customerCode[]" value="' + customer.code + '">' +
-                    '<span aria-hidden="true">&times;</span></button></li>');
-            });
-            Sortable.create($list[0], {
-                animation: 150
-            });
-            setTimeout(() => $('#tripName').focus(), 500);
-        });
-
-        // Handle removal of customers from the list
-        $('#selected-customers-list').on('click', '.remove-customer', function () {
-            var $item = $(this).closest('li');
-            var customerCode = $item.data('customer-code');
-            // Uncheck the corresponding checkbox in the table
-            $('input.check[value="' + customerCode + '"]').prop('checked', false);
-            $item.remove();
-            updateButtonStates();
-        });
-
-
+    // Event listener for checkbox state change
+    $('#customers').on('change', '.check', function () {
+        updateButtonStates();
     });
 
-    (function ($) {
-        'use strict';
+    // Event delegation for row click
+    $('#customers').on('click', 'tbody tr', function (event) {
+        // Prevent checkbox click event from bubbling
+        event.stopPropagation();
+        // Don't do anything if a span or link was clicked
+        if ($(event.target).is('span') || $(event.target).is('a') || $(event.target).is('div') || $(event.target).is('select')) return;
+        // Prevent triggering twice for the checkbox
+        if (event.target.type !== 'checkbox') {
+            $(':checkbox', this).trigger('click');
+        }
+    });
 
-        // Main function for the ddTableFilter plugin
-        $.fn.ddTableFilter = function (options) {
-            // Extend default options with those provided
-            options = $.extend(true, $.fn.ddTableFilter.defaultOptions, options);
+    // Simple 'select all' behavior
+    $("#select-all").click(function () {
+        $('.check:visible').prop('checked', true);
+        updateButtonStates();
+    });
 
-            // Process each matched element
-            return this.each(function () {
-                var table = $(this);
+    // Simple 'deselect all' behavior
+    $("#deselect-all").click(function () {
+        $('.check').prop('checked', false);
+        updateButtonStates();
+    });
 
-                // If table has been processed, refresh filters and exit
-                if (table.hasClass('ddtf-processed')) {
-                    refreshFilters(table);
-                    return;
-                }
+    // Function to update the state of the buttons
+    function updateButtonStates() {
+        const anyChecked = $('.check:checked').length > 0;
+        $('#deselect-all').prop('disabled', !anyChecked);
+        $('#contact-details').prop('disabled', !anyChecked);
+        $('#modal-trigger').prop('disabled', !anyChecked);
+        $('#save-trip').prop('disabled', !anyChecked);
+    }
 
-                var start = new Date(); // For debug timing
+    // Initialize the custom table filter plugin
+    $('#customers').ddTableFilter();
 
-                // Process each visible header in the table
-                $('th:visible', table).each(function (index) {
-                    if ($(this).hasClass('skip-filter')) return;
+    // Update the selected customers list in the modal
+    $('#modal-trigger').click(function () {
+        var selectedCustomers = $('.check:checked').closest('tr').map(function () {
+            return {
+                code: $('td:nth-child(2)', this).text(),
+                name: $('td:nth-child(3)', this).text()
+            };
+        }).get();
+        var $list = $('#selected-customers-list').empty();
+        $.each(selectedCustomers, function (index, customer) {
+            $list.append('<li class="list-group-item" data-customer-code="' + customer.code + '">' +
+                customer.name + '<button type="button" class="close remove-customer" aria-label="Close">' +
+                '<input type="hidden" name="customerCode[]" value="' + customer.code + '">' +
+                '<span aria-hidden="true">&times;</span></button></li>');
+        });
+        Sortable.create($list[0], {
+            animation: 150
+        });
+        setTimeout(() => $('#tripName').focus(), 500);
+    });
 
-                    var selectbox = $('<select class="form-control">');
-                    var values = [];
-                    var opts = [];
-                    selectbox.append('<option value="--all--">' + $(this).text() + '</option>');
+    // Handle removal of customers from the list
+    $('#selected-customers-list').on('click', '.remove-customer', function () {
+        var $item = $(this).closest('li');
+        var customerCode = $item.data('customer-code');
+        // Uncheck the corresponding checkbox in the table
+        $('input.check[value="' + customerCode + '"]').prop('checked', false);
+        $item.remove();
+        updateButtonStates();
+    });
 
-                    // Get unique filter values and labels for this column
-                    var col = $('tr:not(.skip-filter) td:nth-child(' + (index + 1) + ')', table).each(function () {
-                        var cellVal = options.valueCallback.apply(this);
-                        if (cellVal.length === 0) {
-                            cellVal = '--empty--';
-                        }
-                        $(this).attr('ddtf-value', cellVal);
 
-                        if ($.inArray(cellVal, values) === -1) {
-                            var cellText = options.textCallback.apply(this);
-                            if (cellText.length === 0) {
-                                cellText = options.emptyText;
-                            }
-                            values.push(cellVal);
-                            opts.push({ val: cellVal, text: cellText });
-                        }
-                    });
+});
 
-                    // If not enough options, skip the filter for this column
-                    if (opts.length < options.minOptions) {
-                        return;
+(function ($) {
+    'use strict';
+
+    // Main function for the ddTableFilter plugin
+    $.fn.ddTableFilter = function (options) {
+        // Extend default options with those provided
+        options = $.extend(true, $.fn.ddTableFilter.defaultOptions, options);
+
+        // Process each matched element
+        return this.each(function () {
+            var table = $(this);
+
+            // If table has been processed, refresh filters and exit
+            if (table.hasClass('ddtf-processed')) {
+                refreshFilters(table);
+                return;
+            }
+
+            var start = new Date(); // For debug timing
+
+            // Process each visible header in the table
+            $('th:visible', table).each(function (index) {
+                if ($(this).hasClass('skip-filter')) return;
+
+                var selectbox = $('<select class="form-control">');
+                var values = [];
+                var opts = [];
+                selectbox.append('<option value="--all--">' + $(this).text() + '</option>');
+
+                // Get unique filter values and labels for this column
+                var col = $('tr:not(.skip-filter) td:nth-child(' + (index + 1) + ')', table).each(function () {
+                    var cellVal = options.valueCallback.apply(this);
+                    if (cellVal.length === 0) {
+                        cellVal = '--empty--';
                     }
+                    $(this).attr('ddtf-value', cellVal);
 
-                    // Sort options if required
-                    if (options.sortOpt) {
-                        opts.sort(options.sortOptCallback);
-                    }
-
-                    // Add options to selectbox
-                    $.each(opts, function () {
-                        selectbox.append('<option value="' + this.val + '">' + this.text + '</option>');
-                    });
-
-                    // Replace header content with selectbox
-                    $(this).wrapInner('<div style="display:none">').append(selectbox);
-
-                    // Bind the change event handler
-                    selectbox.bind('change', { column: col }, function (event) {
-                        var value = $(this).val();
-
-                        event.data.column.each(function () {
-                            if ($(this).attr('ddtf-value') === value || value === '--all--') {
-                                $(this).removeClass('ddtf-filtered');
-                            } else {
-                                $(this).addClass('ddtf-filtered');
-                            }
-                        });
-
-                        refreshFilters(table);
-                    });
-
-                    table.addClass('ddtf-processed');
-
-                    if ($.isFunction(options.afterBuild)) {
-                        options.afterBuild.apply(table);
+                    if ($.inArray(cellVal, values) === -1) {
+                        var cellText = options.textCallback.apply(this);
+                        if (cellText.length === 0) {
+                            cellText = options.emptyText;
+                        }
+                        values.push(cellVal);
+                        opts.push({ val: cellVal, text: cellText });
                     }
                 });
 
-                // Refresh function to show/hide rows based on filter selections
-                function refreshFilters(table) {
-                    $('tr', table).each(function () {
-                        var row = $(this);
-                        if ($('td.ddtf-filtered', row).length > 0) {
-                            options.transition.hide.apply(row, options.transition.options);
+                // If not enough options, skip the filter for this column
+                if (opts.length < options.minOptions) {
+                    return;
+                }
+
+                // Sort options if required
+                if (options.sortOpt) {
+                    opts.sort(options.sortOptCallback);
+                }
+
+                // Add options to selectbox
+                $.each(opts, function () {
+                    selectbox.append('<option value="' + this.val + '">' + this.text + '</option>');
+                });
+
+                // Replace header content with selectbox
+                $(this).wrapInner('<div style="display:none">').append(selectbox);
+
+                // Bind the change event handler
+                selectbox.bind('change', { column: col }, function (event) {
+                    var value = $(this).val();
+
+                    event.data.column.each(function () {
+                        if ($(this).attr('ddtf-value') === value || value === '--all--') {
+                            $(this).removeClass('ddtf-filtered');
                         } else {
-                            options.transition.show.apply(row, options.transition.options);
+                            $(this).addClass('ddtf-filtered');
                         }
                     });
 
-                    if ($.isFunction(options.afterFilter)) {
-                        options.afterFilter.apply(table);
-                    }
+                    refreshFilters(table);
+                });
 
-                    if (options.debug) {
-                        var refreshEnd = new Date();
-                        console.log('Refresh: ' + (refreshEnd.getTime() - start.getTime()) + 'ms');
+                table.addClass('ddtf-processed');
+
+                if ($.isFunction(options.afterBuild)) {
+                    options.afterBuild.apply(table);
+                }
+            });
+
+            // Refresh function to show/hide rows based on filter selections
+            function refreshFilters(table) {
+                $('tr', table).each(function () {
+                    var row = $(this);
+                    if ($('td.ddtf-filtered', row).length > 0) {
+                        options.transition.hide.apply(row, options.transition.options);
+                    } else {
+                        options.transition.show.apply(row, options.transition.options);
                     }
+                });
+
+                if ($.isFunction(options.afterFilter)) {
+                    options.afterFilter.apply(table);
                 }
 
                 if (options.debug) {
-                    var stop = new Date();
-                    console.log('Build: ' + (stop.getTime() - start.getTime()) + 'ms');
+                    var refreshEnd = new Date();
+                    console.log('Refresh: ' + (refreshEnd.getTime() - start.getTime()) + 'ms');
                 }
-            });
-        };
+            }
 
-        // Default options for ddTableFilter plugin
-        $.fn.ddTableFilter.defaultOptions = {
-            valueCallback: function () {
-                return encodeURIComponent($.trim($(this).text()));
-            },
-            textCallback: function () {
-                return $.trim($(this).text());
-            },
-            sortOptCallback: function (a, b) {
-                return a.text.toLowerCase() > b.text.toLowerCase();
-            },
-            afterFilter: null,
-            afterBuild: null,
-            transition: {
-                hide: $.fn.hide,
-                show: $.fn.show,
-                options: []
-            },
-            emptyText: ' Not Set',
-            sortOpt: true,
-            debug: false,
-            minOptions: 2
-        };
+            if (options.debug) {
+                var stop = new Date();
+                console.log('Build: ' + (stop.getTime() - start.getTime()) + 'ms');
+            }
+        });
+    };
 
-    })(jQuery);
+    // Default options for ddTableFilter plugin
+    $.fn.ddTableFilter.defaultOptions = {
+        valueCallback: function () {
+            return encodeURIComponent($.trim($(this).text()));
+        },
+        textCallback: function () {
+            return $.trim($(this).text());
+        },
+        sortOptCallback: function (a, b) {
+            return a.text.toLowerCase() > b.text.toLowerCase();
+        },
+        afterFilter: null,
+        afterBuild: null,
+        transition: {
+            hide: $.fn.hide,
+            show: $.fn.show,
+            options: []
+        },
+        emptyText: ' Not Set',
+        sortOpt: true,
+        debug: false,
+        minOptions: 2
+    };
 
-    $(document).ready(function () {
-        var salesareas = [
-            // Volt
-            {% for area in salesAreas %}
+})(jQuery);
+
+$(document).ready(function () {
+    var salesareas = [
+        // Volt
+        {% for area in salesAreas %}
             { "value": "{{ area.id }}", "text": "{{ area.area }}", "rep": "{{ area.rep}}" },
         {% endfor %}
-        ]; // Define your roles here
+    ]; // Define your roles here
     $.fn.editable.defaults.mode = 'inline';
     $('.xedit').editable({
         source: function () {
@@ -428,7 +428,40 @@
 
         }
     });
+});
+
+// A function to call "/address/geocode/{customerCode}" 
+function geocodeCustomer(customerCode) {
+    $.ajax({
+        url: '/address/geocode/' + customerCode,
+        type: 'GET',
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+            console.error(response);
+        }
     });
+}
+
+// Geocode every customer in the table
+// Send 10 requests a second to avoid rate limiting
+function geocodeAllCustomers() {
+    var customers = [];
+    $('#customers tbody tr').each(function () {
+        customers.push($(this).find('td:nth-child(2)').text());
+    });
+    var i = 0;
+    var interval = setInterval(function () {
+        if (i < customers.length) {
+            geocodeCustomer(customers[i]);
+            i++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 100);
+}
+
 </script>
 
 <style>
