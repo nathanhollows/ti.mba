@@ -73,7 +73,7 @@ class AddressController extends ControllerBase
             return $this->dispatcher->forward(array(
                 "controller" => "customers",
                 "action" => "index"
-                ));
+            ));
         }
 
         $address = Addresses::findFirstById($this->request->getPost('id'));
@@ -91,8 +91,65 @@ class AddressController extends ControllerBase
         }
     }
 
-
     public function deleteAction()
     {
+        // TODO: Implement deleteAction() method
+    }
+
+    /**
+     * Geocode an address
+     *
+     * @param int $customerCode
+     * @return void
+     */
+    public function geocodeAction($customerCode)
+    {
+        $this->view->disable();
+
+        $response = [
+            'status' => 'error',
+            'message' => 'Invalid request',
+            'data' => []
+        ];
+
+        $address = Addresses::find([
+            'customerCode = :customerCode: AND typeCode = 6 AND lat IS NULL AND lng IS NULL',
+            'bind' => [
+                'customerCode' => $customerCode
+            ]
+        ]);
+
+        if (!$address) {
+            // No addresses found
+            $response['status'] = 'error';
+            $response['message'] = 'No such address exists!';
+            return $this->response->setStatusCode(404, 'Not Found')->setJsonContent($response);
+        }
+
+        $response['status'] = 'success';
+        $response['message'] = 'Geocoding addresses';
+        $response['data']['customerCode'] = $customerCode;
+        $response['data']['geocodedAddresses'] = [];
+
+        foreach ($address as $addr) {
+            try {
+                $addr->geocode();
+                $addr->save();
+
+                $response['data']['geocodedAddresses'][] = [
+                    'id' => $addr->id,
+                    'lat' => $addr->lat,
+                    'lng' => $addr->lng
+                ];
+            } catch (\Exception $e) {
+                // Log the error
+                $response['data']['errors'][] = [
+                    'id' => $addr->id,
+                    'error' => $e->getMessage()
+                ];
+            }
+        }
+
+        return $this->response->setStatusCode(200, 'OK')->setJsonContent($response);
     }
 }

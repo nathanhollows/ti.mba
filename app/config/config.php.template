@@ -51,7 +51,8 @@ return new \Phalcon\Config(array(
 		'logLevel' => Logger::DEBUG,
 		'filename' => 'application.log',
 	],
-	'mapbox' => [
-		'apiKey'	=> ''
+	'maps' => [
+		'mapboxAPI'	=> '', // Used for rendering maps
+		'googleAPI' => '', // Optionally used for geocoding, if set
 	]
 ));
