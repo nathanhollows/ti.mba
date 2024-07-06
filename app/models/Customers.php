@@ -203,4 +203,29 @@ class Customers extends \Phalcon\Mvc\Model
         $query->orderBy('name ASC');
         return $query->execute();
     }
+
+    /**
+     * Get coordinates for a customer
+     * @return array
+     */
+    public function getCoordinates()
+    {
+        // Get the "Delivery" address
+        $address = Addresses::findFirst([
+            'customerCode = :customerCode: AND typeCode = 6',
+            'bind' => [
+                'customerCode' => $this->customerCode
+            ]
+        ]);
+        if ($address) {
+            return [
+                'lat' => $address->lat,
+                'lng' => $address->lng
+            ];
+        }
+        return [
+            'lat' => null,
+            'lng' => null
+        ];
+    }
 }
