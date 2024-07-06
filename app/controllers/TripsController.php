@@ -13,7 +13,7 @@ class TripsController extends ControllerBase
     {
         $this->view->setTemplateBefore('private');
         parent::initialize();
-        $this->view->mapBoxKey = $this->config->mapbox->apiKey;
+        $this->view->mapBoxKey = $this->config->maps->mapBoxAPI;
     }
 
     /**
