@@ -51,4 +51,8 @@ return new \Phalcon\Config(array(
 		'logLevel' => Logger::DEBUG,
 		'filename' => 'application.log',
 	],
+	'algolia' => [ \\ Optional
+		'appID'  => '', 
+		'appKey' => '',
+	]
 ));

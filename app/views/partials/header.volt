@@ -13,22 +13,22 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-editable.css"/>
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-<style>
+	<style>
 .bg-dark {
     background-color: 
-    #152b3e !important;
+	#152b3e !important;
 }
 .bg-light {
     background-color:
-    #f2f1eb !important;
+	#f2f1eb !important;
 }
 .header.bg-dark {
     background-color:
-    #1b354a !important;
+	#1b354a !important;
 }
 .feather {
-	height: 1rem;
-	margin-top: -0.2rem;
+    height: 1rem;
+    margin-top: -0.2rem;
 }
 
 /* Timeline Stytling */
@@ -58,24 +58,34 @@ li .confirm-delete {
 /* Search */
 
 #search-results {
-	display: none;
-	position: absolute;
-	z-index: 2;
-	top: 2.7em;
-	right: 1em;
-	left: 0;
-	z-index: 3;
+    position: absolute;
+    z-index: 2;
+    top: 4em;
+    z-index: 3;
+    max-width: 24em;
+    left: 1em;
+    right: 1em;
+    margin: auto;
+}
+
+#search-results em {
+    font-style: normal;
+    text-decoration: underline;
+}
+
+#search-results::placeholder, #search-results::-webkit-input-placeholder, #search-results:-ms-input-placeholder {
+	color: white;
 }
 
 .xedit {
-	margin-bottom: -1px;
-	border-bottom: 1px dashed;
-	color: var(--dark);
+    margin-bottom: -1px;
+    border-bottom: 1px dashed;
+    color: var(--dark);
 }
 .editable-empty {
     color: #c62d3b;
 }
-</style>
+	</style>
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->

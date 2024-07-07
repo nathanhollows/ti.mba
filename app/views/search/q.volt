@@ -1,112 +1,113 @@
 <div class="container">
-	<div class="row">
-		<div class="col">
-			<h3>Search</h3>
-			<form class="" action="/search/" method="post">
-				<div class="input-group">
-					<input type="text" class="form-control" name="q" value="{{ query }}" autocomplete="off" autofocus="true" accesskey="s">
-					<span class="input-group-append">
-						<button class="btn btn-primary" type="submit">Go!</button>
-					</span>
-				</div>
-			</form>
-			{{ content() }}
-			{{ flashSession.output() }}
-			{% if not noResults %}
-
-			{% set custl = customers|length %}
-			{% set contl = contacts|length %}
-			{% set ql = quotes|length %}
-			{% if custl >= contl and custl >= ql %}{% set active = "pills-customers" %}
-			{% elseif contl >= ql and contl >= custl %}{% set active = "pills-contacts" %}
-			{% else %}{% set active = "pills-quotes" %}
-			{% endif %}
-
-			<ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-				<li class="nav-item ml-n3">
-					<strong class="nav-link">Filter Results</strong>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link active" id="pills-customers-tab" data-toggle="pill" href="#pills-customers" role="tab" aria-controls="pills-customers" aria-selected="true">Customers <span class="badge badge-primary">{{ customers|length }}</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" id="pills-contacts-tab" data-toggle="pill" href="#pills-contacts" role="tab" aria-controls="pills-contacts" aria-selected="false">Contacts <span class="badge badge-primary">{{ contacts|length }}</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" id="pills-quotes-tab" data-toggle="pill" href="#pills-quotes" role="tab" aria-controls="pills-quotes" aria-selected="false">Quotes <span class="badge badge-primary">{{ quotes|length }}<span></a>
-				</li>
-			</ul>
-			<div class="tab-content" id="pills-tabContent">
-				<div class="tab-pane fade show active" id="pills-customers" role="tabpanel" aria-labelledby="pills-customers-tab">
-					<h4>Customers</h4>
-					<ul class="list-group shadow-sm">
-						{% for customer in customers %}
-						<li class="list-group-item">{{ link_to('customers/view/' ~ customer.customerCode, customer.name) }}
-							<span class="float-right"><a href="tel:{{ customer.phone|stripspace }}" class="tel-link">{{ customer.phone }}</a></span> 
-						</li>
-						{% endfor %}
-					</ul>
-				</div>
-				<div class="tab-pane fade" id="pills-contacts" role="tabpanel" aria-labelledby="pills-contacts-tab">
-					<h4>Contacts</h4>
-					<div class="card card-sm shadow-sm">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Branch</th>
-									<th class="hidden-xs">Phone</th>
-									<th class="hidden-xs">Email</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for contact in contacts %}
-								<tr>
-									<td>
-										{{ link_to('contacts/view/' ~ contact.id, contact.name) }}
-									</td>
-									<td>
-										{{ link_to('customers/view/' ~ contact.company.customerCode, contact.company.name) }}
-									</td>
-									<td class="hidden-xs">
-										<a href="tel:{{ contact.directDial|stripspace }}" class="tel-link">{{ contact.directDial|escape }}</a>
-									</td>
-									<td class="hidden-xs">
-										<a href="mailto:{{ contact.email }}">{{ contact.email|escape }}</a>
-									</td>
-								</tr>
-								{% endfor %}
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="tab-pane fade" id="pills-quotes" role="tabpanel" aria-labelledby="pills-quotes-tab">
-					<h4>Quotes</h4>
-					<ul class="list-group shadow-sm">
-						{% for quote in quotes %}
-						<li class="list-group-item">{{ link_to('quotes/view/'~ quote.quoteId, quote.quoteId) }} - {{ quote.reference|escape }} - {{ quote.customer.name|escape }}</li>
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-			{% endif %}
-		</div>
-	</div>
-	<div class="row">
-		<div class="col">
-			{% if not noTerm and noResults %}
-			<h4>Nothing found for <code>{{ query|e }}</code></h4>
-			{% endif %}
-		</div>
-	</div>
+    <div class="row">
+        <div class="col">
+            <h3>Search</h3>
+            <form class="" action="/search/" method="post" id="search-form">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="q" value="{{ query }}" autocomplete="off" autofocus="true" accesskey="s">
+                    <span class="input-group-append">
+                        <button class="btn btn-primary" type="submit">{{ emicon('search') }}</button>
+                    </span>
+                </div>
+            </form>
+            {{ content() }}
+            {{ flashSession.output() }}
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h4>Customers</h4>
+                    <div class="list-group shadow-sm mb-4">
+                        {% if customers|length == 0 %}
+                        <div class="list-group list-group-item list-group-item-action">
+                            <em>No customers found</em>
+                            <div class="text-muted">Try searching for something else</div>
+                        </div>
+                        {% else %}
+                        {% for customer in customers %}
+                        <a href="{{ url('customers/view/' ~ customer.customerCode) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>
+                                {% if customer._highlightResult %}
+                                <strong class="d-block">{{ customer._highlightResult.customerCode.value }}</strong>
+                                <span>{{ customer._highlightResult.name.value }}</span>
+                                {% else %}
+                                <strong class="d-block">{{ customer.customerCode }}</strong>
+                                <span>{{ customer.name }}</span>
+                                {% endif %}
+                            </div>
+                            <span class="text-right text-muted">{{ customer.phone }}</span>
+                        </a>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4>Contacts</h4>
+                    <div class="list-group shadow-sm mb-4">
+                        {% if contacts|length == 0 %}
+                        <div class="list-group list-group-item">
+                            <em>No contacts found</em>
+                            <div class="text-muted">Try searching for something else</div>
+                        </div>
+                        {% else %}
+                        {% for contact in contacts %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    {% if contact._highlightResult %}
+                                    <strong>{{ contact._highlightResult.name.value }}</strong><br>
+                                    <small class="text-muted">{{ contact._highlightResult.role.value }}</small><br>
+                                    <small class="text-muted">{{ link_to('customers/view/' ~ contact.customerCode, contact._highlightResult.company.value) }}</small>
+                                    {% else %}
+                                    <strong>{{ contact.name }}</strong><br>
+                                    <small class="text-muted">{{ contact.role }}</small><br>
+                                    <small class="text-muted">Company: {{ link_to('customers/view/' ~ contact.customerCode, contact.company) }}</small>
+                                    {% endif %}
+                                </div>
+                                <div class="text-right">
+                                    <a href="tel:{{ contact.directDial|stripspace }}" class="tel-link">{{ contact.directDial }}</a><br>
+                                    <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <style>
-	body {
-		overflow-y: scroll;
-	}
+    body {
+        overflow-y: scroll;
+    }
+    table em, ul em, .list-group-item em {
+        text-decoration: underline;
+        font-style: normal;
+    }
+    .customer-code {
+        min-width: 8ch;
+    }
+    .tel-link {
+        color: #007bff;
+    }
+    .tel-link:hover {
+        text-decoration: underline;
+    }
+    .list-group-item {
+        padding: 1rem;
+    }
+    .list-group-item strong {
+        font-size: 1.1rem;
+    }
+    .list-group-item .text-muted {
+        font-size: 0.9rem;
+    }
+    .list-group-item .float-right {
+        font-size: 0.9rem;
+    }
 </style>
 <script>
-	$( document ).ready(function() {
-		$('#pills-tab a[href="#{{ active }}"]').tab('show') // Select tab by name
-	});
+    $(document).ready(function() {
+        // Any JavaScript necessary for handling tabs or other interactive features can go here
+    });
 </script>

@@ -3,8 +3,7 @@
 namespace App\Models;
 
 use Phalcon\Mvc\Model;
-use App\Models\ContactRecord;
-use App\Plugins\Auth\Auth;
+use Algolia\AlgoliaSearch\SearchClient;
 
 class Contacts extends Model
 {
@@ -54,8 +53,8 @@ class Contacts extends Model
 
     /**
      *
-    * @var int
-    */
+     * @var int
+     */
     public $role;
 
     /**
@@ -81,7 +80,7 @@ class Contacts extends Model
      * Find contacts by customer code
      * @param  string $customerCode
      * @return array
-     */ 
+     */
     public static function findByCustomerCode($customerCode)
     {
         $query = self::query();
@@ -97,5 +96,77 @@ class Contacts extends Model
         $query->orderBy('customerCode ASC');
         $query->bind(['search' => '%' . $search . '%']);
         return $query->execute();
+    }
+
+    /**
+     * After save
+     * Update algolia index if configured
+     */
+    public function afterSave()
+    {
+        // Update Algolia index
+        $config = \Phalcon\DI::getDefault()->get('config');
+        if ($config->algolia->appID != '') {
+            $algolia = SearchClient::create($config->algolia->appID, $config->algolia->appKey);
+            $index = $algolia->initIndex('contacts');
+            $record = [
+                'objectID' => $this->id,
+                'name' => $this->name,
+                'email' => $this->email,
+                'directDial' => $this->directDial,
+                'cellPhone' => $this->cellPhone,
+                'position' => $this->position,
+                'role' => $this->job->name,
+                'company' => $this->company->name,
+                'customerCode' => $this->customerCode,
+            ];
+            $index->saveObject($record, ['autoGenerateObjectIDIfNotExist' => true]);
+        }
+    }
+
+    /**
+     * After delete
+     * Update Algolia index if configured
+     * 
+     */
+    public function afterDelete()
+    {
+        // Update Algolia index
+        $config = \Phalcon\DI::getDefault()->get('config');
+        if ($config->algolia->appID != '') {
+            $algolia = SearchClient::create($config->algolia->appID, $config->algolia->appKey);
+            $index = $algolia->initIndex('contacts');
+            $index->deleteObject($this->id);
+        }
+    }
+
+    /**
+     * Push all customers to Algolia
+     * 
+     */
+    public static function pushToAlgolia()
+    {
+        $config = \Phalcon\DI::getDefault()->get('config');
+        if ($config->algolia->appID != '') {
+            $algolia = SearchClient::create($config->algolia->appID, $config->algolia->appKey);
+            $index = $algolia->initIndex('contacts');
+            $contacts = self::find();
+            $records = [];
+            foreach ($contacts as $contact) {
+                $record = [
+                    'objectID' => $contact->id,
+                    'name' => $contact->name,
+                    'email' => $contact->email,
+                    'directDial' => $contact->directDial,
+                    'cellPhone' => $contact->cellPhone,
+                    'position' => $contact->position,
+                    'role' => $contact->job->name,
+                    'company' => $contact->company->name,
+                    'customerCode' => $contact->customerCode,
+                ];
+                $records[] = $record;
+            }
+            $index->saveObjects($records, ['autoGenerateObjectIDIfNotExist' => true]);
+        }
     }
 }
