@@ -51,8 +51,16 @@ return new \Phalcon\Config(array(
 		'logLevel' => Logger::DEBUG,
 		'filename' => 'application.log',
 	],
+	// Maps
+	// Mapbox API key is required for rendering maps
+	// Google API key is optional, but useful for more accurate geocoding
 	'maps' => [
-		'mapboxAPI'	=> '', // Used for rendering maps
-		'googleAPI' => '', // Optionally used for geocoding, if set
+		'mapboxAPI'	=> '',
+		'googleAPI' => '',
+	],
+	// Algolia API key is optional, but improves search
+	'algolia' => [
+		'appID'  => '',
+		'appKey' => '',
 	]
 ));

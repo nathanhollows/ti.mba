@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Plugins\Auth\Auth;
 use App\Models\ContactRecord;
 use Phalcon\Mvc\Model\Query\Builder;
+use Algolia\AlgoliaSearch\SearchClient;
 
 use Phalcon\Mvc\Model\Relation;
 
@@ -72,24 +73,25 @@ class Customers extends \Phalcon\Mvc\Model
     {
         $date = date("Y-m-d", strtotime('NOW - 3 MONTHS'));
         $year = date("Y-m-d", strtotime('NOW - 1 YEAR'));
-        $this->hasOne('status', 'App\Models\CustomerStatus', 'id', array('alias' => 'state'));
-        $this->hasOne('salesArea', 'App\Models\SalesAreas', 'id', array('alias' => 'salesArea'));
-        $this->hasMany('customerCode', 'App\Models\Addresses', 'customerCode', array('alias'  => 'addresses'));
-        $this->hasMany('customerCode', 'App\Models\Contacts', 'customerCode', [
+        $this->hasOne('status', \App\Models\CustomerStatus::class, 'id', array('alias' => 'state'));
+        $this->hasOne('salesArea', \App\Models\SalesAreas::class, 'id', array('alias' => 'salesArea'));
+        $this->hasOne('salesArea', \App\Models\SalesAreas::class, 'id', array('alias' => 'area'));
+        $this->hasMany('customerCode', \App\Models\Addresses::class, 'customerCode', array('alias'  => 'addresses'));
+        $this->hasMany('customerCode', \App\Models\Contacts::class, 'customerCode', [
             'alias' => 'contacts',
             'params' => [
                 'order' => 'name ASC',
             ]
         ]);
-        $this->hasMany('customerCode', 'App\Models\ContactRecord', 'customerCode', array('alias' => 'history'));
-        $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
+        $this->hasMany('customerCode', \App\Models\ContactRecord::class, 'customerCode', array('alias' => 'history'));
+        $this->hasMany('customerCode', \App\Models\Quotes::class, 'customerCode', array(
             'alias' => 'quotes',
             'params' => array(
                 // Open quotes first, then closed
                 'order' => 'if (status < 4, 1, 2), quoteId DESC'
             )
         ));
-        $this->hasMany('customerCode', 'App\Models\Quotes', 'customerCode', array(
+        $this->hasMany('customerCode', \App\Models\Quotes::class, 'customerCode', array(
             'alias' => 'activeQuotes',
             'params' => array(
                 // Open quotes first, then closed
@@ -98,21 +100,15 @@ class Customers extends \Phalcon\Mvc\Model
             )
         ));
         // Get all outstanding orders
-        $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders', 'params' => array('conditions' => 'complete = 0')));
+        $this->hasMany('customerCode', \App\Models\Orders::class, 'customerCode', array('alias' => 'orders', 'params' => array('conditions' => 'complete = 0')));
         // Get all orders from the last 3 months
-        $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders3months', 'params' => array('conditions' => "date >= '$date' OR complete = 0", 'order' => 'orderNumber DESC')));
-        // Get all orders from the last year
+        $this->hasMany('customerCode', \App\Models\Orders::class, 'customerCode', array('alias' => 'orders3months', 'params' => array('conditions' => "date >= '$date' OR complete = 0", 'order' => 'orderNumber DESC')));
+        // Get the last 75 orders
         $this->hasMany('customerCode', 'App\Models\Orders', 'customerCode', array('alias' => 'orders75', 'params' => array('order' => 'orderNumber DESC', 'limit' => 75)));
         // Trips
         $this->hasMany('customerCode', 'App\Models\TripStops', 'customerCode', array('alias' => 'trips'));
     }
 
-    public function beforeSave()
-    {
-        if ($this->tripDay == 0) {
-            $this->tripDay = null;
-        }
-    }
 
     public function afterCreate()
     {
@@ -206,6 +202,7 @@ class Customers extends \Phalcon\Mvc\Model
 
     /**
      * Get coordinates for a customer
+     *
      * @return array
      */
     public function getCoordinates()
@@ -227,5 +224,73 @@ class Customers extends \Phalcon\Mvc\Model
             'lat' => null,
             'lng' => null
         ];
+    }
+
+    /**
+     * After save
+     * Update Algolia index if configured
+     *
+     */
+    public function afterSave()
+    {
+        // Update Algolia index
+        $config = \Phalcon\DI::getDefault()->get('config');
+        if ($config->algolia->appID != '') {
+            $algolia = SearchClient::create($config->algolia->appID, $config->algolia->appKey);
+            $index = $algolia->initIndex('customers');
+            $record = [
+                'objectID' => $this->customerCode,
+                'customerCode' => $this->customerCode, // This is the primary key, so we need to include it in the record
+                'name' => $this->name,
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'status' => $this->state->name,
+                'rank' => $this->rank,
+                'salesArea' => $this->area->name,
+                'salesRep' => $this->area->rep->name,
+            ];
+            $index->saveObject($record, ['autoGenerateObjectIDIfNotExist' => true]);
+        }
+    }
+
+    /**
+     * After delete
+     * Update Algolia index if configured
+     * 
+     */
+    public function afterDelete()
+    {
+        // Update Algolia index
+        $config = \Phalcon\DI::getDefault()->get('config');
+        if ($config->algolia->appID != '') {
+            $algolia = SearchClient::create($config->algolia->appID, $config->algolia->appKey);
+            $index = $algolia->initIndex('customers');
+            $index->deleteObject($this->customerCode);
+        }
+    }
+
+    /**
+     * Push all customers to Algolia
+     * 
+     */
+    public static function pushToAlgolia()
+    {
+        $config = \Phalcon\DI::getDefault()->get('config');
+        if ($config->algolia->appID != '') {
+            $algolia = SearchClient::create($config->algolia->appID, $config->algolia->appKey);
+            $index = $algolia->initIndex('customers');
+
+            $builder = new Builder();
+            $builder->columns(['customerCode as objectID', 'customerCode', 'c.name', 'c.phone', 'c.email', 'c.rank', 's.name as salesArea', 'u.name as salesRep', 'st.name as status'])
+                ->addFrom(\App\Models\Customers::class, 'c')
+                ->leftJoin(\App\Models\SalesAreas::class, 's.id = c.salesArea', 's')
+                ->join(\App\Models\Users::class, 'u.id = s.agent', 'u')
+                ->join(\App\Models\CustomerStatus::class, 'st.id = c.status', 'st')
+                ->getQuery();
+            $customers = $builder->getQuery()->execute();
+
+            $records = $customers->toArray();
+            $index->saveObjects($records, ['autoGenerateObjectIDIfNotExist' => true]);
+        }
     }
 }

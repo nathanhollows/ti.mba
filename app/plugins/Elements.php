@@ -3,7 +3,6 @@
 namespace App\Plugins;
 
 use Phalcon\Di\Injectable;
-use App\Models\ContactRecord;
 
 /**
  * Elements
@@ -143,7 +142,6 @@ class Elements extends Injectable
      */
     public function getNavLeft()
     {
-        $user = $this->auth->getId();
         $controllerName = $this->view->getControllerName();
 
         foreach ($this->_leftNav as $controller => $option) {
@@ -180,19 +178,19 @@ class Elements extends Injectable
 
     public function getNavRight()
     {
-        $user = $this->auth->getId();
         $controllerName = $this->view->getControllerName();
         echo '
-<ul id="search-results" class="list-group shadow d-sm-none"></ul>
-<li class="nav-item">
-<form id="search-form" style="height: 100%;" class="form-inline  my-2 my-lg-0" action="/search/q/" method="post" autocomplete="off">
-<input type="search" id="search-nav" placeholder="Search" aria-label="Search" name="query" style="background: #ffffff17;border: none;color: white;height: 100%;display: inline-block;padding: 0 2.3em 0 0.7em;width: 14.6vw;max-width: 13em;min-width: 8.9em;">
+<li class="nav-item d-none d-lg-block">
+<form class="search-form form-inline my-2 my-lg-0 d-none d-lg-block" action="/search/q/" method="post" autocomplete="off">
+        <input type="search" class="search-nav form-control" placeholder="Search (ctrl+k)" aria-label="Search" name="query" style="background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255,255, 0.3); margin-top: 0.1em; margin-right: 1em;">
 
-<button type="submit" style="filter: brightness(1) invert(0.6);margin-left: -1.9em;" class="btn p-0 mr-3">
-<img src="/img/icons/search.svg" style="width: 1.4rem;">
-</button>
-</form>
-<div id="search-results"></div>
+        <button type="submit" style="color: white; margin-left: -4em;" class="btn btn-sm">
+            <span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="11" cy="11" r="8"></circle>
+  <path d="m21 21-4.3-4.3"></path>
+</svg>
+</span>            </button>
+        </form>
 </li>';
 
         foreach ($this->_rightNav as $controller => $option) {
