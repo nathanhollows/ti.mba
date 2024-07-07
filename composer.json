@@ -4,7 +4,8 @@
         "nesbot/carbon": "~1.21.0",
         "cebe/markdown": "^1.2.1",
         "knplabs/knp-snappy": "1.4.3",
-        "phalcon/migrations": "v2.1.6"
+        "phalcon/migrations": "v2.1.6",
+        "algolia/algoliasearch-client-php": "^3.3"
     },
     "require-dev": {
         "phalcon/ide-stubs": "v4.1.0"

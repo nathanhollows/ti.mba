@@ -26,6 +26,13 @@
             <a href="{{ url('settings/clearcache/models') }}" class="btn btn-danger {% if not developer %}disabled{% endif %}"">Queries</a>
             <a href="{{ url('settings/clearcache/metadata') }}" class="btn btn-danger {% if not developer %}disabled{% endif %}"">Models MetaData</a>
             <a href="{{ url('settings/clearcache/volt') }}" class="btn btn-danger {% if not developer %}disabled{% endif %}"">Volt</a>
+            {% if algoliaEnabled %}
+            <hr>
+            <p><strong>
+                Algolia
+            </strong></p>
+            <a href="{{ url('settings/updatealgolia') }}" class="btn btn-info {% if not developer %}disabled{% endif %}"">Refresh Algolia index</a>
+            {% endif %}
         </div>
     </div>
 </div>

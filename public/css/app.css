@@ -825,6 +825,27 @@ div#search {
     width: 200px;
     transition: all ease 0.3s;
 }
+    #search .customer-code {
+        min-width: 8ch;
+    }
+    #search .tel-link {
+        color: #007bff;
+    }
+    #search .tel-link:hover {
+        text-decoration: underline;
+    }
+    #search .list-group-item {
+        padding: 1rem;
+    }
+    #search .list-group-item strong {
+        font-size: 1.1rem;
+    }
+    #search .list-group-item .text-muted {
+        font-size: 0.9rem;
+    }
+    #search .list-group-item .float-right {
+        font-size: 0.9rem;
+    }
 
 .panel-solid {
     color: white;
